@@ -35,10 +35,11 @@ class ArticleApiIntegrationTest {
     @BeforeEach
     void setUp() {
         articleRepository.deleteAll();
+        articleRepository.flush();
         fixedTime = OffsetDateTime.of(2026, 10, 9, 12, 0, 0, 0, ZoneOffset.UTC);
 
         Article article1 = new Article(
-                "deontic-logic-autonomous-systems",
+                "integration-test-deontic-logic",
                 "Deontic Logic in Autonomous Process Architecture",
                 "Exploring normative modal logic as a foundational model.",
                 "# Deontic Logic\n\n$$\\mathcal{O}(\\varphi) \\iff \\neg \\mathcal{P}(\\neg \\varphi)$$\n\n> Quote",
@@ -46,7 +47,7 @@ class ArticleApiIntegrationTest {
         );
 
         Article article2 = new Article(
-                "theory-of-constraints-pipeline",
+                "integration-test-theory-of-constraints",
                 "Theory of Constraints in Distributed Pipeline Throughput",
                 "Applying TOC and Five Focusing Steps to software delivery loops.",
                 "# Theory of Constraints\n\n$$\\text{Throughput} = \\frac{\\text{Work}}{\\text{Time}}$$",
@@ -71,19 +72,19 @@ class ArticleApiIntegrationTest {
                 .andExpect(jsonPath("$.totalElements", is(2)))
                 .andExpect(jsonPath("$.totalPages", is(1)))
                 .andExpect(jsonPath("$.content", hasSize(2)))
-                .andExpect(jsonPath("$.content[0].slug", is("theory-of-constraints-pipeline")))
+                .andExpect(jsonPath("$.content[0].slug", is("integration-test-theory-of-constraints")))
                 .andExpect(jsonPath("$.content[0].title", is("Theory of Constraints in Distributed Pipeline Throughput")))
-                .andExpect(jsonPath("$.content[1].slug", is("deontic-logic-autonomous-systems")))
+                .andExpect(jsonPath("$.content[1].slug", is("integration-test-deontic-logic")))
                 .andExpect(jsonPath("$.content[1].title", is("Deontic Logic in Autonomous Process Architecture")));
     }
 
     @Test
     void testGetArticleBySlugReturnsAccurateStoredArticleContent() throws Exception {
-        mockMvc.perform(get("/api/v1/articles/deontic-logic-autonomous-systems")
+        mockMvc.perform(get("/api/v1/articles/integration-test-deontic-logic")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.slug", is("deontic-logic-autonomous-systems")))
+                .andExpect(jsonPath("$.slug", is("integration-test-deontic-logic")))
                 .andExpect(jsonPath("$.title", is("Deontic Logic in Autonomous Process Architecture")))
                 .andExpect(jsonPath("$.summary", is("Exploring normative modal logic as a foundational model.")))
                 .andExpect(jsonPath("$.content", is("# Deontic Logic\n\n$$\\mathcal{O}(\\varphi) \\iff \\neg \\mathcal{P}(\\neg \\varphi)$$\n\n> Quote")));
