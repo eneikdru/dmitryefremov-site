@@ -1,0 +1,156 @@
+[
+  {
+    "id": "main-header",
+    "left": 240,
+    "top": -500,
+    "width": 960,
+    "height": 289
+  },
+  {
+    "id": "hero-section",
+    "left": 240,
+    "top": -450,
+    "width": 960,
+    "height": 148
+  },
+  {
+    "id": "hero-title",
+    "left": 240,
+    "top": -450,
+    "width": 960,
+    "height": 40
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 240,
+    "top": -398,
+    "width": 960,
+    "height": 28
+  },
+  {
+    "id": "hero-manifest",
+    "left": 240,
+    "top": -358,
+    "width": 960,
+    "height": 56
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1058,
+    "top": -500,
+    "width": 142,
+    "height": 26
+  },
+  {
+    "id": "nav-tabs",
+    "left": 240,
+    "top": -278,
+    "width": 475,
+    "height": 42
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 245,
+    "top": -273,
+    "width": 147,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 400,
+    "top": -273,
+    "width": 140,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 548,
+    "top": -273,
+    "width": 162,
+    "height": 32
+  },
+  {
+    "id": "podcast-player-container",
+    "left": 240,
+    "top": -187,
+    "width": 960,
+    "height": 982
+  },
+  {
+    "id": "podcast-episodes-section",
+    "left": 240,
+    "top": -92,
+    "width": 386,
+    "height": 887
+  },
+  {
+    "id": "podcast-player-section",
+    "left": 650,
+    "top": -92,
+    "width": 550,
+    "height": 887
+  },
+  {
+    "id": "podcast-player-card",
+    "left": 650,
+    "top": -92,
+    "width": 550,
+    "height": 887
+  },
+  {
+    "id": "podcast-header",
+    "left": 675,
+    "top": -67,
+    "width": 500,
+    "height": 174
+  },
+  {
+    "id": "podcast-title",
+    "left": 675,
+    "top": -37,
+    "width": 500,
+    "height": 56
+  },
+  {
+    "id": "audio-controls-block",
+    "left": 675,
+    "top": 127,
+    "width": 500,
+    "height": 185
+  },
+  {
+    "id": "play-pause-btn",
+    "left": 692,
+    "top": 144,
+    "width": 48,
+    "height": 48
+  },
+  {
+    "id": "time-display",
+    "left": 876,
+    "top": 158,
+    "width": 108,
+    "height": 20
+  },
+  {
+    "id": "waveform-container",
+    "left": 692,
+    "top": 231,
+    "width": 466,
+    "height": 64
+  },
+  {
+    "id": "timecodes-section",
+    "left": 675,
+    "top": 410,
+    "width": 500,
+    "height": 360
+  },
+  {
+    "id": "main-footer",
+    "left": 240,
+    "top": 827,
+    "width": 960,
+    "height": 41
+  }
+]

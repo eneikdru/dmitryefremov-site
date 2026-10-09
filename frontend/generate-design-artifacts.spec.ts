@@ -3,9 +3,22 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-test('generate design verification artifacts', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-e39a7455-05cf-44d2-87a0-f8d3f0010a60');
+test('generate design verification artifacts for podcast media UI', async () => {
+  const targetDir = path.resolve('../.eneik/records/design-check-67c6d186-4f25-4d6b-87a6-393a9d5e67d9');
   fs.mkdirSync(targetDir, { recursive: true });
+
+  // Build frontend first
+  const buildProcess = spawn('npx', ['vite', 'build'], {
+    cwd: path.resolve('.'),
+    stdio: 'inherit'
+  });
+
+  await new Promise<void>((resolve, reject) => {
+    buildProcess.on('exit', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`vite build failed with code ${code}`));
+    });
+  });
 
   // Start preview server
   const previewProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
@@ -25,20 +38,18 @@ test('generate design verification artifacts', async () => {
     await desktopPage.goto('http://localhost:4173');
     await desktopPage.waitForSelector('#app-root');
 
-    // Toggle theme to verify interaction
-    await desktopPage.click('#theme-toggle-btn');
-    await desktopPage.waitForTimeout(300);
-    await desktopPage.click('#theme-toggle-btn');
+    // Click on [PODCAST_MEDIA] tab
+    await desktopPage.click('#tab-btn-podcast');
     await desktopPage.waitForTimeout(300);
 
-    // Scroll article container to trigger telemetry
-    await desktopPage.evaluate(() => {
-      const el = document.getElementById('article-scroll-container');
-      if (el) el.scrollTop = 200;
-    });
-    await desktopPage.waitForTimeout(500);
+    // Click on timecode button to demonstrate precise timestamp seek
+    const secondTimecodeBtn = await desktopPage.locator('[id^="timecode-btn-"]').nth(1);
+    if (await secondTimecodeBtn.isVisible()) {
+      await secondTimecodeBtn.click();
+      await desktopPage.waitForTimeout(300);
+    }
 
-    await desktopPage.screenshot({ path: path.join(targetDir, 'desktop-1440.png') });
+    await desktopPage.screenshot({ path: path.join(targetDir, 'desktop-1440.png'), fullPage: true });
 
     // Extract layout geometry bounding boxes
     const layoutBoundingBoxes = await desktopPage.evaluate(() => {
@@ -51,13 +62,20 @@ test('generate design verification artifacts', async () => {
         'theme-toggle-btn',
         'nav-tabs',
         'tab-btn-article',
+        'tab-btn-podcast',
         'tab-btn-contact',
-        'article-stream-container',
-        'longreads-list-section',
-        'article-reader-section',
-        'article-reader-root',
-        'main-footer',
-        'imprint-toggle-btn'
+        'podcast-player-container',
+        'podcast-episodes-section',
+        'podcast-player-section',
+        'podcast-player-card',
+        'podcast-header',
+        'podcast-title',
+        'audio-controls-block',
+        'play-pause-btn',
+        'time-display',
+        'waveform-container',
+        'timecodes-section',
+        'main-footer'
       ];
 
       return elementsToTrack.map(id => {
@@ -87,11 +105,11 @@ test('generate design verification artifacts', async () => {
     await mobilePage.goto('http://localhost:4173');
     await mobilePage.waitForSelector('#app-root');
 
-    // Click Imprint to show modal on mobile
-    await mobilePage.click('#imprint-toggle-btn');
+    // Navigate to podcast media tab on mobile
+    await mobilePage.click('#tab-btn-podcast');
     await mobilePage.waitForTimeout(300);
 
-    await mobilePage.screenshot({ path: path.join(targetDir, 'mobile-375.png') });
+    await mobilePage.screenshot({ path: path.join(targetDir, 'mobile-375.png'), fullPage: true });
 
     await mobileContext.close();
     await browser.close();
