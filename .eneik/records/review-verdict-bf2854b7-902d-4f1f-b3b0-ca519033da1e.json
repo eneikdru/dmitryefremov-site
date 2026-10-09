@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "The PR modifies the ROOT .gitignore file (adds target/, *.class, .idea/, etc.), which directly violates the explicit Boundaries instruction: 'Never edit the ROOT .gitignore... if your slice genuinely needs to ignore build artifacts, add or extend a nested .gitignore scoped to your own package/directory (e.g. frontend/.gitignore) instead - never the shared root file.'",
+      "concerns": []
+    }
+  ]
+}
