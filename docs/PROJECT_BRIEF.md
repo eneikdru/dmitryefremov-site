@@ -34,7 +34,9 @@ it is the referent every later artifact is checked against.
 
 2. Свободное управление контентом через любых AI-агентов после готовности сайта: предусмотреть открытые интерфейсы (Headless API / Markdown / JSON / RSS) для автономного обновления материалов (подкасты, темы, статьи, ссылки дистрибуции) внешними агентами. Доступ агентов строго ограничен только уровнем контента, без вмешательства в код, стили и инфраструктуру проекта.
 
+3. Открытый API для взаимодействия с внешними AI-агентами клиентов: реализовать публичные машиночитаемые API-эндпоинты (OpenAPI / JSON schema / llms.txt), позволяющие любым внешним ИИ (ChatGPT, Claude, персональные ассистенты людей) свободно оформлять заказы на услуги (MVP, аудит, автоматизация) и отправлять прямые сообщения автору с сайта от имени пользователей.
+
 ---
 
-Entries: 2. Anything this product claims - a page
+Entries: 3. Anything this product claims - a page
 heading, a filter, a capability - must trace to one of them or to a declared route.
