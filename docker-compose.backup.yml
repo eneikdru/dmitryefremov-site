@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db-backup:
+    image: postgres:16-alpine
+    container_name: dmitryefremov-db-backup
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-db}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_DB: ${POSTGRES_DB:-dmitryefremov}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      BACKUP_DIR: /backups
+      RETENTION_DAYS: ${RETENTION_DAYS:-7}
+      CRON_SCHEDULE: ${BACKUP_SCHEDULE:-0 2 * * *}
+    volumes:
+      - backup-data:/backups
+      - ./scripts/backup.sh:/usr/local/bin/backup.sh:ro
+      - ./scripts/restore.sh:/usr/local/bin/restore.sh:ro
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        chmod +x /usr/local/bin/backup.sh /usr/local/bin/restore.sh
+        echo "$$CRON_SCHEDULE /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1" > /var/spool/cron/crontabs/root
+        echo "[INFO] Scheduled daily database backup with schedule: $$CRON_SCHEDULE"
+        # Run initial backup on startup
+        /usr/local/bin/backup.sh
+        # Start crond in foreground
+        exec crond -f -l 2
+
+volumes:
+  backup-data:
+    driver: local
