@@ -1,5 +1,14 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { telemetry, type TelemetryEvent } from '../lib/telemetry';
+
+  export interface DocumentRecord {
+    id: string | number;
+    title: string;
+    author: string;
+    date: string;
+    downloadUrl: string;
+  }
 
   export interface ContactLink {
     id: string;
@@ -9,6 +18,9 @@
     tag: string;
   }
 
+  export let endpointUrl: string = '/api/v1/documents';
+  export let autoFetch: boolean = true;
+
   export let contactLinks: ContactLink[] = [
     { id: 'tg', label: 'Telegram Channel', platform: 'Telegram', url: 'https://t.me/efremov_mvp', tag: '[TG_CORE]' },
     { id: 'yt', label: 'YouTube Channel', platform: 'YouTube', url: 'https://youtube.com/@efremov_dmitriy', tag: '[YT_MEDIA]' },
@@ -17,7 +29,44 @@
     { id: 'em', label: 'Direct Email', platform: 'Email', url: 'mailto:contact@dmitryefremov.com', tag: '[EM_DIRECT]' }
   ];
 
+  export let documents: DocumentRecord[] = [];
+  export let loading: boolean = true;
+  export let error: string | null = null;
+
   let loggedEvents: TelemetryEvent[] = [];
+
+  export async function fetchDocuments() {
+    loading = true;
+    error = null;
+    try {
+      const response = await fetch(endpointUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+      }
+      const data = await response.json();
+      const items = Array.isArray(data) ? data : (data?.content || data?.documents || []);
+      documents = items.map((item: any, idx: number) => ({
+        id: item.id ?? `doc-${idx}`,
+        title: item.title ?? item.name ?? 'Untitled Document',
+        author: item.author ?? item.authors ?? item.authorName ?? 'Dmitry Efremov',
+        date: item.date ?? item.publishedAt ?? item.createdAt ?? '',
+        downloadUrl: item.downloadUrl ?? item.url ?? item.mediaLink ?? '#'
+      }));
+    } catch (err: any) {
+      error = err?.message || 'Failed to connect to server';
+      documents = [];
+    } finally {
+      loading = false;
+    }
+  }
+
+  onMount(() => {
+    if (autoFetch) {
+      fetchDocuments();
+    } else {
+      loading = false;
+    }
+  });
 
   function handleOutboundClick(link: ContactLink, e: MouseEvent) {
     const event = telemetry.trackOutboundClick(link.url, link.label, link.platform);
@@ -36,8 +85,66 @@
     <p class="text-xs text-[#94a3b8] font-mono">Dmitry Efremov · Systems, Thinking Logic & Autonomous Processes</p>
   </header>
 
+  <!-- Materials / Documents Catalog Matrix -->
+  <section id="materials-catalog-section" class="mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-lg font-bold text-white tracking-tight">System Materials & Documents</h3>
+      {#if !loading && !error}
+        <span id="materials-count" class="text-xs font-mono text-[#94a3b8]">
+          Showing {documents.length} materials
+        </span>
+      {/if}
+    </div>
+
+    {#if loading}
+      <!-- Loading State -->
+      <div id="materials-loading-state" class="bg-[#12151e] border border-[#1f2433] rounded p-6 text-center font-mono text-xs text-[#38bdf8] flex items-center justify-center gap-2">
+        <span class="animate-pulse">[SYS_LOADING]</span>
+        <span>Fetching materials from server...</span>
+      </div>
+    {:else if error}
+      <!-- Error State -->
+      <div id="materials-error-state" class="bg-[#12151e] border border-[#f43f5e] rounded p-6 text-center font-mono text-xs text-[#f43f5e]">
+        <div class="font-bold mb-1">[SYS_ERROR] Request Failed</div>
+        <div class="text-[#94a3b8]">{error}</div>
+      </div>
+    {:else if documents.length === 0}
+      <!-- Empty State -->
+      <div id="materials-empty-state" class="bg-[#12151e] border border-[#1f2433] rounded p-6 text-center font-mono text-xs text-[#94a3b8]">
+        <span class="text-[#f43f5e] font-bold mr-2">[SYS_EMPTY]</span>
+        <span>No materials available from server.</span>
+      </div>
+    {:else}
+      <!-- Present State -->
+      <div id="materials-list" class="space-y-3">
+        {#each documents as doc (doc.id)}
+          <div id="doc-{doc.id}" class="flex flex-col sm:flex-row sm:items-center justify-between p-3 gap-2 rounded bg-[#12151e] border border-[#1f2433] text-sm font-mono">
+            <div class="space-y-1 min-w-0">
+              <div class="text-white font-bold truncate">{doc.title}</div>
+              <div class="text-xs text-[#94a3b8] flex items-center gap-3">
+                <span>Author: {doc.author}</span>
+                {#if doc.date}
+                  <span>Date: {doc.date}</span>
+                {/if}
+              </div>
+            </div>
+            <a
+              id="download-btn-{doc.id}"
+              href={doc.downloadUrl}
+              download
+              class="shrink-0 px-3 py-1 rounded bg-[#1f2433] text-[#38bdf8] hover:bg-[#38bdf8] hover:text-[#090a0f] transition-colors text-xs font-bold text-center"
+            >
+              Download
+            </a>
+          </div>
+        {/each}
+      </div>
+    {/if}
+  </section>
+
   <!-- External Links Terminal Matrix -->
   <div id="contact-links-grid" class="space-y-3 mb-6">
+    <h3 class="text-sm font-bold text-[#94a3b8] font-mono mb-2">[EXTERNAL_GATEWAYS]</h3>
     {#each contactLinks as link}
       <a
         id="link-{link.id}"
