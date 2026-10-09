@@ -32,7 +32,9 @@ it is the referent every later artifact is checked against.
    - Thought Stream: глубокие статьи о деонтической логике, теории ограничений и автономных системах.
    - Терминал контактов: ссылки на Telegram, YouTube, GitHub, LinkedIn, email.
 
+2. Свободное управление контентом через любых AI-агентов после готовности сайта: предусмотреть открытые интерфейсы (Headless API / Markdown / JSON / RSS) для автономного обновления материалов (подкасты, темы, статьи, ссылки дистрибуции) внешними агентами. Доступ агентов строго ограничен только уровнем контента, без вмешательства в код, стили и инфраструктуру проекта.
+
 ---
 
-Entries: 1. Anything this product claims - a page
+Entries: 2. Anything this product claims - a page
 heading, a filter, a capability - must trace to one of them or to a declared route.
