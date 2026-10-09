@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 test('generate design verification artifacts', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-772a1613-a5b2-4f51-8dde-31212a228be7');
+  const targetDir = path.resolve('../.eneik/records/design-check-b14eb987-2a05-46aa-8c44-c7a9076a46ac');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Start preview server
@@ -25,6 +25,12 @@ test('generate design verification artifacts', async () => {
     await desktopPage.goto('http://localhost:4173');
     await desktopPage.waitForSelector('#app-root');
 
+    // Toggle theme to verify interaction
+    await desktopPage.click('#theme-toggle-btn');
+    await desktopPage.waitForTimeout(300);
+    await desktopPage.click('#theme-toggle-btn');
+    await desktopPage.waitForTimeout(300);
+
     // Scroll article container to trigger telemetry
     await desktopPage.evaluate(() => {
       const el = document.getElementById('article-scroll-container');
@@ -38,13 +44,17 @@ test('generate design verification artifacts', async () => {
     const layoutBoundingBoxes = await desktopPage.evaluate(() => {
       const elementsToTrack = [
         'main-header',
+        'hero-section',
+        'hero-title',
+        'hero-subtitle',
+        'hero-manifest',
+        'theme-toggle-btn',
         'nav-tabs',
         'tab-btn-article',
         'tab-btn-contact',
         'article-reader-root',
-        'article-header',
-        'article-scroll-container',
-        'article-telemetry-log'
+        'main-footer',
+        'imprint-toggle-btn'
       ];
 
       return elementsToTrack.map(id => {
@@ -74,12 +84,8 @@ test('generate design verification artifacts', async () => {
     await mobilePage.goto('http://localhost:4173');
     await mobilePage.waitForSelector('#app-root');
 
-    // Switch to contact tab on mobile for additional UI coverage
-    await mobilePage.click('#tab-btn-contact');
-    await mobilePage.waitForTimeout(300);
-
-    // Click link to trigger outbound click event
-    await mobilePage.click('#link-tg');
+    // Click Imprint to show modal on mobile
+    await mobilePage.click('#imprint-toggle-btn');
     await mobilePage.waitForTimeout(300);
 
     await mobilePage.screenshot({ path: path.join(targetDir, 'mobile-375.png') });

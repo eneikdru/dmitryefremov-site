@@ -1,0 +1,86 @@
+[
+  {
+    "id": "main-header",
+    "left": 304,
+    "top": 32,
+    "width": 832,
+    "height": 289
+  },
+  {
+    "id": "hero-section",
+    "left": 304,
+    "top": 82,
+    "width": 832,
+    "height": 148
+  },
+  {
+    "id": "hero-title",
+    "left": 304,
+    "top": 82,
+    "width": 832,
+    "height": 40
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 304,
+    "top": 134,
+    "width": 832,
+    "height": 28
+  },
+  {
+    "id": "hero-manifest",
+    "left": 304,
+    "top": 174,
+    "width": 832,
+    "height": 56
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 994,
+    "top": 32,
+    "width": 142,
+    "height": 26
+  },
+  {
+    "id": "nav-tabs",
+    "left": 304,
+    "top": 254,
+    "width": 327,
+    "height": 42
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 309,
+    "top": 259,
+    "width": 147,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 464,
+    "top": 259,
+    "width": 162,
+    "height": 32
+  },
+  {
+    "id": "article-reader-root",
+    "left": 384,
+    "top": 345,
+    "width": 672,
+    "height": 696
+  },
+  {
+    "id": "main-footer",
+    "left": 304,
+    "top": 1089,
+    "width": 832,
+    "height": 41
+  },
+  {
+    "id": "imprint-toggle-btn",
+    "left": 970,
+    "top": 1114,
+    "width": 166,
+    "height": 16
+  }
+]
