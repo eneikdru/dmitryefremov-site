@@ -21,12 +21,12 @@ public class PodcastEpisodeController {
         this.podcastEpisodeDomainService = podcastEpisodeDomainService;
     }
 
-    @GetMapping({"/api/podcasts", "/api/episodes"})
+    @GetMapping({"/api/v1/podcasts", "/api/podcasts", "/api/episodes"})
     public ResponseEntity<List<PodcastEpisodeSummaryDto>> getAllEpisodes() {
         return ResponseEntity.ok(podcastEpisodeDomainService.getAllEpisodeSummaries());
     }
 
-    @GetMapping({"/api/podcasts/{identifier}", "/api/episodes/{identifier}"})
+    @GetMapping({"/api/v1/podcasts/{identifier}", "/api/podcasts/{identifier}", "/api/episodes/{identifier}"})
     public ResponseEntity<PodcastEpisodeDetailDto> getEpisodeDetail(@PathVariable String identifier) {
         return podcastEpisodeDomainService.getEpisodeDetailBySlugOrId(identifier)
                 .map(ResponseEntity::ok)
