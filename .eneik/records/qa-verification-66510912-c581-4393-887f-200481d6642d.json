@@ -1,0 +1,12 @@
+{
+  "testsRun": 65,
+  "testsPassed": 65,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the public URL, When accessed, Then the site loads successfully.",
+    "Given the site, When exploring, Then realistic seeded content is visible in every section."
+  ],
+  "coverageDeltaPercent": 0.0,
+  "verdict": "pass",
+  "notes": "Verified site reachability and realistic seeded content in every section (articles, podcast episodes, timecodes, and contact terminal links) across frontend acceptance tests and backend API integration tests."
+}
