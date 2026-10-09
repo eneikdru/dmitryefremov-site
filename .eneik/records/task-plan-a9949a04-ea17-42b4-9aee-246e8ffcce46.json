@@ -1,0 +1,558 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Core Experience and Identity",
+      "jtbd": "When a visitor lands on the site, I want to immediately understand the author's focus and have clear ways to contact them, so that I can explore their work or get in touch.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "First Contentful Paint (FCP) < 1.0s and 100% lighthouse accessibility score",
+      "tocConstraintRef": "Frontend component rendering",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Display the Hero section with the title, subtitle, and manifest text.",
+        "R2: Provide a Contact Terminal containing explicit outbound links to social and professional networks.",
+        "R3: Implement global theme switching between Dark Void and Light Monochrome with preserved user preference.",
+        "R4: Provide an Imprint (Impressum) page reachable from every site page, containing legal entity and contact details.",
+        "R5: Ensure all pages meet WCAG 2.1 AA accessibility standards including keyboard navigation and contrast."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Core UI Implementation",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the core frontend components for this epic, I want to build accessible hero and contact sections, so that a clear initial user experience is established.",
+          "acceptanceCriteria": "Given a visitor loads the site, When the hero section renders, Then the manifest and branding are visible.\nGiven a visitor on any page, When they click the theme toggle, Then the palette switches between Dark Void and Light Monochrome.\nGiven a visitor navigates to the footer, When they click Imprint, Then the legal details are displayed.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "CSS and layout rendering",
+          "sixSigmaMetric": "Component render time < 50ms",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Core Experience QA",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to test accessibility and theme switching, so that a clear initial user experience is established.",
+          "acceptanceCriteria": "Given the deployed site, When an automated accessibility scan runs, Then zero WCAG 2.1 AA violations are reported.\nGiven a browser with a predefined theme preference, When the site loads, Then the correct theme is applied automatically.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Automated E2E execution",
+          "sixSigmaMetric": "Test pass rate = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Release Timeline Calendar",
+      "jtbd": "When a visitor wants to follow upcoming content, I want to see a schedule of planned and published releases, so that I know what to expect and when.",
+      "kanoClass": "Attractive",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Timeline filtering response time < 100ms",
+      "tocConstraintRef": "Schedule data retrieval and filtering",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Store publication schedule entries with platform, topic, and status (SCHEDULED, IN_PRODUCTION, PUBLISHED).",
+        "R2: Expose a REST API to retrieve timeline data with platform filters.",
+        "R3: Display an interactive timeline calendar on the frontend.",
+        "R4: Allow visitors to filter the timeline by platform.",
+        "R5: Handle API failures gracefully by showing an error message without breaking the page."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Schedule Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the schedule data schema for this epic, I want to create the publication timeline tables, so that visitors can see a schedule of planned releases.",
+          "acceptanceCriteria": "Given the Postgres database, When the schedule migration runs, Then a table with platform, topic, and status columns is created.\nGiven a new schedule record, When it is inserted, Then the timestamp and enums are validated.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Database schema migration",
+          "sixSigmaMetric": "Query execution time < 10ms",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Schedule API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the API contract for this epic, I want to define the schedule endpoints, so that visitors can see a schedule of planned releases.",
+          "acceptanceCriteria": "Given the frontend and backend teams, When they need to interact with schedule data, Then a shared OpenAPI spec defines the GET schedule endpoint.\nGiven the shared contract, When queried, Then the response shape includes platform, status, and topic fields.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Cross-team data synchronization",
+          "sixSigmaMetric": "Contract validation success = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Schedule API Backend",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the schedule backend API for this epic, I want to serve filtered timeline data, so that visitors can see a schedule of planned releases.",
+          "acceptanceCriteria": "Given a client request to the schedule API, When the backend processes it, Then a JSON array of schedule entries is returned.\nGiven a platform filter parameter, When provided in the query, Then only entries matching the platform are returned.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Data serialization and filtering",
+          "sixSigmaMetric": "API response time < 50ms",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2"
+          ]
+        },
+        {
+          "title": "Schedule Timeline UI",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the schedule timeline UI for this epic, I want to display an interactive matrix, so that visitors can see a schedule of planned releases.",
+          "acceptanceCriteria": "Given the schedule page, When loaded, Then an interactive timeline displays all planned and published releases.\nGiven the timeline, When a visitor selects a filter, Then only matching entries are visible.\nGiven an API failure, When fetching the schedule, Then a graceful error message is displayed.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Frontend state management",
+          "sixSigmaMetric": "UI interaction latency < 16ms",
+          "hasUi": true,
+          "requirementRefs": [
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Schedule QA",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to verify schedule filtering and data loading, so that visitors can see a schedule of planned releases.",
+          "acceptanceCriteria": "Given the timeline page, When filtering by a platform, Then the displayed entries exactly match the filter criteria.\nGiven the API, When integration tests run, Then all schedule endpoints return the correct status codes and payloads.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "End-to-end test execution",
+          "sixSigmaMetric": "Test pass rate = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Podcast Media Hub",
+      "jtbd": "When a visitor wants to listen to the podcast, I want to browse episodes with detailed show notes and audio playback, so that I can consume the audio content directly.",
+      "kanoClass": "Performance",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Audio player initialization < 200ms",
+      "tocConstraintRef": "Audio asset streaming and visualization",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Store podcast episodes containing title, media link, theses, and timecodes.",
+        "R2: Expose a REST API to list and retrieve podcast episodes.",
+        "R3: Display a catalog of episodes on the frontend.",
+        "R4: Provide an in-browser audio playback experience with audio-wave visualization.",
+        "R5: Display clickable timecodes that seek to specific points in the audio track."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Podcast Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the podcast schema for this epic, I want to store episode metadata and timecodes, so that visitors can browse and listen to episodes.",
+          "acceptanceCriteria": "Given the database, When the podcast migration runs, Then tables for episodes and timecodes are created.\nGiven a new podcast episode, When inserted, Then it correctly associates multiple timecodes.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Database relational mapping",
+          "sixSigmaMetric": "Query execution time < 10ms",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Podcast API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the podcast API contract for this epic, I want to define the media delivery endpoints, so that visitors can browse and listen to episodes.",
+          "acceptanceCriteria": "Given the API definition, When documented, Then episode list and detail endpoints are specified.\nGiven the episode schema, When returned, Then it includes an array of timecodes and a media URL.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "API spec alignment",
+          "sixSigmaMetric": "Contract validation success = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Podcast API Backend",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the podcast backend API for this epic, I want to serve episode details, so that visitors can browse and listen to episodes.",
+          "acceptanceCriteria": "Given a request for all episodes, When processed, Then a list of episode summaries is returned.\nGiven a request for a specific episode, When processed, Then the full details including theses and timecodes are returned.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Data aggregation and response building",
+          "sixSigmaMetric": "API response time < 50ms",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2"
+          ]
+        },
+        {
+          "title": "Podcast Media UI",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the podcast media UI for this epic, I want to build the audio player and wave visualization, so that visitors can browse and listen to episodes.",
+          "acceptanceCriteria": "Given an episode page, When loaded, Then an audio player with wave visualization is displayed.\nGiven a playing episode, When a timecode is clicked, Then the audio seeks precisely to that timestamp.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Web Audio API processing",
+          "sixSigmaMetric": "Audio seek latency < 100ms",
+          "hasUi": true,
+          "requirementRefs": [
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Podcast QA",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to test audio playback and timecode seeking, so that visitors can browse and listen to episodes.",
+          "acceptanceCriteria": "Given the podcast player, When a timecode is clicked, Then the audio playback updates to the correct time.\nGiven the backend API, When requested, Then podcast episodes are serialized correctly with all nested timecodes.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Media playback testing",
+          "sixSigmaMetric": "Test pass rate = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Thought Stream",
+      "jtbd": "When a visitor wants to read articles, I want to view a stream of longreads with rich formatting, so that I can consume the author's deep technical content.",
+      "kanoClass": "Performance",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Markdown parsing and rendering time < 50ms per article",
+      "tocConstraintRef": "Markdown to HTML conversion",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Store articles and longreads in Markdown format.",
+        "R2: Expose a REST API to fetch the article stream and full article content.",
+        "R3: Render the article stream on the frontend with modern typography.",
+        "R4: Parse and render Markdown content natively on the frontend, supporting formulas and blockquotes."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Article Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the article schema for this epic, I want to store Markdown content, so that visitors can read the thought stream.",
+          "acceptanceCriteria": "Given the database, When the article migration runs, Then an articles table with Markdown content storage is created.\nGiven an article record, When saved, Then the raw Markdown string is preserved without truncation.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Large text storage configuration",
+          "sixSigmaMetric": "Data write latency < 20ms",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Article API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the article API contract for this epic, I want to define the article retrieval endpoints, so that visitors can read the thought stream.",
+          "acceptanceCriteria": "Given the API spec, When documented, Then article listing endpoints are defined.\nGiven the response schema, When returning an article, Then it includes the raw Markdown body and publication date.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Payload structure agreement",
+          "sixSigmaMetric": "Contract validation success = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Article API Backend",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the article backend API for this epic, I want to serve full longreads, so that visitors can read the thought stream.",
+          "acceptanceCriteria": "Given a request for articles, When processed, Then the backend returns the latest published articles.\nGiven an article fetch, When retrieved, Then the Markdown content is delivered accurately.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Database query performance",
+          "sixSigmaMetric": "API response time < 50ms",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2"
+          ]
+        },
+        {
+          "title": "Article Stream UI",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the article stream UI for this epic, I want to parse and render complex Markdown, so that visitors can read the thought stream.",
+          "acceptanceCriteria": "Given the article stream, When loaded, Then a list of available longreads is presented.\nGiven an article containing formulas and quotes, When rendered, Then the Markdown is converted to visually distinct HTML elements.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Markdown AST processing",
+          "sixSigmaMetric": "Render tree generation time < 50ms",
+          "hasUi": true,
+          "requirementRefs": [
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Article QA",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to verify Markdown typography and formula rendering, so that visitors can read the thought stream.",
+          "acceptanceCriteria": "Given an article with complex Markdown, When rendered, Then headers, quotes, and formulas display correctly.\nGiven the article API, When integration tests run, Then it accurately returns all stored articles.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Visual regression testing",
+          "sixSigmaMetric": "Test pass rate = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Distribution and SEO",
+      "jtbd": "When external platforms or RSS readers index the site, I want them to receive structured metadata and feeds, so that the content is correctly distributed and previewed.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Feed generation time < 500ms",
+      "tocConstraintRef": "Data aggregation for XML feeds",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Generate and serve a dynamic RSS and Atom feed aggregating published articles and podcast episodes.",
+        "R2: Generate and serve a dynamic sitemap mapping all valid frontend routes.",
+        "R3: Inject dynamic SEO OpenGraph tags into the HTML headers for articles and episodes."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Feeds and Sitemap API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the distribution feeds for this epic, I want to aggregate content into RSS and sitemap formats, so that the content is correctly distributed and previewed.",
+          "acceptanceCriteria": "Given a request to feed.xml, When processed, Then a valid RSS feed combining articles and podcasts is returned.\nGiven a request to sitemap.xml, When processed, Then a valid XML sitemap of all public routes is generated.\nGiven an article page request, When rendered by the server, Then appropriate SEO OpenGraph meta tags are injected into the head.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "XML serialization overhead",
+          "sixSigmaMetric": "Endpoint response time < 200ms",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Distribution QA",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to validate XML outputs and OpenGraph tags, so that the content is correctly distributed and previewed.",
+          "acceptanceCriteria": "Given the feed.xml endpoint, When validated, Then it passes standard RSS validation rules.\nGiven a site page, When scraped by a social bot, Then the OpenGraph tags accurately reflect the page content.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Markup validation testing",
+          "sixSigmaMetric": "Test pass rate = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Platform Telemetry and Measurement",
+      "jtbd": "When operating the site, I want to measure visitor engagement with my content and external links, so that I know if the site successfully drives interest in my work.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Telemetry event delivery success > 99.9%",
+      "tocConstraintRef": "Event tracking initialization",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Goal: Drive reader engagement and external connection. Questions: Are visitors reading the articles? Are they clicking through to the contact terminal links?",
+        "R2: Measure the count of unique article and podcast views and scroll depth to track engagement.",
+        "R3: Measure the click-through rate on Contact Terminal outbound links.",
+        "R4: Integrate an analytics sink to capture these metrics without setting non-essential cookies."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Telemetry Implementation",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the telemetry tracking for this epic, I want to instrument scroll depth and outbound clicks, so that I know if the site successfully drives interest in my work.",
+          "acceptanceCriteria": "Given a visitor reading an article, When they scroll, Then scroll depth events are tracked.\nGiven the contact terminal, When a visitor clicks an external link, Then an outbound click event is logged.\nGiven the tracking requirements, When implemented, Then no non-essential cookies are set to comply with privacy defaults.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Browser event listener performance",
+          "sixSigmaMetric": "Tracking footprint < 10kb",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Telemetry QA",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to verify event dispatch and cookie absence, so that I know if the site successfully drives interest in my work.",
+          "acceptanceCriteria": "Given the UI, When a user clicks a contact link, Then the correct analytics payload is dispatched.\nGiven the analytics setup, When audited, Then no tracking cookies are present.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Network traffic interception",
+          "sixSigmaMetric": "Test pass rate = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Initial Content and Acceptance",
+      "jtbd": "When receiving the delivered system, I want to see it populated with realistic content, so that I can verify all paths and features work end-to-end.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Content load failure rate = 0%",
+      "tocConstraintRef": "Database seed execution",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Deploy the site so that the instance is reachable by the client from outside the factory.",
+        "R2: Seed the database with realistic initial content including schedules, podcasts, and articles to exercise every path."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Infrastructure Deployment",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the infrastructure deployment for this epic, I want to provision public access, so that I can verify all paths and features work end-to-end.",
+          "acceptanceCriteria": "Given the deployment pipeline, When executed, Then the site is publicly accessible on the target domain.\nGiven a visitor requests the site, When served, Then the response is delivered securely over HTTPS.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "DNS and SSL propagation",
+          "sixSigmaMetric": "Uptime > 99.9%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Data Seeding",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the data seeding for this epic, I want to insert realistic initial content, so that I can verify all paths and features work end-to-end.",
+          "acceptanceCriteria": "Given a fresh database, When the seed script runs, Then realistic schedule, podcast, and article records are created.\nGiven the seeded database, When the frontend is loaded, Then all sections contain valid content.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Database connection pooling",
+          "sixSigmaMetric": "Seed execution time < 5s",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2"
+          ]
+        },
+        {
+          "title": "Acceptance Verification",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to confirm the site is reachable and seeded, so that I can verify all paths and features work end-to-end.",
+          "acceptanceCriteria": "Given the public URL, When accessed, Then the site loads successfully.\nGiven the site, When exploring, Then realistic seeded content is visible in every section.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "E2E availability checking",
+          "sixSigmaMetric": "Test pass rate = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Data Protection and Recovery",
+      "jtbd": "When the database experiences a failure, I want to be able to restore the system state from a backup, so that I do not lose my published content.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Recovery Time Objective (RTO) < 1 hour",
+      "tocConstraintRef": "Database restore verification",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Configure automated daily backups of the Postgres database.",
+        "R2: Provide a documented, executed, and verified restore procedure demonstrating successful recovery from backup."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Backup Infrastructure",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the backup configuration for this epic, I want to schedule daily database dumps, so that I do not lose my published content.",
+          "acceptanceCriteria": "Given the Postgres database, When the automated schedule triggers, Then a backup is created and stored securely.\nGiven a backup archive, When a restore is manually triggered, Then the database state is successfully recovered.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Storage write bandwidth",
+          "sixSigmaMetric": "Backup completion success = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        },
+        {
+          "title": "Backup Verification",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to perform a full database restore, so that I do not lose my published content.",
+          "acceptanceCriteria": "Given the backup system, When audited, Then automated backups are confirmed to be running.\nGiven a staging environment, When a real restore is performed, Then the data integrity is verified.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Restore execution testing",
+          "sixSigmaMetric": "Test pass rate = 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
