@@ -1,0 +1,12 @@
+{
+  "testsRun": 8,
+  "testsPassed": 8,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the UI, When a user clicks a contact link, Then the correct analytics payload is dispatched.",
+    "Given the analytics setup, When audited, Then no tracking cookies are present."
+  ],
+  "coverageDeltaPercent": 0,
+  "verdict": "pass",
+  "notes": "Verified event dispatch payloads on contact link clicks and zero-cookie privacy compliance via Vitest test suite."
+}
