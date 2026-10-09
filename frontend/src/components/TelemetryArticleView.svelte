@@ -46,7 +46,7 @@
       <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">[SYS_ARTICLE]</span>
       <span class="text-xs font-mono text-[#94a3b8]">{articleId}</span>
     </div>
-    <h1 class="text-2xl font-bold tracking-tight text-white mb-2">{title}</h1>
+    <h2 class="text-2xl font-bold tracking-tight text-white mb-2">{title}</h2>
     <div class="flex items-center justify-between text-xs text-[#94a3b8] font-mono">
       <span>Author: Dmitry Efremov</span>
       <span>Scroll Depth Logged: {trackedThresholds.size}/4</span>

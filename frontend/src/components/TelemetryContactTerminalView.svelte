@@ -44,6 +44,7 @@
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="{link.label} (opens in external tab)"
         on:click={(e) => handleOutboundClick(link, e)}
         class="flex flex-col sm:flex-row sm:items-center justify-between p-3 gap-2 rounded bg-[#12151e] border border-[#1f2433] hover:border-[#38bdf8] transition-colors group text-sm font-mono overflow-hidden"
       >

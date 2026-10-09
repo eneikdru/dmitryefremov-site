@@ -42,6 +42,44 @@ describe('TelemetryHub Component', () => {
     expect(themeRoot.classList.contains('dark-void')).toBe(true);
   });
 
+  it('automatically applies light theme on load when browser prefers light color scheme', async () => {
+    window.matchMedia = (query: string) => ({
+      matches: query.includes('prefers-color-scheme: light'),
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    } as any);
+
+    component = mount(TelemetryHub, { target });
+    await new Promise(r => setTimeout(r, 0));
+
+    const themeRoot = target.querySelector('#theme-root') as HTMLElement;
+    expect(themeRoot.classList.contains('light-monochrome')).toBe(true);
+  });
+
+  it('automatically applies dark theme on load when browser prefers dark color scheme', async () => {
+    window.matchMedia = (query: string) => ({
+      matches: query.includes('prefers-color-scheme: dark'),
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    } as any);
+
+    component = mount(TelemetryHub, { target });
+    await new Promise(r => setTimeout(r, 0));
+
+    const themeRoot = target.querySelector('#theme-root') as HTMLElement;
+    expect(themeRoot.classList.contains('dark-void')).toBe(true);
+  });
+
   it('opens and closes Imprint legal modal when clicking footer Imprint trigger', async () => {
     component = mount(TelemetryHub, { target });
 

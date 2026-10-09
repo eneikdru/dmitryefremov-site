@@ -1,10 +1,21 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import TelemetryArticleView from './TelemetryArticleView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
   export let activeTab: 'article' | 'contact' = 'article';
   export let showImprintModal: boolean = false;
+
+  onMount(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        theme = 'light';
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        theme = 'dark';
+      }
+    }
+  });
 
   function toggleTheme() {
     theme = theme === 'dark' ? 'light' : 'dark';
@@ -112,6 +123,7 @@
               id="imprint-close-btn"
               type="button"
               on:click={toggleImprint}
+              aria-label="Close legal imprint modal"
               class="px-2 py-1 rounded border {theme === 'dark' ? 'bg-[#1f2433] hover:bg-[#2e364f]' : 'bg-[#f1f5f9] hover:bg-[#e2e8f0]'}"
             >
               ✕

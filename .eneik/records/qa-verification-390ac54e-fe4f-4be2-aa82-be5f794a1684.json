@@ -1,0 +1,12 @@
+{
+  "testsRun": 29,
+  "testsPassed": 29,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the deployed site, When an automated accessibility scan runs, Then zero WCAG 2.1 AA violations are reported.",
+    "Given a browser with a predefined theme preference, When the site loads, Then the correct theme is applied automatically."
+  ],
+  "coverageDeltaPercent": 0.0,
+  "verdict": "pass",
+  "notes": "Automated WCAG 2.1 AA accessibility scans and system theme preference auto-detection verified successfully."
+}
