@@ -4,18 +4,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 test('generate design verification artifacts', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-11684031-d0fd-4bde-9f3d-086e62531ca8');
+  const targetDir = path.resolve('../.eneik/records/design-check-e39a7455-05cf-44d2-87a0-f8d3f0010a60');
   fs.mkdirSync(targetDir, { recursive: true });
 
-  // Build application
-  const buildProcess = spawn('npx', ['vite', 'build'], {
-    cwd: path.resolve('.'),
-    stdio: 'ignore'
-  });
-  await new Promise(resolve => buildProcess.on('exit', resolve));
-
   // Start preview server
-  const serverProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
+  const previewProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
     cwd: path.resolve('.'),
     stdio: 'ignore'
   });
@@ -32,8 +25,17 @@ test('generate design verification artifacts', async () => {
     await desktopPage.goto('http://localhost:4173');
     await desktopPage.waitForSelector('#app-root');
 
-    // Switch to contact terminal view
-    await desktopPage.click('#tab-btn-contact');
+    // Toggle theme to verify interaction
+    await desktopPage.click('#theme-toggle-btn');
+    await desktopPage.waitForTimeout(300);
+    await desktopPage.click('#theme-toggle-btn');
+    await desktopPage.waitForTimeout(300);
+
+    // Scroll article container to trigger telemetry
+    await desktopPage.evaluate(() => {
+      const el = document.getElementById('article-scroll-container');
+      if (el) el.scrollTop = 200;
+    });
     await desktopPage.waitForTimeout(500);
 
     await desktopPage.screenshot({ path: path.join(targetDir, 'desktop-1440.png') });
@@ -50,11 +52,10 @@ test('generate design verification artifacts', async () => {
         'nav-tabs',
         'tab-btn-article',
         'tab-btn-contact',
-        'contact-terminal-root',
-        'contact-terminal-header',
-        'contact-links-grid',
-        'materials-catalogue-section',
-        'materials-status-badge',
+        'article-stream-container',
+        'longreads-list-section',
+        'article-reader-section',
+        'article-reader-root',
         'main-footer',
         'imprint-toggle-btn'
       ];
@@ -86,14 +87,15 @@ test('generate design verification artifacts', async () => {
     await mobilePage.goto('http://localhost:4173');
     await mobilePage.waitForSelector('#app-root');
 
-    await mobilePage.click('#tab-btn-contact');
-    await mobilePage.waitForTimeout(500);
+    // Click Imprint to show modal on mobile
+    await mobilePage.click('#imprint-toggle-btn');
+    await mobilePage.waitForTimeout(300);
 
     await mobilePage.screenshot({ path: path.join(targetDir, 'mobile-375.png') });
 
     await mobileContext.close();
     await browser.close();
   } finally {
-    serverProcess.kill();
+    previewProcess.kill();
   }
 });
