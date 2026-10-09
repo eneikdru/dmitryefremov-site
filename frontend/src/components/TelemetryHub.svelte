@@ -1,5 +1,5 @@
 <script lang="ts">
-  import TelemetryArticleView from './TelemetryArticleView.svelte';
+  import ArticleStreamView from './ArticleStreamView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
@@ -16,7 +16,7 @@
 </script>
 
 <div id="theme-root" class={theme === 'dark' ? 'dark-void bg-[#090a0f] text-[#e2e8f0]' : 'light-monochrome bg-[#f8fafc] text-[#0f172a]'}>
-  <main id="app-root" class="min-h-screen p-4 sm:p-8 flex flex-col justify-between max-w-4xl mx-auto space-y-8 font-sans transition-colors duration-200">
+  <main id="app-root" class="min-h-screen p-4 sm:p-8 flex flex-col justify-between max-w-5xl mx-auto space-y-8 font-sans transition-colors duration-200">
     <div>
       <!-- Hero & Header Section -->
       <header id="main-header" class="border-b pb-6 flex flex-col gap-6 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
@@ -62,7 +62,7 @@
             class="px-4 py-2 rounded transition-colors {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
             on:click={() => (activeTab = 'article')}
           >
-            [ARTICLE_READER]
+            [ARTICLE_STREAM]
           </button>
           <button
             id="tab-btn-contact"
@@ -78,7 +78,7 @@
       <!-- Content View -->
       <section id="content-view" class="mt-6">
         {#if activeTab === 'article'}
-          <TelemetryArticleView />
+          <ArticleStreamView />
         {:else}
           <TelemetryContactTerminalView />
         {/if}
