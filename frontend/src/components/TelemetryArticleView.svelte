@@ -73,7 +73,6 @@
     bind:this={scrollContainer}
     on:scroll={handleScroll}
     class="max-h-64 overflow-y-auto pr-4 space-y-4 border border-[#1f2433] bg-[#12151e] p-4 rounded text-sm text-[#cbd5e1] leading-relaxed font-serif"
-    tabindex="0"
     role="region"
     aria-label="Article content scroll area"
   >

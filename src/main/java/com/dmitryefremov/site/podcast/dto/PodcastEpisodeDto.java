@@ -1,54 +1,30 @@
-package com.dmitryefremov.site.podcast.domain;
+package com.dmitryefremov.site.podcast.dto;
 
-import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-@Entity
-@Table(name = "podcast_episodes")
-public class PodcastEpisode {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PodcastEpisodeDto {
     private Long id;
-
-    @Column(name = "slug", nullable = false, unique = true)
     private String slug;
-
-    @Column(name = "title", nullable = false)
     private String title;
-
-    @Column(name = "thesis")
     private String thesis;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "audio_url")
     private String audioUrl;
-
-    @Column(name = "media_link")
     private String mediaLink;
-
-    @Column(name = "duration_seconds")
     private Integer durationSeconds;
-
-    @Column(name = "published_at")
     private OffsetDateTime publishedAt;
+    private OffsetDateTime createdAt;
+    private List<PodcastTimecodeDto> timecodes = new ArrayList<>();
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private OffsetDateTime createdAt = OffsetDateTime.now();
-
-    @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("displayOrder ASC, timeOffsetSeconds ASC")
-    private List<PodcastTimecode> timecodes = new ArrayList<>();
-
-    public PodcastEpisode() {
+    public PodcastEpisodeDto() {
     }
 
-    public PodcastEpisode(String slug, String title, String thesis, String description, String audioUrl, String mediaLink, Integer durationSeconds, OffsetDateTime publishedAt) {
+    public PodcastEpisodeDto(Long id, String slug, String title, String thesis, String description,
+                             String audioUrl, String mediaLink, Integer durationSeconds,
+                             OffsetDateTime publishedAt, OffsetDateTime createdAt,
+                             List<PodcastTimecodeDto> timecodes) {
+        this.id = id;
         this.slug = slug;
         this.title = title;
         this.thesis = thesis;
@@ -57,20 +33,18 @@ public class PodcastEpisode {
         this.mediaLink = mediaLink;
         this.durationSeconds = durationSeconds;
         this.publishedAt = publishedAt;
-    }
-
-    public void addTimecode(PodcastTimecode timecode) {
-        timecodes.add(timecode);
-        timecode.setEpisode(this);
-    }
-
-    public void removeTimecode(PodcastTimecode timecode) {
-        timecodes.remove(timecode);
-        timecode.setEpisode(null);
+        this.createdAt = createdAt;
+        if (timecodes != null) {
+            this.timecodes = timecodes;
+        }
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSlug() {
@@ -141,20 +115,15 @@ public class PodcastEpisode {
         return createdAt;
     }
 
-    public List<PodcastTimecode> getTimecodes() {
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<PodcastTimecodeDto> getTimecodes() {
         return timecodes;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PodcastEpisode that = (PodcastEpisode) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setTimecodes(List<PodcastTimecodeDto> timecodes) {
+        this.timecodes = timecodes;
     }
 }
