@@ -1,6 +1,6 @@
 {
-  "testsRun": 29,
-  "testsPassed": 29,
+  "testsRun": 52,
+  "testsPassed": 52,
   "testsFailed": 0,
   "acceptanceCriteriaVerified": [
     "Given the deployed site, When an automated accessibility scan runs, Then zero WCAG 2.1 AA violations are reported.",

@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 test('generate design verification artifacts', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-b14eb987-2a05-46aa-8c44-c7a9076a46ac');
+  const targetDir = path.resolve('../.eneik/records/design-check-e39a7455-05cf-44d2-87a0-f8d3f0010a60');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Start preview server
@@ -14,7 +14,7 @@ test('generate design verification artifacts', async () => {
   });
 
   // Wait for server to start
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 2500));
 
   try {
     const browser = await chromium.launch();
@@ -52,6 +52,9 @@ test('generate design verification artifacts', async () => {
         'nav-tabs',
         'tab-btn-article',
         'tab-btn-contact',
+        'article-stream-container',
+        'longreads-list-section',
+        'article-reader-section',
         'article-reader-root',
         'main-footer',
         'imprint-toggle-btn'
