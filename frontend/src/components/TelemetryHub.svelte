@@ -1,8 +1,9 @@
 <script lang="ts">
   import TelemetryArticleView from './TelemetryArticleView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
+  import PodcastEpisodeView from './PodcastEpisodeView.svelte';
 
-  let activeTab: 'article' | 'contact' = 'article';
+  let activeTab: 'article' | 'contact' | 'podcast' = 'article';
 </script>
 
 <main id="app-root" class="min-h-screen bg-[#090a0f] text-[#e2e8f0] font-sans p-4 sm:p-8">
@@ -18,17 +19,24 @@
         <p class="text-sm text-[#94a3b8] font-mono mt-1">Системы, логика мышления и автономные процессы</p>
       </div>
 
-      <nav id="nav-tabs" class="flex gap-2 bg-[#12151e] p-1 rounded border border-[#1f2433] font-mono text-xs">
+      <nav id="nav-tabs" class="flex gap-2 bg-[#12151e] p-1 rounded border border-[#1f2433] font-mono text-xs overflow-x-auto">
         <button
           id="tab-btn-article"
-          class="px-4 py-2 rounded transition-colors {activeTab === 'article' ? 'bg-[#1f2433] text-white font-bold' : 'text-[#94a3b8] hover:text-white'}"
+          class="px-4 py-2 rounded transition-colors whitespace-nowrap {activeTab === 'article' ? 'bg-[#1f2433] text-white font-bold' : 'text-[#94a3b8] hover:text-white'}"
           on:click={() => (activeTab = 'article')}
         >
           [ARTICLE_READER]
         </button>
         <button
+          id="tab-btn-podcast"
+          class="px-4 py-2 rounded transition-colors whitespace-nowrap {activeTab === 'podcast' ? 'bg-[#1f2433] text-white font-bold' : 'text-[#94a3b8] hover:text-white'}"
+          on:click={() => (activeTab = 'podcast')}
+        >
+          [PODCAST_MEDIA]
+        </button>
+        <button
           id="tab-btn-contact"
-          class="px-4 py-2 rounded transition-colors {activeTab === 'contact' ? 'bg-[#1f2433] text-white font-bold' : 'text-[#94a3b8] hover:text-white'}"
+          class="px-4 py-2 rounded transition-colors whitespace-nowrap {activeTab === 'contact' ? 'bg-[#1f2433] text-white font-bold' : 'text-[#94a3b8] hover:text-white'}"
           on:click={() => (activeTab = 'contact')}
         >
           [CONTACT_TERMINAL]
@@ -40,6 +48,8 @@
     <section id="content-view">
       {#if activeTab === 'article'}
         <TelemetryArticleView />
+      {:else if activeTab === 'podcast'}
+        <PodcastEpisodeView />
       {:else}
         <TelemetryContactTerminalView />
       {/if}
