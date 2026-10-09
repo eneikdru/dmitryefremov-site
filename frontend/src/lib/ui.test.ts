@@ -1,11 +1,16 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import TelemetryHub from '../components/TelemetryHub.svelte';
 import { mount, unmount } from 'svelte';
 
 describe('TelemetryHub Component', () => {
   let target: HTMLElement;
   let component: any;
+
+  beforeAll(() => {
+    window.HTMLMediaElement.prototype.play = () => Promise.resolve();
+    window.HTMLMediaElement.prototype.pause = () => {};
+  });
 
   beforeEach(() => {
     target = document.createElement('div');
@@ -59,5 +64,31 @@ describe('TelemetryHub Component', () => {
     await new Promise(r => setTimeout(r, 0));
 
     expect(target.querySelector('#imprint-modal')).toBeNull();
+  });
+
+  it('navigates through tabs and displays realistic seeded content in every section', async () => {
+    component = mount(TelemetryHub, { target });
+
+    // Default tab: Article Stream
+    expect(target.textContent).toContain('Deontic Logic in Autonomous Process Architecture');
+    expect(target.textContent).toContain('Theory of Constraints in Distributed Pipeline Throughput');
+
+    // Switch to Podcast Media tab
+    const podcastTabBtn = target.querySelector('#tab-btn-podcast') as HTMLButtonElement;
+    podcastTabBtn.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(target.textContent).toContain('«Системы и реальность» Podcast');
+    expect(target.textContent).toContain('Выпуск 01: Системы и реальность');
+    expect(target.textContent).toContain('Введение и контекст выпуска');
+
+    // Switch to Contact Terminal tab
+    const contactTabBtn = target.querySelector('#tab-btn-contact') as HTMLButtonElement;
+    contactTabBtn.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(target.textContent).toContain('Contact & Communications');
+    expect(target.textContent).toContain('Telegram Channel');
+    expect(target.textContent).toContain('contact@dmitryefremov.com');
   });
 });
