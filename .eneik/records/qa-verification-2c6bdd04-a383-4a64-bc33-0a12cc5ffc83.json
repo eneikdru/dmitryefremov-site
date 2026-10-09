@@ -1,0 +1,13 @@
+{
+  "testsRun": 3,
+  "testsPassed": 3,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the backup system, When audited, Then automated backups are confirmed to be running.",
+    "Given a staging environment, When a real restore is performed, Then the data integrity is verified.",
+    "Given this role completes the Atomic Goal, When the relevant verification command runs, Then the change passes without unrelated scope."
+  ],
+  "coverageDeltaPercent": 0,
+  "verdict": "pass",
+  "notes": "Backup and restore automated test suite executed successfully via ./scripts/test_backup_restore.sh covering backup creation, secure permissions (600), and restore execution."
+}
