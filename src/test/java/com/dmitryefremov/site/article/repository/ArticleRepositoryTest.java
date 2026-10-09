@@ -4,6 +4,8 @@ import com.dmitryefremov.site.article.domain.Article;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.OffsetDateTime;
@@ -83,5 +85,26 @@ class ArticleRepositoryTest {
         assertThat(fetched.getContent()).isEqualTo(rawMarkdownContent);
         assertThat(fetched.getContent()).contains("```java");
         assertThat(fetched.getContent()).hasSize(rawMarkdownContent.length());
+    }
+
+    @Test
+    void testFindAllByPublishedAtNotNullOrderByPublishedAtDesc() {
+        OffsetDateTime now = OffsetDateTime.of(2026, 10, 9, 15, 0, 0, 0, ZoneOffset.UTC);
+
+        Article draft = new Article("draft-slug", "Draft Article", "Summary", "Content", null);
+        Article older = new Article("older-slug", "Older Article", "Summary", "Content", now.minusDays(5));
+        Article newer = new Article("newer-slug", "Newer Article", "Summary", "Content", now.minusDays(1));
+
+        articleRepository.save(draft);
+        articleRepository.save(older);
+        articleRepository.save(newer);
+        articleRepository.flush();
+
+        Page<Article> page = articleRepository.findAllByPublishedAtNotNullOrderByPublishedAtDesc(PageRequest.of(0, 10));
+
+        assertThat(page.getTotalElements()).isEqualTo(2);
+        assertThat(page.getContent()).hasSize(2);
+        assertThat(page.getContent().get(0).getSlug()).isEqualTo("newer-slug");
+        assertThat(page.getContent().get(1).getSlug()).isEqualTo("older-slug");
     }
 }
