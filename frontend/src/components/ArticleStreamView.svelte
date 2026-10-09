@@ -201,7 +201,7 @@ All non-deterministic sources (timestamps, random number generators, network res
         <span>SELECT_TO_READ</span>
       </div>
 
-      <div class="space-y-3" role="list" aria-label="Available Longreads">
+      <div class="space-y-3" aria-label="Available Longreads">
         {#each filteredArticles as article}
           <button
             type="button"

@@ -1,0 +1,12 @@
+{
+  "testsRun": 22,
+  "testsPassed": 22,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the deployed site, When an automated accessibility scan runs, Then zero WCAG 2.1 AA violations are reported.",
+    "Given a browser with a predefined theme preference, When the site loads, Then the correct theme is applied automatically."
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified with Vitest + axe-core accessibility scanner for WCAG 2.1 AA compliance and theme switching."
+}
