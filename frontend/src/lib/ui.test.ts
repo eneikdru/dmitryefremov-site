@@ -1,13 +1,16 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach } from 'vitest';
 import TelemetryHub from '../components/TelemetryHub.svelte';
+import TelemetryContactTerminalView from '../components/TelemetryContactTerminalView.svelte';
 import { mount, unmount } from 'svelte';
+import { telemetry } from './telemetry';
 
 describe('TelemetryHub Component', () => {
   let target: HTMLElement;
   let component: any;
 
   beforeEach(() => {
+    telemetry.clearEvents();
     target = document.createElement('div');
     document.body.appendChild(target);
     return () => {
@@ -59,5 +62,53 @@ describe('TelemetryHub Component', () => {
     await new Promise(r => setTimeout(r, 0));
 
     expect(target.querySelector('#imprint-modal')).toBeNull();
+  });
+
+  it('dispatches analytics payload when user clicks contact links and confirms zero tracking cookies', async () => {
+    component = mount(TelemetryContactTerminalView, { target });
+
+    const telegramLink = target.querySelector('#link-tg') as HTMLAnchorElement;
+    expect(telegramLink).not.toBeNull();
+
+    telegramLink.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    const events = telemetry.getEvents();
+    expect(events.length).toBe(1);
+    expect(events[0].type).toBe('outbound_click');
+    expect(events[0].payload).toEqual({
+      destination: 'https://t.me/efremov_mvp',
+      label: 'Telegram Channel',
+      platform: 'Telegram'
+    });
+
+    expect(target.textContent).toContain('[CLICK] Telegram: https://t.me/efremov_mvp');
+    expect(document.cookie).toBe('');
+    expect(telemetry.verifyPrivacyCompliance()).toBe(true);
+  });
+
+  it('switches to contact tab in TelemetryHub and dispatches click analytics payload', async () => {
+    component = mount(TelemetryHub, { target });
+
+    const contactTabBtn = target.querySelector('#tab-btn-contact') as HTMLButtonElement;
+    contactTabBtn.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(target.querySelector('#contact-terminal-root')).not.toBeNull();
+
+    const ytLink = target.querySelector('#link-yt') as HTMLAnchorElement;
+    expect(ytLink).not.toBeNull();
+
+    ytLink.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    const events = telemetry.getEvents();
+    expect(events.length).toBe(1);
+    expect(events[0].type).toBe('outbound_click');
+    expect(events[0].payload.platform).toBe('YouTube');
+    expect(events[0].payload.destination).toBe('https://youtube.com/@efremov_dmitriy');
+
+    expect(document.cookie).toBe('');
+    expect(telemetry.verifyPrivacyCompliance()).toBe(true);
   });
 });

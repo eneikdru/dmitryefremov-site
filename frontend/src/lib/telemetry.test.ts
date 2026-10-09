@@ -25,10 +25,10 @@ describe('Telemetry Service Invariants', () => {
   });
 
   it('records outbound click telemetry events', () => {
-    const evt = telemetry.trackOutboundClick('https://t.me/efremov_mvp', 'Telegram', 'Telegram');
+    const evt = telemetry.trackOutboundClick('https://t.me/efremov_mvp', 'Telegram Channel', 'Telegram');
     expect(evt.type).toBe('outbound_click');
     expect(evt.payload.destination).toBe('https://t.me/efremov_mvp');
-    expect(evt.payload.label).toBe('Telegram');
+    expect(evt.payload.label).toBe('Telegram Channel');
     expect(evt.payload.platform).toBe('Telegram');
 
     const events = telemetry.getEvents();
@@ -36,9 +36,15 @@ describe('Telemetry Service Invariants', () => {
     expect(events[0]).toEqual(evt);
   });
 
-  it('maintains zero non-essential cookies privacy default', () => {
+  it('maintains zero tracking cookies during and after telemetry dispatch audit', () => {
+    telemetry.trackScrollDepth('art-101', 50);
+    telemetry.trackOutboundClick('https://github.com/dmitryefremov', 'GitHub Repository', 'GitHub');
+    telemetry.trackOutboundClick('https://linkedin.com/in/dmitryefremov', 'LinkedIn Profile', 'LinkedIn');
+
+    expect(telemetry.getEvents().length).toBe(3);
     const isCompliant = telemetry.verifyPrivacyCompliance();
     expect(isCompliant).toBe(true);
     expect(document.cookie).toBe('');
+    expect(document.cookie.includes('telemetry_id')).toBe(false);
   });
 });
