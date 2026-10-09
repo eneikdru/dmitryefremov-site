@@ -38,16 +38,28 @@ class PodcastEpisodeRepositoryTest {
     }
 
     @Test
+    void testSeededPodcastEpisodesArePresentInRepository() {
+        Optional<PodcastEpisode> ep1 = podcastEpisodeRepository.findBySlug("systems-and-reality-ep1");
+        assertThat(ep1).isPresent();
+        assertThat(ep1.get().getTitle()).contains("Системы и реальность #1");
+        assertThat(ep1.get().getTimecodes()).hasSize(3);
+
+        Optional<PodcastEpisode> ep2 = podcastEpisodeRepository.findBySlug("systems-and-reality-ep2");
+        assertThat(ep2).isPresent();
+        assertThat(ep2.get().getTitle()).contains("Системы и реальность #2");
+    }
+
+    @Test
     void testInsertEpisodeWithMultipleTimecodes() {
         OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 9, 12, 0, 0, 0, ZoneOffset.UTC);
 
         PodcastEpisode episode = new PodcastEpisode(
-                "systems-and-reality-ep1",
-                "Системы и реальность: Выпуск 1",
+                "systems-and-reality-ep3",
+                "Системы и реальность: Выпуск 3",
                 "Тезисы о деонтической логике и теории ограничений.",
-                "Полное описание первенца подкаста.",
-                "https://cdn.dmitryefremov.com/podcast/ep1.mp3",
-                "https://youtube.com/watch?v=ep1",
+                "Полное описание третьего выпуска.",
+                "https://cdn.dmitryefremov.com/podcast/ep3.mp3",
+                "https://youtube.com/watch?v=ep3",
                 3600,
                 publishedAt
         );
@@ -65,11 +77,11 @@ class PodcastEpisodeRepositoryTest {
 
         assertThat(savedEpisode.getId()).isNotNull();
 
-        Optional<PodcastEpisode> fetchedOptional = podcastEpisodeRepository.findBySlug("systems-and-reality-ep1");
+        Optional<PodcastEpisode> fetchedOptional = podcastEpisodeRepository.findBySlug("systems-and-reality-ep3");
         assertThat(fetchedOptional).isPresent();
 
         PodcastEpisode fetchedEpisode = fetchedOptional.get();
-        assertThat(fetchedEpisode.getTitle()).isEqualTo("Системы и реальность: Выпуск 1");
+        assertThat(fetchedEpisode.getTitle()).isEqualTo("Системы и реальность: Выпуск 3");
         assertThat(fetchedEpisode.getThesis()).contains("деонтической логике");
         assertThat(fetchedEpisode.getTimecodes()).hasSize(3);
         assertThat(fetchedEpisode.getTimecodes())
