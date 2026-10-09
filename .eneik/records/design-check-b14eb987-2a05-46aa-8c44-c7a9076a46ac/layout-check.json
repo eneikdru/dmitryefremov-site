@@ -1,0 +1,51 @@
+[
+  {
+    "id": "header-0",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 86
+  },
+  {
+    "id": "theme-toggle-1",
+    "left": 1305.9375,
+    "top": 24,
+    "width": 118.0625,
+    "height": 38
+  },
+  {
+    "id": "main-2",
+    "left": 0,
+    "top": 86,
+    "width": 1440,
+    "height": 713
+  },
+  {
+    "id": "h1-3",
+    "left": 397.875,
+    "top": 298.5,
+    "width": 644.25,
+    "height": 72
+  },
+  {
+    "id": "h2-4",
+    "left": 423.75,
+    "top": 394.5,
+    "width": 592.5,
+    "height": 32
+  },
+  {
+    "id": "footer-5",
+    "left": 0,
+    "top": 799,
+    "width": 1440,
+    "height": 101
+  },
+  {
+    "id": "imprint-toggle-6",
+    "left": 698.59375,
+    "top": 832,
+    "width": 42.796875,
+    "height": 20
+  }
+]
