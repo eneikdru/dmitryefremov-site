@@ -1,0 +1,30 @@
+[
+  {
+    "id": "header",
+    "left": 25,
+    "top": 33,
+    "width": 325,
+    "height": 159
+  },
+  {
+    "id": "player-controls",
+    "left": 25,
+    "top": 216,
+    "width": 325,
+    "height": 162
+  },
+  {
+    "id": "waveform",
+    "left": 46,
+    "top": 301,
+    "width": 283,
+    "height": 56
+  },
+  {
+    "id": "timecodes-list",
+    "left": 25,
+    "top": 410,
+    "width": 325,
+    "height": 415
+  }
+]

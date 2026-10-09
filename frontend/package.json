@@ -1,0 +1,12 @@
+{
+  "name": "dmitryefremov-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test:ui": "node verify-ui.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.40.0"
+  }
+}
