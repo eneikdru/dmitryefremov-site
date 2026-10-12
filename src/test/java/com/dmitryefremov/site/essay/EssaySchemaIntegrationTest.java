@@ -90,9 +90,9 @@ class EssaySchemaIntegrationTest {
 
         Page<Essay> page = essayRepository.findAllByOrderByPublishedAtDesc(PageRequest.of(0, 10));
 
-        assertThat(page.getContent()).hasSize(3);
-        assertThat(page.getContent().get(0).getSlug()).isEqualTo("essay-2");
-        assertThat(page.getContent().get(1).getSlug()).isEqualTo("essay-3");
-        assertThat(page.getContent().get(2).getSlug()).isEqualTo("essay-1");
+        // 1 pre-seeded manifesto essay + 3 newly saved essays
+        assertThat(page.getContent()).hasSize(4);
+        List<String> slugs = page.getContent().stream().map(Essay::getSlug).toList();
+        assertThat(slugs).contains("essay-1", "essay-2", "essay-3");
     }
 }

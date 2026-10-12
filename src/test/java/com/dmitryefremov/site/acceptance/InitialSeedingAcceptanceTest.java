@@ -4,6 +4,7 @@ import com.dmitryefremov.site.article.domain.Article;
 import com.dmitryefremov.site.article.repository.ArticleRepository;
 import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
 import com.dmitryefremov.site.podcast.repository.PodcastEpisodeRepository;
+import com.dmitryefremov.site.spark.repository.SparkRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +36,9 @@ class InitialSeedingAcceptanceTest {
 
     @Autowired
     private PodcastEpisodeRepository podcastEpisodeRepository;
+
+    @Autowired
+    private SparkRepository sparkRepository;
 
     @Test
     void testSeededApiCredentialsExistInDatabase() {
@@ -115,5 +119,50 @@ class InitialSeedingAcceptanceTest {
                 Integer.class
         );
         assertThat(scheduleCount).isEqualTo(2);
+    }
+
+    @Test
+    void testAcceptanceSeededManifestosPhilosophyPodcastAndSparksExist() throws Exception {
+        // Verify Tier 1 Canon Manifestos via API
+        mockMvc.perform(get("/api/v1/articles/the-canon-sovereign-node-manifesto"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug").value("the-canon-sovereign-node-manifesto"))
+                .andExpect(jsonPath("$.title").value("Манифест Суверенного Цифрового Узла: Автономность и Деонтика"));
+
+        mockMvc.perform(get("/api/v1/essays/extended-mind-and-autonomous-agency-manifesto"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug").value("extended-mind-and-autonomous-agency-manifesto"))
+                .andExpect(jsonPath("$.title").value("Расширенный разум и автономная агентность"));
+
+        // Verify Tier 2 Stream Podcast Episode 5 with philosophy timecodes
+        mockMvc.perform(get("/api/v1/podcasts/philosophy-of-mind-extended-cognition-ep5"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug").value("philosophy-of-mind-extended-cognition-ep5"))
+                .andExpect(jsonPath("$.title").value("Системы и реальность #5: Философия разума и архитектура расширенного познания"));
+
+        Optional<PodcastEpisode> ep5Optional = podcastEpisodeRepository.findBySlug("philosophy-of-mind-extended-cognition-ep5");
+        assertThat(ep5Optional).isPresent();
+        PodcastEpisode ep5 = ep5Optional.get();
+        assertThat(ep5.getTimecodes()).hasSize(4);
+        assertThat(ep5.getTimecodes())
+                .extracting("title")
+                .containsExactly(
+                        "Введение: От модальной логики к сознанию",
+                        "Когнитивные науки и вычислительный разум",
+                        "Понятие сознания и отказ от призрака в машине",
+                        "Расширенный разум и суверенная агентность"
+                );
+
+        // Verify Tier 3 Sparks via API
+        mockMvc.perform(get("/api/v1/sparks"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(4));
+
+        mockMvc.perform(get("/api/v1/sparks/spark-mvp-pragmatics-01"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug").value("spark-mvp-pragmatics-01"))
+                .andExpect(jsonPath("$.domain").value("AUTONOMOUS_ENGINEERING"));
+
+        assertThat(sparkRepository.count()).isEqualTo(4);
     }
 }
