@@ -143,4 +143,19 @@ describe('PodcastPlayerView Component UI Interactions', () => {
     expect(podcastTitle.textContent).toBe(secondEp.title);
     expect(target.textContent).toContain(secondEp.thesis);
   });
+
+  it('loads and verifies initial podcast episode (Episode 01) details on mount', () => {
+    component = mount(PodcastPlayerView, { target });
+
+    const initialEp = PODCAST_EPISODES[0];
+    const podcastTitle = target.querySelector('#podcast-title') as HTMLElement;
+    const podcastDesc = target.querySelector('#podcast-description') as HTMLElement;
+    const audioElement = target.querySelector('audio') as HTMLAudioElement;
+
+    expect(podcastTitle.textContent).toBe(initialEp.title);
+    expect(podcastDesc.textContent).toBe(initialEp.description);
+    expect(audioElement.src).toBe(initialEp.audioUrl);
+    expect(target.textContent).toContain(initialEp.thesis);
+    expect(target.textContent).toContain('00:00 / 20:40');
+  });
 });
