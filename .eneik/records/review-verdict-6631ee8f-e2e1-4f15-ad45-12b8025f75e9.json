@@ -1,0 +1,16 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "Committed stray patch/diff files (pr87.diff, pr87.patch, pr91.diff, pr91.patch) in PR diff, violating the requirement that PR contains only source, config, test, or documentation files needed for the slice.",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "block",
+      "criticalReason": "Committed stray patch/diff files (pr87.diff, pr87.patch, pr91.diff, pr91.patch) in PR diff, violating the requirement that PR contains only source, config, test, or documentation files needed for the slice.",
+      "concerns": []
+    }
+  ]
+}
