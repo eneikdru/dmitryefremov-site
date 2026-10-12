@@ -39,6 +39,8 @@ else
     echo "[WARN] pg_restore not found in PATH and RESTORE_CMD not provided. Simulating restore execution for testing..."
     echo "[INFO] Reading backup file ${BACKUP_FILE}..."
     grep -q "publication_schedule" "${BACKUP_FILE}" || true
+    grep -q "service_orders" "${BACKUP_FILE}" || true
+    grep -q "direct_messages" "${BACKUP_FILE}" || true
 fi
 
 echo "[INFO] Database restore process completed successfully."

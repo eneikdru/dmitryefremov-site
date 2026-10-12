@@ -38,6 +38,10 @@ else
         echo "-- Timestamp: ${TIMESTAMP}"
         echo "CREATE TABLE IF NOT EXISTS publication_schedule (id UUID PRIMARY KEY, title TEXT, status TEXT);"
         echo "INSERT INTO publication_schedule (id, title, status) VALUES ('11111111-1111-1111-1111-111111111111', 'Sample Article', 'PUBLISHED');"
+        echo "CREATE TABLE IF NOT EXISTS service_orders (id UUID PRIMARY KEY, client_name TEXT, service_type TEXT, status TEXT);"
+        echo "INSERT INTO service_orders (id, client_name, service_type, status) VALUES ('22222222-2222-2222-2222-222222222222', 'Client Agent', 'MVP', 'NEW');"
+        echo "CREATE TABLE IF NOT EXISTS direct_messages (id UUID PRIMARY KEY, sender_name TEXT, message_text TEXT, created_at TEXT);"
+        echo "INSERT INTO direct_messages (id, sender_name, message_text, created_at) VALUES ('33333333-3333-3333-3333-333333333333', 'AI Assistant', 'Hello author', '2026-10-12T12:00:00Z');"
     } > "${BACKUP_FILE}"
 fi
 
