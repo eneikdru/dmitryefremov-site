@@ -14,6 +14,8 @@ export interface PodcastEpisode {
   description: string;
   audioUrl: string;
   mediaLink?: string;
+  youtubeUrl?: string;
+  telegramUrl?: string;
   durationSeconds: number;
   publishedAt: string;
   timecodes: PodcastTimecode[];
@@ -28,6 +30,8 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
     description: 'В этом выпуске обсуждаем фундаментальные понятия подкаста «Системы и реальность»: граница системы, обратные связи и почему локальная оптимизация разрушает целое.',
     audioUrl: 'https://cdn.dmitryefremov.com/audio/podcast-ep01.mp3',
     mediaLink: 'https://youtube.com/@efremov_dmitriy',
+    youtubeUrl: 'https://youtube.com/@efremov_dmitriy',
+    telegramUrl: 'https://t.me/efremov_mvp',
     durationSeconds: 1240,
     publishedAt: '2026-03-01',
     timecodes: [
@@ -46,6 +50,8 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
     description: 'Разбор модальных операторов O(phi), P(phi), F(phi) и их превращения в программные гарантии безопасности и целостности данных.',
     audioUrl: 'https://cdn.dmitryefremov.com/audio/podcast-ep02.mp3',
     mediaLink: 'https://t.me/efremov_mvp',
+    youtubeUrl: 'https://youtube.com/@efremov_dmitriy',
+    telegramUrl: 'https://t.me/efremov_mvp',
     durationSeconds: 980,
     publishedAt: '2026-03-15',
     timecodes: [

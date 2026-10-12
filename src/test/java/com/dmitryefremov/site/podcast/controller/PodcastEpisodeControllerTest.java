@@ -120,6 +120,25 @@ class PodcastEpisodeControllerTest {
     }
 
     @Test
+    void testListPodcastEpisodesWhenEmptyReturns200WithEmptyList() throws Exception {
+        PodcastEpisodePageDto emptyPageDto = new PodcastEpisodePageDto(List.of(), 0, 20, 0L, 0);
+
+        when(podcastEpisodeService.getEpisodes(0, 20)).thenReturn(emptyPageDto);
+
+        mockMvc.perform(get("/api/v1/podcasts")
+                        .param("page", "0")
+                        .param("size", "20")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.page", is(0)))
+                .andExpect(jsonPath("$.size", is(20)))
+                .andExpect(jsonPath("$.totalElements", is(0)))
+                .andExpect(jsonPath("$.totalPages", is(0)))
+                .andExpect(jsonPath("$.content", hasSize(0)));
+    }
+
+    @Test
     void testListPodcastEpisodesInvalidPaginationReturns400() throws Exception {
         when(podcastEpisodeService.getEpisodes(anyInt(), anyInt()))
                 .thenThrow(new IllegalArgumentException("Page size must be between 1 and 100"));
