@@ -78,23 +78,29 @@ class InitialSeedingAcceptanceTest {
 
     @Test
     void testNewlySeededRussianEssaysAndPodcastWithTimecodesExistAndConformToRelationships() throws Exception {
-        // Test article 1
+        // Test realistic Russian article 1 navigation & content
         mockMvc.perform(get("/api/v1/articles/high-end-editorial-minimalism"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.slug").value("high-end-editorial-minimalism"))
-                .andExpect(jsonPath("$.title").value("Эстетика инженерного молчания и редакционный минимализм"));
+                .andExpect(jsonPath("$.title").value("Эстетика инженерного молчания и редакционный минимализм"))
+                .andExpect(jsonPath("$.summary").value("Отказ от визуального шума и отладочных элементов как проявление уважения к читателю и архитектурной зрелости."))
+                .andExpect(jsonPath("$.content").value(org.hamcrest.Matchers.containsString("Настоящая архитектура не заявляет о себе громкими терминальными логами")));
 
-        // Test article 2
+        // Test realistic Russian article 2 navigation & content
         mockMvc.perform(get("/api/v1/articles/deontic-operators-in-distributed-systems"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.slug").value("deontic-operators-in-distributed-systems"))
-                .andExpect(jsonPath("$.title").value("Деонтическая логика и нормативные инварианты в распределенных сервисах"));
+                .andExpect(jsonPath("$.title").value("Деонтическая логика и нормативные инварианты в распределенных сервисах"))
+                .andExpect(jsonPath("$.summary").value("Формализация нормативных состояний системы через модальную деонтическую логику: обязательства, разрешения и запреты."))
+                .andExpect(jsonPath("$.content").value(org.hamcrest.Matchers.containsString("Система функционирует в терминах должного")));
 
-        // Test podcast episode 4
+        // Test podcast hub initial episode loading
         mockMvc.perform(get("/api/v1/podcasts/systems-and-reality-ep4"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.slug").value("systems-and-reality-ep4"))
-                .andExpect(jsonPath("$.title").value("Системы и реальность #4: Редакционный дизайн и деонтика интерфейсов"));
+                .andExpect(jsonPath("$.title").value("Системы и реальность #4: Редакционный дизайн и деонтика интерфейсов"))
+                .andExpect(jsonPath("$.audioUrl").value("https://dmitryefremov.com/media/podcast/ep4.mp3"))
+                .andExpect(jsonPath("$.description").value(org.hamcrest.Matchers.containsString("В четвертом выпуске подкаста «Системы и реальность»")));
 
         // Verify foreign key relationship and timecodes for Episode 4
         Optional<PodcastEpisode> ep4Optional = podcastEpisodeRepository.findBySlug("systems-and-reality-ep4");
