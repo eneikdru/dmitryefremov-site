@@ -1,0 +1,11 @@
+{
+  "testsRun": 56,
+  "testsPassed": 56,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given a fresh visitor, when the site is accessed without clicking the banner, then no tracking cookies or scripts execute in the browser context."
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified privacy consent coverage: unconsented fresh visitors emit zero tracking cookies and zero telemetry events."
+}
