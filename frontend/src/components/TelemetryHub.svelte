@@ -4,9 +4,10 @@
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import ConsentManager from './ConsentManager.svelte';
+  import SparksView from './SparksView.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
-  export let activeTab: 'article' | 'contact' | 'podcast' = 'article';
+  export let activeTab: 'article' | 'contact' | 'podcast' | 'sparks' = 'article';
   export let showImprintModal: boolean = false;
   export let isCmpModalOpen: boolean = false;
 
@@ -99,6 +100,14 @@
           >
             [CONTACT_TERMINAL]
           </button>
+          <button
+            id="tab-btn-sparks"
+            type="button"
+            class="px-4 py-2 rounded transition-colors {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+            on:click={() => (activeTab = 'sparks')}
+          >
+            [SPARKS_STREAM]
+          </button>
         </nav>
       </header>
 
@@ -108,6 +117,8 @@
           <ArticleStreamView />
         {:else if activeTab === 'podcast'}
           <PodcastPlayerView />
+        {:else if activeTab === 'sparks'}
+          <SparksView />
         {:else}
           <TelemetryContactTerminalView />
         {/if}

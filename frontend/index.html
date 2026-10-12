@@ -4,7 +4,116 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dmitry Efremov - Telemetry Implementation</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk, Hanken Grotesk, Space Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "background": "#111317",
+                "inverse-primary": "#7e5700",
+                "surface-container-highest": "#333539",
+                "on-tertiary-fixed": "#002022",
+                "inverse-surface": "#e2e2e8",
+                "outline-variant": "#514532",
+                "surface": "#111317",
+                "on-secondary-fixed-variant": "#6a0baa",
+                "on-error": "#690005",
+                "primary-container": "#ffb300",
+                "primary-fixed-dim": "#ffba38",
+                "outline": "#9e8e78",
+                "tertiary": "#55f2ff",
+                "on-error-container": "#ffdad6",
+                "surface-variant": "#333539",
+                "surface-tint": "#ffba38",
+                "secondary": "#e0b6ff",
+                "inverse-on-surface": "#2f3035",
+                "on-secondary": "#4c007d",
+                "on-primary-fixed-variant": "#604100",
+                "surface-container-lowest": "#0c0e12",
+                "on-primary": "#432c00",
+                "on-tertiary": "#00363a",
+                "secondary-fixed-dim": "#e0b6ff",
+                "surface-bright": "#37393e",
+                "on-surface-variant": "#d6c4ac",
+                "primary": "#ffd79b",
+                "secondary-container": "#6d11ad",
+                "surface-container-low": "#1a1c20",
+                "on-primary-container": "#6b4900",
+                "tertiary-container": "#00d6e3",
+                "primary-fixed": "#ffdeac",
+                "secondary-fixed": "#f2daff",
+                "on-tertiary-fixed-variant": "#004f54",
+                "error": "#ffb4ab",
+                "on-secondary-container": "#d7a4ff",
+                "error-container": "#93000a",
+                "on-surface": "#e2e2e8",
+                "surface-container-high": "#282a2e",
+                "surface-container": "#1e2024",
+                "tertiary-fixed": "#7df4ff",
+                "on-secondary-fixed": "#2e004e",
+                "tertiary-fixed-dim": "#00dbe9",
+                "surface-dim": "#111317",
+                "on-tertiary-container": "#00585e",
+                "on-primary-fixed": "#281900"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "gutter-desktop": "1.25rem",
+                "margin-desktop": "2rem",
+                "space-xs": "0.25rem",
+                "margin": "1rem",
+                "gutter": "0.75rem",
+                "space-sm": "0.5rem",
+                "space-xl": "1.75rem",
+                "space-md": "0.75rem",
+                "space-lg": "1.25rem"
+              },
+              "fontFamily": {
+                "body-md": ["Hanken Grotesk"],
+                "body-lg": ["Hanken Grotesk"],
+                "headline-xl": ["Space Grotesk"],
+                "label-sm": ["Space Mono"],
+                "headline-sm": ["Space Grotesk"],
+                "headline-xl-mobile": ["Space Grotesk"],
+                "label-md": ["Space Mono"],
+                "headline-lg-mobile": ["Space Grotesk"],
+                "headline-lg": ["Space Grotesk"],
+                "body-sm": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+                "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+                "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "400" }],
+                "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                "headline-xl-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+                "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                "headline-lg-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+                "headline-lg": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+              }
+            }
+          }
+        }
+      </script>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      .amber-glow { box-shadow: 0 0 16px -2px rgba(255, 179, 0, 0.35); }
+      .amber-border-glow { box-shadow: inset 0 0 0 1px rgba(255, 179, 0, 0.6); }
+      .cyan-glow { box-shadow: 0 0 12px -2px rgba(85, 242, 255, 0.3); }
+    </style>
   </head>
   <body class="bg-[#090a0f] text-[#e2e8f0]">
     <div id="app"></div>
