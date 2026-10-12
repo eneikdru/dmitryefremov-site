@@ -39,10 +39,15 @@
 
   $: activeTimecode = currentEpisode?.timecodes?.find(tc => tc.id === activeTimecodeId) || currentEpisode?.timecodes[0];
 
+  $: filteredTimecodes = activeChapterFilter === 'All'
+    ? (currentEpisode?.timecodes || [])
+    : (currentEpisode?.timecodes?.filter(tc => tc.id.toString() === activeChapterFilter || tc.title === activeChapterFilter) || []);
+
   function handleSelectEpisode(epId: number | string) {
     selectedEpisodeId = epId;
     currentTime = 0;
     isPlaying = false;
+    activeChapterFilter = 'All';
     if (audioElement) {
       audioElement.currentTime = 0;
       audioElement.pause();
@@ -54,7 +59,7 @@
     if (audioElement) {
       if (isPlaying) {
         audioElement.play().catch(() => {
-          // Audio playback handle for environments without audio hardware
+          // Audio playback handle for headless test environments
         });
       } else {
         audioElement.pause();
@@ -268,21 +273,21 @@
           loading="eager"
         />
         <div class="absolute inset-0 bg-gradient-to-t from-[#121318]/80 via-transparent to-transparent flex items-end p-1">
-          <span class="text-[10px] font-mono text-[#ffc174] px-1 bg-[#0d0e13]/80 rounded backdrop-blur-sm">EP. 42</span>
+          <span class="text-[10px] font-mono text-[#ffc174] px-1 bg-[#0d0e13]/80 rounded backdrop-blur-sm">EP. {currentEpisode.id}</span>
         </div>
       </div>
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2 mb-1">
           <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-[#ffc174]/10 text-[#ffc174] border border-[#ffc174]/25">
             <span class="w-1.5 h-1.5 rounded-full bg-[#ffc174] animate-ping"></span>
-            {activeTimecode ? activeTimecode.title : 'Chapter 3: Cognitive Scaffolding'}
+            {activeTimecode ? activeTimecode.title : (currentEpisode.timecodes[0]?.title || 'Overview')}
           </span>
         </div>
         <h1 id="podcast-title" class="text-lg font-bold text-[#e3e1e9] leading-snug tracking-tight line-clamp-2">
           {currentEpisode.title}
         </h1>
         <p class="text-xs text-[#d8c3ad] truncate mt-0.5">
-          Elena Vance & Dr. K. Aris
+          {currentEpisode.description}
         </p>
       </div>
     </div>
@@ -325,11 +330,11 @@
           class="absolute left-0 top-0 h-full bg-gradient-to-r from-[#d97707] to-[#f59e0b] rounded-full block"
           style="width: {progressPercent}%;"
         ></span>
-        <!-- Chapter split markers -->
-        <span class="absolute top-0 bottom-0 left-[12%] w-[2px] bg-[#121318] block"></span>
-        <span class="absolute top-0 bottom-0 left-[28%] w-[2px] bg-[#121318] block"></span>
-        <span class="absolute top-0 bottom-0 left-[55%] w-[2px] bg-[#121318] block"></span>
-        <span class="absolute top-0 bottom-0 left-[79%] w-[2px] bg-[#121318] block"></span>
+        <!-- Chapter split markers for episode timecodes -->
+        {#each currentEpisode.timecodes as tc}
+          {@const tcPos = currentEpisode.durationSeconds > 0 ? (tc.timeOffsetSeconds / currentEpisode.durationSeconds) * 100 : 0}
+          <span class="absolute top-0 bottom-0 w-[2px] bg-[#121318] block" style="left: {tcPos}%;"></span>
+        {/each}
         <!-- Drag Thumb -->
         <span
           class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-[#e3e1e9] border-2 border-[#f59e0b] rounded-full cursor-grab shadow-[0_0_8px_rgba(245,158,11,0.8)] block"
@@ -340,7 +345,9 @@
       <!-- Time Indicators -->
       <div class="flex justify-between items-center text-xs font-mono text-[#d8c3ad]">
         <span id="current-time-val" class="text-[#ffc174] font-semibold">{formatTime(currentTime)}</span>
-        <span class="text-[11px] font-sans tracking-wide text-[#d8c3ad]/80">SYNCHRONIZED WITH THESIS 01</span>
+        <span class="text-[11px] font-sans tracking-wide text-[#d8c3ad]/80 uppercase">
+          SYNCHRONIZED WITH {activeTimecode ? activeTimecode.title : 'PLAYBACK'}
+        </span>
         <span id="duration-val">{formatTime(currentEpisode.durationSeconds)}</span>
       </div>
     </div>
@@ -426,19 +433,23 @@
   </section>
 
   <!-- Synchronized Chapters Carousel Strip -->
-  <section id="chapters-section" class="space-y-2">
+  <section id="chapters-section" class="space-y-3">
     <div class="flex items-center justify-between px-1">
       <h2 class="text-xs font-mono text-[#d8c3ad] uppercase tracking-wider flex items-center gap-1.5">
         <span>☰</span>
         TIMECODES & TOPICS ({currentEpisode.timecodes.length})
       </h2>
-      <span class="text-xs font-mono text-[#ffc174] font-medium cursor-pointer hover:underline">
-        View All
-      </span>
+      <button
+        type="button"
+        on:click={() => (activeChapterFilter = 'All')}
+        class="text-xs font-mono text-[#ffc174] font-medium hover:underline focus:outline-none focus:ring-1 focus:ring-[#f59e0b] rounded px-1"
+      >
+        View All ({currentEpisode.timecodes.length})
+      </button>
     </div>
 
     <!-- Chapter Filter Pills -->
-    <div id="timecodes-list" class="flex items-center gap-2 overflow-x-auto py-1" role="list" aria-label="Episode Timecodes">
+    <div class="flex items-center gap-2 overflow-x-auto py-1" role="list" aria-label="Episode Timecodes Pills">
       <button
         type="button"
         on:click={() => (activeChapterFilter = 'All')}
@@ -450,15 +461,41 @@
         {@const isActive = activeTimecodeId === tc.id}
         <button
           type="button"
-          id="timecode-btn-{tc.id}"
-          on:click={() => handleTimecodeClick(tc)}
-          class="timecode-item shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] {isActive ? 'bg-[#f59e0b] text-[#2a1700] border-[#f59e0b] font-bold shadow-sm' : 'bg-[#292a2f] text-[#d8c3ad] border-[#534434]/30 hover:border-[#534434]'}"
+          on:click={() => { activeChapterFilter = tc.id.toString(); handleTimecodeClick(tc); }}
+          class="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] {isActive ? 'bg-[#f59e0b] text-[#2a1700] border-[#f59e0b] font-bold shadow-sm' : 'bg-[#292a2f] text-[#d8c3ad] border-[#534434]/30 hover:border-[#534434]'}"
         >
           {#if isActive}
             <span class="w-2 h-2 rounded-full bg-[#2a1700] animate-pulse"></span>
-            <span class="text-[10px] font-mono text-[#2a1700]">NOW_PLAYING</span>
           {/if}
           <span>[{formatTime(tc.timeOffsetSeconds)}] {tc.title}</span>
+        </button>
+      {/each}
+    </div>
+
+    <!-- Full Timecodes List for Chapter Seeking & Description -->
+    <div id="timecodes-list" class="space-y-2 mt-2" role="list" aria-label="Episode Timecodes Catalog">
+      {#each filteredTimecodes as tc}
+        {@const isActive = activeTimecodeId === tc.id}
+        <button
+          type="button"
+          id="timecode-btn-{tc.id}"
+          on:click={() => handleTimecodeClick(tc)}
+          class="timecode-item w-full p-3 rounded-lg border transition-all text-left flex items-start gap-3 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] {isActive ? 'bg-[#1a1b21] border-[#f59e0b] text-white shadow-sm' : 'bg-[#121318] border-[#534434]/30 text-[#d8c3ad] hover:border-[#534434] hover:text-white hover:bg-[#1a1b21]/60'}"
+        >
+          <span class="font-mono text-xs font-bold px-2 py-0.5 rounded shrink-0 {isActive ? 'bg-[#f59e0b] text-[#2a1700]' : 'bg-[#292a2f] text-[#ffc174]'}">
+            [{formatTime(tc.timeOffsetSeconds)}]
+          </span>
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-xs flex items-center justify-between">
+              <span class="truncate">{tc.title}</span>
+              {#if isActive}
+                <span class="text-[10px] font-mono text-[#ffc174] shrink-0 font-bold ml-2">NOW_PLAYING</span>
+              {/if}
+            </div>
+            {#if tc.description}
+              <p class="text-[11px] text-[#d8c3ad]/80 mt-1 line-clamp-2 leading-relaxed">{tc.description}</p>
+            {/if}
+          </div>
         </button>
       {/each}
     </div>
@@ -481,116 +518,74 @@
       </div>
     </div>
 
-    <!-- Thesis Card 1 (Active Synced State) -->
-    <article class="bg-[#1a1b21] rounded-xl p-4 border border-white/10 border-l-4 border-l-[#ffc174] relative overflow-hidden shadow-[0_0_12px_rgba(245,158,11,0.25)] transition-all space-y-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-semibold bg-[#ffc174]/15 text-[#ffc174] border border-[#ffc174]/30">
-            <span class="flex items-end gap-0.5 h-3">
-              <span class="w-0.5 bg-[#ffc174] h-2 animate-pulse"></span>
-              <span class="w-0.5 bg-[#ffc174] h-3 animate-pulse"></span>
-              <span class="w-0.5 bg-[#ffc174] h-1.5 animate-pulse"></span>
+    <!-- Dynamically Rendered Core Thesis Cards from Episode Timecodes -->
+    {#each currentEpisode.timecodes as tc, index}
+      {@const isActive = activeTimecodeId === tc.id}
+      <article class="bg-[#1a1b21] rounded-xl p-4 border transition-all space-y-3 {isActive ? 'border-l-4 border-l-[#ffc174] border-white/20 shadow-[0_0_12px_rgba(245,158,11,0.25)]' : 'border-white/10 opacity-90 hover:opacity-100'}">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-semibold {isActive ? 'bg-[#ffc174]/15 text-[#ffc174] border border-[#ffc174]/30' : 'bg-[#292a2f] text-[#d8c3ad]'}">
+              {#if isActive}
+                <span class="flex items-end gap-0.5 h-3">
+                  <span class="w-0.5 bg-[#ffc174] h-2 animate-pulse"></span>
+                  <span class="w-0.5 bg-[#ffc174] h-3 animate-pulse"></span>
+                  <span class="w-0.5 bg-[#ffc174] h-1.5 animate-pulse"></span>
+                </span>
+              {/if}
+              {formatTime(tc.timeOffsetSeconds)} • Thesis 0{index + 1}
             </span>
-            {formatTime(activeTimecode?.timeOffsetSeconds || 868)} • Thesis 01
-          </span>
-          <span class="text-xs font-semibold text-[#ffb77d]">Currently Discussed</span>
-        </div>
-        <button
-          type="button"
-          aria-label="Bookmark thesis"
-          class="text-[#d8c3ad] hover:text-[#e3e1e9] p-1 rounded hover:bg-[#292a2f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
-        >
-          <span class="text-[#ffc174]">★</span>
-        </button>
-      </div>
-
-      <h3 class="text-sm font-bold text-[#e3e1e9] leading-snug">
-        Trustless consensus shifts governance from human discretion to algorithmic verification.
-      </h3>
-
-      <blockquote class="my-2 pl-3.5 py-1 border-l-2 border-[#f59e0b] bg-[#1e1f25]/60 rounded-r-lg italic text-xs text-[#e3e1e9]/90">
-        “Decentralization is not merely political resistance; it is an ergonomic necessity for complex network states.”
-        <cite class="block text-[11px] text-[#d8c3ad] not-italic mt-1 font-medium">
-          — Elena Vance, {formatTime((activeTimecode?.timeOffsetSeconds || 868) + 14)}
-        </cite>
-      </blockquote>
-
-      <div class="flex items-center justify-between pt-2 border-t border-[#534434]/20">
-        <button
-          type="button"
-          on:click={() => seekTo(activeTimecode?.timeOffsetSeconds || 868)}
-          class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#ffc174] hover:text-[#ffb95f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
-        >
-          <span>▶</span>
-          Jump to {formatTime(activeTimecode?.timeOffsetSeconds || 868)}
-        </button>
-        <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold {isActive ? 'text-[#ffb77d]' : 'text-[#d8c3ad]/80'}">
+              {isActive ? 'Currently Discussed' : 'Episode Topic'}
+            </span>
+          </div>
           <button
             type="button"
-            class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#292a2f] hover:bg-[#34343a] text-xs text-[#e3e1e9] border border-[#534434]/30 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
+            aria-label="Bookmark thesis"
+            class="text-[#d8c3ad] hover:text-[#e3e1e9] p-1 rounded hover:bg-[#292a2f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
           >
-            Copy Quote
+            <span>{isActive ? '★' : '☆'}</span>
           </button>
+        </div>
+
+        <h3 class="text-sm font-bold text-[#e3e1e9] leading-snug">
+          {tc.title}
+        </h3>
+
+        {#if tc.description}
+          <blockquote class="my-2 pl-3.5 py-1 border-l-2 border-[#f59e0b] bg-[#1e1f25]/60 rounded-r-lg italic text-xs text-[#e3e1e9]/90">
+            “{tc.description}”
+            <cite class="block text-[11px] text-[#d8c3ad] not-italic mt-1 font-medium">
+              — {currentEpisode.title}, {formatTime(tc.timeOffsetSeconds)}
+            </cite>
+          </blockquote>
+        {/if}
+
+        <div class="flex items-center justify-between pt-2 border-t border-[#534434]/20">
           <button
             type="button"
-            class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#f59e0b] hover:bg-[#d97707] text-[#2a1700] font-semibold text-xs active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-white"
+            on:click={() => handleTimecodeClick(tc)}
+            class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#ffc174] hover:text-[#ffb95f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
           >
-            Save Thesis
+            <span>▶</span>
+            Jump to {formatTime(tc.timeOffsetSeconds)}
           </button>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#292a2f] hover:bg-[#34343a] text-xs text-[#e3e1e9] border border-[#534434]/30 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
+            >
+              Copy Quote
+            </button>
+            <button
+              type="button"
+              class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#f59e0b] hover:bg-[#d97707] text-[#2a1700] font-semibold text-xs active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-white"
+            >
+              Save Thesis
+            </button>
+          </div>
         </div>
-      </div>
-    </article>
-
-    <!-- Thesis Card 2 -->
-    <article class="bg-[#1a1b21] rounded-xl p-4 border border-white/10 opacity-90 hover:opacity-100 transition-opacity space-y-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono bg-[#34343a] text-[#d8c3ad]">
-            <span>⏱</span> 28:50 • Thesis 02
-          </span>
-          <span class="text-xs text-[#d8c3ad]/80">Upcoming</span>
-        </div>
-        <button
-          type="button"
-          aria-label="Bookmark thesis"
-          class="text-[#d8c3ad] hover:text-[#e3e1e9] p-1 rounded hover:bg-[#292a2f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
-        >
-          ☆
-        </button>
-      </div>
-
-      <h3 class="text-sm font-bold text-[#e3e1e9] leading-snug">
-        Liquidity follows clarity: Capital flywheels fail when coordination costs exceed yield.
-      </h3>
-
-      <ul class="space-y-1.5 text-xs text-[#d8c3ad] list-none">
-        <li class="flex items-start gap-2">
-          <span class="text-[#ffc174]">→</span>
-          <span>Coordination friction compounds exponentially when governance tokenholders face asymmetric incentive models.</span>
-        </li>
-        <li class="flex items-start gap-2">
-          <span class="text-[#ffc174]">→</span>
-          <span>Empirical capital deployment trends demonstrate automated yield distribution outperforms council-managed treasuries by 4.2x.</span>
-        </li>
-      </ul>
-
-      <div class="flex items-center justify-between pt-2 border-t border-[#534434]/20">
-        <button
-          type="button"
-          on:click={() => seekTo(1730)}
-          class="inline-flex items-center gap-1 text-xs font-medium text-[#d8c3ad] hover:text-[#ffc174] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
-        >
-          <span>⏩</span>
-          Preview Chapter (28:50)
-        </button>
-        <button
-          type="button"
-          class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#292a2f] hover:bg-[#34343a] text-xs text-[#e3e1e9] border border-[#534434]/30 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
-        >
-          Queue Bookmark
-        </button>
-      </div>
-    </article>
+      </article>
+    {/each}
   </section>
 
   <!-- Live Companion Transcript Accordion Section -->
@@ -617,46 +612,41 @@
 
     {#if isTranscriptExpanded}
       <div class="space-y-3 text-xs">
-        <div class="opacity-60 text-[#d8c3ad] hover:opacity-90 transition-opacity">
-          <div class="flex items-center justify-between font-mono text-[11px] mb-0.5">
-            <span class="font-bold">Dr. K. Aris</span>
-            <span>14:10</span>
+        {#each currentEpisode.timecodes as tc}
+          {@const isActive = activeTimecodeId === tc.id}
+          <div
+            class="p-3 rounded-lg transition-all space-y-1 {isActive ? 'bg-[#292a2f]/90 border-l-2 border-[#ffc174] border border-white/10 shadow-sm' : 'opacity-70 hover:opacity-100 bg-[#121318]/40 border border-[#534434]/20'}"
+          >
+            <div class="flex items-center justify-between font-mono text-[11px] {isActive ? 'text-[#ffc174]' : 'text-[#d8c3ad]'}">
+              <span class="font-bold flex items-center gap-1.5">
+                {#if isActive}
+                  <span class="w-2 h-2 rounded-full bg-[#ffc174] animate-pulse"></span>
+                {/if}
+                Topic: {tc.title}
+              </span>
+              <button
+                type="button"
+                on:click={() => handleTimecodeClick(tc)}
+                class="hover:underline focus:outline-none focus:ring-1 focus:ring-[#f59e0b] rounded px-1 {isActive ? 'bg-[#ffc174]/20 font-bold' : ''}"
+              >
+                {formatTime(tc.timeOffsetSeconds)} {isActive ? '(ACTIVE)' : ''}
+              </button>
+            </div>
+            <p class="text-[#e3e1e9] leading-relaxed">
+              {tc.description || currentEpisode.thesis}
+            </p>
+            {#if isActive}
+              <div class="flex items-center justify-end gap-2 pt-2 border-t border-[#534434]/20">
+                <button type="button" class="text-[11px] text-[#d8c3ad] hover:text-[#ffc174] transition-colors focus:outline-none focus:ring-1 focus:ring-[#f59e0b]">
+                  Add Reading Note
+                </button>
+                <button type="button" class="text-[11px] text-[#d8c3ad] hover:text-[#ffc174] transition-colors focus:outline-none focus:ring-1 focus:ring-[#f59e0b]">
+                  Clip Audio (30s)
+                </button>
+              </div>
+            {/if}
           </div>
-          <p>
-            When we examined the early ledger configurations, the bottleneck wasn't throughput or block sizes—it was the cognitive friction of participants reconciling contradictory rules.
-          </p>
-        </div>
-
-        <div class="bg-[#292a2f]/90 p-3 rounded-lg border-l-2 border-[#ffc174] border border-white/10 shadow-sm space-y-1">
-          <div class="flex items-center justify-between font-mono text-[11px] text-[#ffc174]">
-            <span class="font-bold flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-[#ffc174] animate-pulse"></span>
-              Elena Vance
-            </span>
-            <span class="bg-[#ffc174]/20 px-1.5 py-0.5 rounded">14:28 (ACTIVE)</span>
-          </div>
-          <p class="text-[#e3e1e9] font-medium leading-relaxed">
-            Exactly. Trustless consensus shifts governance from human discretion to algorithmic verification. If a community must vote on every operational micro-adjustment, you haven’t engineered a protocol; you’ve simply digitized a bureaucratic parliament.
-          </p>
-          <div class="flex items-center justify-end gap-2 pt-2 border-t border-[#534434]/20">
-            <button type="button" class="text-[11px] text-[#d8c3ad] hover:text-[#ffc174] transition-colors focus:outline-none focus:ring-1 focus:ring-[#f59e0b]">
-              Add Reading Note
-            </button>
-            <button type="button" class="text-[11px] text-[#d8c3ad] hover:text-[#ffc174] transition-colors focus:outline-none focus:ring-1 focus:ring-[#f59e0b]">
-              Clip Audio (30s)
-            </button>
-          </div>
-        </div>
-
-        <div class="opacity-60 text-[#d8c3ad] hover:opacity-90 transition-opacity">
-          <div class="flex items-center justify-between font-mono text-[11px] mb-0.5">
-            <span class="font-bold">Dr. K. Aris</span>
-            <span>15:02</span>
-          </div>
-          <p>
-            And that is precisely where mechanism design provides the antidote. By pre-allocating deterministic verification bounds, consensus settles before fatigue sets in...
-          </p>
-        </div>
+        {/each}
       </div>
     {/if}
   </section>

@@ -1,10 +1,52 @@
 [
   {
+    "id": "app",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 3395
+  },
+  {
+    "id": "theme-root",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 3395
+  },
+  {
+    "id": "app-root",
+    "left": 208,
+    "top": 0,
+    "width": 1024,
+    "height": 3395
+  },
+  {
     "id": "main-header",
     "left": 240,
     "top": 32,
     "width": 960,
     "height": 289
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 240,
+    "top": 34,
+    "width": 90,
+    "height": 22
+  },
+  {
+    "id": "sys-domain",
+    "left": 338,
+    "top": 37,
+    "width": 122,
+    "height": 16
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1058,
+    "top": 32,
+    "width": 142,
+    "height": 26
   },
   {
     "id": "hero-section",
@@ -14,6 +56,41 @@
     "height": 148
   },
   {
+    "id": "hero-avatar-container",
+    "left": 240,
+    "top": 84,
+    "width": 144,
+    "height": 144
+  },
+  {
+    "id": "hero-avatar-img",
+    "left": 242,
+    "top": 86,
+    "width": 140,
+    "height": 140
+  },
+  {
+    "id": "hero-title",
+    "left": 408,
+    "top": 82,
+    "width": 792,
+    "height": 40
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 408,
+    "top": 134,
+    "width": 792,
+    "height": 28
+  },
+  {
+    "id": "hero-manifest",
+    "left": 408,
+    "top": 174,
+    "width": 792,
+    "height": 56
+  },
+  {
     "id": "nav-tabs",
     "left": 240,
     "top": 254,
@@ -21,11 +98,32 @@
     "height": 42
   },
   {
-    "id": "podcast-player-container",
+    "id": "tab-btn-article",
+    "left": 245,
+    "top": 259,
+    "width": 147,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 400,
+    "top": 259,
+    "width": 140,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 548,
+    "top": 259,
+    "width": 162,
+    "height": 32
+  },
+  {
+    "id": "content-view",
     "left": 240,
-    "top": 407,
+    "top": 345,
     "width": 960,
-    "height": 1705
+    "height": 2945
   },
   {
     "id": "player-top-header",
@@ -33,6 +131,48 @@
     "top": 345,
     "width": 960,
     "height": 62
+  },
+  {
+    "id": "header-dispatch-label",
+    "left": 300,
+    "top": 357,
+    "width": 320,
+    "height": 17
+  },
+  {
+    "id": "header-title-label",
+    "left": 300,
+    "top": 374,
+    "width": 320,
+    "height": 20
+  },
+  {
+    "id": "podcast-player-container",
+    "left": 240,
+    "top": 407,
+    "width": 960,
+    "height": 2884
+  },
+  {
+    "id": "podcast-episodes-section",
+    "left": 256,
+    "top": 538,
+    "width": 928,
+    "height": 174
+  },
+  {
+    "id": "episode-card-1",
+    "left": 256,
+    "top": 566,
+    "width": 458,
+    "height": 146
+  },
+  {
+    "id": "episode-card-2",
+    "left": 726,
+    "top": 566,
+    "width": 458,
+    "height": 146
   },
   {
     "id": "media-player-console",
@@ -47,6 +187,13 @@
     "top": 752,
     "width": 80,
     "height": 80
+  },
+  {
+    "id": "podcast-cover-img",
+    "left": 274,
+    "top": 753,
+    "width": 78,
+    "height": 78
   },
   {
     "id": "podcast-title",
@@ -70,6 +217,20 @@
     "height": 40
   },
   {
+    "id": "current-time-val",
+    "left": 273,
+    "top": 923,
+    "width": 36,
+    "height": 16
+  },
+  {
+    "id": "duration-val",
+    "left": 1131,
+    "top": 923,
+    "width": 36,
+    "height": 16
+  },
+  {
     "id": "audio-controls-block",
     "left": 273,
     "top": 955,
@@ -88,21 +249,63 @@
     "left": 256,
     "top": 1053,
     "width": 928,
-    "height": 62
+    "height": 429
+  },
+  {
+    "id": "timecodes-list",
+    "left": 256,
+    "top": 1131,
+    "width": 928,
+    "height": 351
+  },
+  {
+    "id": "timecode-btn-101",
+    "left": 256,
+    "top": 1131,
+    "width": 928,
+    "height": 64
+  },
+  {
+    "id": "timecode-btn-102",
+    "left": 256,
+    "top": 1203,
+    "width": 928,
+    "height": 64
+  },
+  {
+    "id": "timecode-btn-103",
+    "left": 256,
+    "top": 1275,
+    "width": 928,
+    "height": 64
+  },
+  {
+    "id": "timecode-btn-104",
+    "left": 256,
+    "top": 1347,
+    "width": 928,
+    "height": 64
+  },
+  {
+    "id": "timecode-btn-105",
+    "left": 256,
+    "top": 1419,
+    "width": 928,
+    "height": 64
   },
   {
     "id": "theses-section",
     "left": 256,
-    "top": 1139,
+    "top": 1506,
     "width": 928,
-    "height": 463
+    "height": 1111
   },
   {
     "id": "transcript-section",
     "left": 256,
-    "top": 1626,
+    "top": 2642,
     "width": 928,
-    "height": 321
+    "height": 484
   },
   {
     "id": "sticky-mini-player",
@@ -114,15 +317,85 @@
   {
     "id": "bottom-nav-bar",
     "left": 256,
-    "top": 2045,
+    "top": 3223,
     "width": 928,
     "height": 51
   },
   {
     "id": "main-footer",
     "left": 240,
-    "top": 2144,
+    "top": 3322,
     "width": 960,
     "height": 41
+  },
+  {
+    "id": "cmp-persistent-link",
+    "left": 882,
+    "top": 3347,
+    "width": 137,
+    "height": 16
+  },
+  {
+    "id": "imprint-toggle-btn",
+    "left": 1034,
+    "top": 3347,
+    "width": 166,
+    "height": 16
+  },
+  {
+    "id": "cmp-modal-overlay",
+    "left": 384,
+    "top": 619,
+    "width": 672,
+    "height": 258
+  },
+  {
+    "id": "cmp-container",
+    "left": 408,
+    "top": 643,
+    "width": 624,
+    "height": 210
+  },
+  {
+    "id": "cmp-badge",
+    "left": 429,
+    "top": 664,
+    "width": 96,
+    "height": 22
+  },
+  {
+    "id": "cmp-title",
+    "left": 533,
+    "top": 665,
+    "width": 225,
+    "height": 20
+  },
+  {
+    "id": "cmp-description",
+    "left": 429,
+    "top": 715,
+    "width": 582,
+    "height": 59
+  },
+  {
+    "id": "cmp-actions",
+    "left": 429,
+    "top": 789,
+    "width": 582,
+    "height": 42
+  },
+  {
+    "id": "cmp-decline-btn",
+    "left": 429,
+    "top": 793,
+    "width": 285,
+    "height": 38
+  },
+  {
+    "id": "cmp-accept-btn",
+    "left": 726,
+    "top": 793,
+    "width": 285,
+    "height": 38
   }
 ]
