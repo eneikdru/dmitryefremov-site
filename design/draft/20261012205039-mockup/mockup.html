@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-slate-900" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>GDPR &amp; ePrivacy Consent Management Platform (CMP)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed-variant": "#003cad",
+            "error": "#ba1a1a",
+            "on-primary-container": "#d5dcff",
+            "tertiary-fixed": "#89f5e7",
+            "surface-container-highest": "#dae2fd",
+            "primary-fixed-dim": "#b5c4ff",
+            "primary-container": "#2557d6",
+            "on-primary-fixed": "#00164e",
+            "tertiary-fixed-dim": "#6bd8cb",
+            "surface-dim": "#d2d9f4",
+            "surface-tint": "#2053d3",
+            "on-tertiary-fixed": "#00201d",
+            "secondary": "#515f74",
+            "on-error": "#ffffff",
+            "surface": "#faf8ff",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#57657a",
+            "on-secondary-fixed": "#0d1c2e",
+            "on-tertiary-fixed-variant": "#005049",
+            "background": "#faf8ff",
+            "on-surface": "#131b2e",
+            "outline-variant": "#c3c5d7",
+            "inverse-surface": "#283044",
+            "primary": "#003eb4",
+            "surface-container": "#eaedff",
+            "error-container": "#ffdad6",
+            "surface-container-high": "#e2e7ff",
+            "on-error-container": "#93000a",
+            "surface-variant": "#dae2fd",
+            "secondary-fixed": "#d5e3fc",
+            "primary-fixed": "#dce1ff",
+            "on-tertiary-container": "#84f0e2",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-container": "#006e65",
+            "surface-container-low": "#f2f3ff",
+            "inverse-on-surface": "#eef0ff",
+            "on-tertiary": "#ffffff",
+            "on-background": "#131b2e",
+            "surface-bright": "#faf8ff",
+            "outline": "#747686",
+            "on-secondary-fixed-variant": "#3a485b",
+            "tertiary": "#00544c",
+            "secondary-container": "#d5e3fc",
+            "secondary-fixed-dim": "#b9c7df",
+            "inverse-primary": "#b5c4ff",
+            "on-surface-variant": "#434654"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "gutter-mobile": "0.75rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "space-sm": "0.5rem",
+            "margin": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "legal-disclaimer": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "label-lg": ["Inter"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-xl-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "legal-disclaimer": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "headline-md": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-full flex items-center justify-center p-0 sm:p-6 bg-slate-950 font-body-md text-on-surface antialiased selection:bg-primary selection:text-on-primary">
+<!-- Mobile Viewport Mockup Shell (iPhone 15 Pro Dimensions) -->
+<div class="relative w-full max-w-md h-[884px] sm:h-[890px] sm:max-h-[813px] sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col bg-background sm:border-[8px] sm:border-slate-800">
+<!-- Phone Hardware Dynamic Island Simulator -->
+<div class="absolute top-2 left-1/2 -translate-x-1/2 w-28 h-5 bg-slate-900 rounded-full z-[60] hidden sm:flex items-center justify-end px-3">
+<div class="w-2.5 h-2.5 rounded-full bg-slate-950/80 border border-slate-700/50"></div>
+</div>
+<!-- MOCKUP BACKGROUND CONTEXT: Real E-commerce / SaaS article preview underneath CMP backdrop -->
+<div class="absolute inset-0 z-0 overflow-y-auto pointer-events-none select-none bg-background opacity-75 blur-[2.5px] scale-[0.99] transition-all">
+<!-- Simulated SaaS Navbar -->
+<header class="px-5 py-4 border-b border-outline-variant/40 flex justify-between items-center bg-surface-container-lowest">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[18px]">cloud_sync</span>
+</div>
+<span class="font-headline-md text-headline-md tracking-tight font-bold text-on-surface">Veloce Cloud</span>
+</div>
+<span class="material-symbols-outlined text-outline">menu</span>
+</header>
+<!-- Simulated SaaS Content Area -->
+<main class="p-5 space-y-4">
+<div class="w-24 h-4 bg-secondary-container rounded text-transparent">tag</div>
+<h1 class="text-2xl font-bold font-headline-lg-mobile text-on-surface leading-tight">Next-Generation Infrastructure for Enterprise Telemetry</h1>
+<div class="flex items-center gap-3 py-1">
+<div class="w-8 h-8 rounded-full bg-slate-300"></div>
+<div>
+<div class="w-28 h-3 bg-slate-300 rounded"></div>
+<div class="w-16 h-2 bg-slate-200 rounded mt-1"></div>
+</div>
+</div>
+<div class="w-full h-44 rounded-xl bg-surface-variant overflow-hidden relative">
+<div class="w-full h-full bg-slate-200"></div>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+          Modern edge architectures demand unified observability, secure transit tunnels, and minimal egress latency. Our platform ensures GDPR compliance by default across distributed microservices.
+        </p>
+<div class="grid grid-cols-2 gap-3 pt-2">
+<div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 h-24"></div>
+<div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 h-24"></div>
+</div>
+</main>
+</div>
+<!-- CMP BACKDROP OVERLAY (Atmospheric Dark Blur as mandated in Style Guidance) -->
+<div class="absolute inset-0 bg-[#0F172A]/55 backdrop-blur-[3px] z-10 transition-opacity"></div>
+<!-- CMP MODAL / BOTTOM SHEET CONTAINER (High-fidelity Regulatory Interface) -->
+<div class="relative z-20 flex flex-col h-full justify-end">
+<!-- Elevated Modal Body (Surface 1 & 2) -->
+<section aria-label="Consent Management Dialog" class="bg-surface-container-lowest rounded-t-[28px] border-t border-x border-slate-200 shadow-[0_-8px_32px_rgba(15,23,42,0.18)] flex flex-col max-h-[813px] overflow-hidden transition-all duration-300">
+<!-- Mobile Bottom-Sheet Pull Handle -->
+<div class="pt-3 pb-1 flex justify-center items-center">
+<div class="w-12 h-1.5 rounded-full bg-outline-variant/60"></div>
+</div>
+<!-- TOP APP BAR (Shared Components Exact Blueprint Implementation) -->
+<header class="flex justify-between items-center w-full px-4 py-3 max-w-lg mx-auto bg-surface-container-lowest border-b border-outline-variant/40">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="shield">shield</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">Privacy Center</h2>
+<div class="flex items-center gap-1.5 text-[10px] text-secondary font-medium tracking-wide">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+<span>IAB TCF v2.2 &amp; GDPR Art. 7 Certified</span>
+</div>
+</div>
+</div>
+<button aria-label="Close dialogue with minimal consent" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors active:scale-95 duration-150" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+</header>
+<!-- SCROLLABLE CONSENT CANVAS -->
+<div class="overflow-y-auto px-4 py-3.5 space-y-4 flex-1 overscroll-contain">
+<!-- Banner Hero & Legal Foundation -->
+<div class="space-y-2">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-bold tracking-tight">
+              Your Privacy Choices &amp; Cookie Consent
+            </h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              We and <strong class="text-on-surface font-semibold">42 approved third-party vendors</strong> use cookies and similar technologies (e.g., local storage, pixels) to store and access information on your device. Under GDPR (Art. 6 &amp; 7) and the EU ePrivacy Directive, you have full granular control over your personal data.
+            </p>
+</div>
+<!-- Fairness & Regulatory Compliance Banner (Equal Choice Notice) -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-outline-variant/40 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">verified_user</span>
+<div class="text-[11px] leading-[16px] text-on-surface-variant">
+<span class="font-semibold text-on-surface">No Dark Patterns Policy:</span> You can reject non-essential processing with the exact same ease as accepting. Consent can be revoked anytime via the footer.
+            </div>
+</div>
+<!-- Granular Category Accordion Cards Group -->
+<div class="space-y-2.5 pt-1">
+<div class="flex items-center justify-between pb-1 px-0.5">
+<span class="font-label-lg text-label-lg text-on-surface tracking-tight">Consent Categories</span>
+<button class="text-primary font-label-sm text-label-sm hover:underline" id="toggle-all-details" type="button">
+                Expand Details
+              </button>
+</div>
+<!-- 1. Strictly Necessary (Locked ON) -->
+<div class="rounded-xl border border-outline-variant/60 bg-surface-container-lowest overflow-hidden transition-all duration-200">
+<div class="p-3.5 flex items-center justify-between gap-3">
+<div class="flex-1 pr-2">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-[15px] font-semibold text-on-surface">Strictly Necessary</span>
+<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-semibold border border-slate-200">
+                      Required
+                    </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-1">
+                    Security, session persistence, load balancing &amp; CSRF defense.
+                  </p>
+</div>
+<!-- Locked Toggle Switch (Anti-Dark Pattern Spec) -->
+<div class="flex items-center gap-2 shrink-0">
+<span class="text-[11px] text-slate-400 font-medium hidden xs:inline">Always Active</span>
+<div class="relative w-11 h-6 bg-slate-200 rounded-full flex items-center justify-end px-0.5 cursor-not-allowed" title="Required for core system operation">
+<div class="w-5 h-5 rounded-full bg-slate-400 shadow-sm flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[12px]">lock</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Functional & Preferences (Default OFF) -->
+<div class="rounded-xl border border-outline-variant/60 bg-surface-container-lowest overflow-hidden transition-all duration-200">
+<div class="p-3.5 flex items-center justify-between gap-3">
+<div class="flex-1 pr-2">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-[15px] font-semibold text-on-surface">Functional &amp; Preferences</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-semibold">
+                      4 Vendors
+                    </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Remember language, dark/light theme, and localized currency selection.
+                  </p>
+</div>
+<!-- Interactive Toggle (44x44 Touch Target Safe) -->
+<label class="relative inline-flex items-center justify-center min-w-[44px] min-h-[44px] cursor-pointer shrink-0">
+<input class="sr-only peer" id="toggle-functional" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[12px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</div>
+<!-- 3. Analytics & Performance (Default OFF) -->
+<div class="rounded-xl border border-outline-variant/60 bg-surface-container-lowest overflow-hidden transition-all duration-200">
+<div class="p-3.5 flex items-center justify-between gap-3">
+<div class="flex-1 pr-2">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-[15px] font-semibold text-on-surface">Analytics &amp; Measurement</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-semibold">
+                      12 Vendors
+                    </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Anonymized telemetry, GA4 page engagement &amp; funnel drop-off metrics.
+                  </p>
+</div>
+<!-- Interactive Toggle (44x44 Touch Target Safe) -->
+<label class="relative inline-flex items-center justify-center min-w-[44px] min-h-[44px] cursor-pointer shrink-0">
+<input class="sr-only peer" id="toggle-analytics" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[12px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</div>
+<!-- 4. Marketing & Targeted Advertising (Default OFF) -->
+<div class="rounded-xl border border-outline-variant/60 bg-surface-container-lowest overflow-hidden transition-all duration-200">
+<div class="p-3.5 flex items-center justify-between gap-3">
+<div class="flex-1 pr-2">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-[15px] font-semibold text-on-surface">Advertising &amp; Marketing</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-semibold">
+                      26 Vendors
+                    </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Cross-context behavioral targeting, Meta Pixel, Criteo &amp; IAB TCF profiles.
+                  </p>
+</div>
+<!-- Interactive Toggle (44x44 Touch Target Safe) -->
+<label class="relative inline-flex items-center justify-center min-w-[44px] min-h-[44px] cursor-pointer shrink-0">
+<input class="sr-only peer" id="toggle-marketing" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[12px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Vendor Transparency Disclosure Panel -->
+<div class="rounded-xl bg-surface-container-low p-3.5 border border-outline-variant/50 space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">domain</span>
+<span class="font-label-lg text-label-lg text-on-surface">Vendor Transparency</span>
+</div>
+<span class="text-[11px] font-medium text-primary bg-primary-fixed px-2 py-0.5 rounded-md">
+                IAB Framework
+              </span>
+</div>
+<p class="font-legal-disclaimer text-legal-disclaimer text-on-surface-variant">
+              Partners rely on either <strong class="text-on-surface">Explicit Consent</strong> or <strong class="text-on-surface">Legitimate Interest</strong>. You have the statutory right to object to processing based on legitimate interest at any time.
+            </p>
+<div class="pt-1 flex items-center justify-between border-t border-outline-variant/30">
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" type="button">
+<span>View all 42 Third-Party Partners</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+<span class="text-[10px] text-outline font-mono">TCF v2.2 #42</span>
+</div>
+</div>
+<!-- Legal & Audit Trail Metadata -->
+<div class="pt-1 pb-2 text-center space-y-2">
+<div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-secondary font-medium">
+<a class="hover:text-primary transition-colors underline-offset-2 hover:underline" href="#privacy">Privacy Policy</a>
+<span class="text-outline-variant">•</span>
+<a class="hover:text-primary transition-colors underline-offset-2 hover:underline" href="#cookie">Cookie Policy</a>
+<span class="text-outline-variant">•</span>
+<a class="hover:text-primary transition-colors underline-offset-2 hover:underline" href="#vendors">Vendor List</a>
+<span class="text-outline-variant">•</span>
+<a class="hover:text-primary transition-colors underline-offset-2 hover:underline" href="#imprint">Imprint</a>
+</div>
+<div class="text-[10px] text-outline font-mono tracking-tight">
+              Consent ID: #EU-9481-GDPR • DPO Contact: dpo@veloce.eu
+            </div>
+</div>
+</div>
+<!-- DOCKED EQUAL-PROMINENCE ACTION TRAY (Strict Anti-Dark Pattern Compliance) -->
+<footer class="p-4 bg-surface-container-lowest border-t border-outline-variant/50 shadow-lg space-y-2.5">
+<!-- Two strictly equal visual weight primary actions side-by-side -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Reject All Non-Essential Button -->
+<button class="min-h-[48px] w-full px-3 py-2.5 rounded-lg border-2 border-slate-700 bg-transparent text-slate-900 font-label-lg text-label-lg hover:bg-slate-100 active:scale-[0.98] transition-all flex items-center justify-center text-center font-bold" id="btn-reject-all" type="button">
+              Reject All
+            </button>
+<!-- Accept All Button (Exact identical height & touch prominence) -->
+<button class="min-h-[48px] w-full px-3 py-2.5 rounded-lg bg-primary text-white font-label-lg text-label-lg hover:bg-primary/95 active:scale-[0.98] transition-all shadow-sm flex items-center justify-center text-center font-bold" id="btn-accept-all" type="button">
+              Accept All
+            </button>
+</div>
+<!-- Secondary Customization Confirmation -->
+<button class="w-full min-h-[40px] py-1.5 px-3 rounded-lg text-secondary hover:text-on-surface font-label-lg text-label-lg hover:bg-surface-container-low transition-colors flex items-center justify-center gap-1.5" id="btn-save-custom" type="button">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span>Save Custom Preferences</span>
+</button>
+</footer>
+<!-- BOTTOM NAV BAR (Shared Components Exact Blueprint Implementation) -->
+<!-- Destination Intent: The user is reviewing preferences in the Privacy Center -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 border-t border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-inverse-surface shadow-md dark:shadow-none">
+<!-- Tab 1: Consent (ACTIVE based on Semantic Mapping: Consent Management page) -->
+<button class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-fixed dark:text-on-secondary rounded-xl px-3 py-1.5 active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+<span class="font-label-sm text-label-sm mt-0.5">Consent</span>
+</button>
+<!-- Tab 2: Vendors (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1.5 hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors active:scale-95 duration-150" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="domain">domain</span>
+<span class="font-label-sm text-label-sm mt-0.5">Vendors</span>
+</button>
+<!-- Tab 3: Policy (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1.5 hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors active:scale-95 duration-150" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="policy">policy</span>
+<span class="font-label-sm text-label-sm mt-0.5">Policy</span>
+</button>
+</nav>
+<!-- Bottom Spacer to accommodate Docked Navigation Bar -->
+<div class="h-14 w-full bg-surface-container-lowest shrink-0"></div>
+</section>
+</div>
+</div>
+<!-- Vanilla Micro-interaction Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleFunctional = document.getElementById('toggle-functional');
+      const toggleAnalytics = document.getElementById('toggle-analytics');
+      const toggleMarketing = document.getElementById('toggle-marketing');
+      const btnAcceptAll = document.getElementById('btn-accept-all');
+      const btnRejectAll = document.getElementById('btn-reject-all');
+      const btnSaveCustom = document.getElementById('btn-save-custom');
+
+      // Accept All Action
+      btnAcceptAll.addEventListener('click', () => {
+        toggleFunctional.checked = true;
+        toggleAnalytics.checked = true;
+        toggleMarketing.checked = true;
+        showFeedback("All categories authorized. Stored in compliance ledger.");
+      });
+
+      // Reject All Action (Zero-friction GDPR compliance)
+      btnRejectAll.addEventListener('click', () => {
+        toggleFunctional.checked = false;
+        toggleAnalytics.checked = false;
+        toggleMarketing.checked = false;
+        showFeedback("All non-essential cookies refused.");
+      });
+
+      // Save Custom Selection
+      btnSaveCustom.addEventListener('click', () => {
+        const functionalState = toggleFunctional.checked ? 'Enabled' : 'Disabled';
+        const analyticsState = toggleAnalytics.checked ? 'Enabled' : 'Disabled';
+        const marketingState = toggleMarketing.checked ? 'Enabled' : 'Disabled';
+        showFeedback(`Preferences saved: Functional (${functionalState}), Analytics (${analyticsState}), Marketing (${marketingState})`);
+      });
+
+      // Lightweight Toast Notification
+      function showFeedback(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-xs bg-slate-900 text-white text-[12px] py-2 px-3.5 rounded-lg shadow-xl font-medium tracking-tight text-center border border-slate-700 transition-all duration-200';
+        toast.innerText = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 300);
+        }, 2200);
+      }
+    });
+  </script>
+</body></html>
