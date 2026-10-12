@@ -1,5 +1,6 @@
 package com.dmitryefremov.site.ai;
 
+import com.dmitryefremov.site.Application;
 import com.dmitryefremov.site.agent.domain.AgentOrder;
 import com.dmitryefremov.site.agent.repository.AgentOrderRepository;
 import com.dmitryefremov.site.ai.domain.AiServiceOrder;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
 class AiAgentApiFlowIntegrationTest {
 
