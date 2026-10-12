@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Maison Atelier - Bespoke Commission Dossier</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: EB Garamond & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error": "#690005",
+            "surface": "#141312",
+            "on-primary-fixed-variant": "#574500",
+            "secondary-container": "#514839",
+            "secondary-fixed-dim": "#d3c4b1",
+            "error": "#ffb4ab",
+            "surface-tint": "#e9c349",
+            "surface-variant": "#363433",
+            "on-background": "#e6e1df",
+            "error-container": "#93000a",
+            "secondary-fixed": "#f0e0cc",
+            "background": "#141312",
+            "on-surface": "#e6e1df",
+            "inverse-surface": "#e6e1df",
+            "on-secondary-fixed": "#221a0e",
+            "outline-variant": "#4d4635",
+            "primary-fixed-dim": "#e9c349",
+            "on-secondary": "#382f22",
+            "on-tertiary": "#2c3226",
+            "inverse-primary": "#735c00",
+            "on-primary-container": "#554300",
+            "primary-fixed": "#ffe088",
+            "surface-container-high": "#2b2a28",
+            "tertiary-fixed-dim": "#c2c9b8",
+            "on-tertiary-fixed-variant": "#42493c",
+            "on-tertiary-fixed": "#171d13",
+            "on-secondary-fixed-variant": "#4f4537",
+            "primary-container": "#d4af37",
+            "surface-bright": "#3b3937",
+            "surface-container-low": "#1d1b1a",
+            "outline": "#99907c",
+            "on-secondary-container": "#c4b6a3",
+            "inverse-on-surface": "#32302f",
+            "tertiary-container": "#aeb5a4",
+            "secondary": "#d3c4b1",
+            "on-primary-fixed": "#241a00",
+            "surface-dim": "#141312",
+            "tertiary": "#cad1bf",
+            "surface-container-lowest": "#0f0e0d",
+            "on-surface-variant": "#d0c5af",
+            "tertiary-fixed": "#dee5d3",
+            "primary": "#f2ca50",
+            "surface-container": "#211f1e",
+            "on-primary": "#3c2f00",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-container": "#40473a",
+            "surface-container-highest": "#363433"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.375rem",
+            "space-md": "1.5rem",
+            "margin-mobile": "1.5rem",
+            "space-lg": "2.5rem",
+            "margin": "4rem",
+            "gutter-mobile": "1rem",
+            "gutter": "2rem",
+            "space-sm": "0.75rem",
+            "space-xl": "4rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["EB Garamond"],
+            "body-md": ["Manrope"],
+            "display-lg-mobile": ["EB Garamond"],
+            "headline-sm": ["EB Garamond"],
+            "headline-md": ["EB Garamond"],
+            "body-sm": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "display-lg": ["EB Garamond"],
+            "label-md": ["Manrope"],
+            "label-sm": ["Manrope"],
+            "headline-lg": ["EB Garamond"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "300" }],
+            "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0.01em", "fontWeight": "300" }],
+            "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.12em", "fontWeight": "500" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.16em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-36 font-body-md text-body-md select-none">
+<!-- TopAppBar (from Shared Components JSON) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-mobile py-space-sm bg-surface/95 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="font-label-sm text-label-sm tracking-[0.16em] text-outline uppercase">PROT-256-G</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline-sm text-headline-sm tracking-[0.16em] uppercase text-on-surface">MAISON ATELIER</span>
+<span class="font-label-sm text-[9px] tracking-[0.2em] text-primary/80 uppercase">HAUTE INGÉNIERIE</span>
+</div>
+<button aria-label="Liaison Support" class="flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]" data-icon="support_agent">support_agent</span>
+</button>
+</header>
+<!-- Main Canvas Container -->
+<main class="w-full max-w-lg mx-auto pt-24 px-margin-mobile flex flex-col gap-y-space-md">
+<!-- Hero Title & Curatorial Subtext -->
+<section class="space-y-space-xs pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-secondary-container/40 border border-outline-variant/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase text-secondary tracking-widest">Confidential Intake Chamber</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-normal tracking-tight">
+        Bespoke Commission Dossier
+      </h1>
+<p class="font-body-sm text-body-sm text-secondary font-light leading-relaxed">
+        Phase I: Bilateral Non-Disclosure &amp; Creative Premise. Curating sovereign artifacts of singular architectural integrity.
+      </p>
+</section>
+<!-- Cryptographic NDA Status Card -->
+<section class="relative p-space-md bg-surface-container-low rounded border border-outline-variant/30 overflow-hidden shadow-2xl">
+<!-- Watermark / Seal Accent -->
+<div class="absolute -right-6 -bottom-6 opacity-5 pointer-events-none select-none">
+<span class="material-symbols-outlined text-[130px] text-primary">verified_user</span>
+</div>
+<div class="flex items-start justify-between gap-3 mb-space-sm">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface">Mutual NDA Status: Active &amp; Sealed</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline font-light">
+            Cryptographic Escrow Protocol · Place Vendôme &amp; Geneva
+          </p>
+</div>
+<span class="px-2 py-1 rounded bg-primary/10 border border-primary/30 font-label-sm text-label-sm text-primary tracking-widest font-semibold uppercase">
+          CLEARANCE IV
+        </span>
+</div>
+<!-- Detail Badges -->
+<div class="grid grid-cols-2 gap-2 pt-2 border-t border-outline-variant/20 mb-3">
+<div>
+<span class="block font-label-sm text-[9px] text-outline uppercase tracking-wider">Covenant Reference</span>
+<span class="font-body-sm text-body-sm text-secondary font-mono tracking-tight">#AT-9842-NDA</span>
+</div>
+<div>
+<span class="block font-label-sm text-[9px] text-outline uppercase tracking-wider">Bilateral Timestamp</span>
+<span class="font-body-sm text-body-sm text-secondary font-mono tracking-tight">2025.04.18 · 14:02:19 Z</span>
+</div>
+</div>
+<!-- Action: Covenant Drawer -->
+<button class="w-full flex items-center justify-between py-2 px-2.5 rounded bg-surface-container/60 hover:bg-surface-container transition-colors border border-outline-variant/25 text-left group">
+<span class="font-label-sm text-label-sm text-secondary group-hover:text-primary transition-colors tracking-widest uppercase">
+          Inspect Executed Bilateral Covenant
+        </span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary text-[16px] transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</section>
+<!-- Field 1: Commission Moniker (Confidential Masking) -->
+<section class="space-y-2 bg-surface-container-low p-space-md rounded border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface" for="commission-name">
+          Commission Moniker
+        </label>
+<span class="font-label-sm text-[9px] text-primary/70 uppercase tracking-widest">Confidential Title</span>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded px-3 py-2.5 text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 focus:outline-none transition-colors" id="commission-name" placeholder="e.g. Project Solitude" type="text" value="Project Obsidian Aegis"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-outline text-[12px]">
+<span class="material-symbols-outlined text-[16px]" data-icon="key">key</span>
+</div>
+</div>
+<p class="font-body-sm text-[11px] text-outline font-light flex items-center gap-1">
+<span class="text-primary">◆</span> Zero-Knowledge Encrypted Client Record — Atelier Clearance Level IV
+      </p>
+</section>
+<!-- Field 2: Aesthetic Intent & Archetype (Artisanal Abstraction) -->
+<section class="space-y-3 bg-surface-container-low p-space-md rounded border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface">
+          Aesthetic Intent &amp; Archetype
+        </span>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Select One</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary font-light">
+        Curatorial discipline dictates sculptural methodology and master artisan assignment.
+      </p>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<!-- Archetype 1 (Active) -->
+<div class="p-3 rounded bg-surface-container border border-primary/50 relative flex flex-col justify-between h-24">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-[10px] text-primary tracking-widest uppercase font-semibold">01 / ARCHETYPE</span>
+<span class="text-primary text-[14px]">◆</span>
+</div>
+<div>
+<span class="block font-headline-sm text-[16px] text-on-surface font-normal">Haute Horology</span>
+<span class="block font-body-sm text-[10px] text-outline font-light">Tourbillon &amp; Chronometry</span>
+</div>
+</div>
+<!-- Archetype 2 -->
+<div class="p-3 rounded bg-surface-container-lowest border border-outline-variant/30 hover:border-outline-variant transition-colors flex flex-col justify-between h-24 opacity-80">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-[10px] text-outline tracking-widest uppercase">02 / ARCHETYPE</span>
+</div>
+<div>
+<span class="block font-headline-sm text-[16px] text-on-surface-variant font-normal">Fine Metallurgy</span>
+<span class="block font-body-sm text-[10px] text-outline font-light">Bespoke Monolith Sculpting</span>
+</div>
+</div>
+<!-- Archetype 3 -->
+<div class="p-3 rounded bg-surface-container-lowest border border-outline-variant/30 hover:border-outline-variant transition-colors flex flex-col justify-between h-24 opacity-80">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-[10px] text-outline tracking-widest uppercase">03 / ARCHETYPE</span>
+</div>
+<div>
+<span class="block font-headline-sm text-[16px] text-on-surface-variant font-normal">Haute Joaillerie</span>
+<span class="block font-body-sm text-[10px] text-outline font-light">Rare Gemological Setting</span>
+</div>
+</div>
+<!-- Archetype 4 -->
+<div class="p-3 rounded bg-surface-container-lowest border border-outline-variant/30 hover:border-outline-variant transition-colors flex flex-col justify-between h-24 opacity-80">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-[10px] text-outline tracking-widest uppercase">04 / ARCHETYPE</span>
+</div>
+<div>
+<span class="block font-headline-sm text-[16px] text-on-surface-variant font-normal">Private Objet d'Art</span>
+<span class="block font-body-sm text-[10px] text-outline font-light">Curated Kinetic Reliquary</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Field 3: Materiality Curation (Replacing raw BOM) -->
+<section class="space-y-3 bg-surface-container-low p-space-md rounded border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface">
+          Materiality Curation
+        </span>
+<span class="font-label-sm text-[9px] text-secondary tracking-widest uppercase">Provenance Certified</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary font-light">
+        Mineral and alloy sources extracted through ethical, bilateral private reserves.
+      </p>
+<div class="space-y-2">
+<!-- Material 1 (Selected) -->
+<div class="flex items-center justify-between p-3 rounded bg-surface-container border border-primary/40">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#202024] border border-primary/30 flex items-center justify-center">
+<span class="w-2.5 h-2.5 rounded-full bg-primary/70"></span>
+</div>
+<div>
+<span class="block font-body-md text-body-md text-on-surface font-medium">Damascus Titanium &amp; Meteorite</span>
+<span class="block font-body-sm text-[11px] text-outline">Hand-folded pattern, Gibeon celestial fragment</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<!-- Material 2 -->
+<div class="flex items-center justify-between p-3 rounded bg-surface-container-lowest border border-outline-variant/20 hover:border-outline-variant/50 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#111112] border border-outline-variant/30 flex items-center justify-center">
+<span class="w-2.5 h-2.5 rounded-full bg-surface-variant"></span>
+</div>
+<div>
+<span class="block font-body-md text-body-md text-on-surface-variant font-normal">Vanta Midnight Ceramic</span>
+<span class="block font-body-sm text-[11px] text-outline">Light-absorptive crystalline matrix</span>
+</div>
+</div>
+<span class="w-4 h-4 rounded-full border border-outline-variant/40"></span>
+</div>
+<!-- Material 3 -->
+<div class="flex items-center justify-between p-3 rounded bg-surface-container-lowest border border-outline-variant/20 hover:border-outline-variant/50 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#353432] border border-outline-variant/30 flex items-center justify-center">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+</div>
+<div>
+<span class="block font-body-md text-body-md text-on-surface-variant font-normal">Grade 5 Satin Platinum &amp; Osmium</span>
+<span class="block font-body-sm text-[11px] text-outline">High-density cryogenic finish</span>
+</div>
+</div>
+<span class="w-4 h-4 rounded-full border border-outline-variant/40"></span>
+</div>
+</div>
+</section>
+<!-- Field 4: Tolerances & Craftsmanship Caliber (Abstracted QA/QC) -->
+<section class="space-y-3 bg-surface-container-low p-space-md rounded border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface">
+          Craftsmanship Caliber
+        </span>
+<span class="font-label-sm text-[9px] text-primary tracking-widest uppercase">Geneva Seal Standard</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary font-light">
+        Hand-burnished tolerances verified via optical interferometry under Master Atelier supervision.
+      </p>
+<div class="p-3 bg-surface-container-lowest rounded border border-outline-variant/30 space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface">Artisan Hand-Burnished (&lt;0.01mm Chiseled Fit)</span>
+<span class="font-label-sm text-[9px] text-primary uppercase font-mono">SPEC 0.008µm</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+<div class="flex justify-between text-[10px] text-outline font-light pt-1">
+<span>Anglage &amp; Mirror Black Polish</span>
+<span>Dual-Axis Guilloché</span>
+</div>
+</div>
+</section>
+<!-- Field 5: Confidentiality Tier Selection -->
+<section class="space-y-3 bg-surface-container-low p-space-md rounded border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface">
+          Confidentiality Tier
+        </span>
+<span class="font-label-sm text-[9px] text-outline uppercase tracking-wider">Provenance Masking</span>
+</div>
+<div class="space-y-2">
+<!-- Tier 1: Ghost Atelier (Active) -->
+<label class="flex items-start gap-3 p-3 rounded bg-surface-container border border-primary/50 cursor-pointer">
+<input checked="" class="mt-1 text-primary focus:ring-0 bg-surface-container-lowest border-outline-variant" name="confidentiality" type="radio"/>
+<div class="space-y-0.5">
+<span class="block font-label-md text-label-md uppercase text-on-surface tracking-wider">Ghost Atelier (Total Anonymity)</span>
+<span class="block font-body-sm text-[11px] text-outline font-light">
+              Artifact schematics sealed post-delivery. Zero photographic archival or institutional cataloging.
+            </span>
+</div>
+</label>
+<!-- Tier 2: Private Archive -->
+<label class="flex items-start gap-3 p-3 rounded bg-surface-container-lowest border border-outline-variant/20 hover:border-outline-variant/40 cursor-pointer opacity-70">
+<input class="mt-1 text-primary focus:ring-0 bg-surface-container-lowest border-outline-variant" name="confidentiality" type="radio"/>
+<div class="space-y-0.5">
+<span class="block font-label-md text-label-md uppercase text-on-surface-variant tracking-wider">Private Archive Vault</span>
+<span class="block font-body-sm text-[11px] text-outline font-light">
+              Restricted cataloging accessible strictly via biometrically signed heir credentials.
+            </span>
+</div>
+</label>
+</div>
+</section>
+<!-- Field 6: Direct Private Concierge Liaison -->
+<section class="p-space-md bg-surface-container-low rounded border border-outline-variant/30 relative">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface">
+          Assigned Senior Liaison
+        </span>
+<span class="inline-flex items-center gap-1 font-label-sm text-[9px] text-primary uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Line Secure
+        </span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded bg-surface-container-high border border-primary/20 flex items-center justify-center text-primary font-headline-sm text-headline-sm">
+          HV
+        </div>
+<div class="flex-1 min-w-0">
+<span class="block font-headline-sm text-[17px] text-on-surface font-normal truncate">Henri de Valois</span>
+<span class="block font-body-sm text-[11px] text-outline font-light truncate">Curator Principal · Geneva Salon Private Desk</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button aria-label="Encrypted Audio Hotlink" class="w-8 h-8 rounded bg-surface-container border border-outline-variant/30 flex items-center justify-center text-secondary hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[16px]" data-icon="phone_in_talk">phone_in_talk</span>
+</button>
+<button aria-label="Encrypted Chat Hotlink" class="w-8 h-8 rounded bg-surface-container border border-outline-variant/30 flex items-center justify-center text-secondary hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[16px]" data-icon="chat_bubble">chat_bubble</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Execution Action Bar -->
+<aside class="fixed bottom-14 left-0 w-full z-40 px-margin-mobile py-space-sm bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/20">
+<div class="max-w-lg mx-auto space-y-2">
+<button class="w-full py-3.5 px-space-md rounded bg-[#1C1A17] border border-primary/60 hover:bg-[#24221E] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2 group shadow-lg">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="enhanced_encryption" style="font-variation-settings: 'FILL' 1;">enhanced_encryption</span>
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-[0.14em] font-medium group-hover:text-primary transition-colors">
+          Execute Sealed Dossier &amp; Dispatch
+        </span>
+</button>
+<p class="font-body-sm text-[10px] text-outline/80 text-center font-light tracking-wide">
+        Protected by sovereign dual-signatory escrow protocols. No third-party data dispersion.
+      </p>
+</div>
+</aside>
+<!-- BottomNavBar (from Shared Components JSON) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter-mobile py-space-xs bg-surface-container-lowest/95 backdrop-blur-lg border-t border-outline-variant/30">
+<!-- Active: Dossier (Matches current primary intent) -->
+<a aria-current="page" class="flex flex-col items-center justify-center text-primary font-semibold tracking-wider uppercase active:opacity-80 transition-opacity duration-150 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="description" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-sm text-[9px] mt-0.5">Dossier</span>
+</a>
+<!-- Inactive: Milestones -->
+<a class="flex flex-col items-center justify-center text-outline tracking-wider uppercase hover:text-primary-fixed-dim transition-colors duration-200 active:opacity-80 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="timeline">timeline</span>
+<span class="font-label-sm text-[9px] mt-0.5">Milestones</span>
+</a>
+<!-- Inactive: Vault -->
+<a class="flex flex-col items-center justify-center text-outline tracking-wider uppercase hover:text-primary-fixed-dim transition-colors duration-200 active:opacity-80 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="key">key</span>
+<span class="font-label-sm text-[9px] mt-0.5">Vault</span>
+</a>
+<!-- Inactive: Concierge -->
+<a class="flex flex-col items-center justify-center text-outline tracking-wider uppercase hover:text-primary-fixed-dim transition-colors duration-200 active:opacity-80 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-sm text-[9px] mt-0.5">Concierge</span>
+</a>
+</nav>
+</body></html>
