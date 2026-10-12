@@ -1,0 +1,12 @@
+{
+  "testsRun": 8,
+  "testsPassed": 8,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given a generated backup file, when a restore is initiated on a blank test instance, then the data must be fully recovered without corruption.",
+    "Given the recovered instance, when verified, then it must perfectly match the pre-backup state."
+  ],
+  "coverageDeltaPercent": 0,
+  "verdict": "pass",
+  "notes": "Executed scripts/test_backup_restore.sh. All 8 verification steps (backup creation, metric emission, file permissions 600, offsite persistence, restore execution, data integrity query/content checks, and retention purging) passed cleanly."
+}
