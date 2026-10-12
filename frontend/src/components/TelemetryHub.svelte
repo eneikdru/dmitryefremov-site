@@ -2,11 +2,12 @@
   import ArticleStreamView from './ArticleStreamView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
+  import BlackBoxIntakeView from './BlackBoxIntakeView.svelte';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import ConsentManager from './ConsentManager.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
-  export let activeTab: 'article' | 'contact' | 'podcast' = 'article';
+  export let activeTab: 'article' | 'contact' | 'podcast' | 'intake' = 'article';
   export let showImprintModal: boolean = false;
   export let isCmpModalOpen: boolean = false;
 
@@ -99,6 +100,14 @@
           >
             [CONTACT_TERMINAL]
           </button>
+          <button
+            id="tab-btn-intake"
+            type="button"
+            class="px-4 py-2 rounded transition-colors {activeTab === 'intake' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+            on:click={() => (activeTab = 'intake')}
+          >
+            [INTAKE_PROTOCOL]
+          </button>
         </nav>
       </header>
 
@@ -108,8 +117,10 @@
           <ArticleStreamView />
         {:else if activeTab === 'podcast'}
           <PodcastPlayerView />
-        {:else}
+        {:else if activeTab === 'contact'}
           <TelemetryContactTerminalView />
+        {:else}
+          <BlackBoxIntakeView {theme} />
         {/if}
       </section>
     </div>

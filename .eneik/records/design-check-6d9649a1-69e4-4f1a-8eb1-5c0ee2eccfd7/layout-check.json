@@ -1,0 +1,128 @@
+[
+  {
+    "id": "main-header",
+    "left": 240,
+    "top": 32,
+    "width": 960,
+    "height": 289
+  },
+  {
+    "id": "hero-section",
+    "left": 240,
+    "top": 82,
+    "width": 960,
+    "height": 148
+  },
+  {
+    "id": "nav-tabs",
+    "left": 240,
+    "top": 254,
+    "width": 637,
+    "height": 42
+  },
+  {
+    "id": "tab-btn-intake",
+    "left": 718,
+    "top": 259,
+    "width": 154,
+    "height": 32
+  },
+  {
+    "id": "blackbox-intake-root",
+    "left": 384,
+    "top": 345,
+    "width": 672,
+    "height": 1604
+  },
+  {
+    "id": "intake-header",
+    "left": 384,
+    "top": 345,
+    "width": 672,
+    "height": 62
+  },
+  {
+    "id": "security-telemetry-bar",
+    "left": 384,
+    "top": 431,
+    "width": 672,
+    "height": 25
+  },
+  {
+    "id": "confidentiality-banner",
+    "left": 384,
+    "top": 480,
+    "width": 672,
+    "height": 122
+  },
+  {
+    "id": "section-mandate-identification",
+    "left": 384,
+    "top": 626,
+    "width": 672,
+    "height": 670
+  },
+  {
+    "id": "codename-input",
+    "left": 405,
+    "top": 714,
+    "width": 630,
+    "height": 42
+  },
+  {
+    "id": "tier-airgapped-btn",
+    "left": 620,
+    "top": 807,
+    "width": 200,
+    "height": 34
+  },
+  {
+    "id": "section-proprietary-ip",
+    "left": 384,
+    "top": 1320,
+    "width": 672,
+    "height": 340
+  },
+  {
+    "id": "file-drop-zone",
+    "left": 405,
+    "top": 1382,
+    "width": 630,
+    "height": 179
+  },
+  {
+    "id": "section-ratification",
+    "left": 384,
+    "top": 1684,
+    "width": 672,
+    "height": 200
+  },
+  {
+    "id": "nda-agreed-checkbox",
+    "left": 405,
+    "top": 1750,
+    "width": 16,
+    "height": 16
+  },
+  {
+    "id": "submit-mandate-btn",
+    "left": 405,
+    "top": 1790,
+    "width": 630,
+    "height": 48
+  },
+  {
+    "id": "intake-bottom-nav",
+    "left": 384,
+    "top": 1907,
+    "width": 672,
+    "height": 42
+  },
+  {
+    "id": "main-footer",
+    "left": 240,
+    "top": 1981,
+    "width": 960,
+    "height": 41
+  }
+]
