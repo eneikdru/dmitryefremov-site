@@ -147,4 +147,37 @@ describe('ArticleStreamView Component', () => {
     expect(target.textContent).toContain('AVAILABLE_LONGREADS (1)');
     expect(target.textContent).toContain('Theory of Constraints in Distributed Pipeline Throughput');
   });
+
+  it('renders realistic Russian essay content and image alt text when navigated to an essay', () => {
+    component = mount(ArticleStreamView, { target });
+
+    // Verify Russian image alt text in ArticleStreamView
+    const coverImg = target.querySelector('img#article-cover-img');
+    expect(coverImg).not.toBeNull();
+    expect(coverImg?.getAttribute('alt')).toContain('Иллюстрация статьи Deontic Logic in Autonomous Process Architecture');
+
+    // Test markdown parsing of realistic Russian essay content
+    const russianEssayMarkdown = `# Деонтическая логика и нормативные инварианты
+
+В формальной архитектуре программного обеспечения **деонтическая логика** предоставляет нормативную основу для явных обязательств, разрешений и запретов.
+
+> "Ваш код и ваши решения — это то, кто вы есть на самом деле."
+> — Манифест автономных систем
+
+## Математическая формулировка нормативных инвариантов
+
+$$
+\\mathcal{O}(\\varphi) \\iff \\neg \\mathcal{P}(\\neg \\varphi)
+$$
+
+Состояние переходов должно удовлетворять строгому условию $\\mathcal{O}(\\text{Соблюдение Инвариантов})$.`;
+
+    const parsed = parseMarkdown(russianEssayMarkdown);
+    expect(parsed.hasFormulas).toBe(true);
+    expect(parsed.hasQuotes).toBe(true);
+    expect(parsed.html).toContain('Деонтическая логика и нормативные инварианты');
+    expect(parsed.html).toContain('Ваш код и ваши решения — это то, кто вы есть на самом деле.');
+    expect(parsed.html).toContain('Математическая формулировка нормативных инвариантов');
+    expect(parsed.html).toContain('Соблюдение Инвариантов');
+  });
 });
