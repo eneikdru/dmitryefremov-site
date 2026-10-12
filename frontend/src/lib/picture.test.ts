@@ -3,19 +3,25 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import ResponsivePicture from '../components/ResponsivePicture.svelte';
 import TelemetryHub from '../components/TelemetryHub.svelte';
 import { mount, unmount } from 'svelte';
+import * as fs from 'fs';
+import * as path from 'path';
 
 describe('ResponsivePicture Component', () => {
   let target: HTMLElement;
   let component: any;
 
   beforeEach(() => {
+    component = null;
     target = document.createElement('div');
     document.body.appendChild(target);
     return () => {
       if (component) {
         unmount(component);
+        component = null;
       }
-      document.body.removeChild(target);
+      if (target.parentNode) {
+        document.body.removeChild(target);
+      }
     };
   });
 
@@ -107,5 +113,45 @@ describe('ResponsivePicture Component', () => {
 
     const img = picture?.querySelector('img');
     expect(img?.getAttribute('alt')).toBe('Официальный студийный портрет автора Дмитрия Ефремова');
+  });
+
+  it('successfully resolves all AVIF and WebP source paths to existing physical files in public assets', () => {
+    const assets = ['dmitry_efremov_studio', 'podcast_studio_cover', 'article_deontic_studio'];
+    const bps = [375, 768, 1440];
+    const formats = ['avif', 'webp'];
+
+    for (const assetKey of assets) {
+      const container = document.createElement('div');
+      target.appendChild(container);
+
+      const comp = mount(ResponsivePicture, {
+        target: container,
+        props: {
+          assetKey,
+          alt: `Test asset ${assetKey}`,
+          breakpoints: bps,
+          formats
+        }
+      });
+
+      const sources = container.querySelectorAll('source');
+      expect(sources.length).toBe(formats.length);
+
+      sources.forEach((source) => {
+        const srcset = source.getAttribute('srcset') || '';
+        const paths = srcset.split(',').map((s) => s.trim().split(' ')[0]);
+        expect(paths.length).toBe(bps.length);
+
+        for (const relPath of paths) {
+          const fsPath = path.resolve(process.cwd(), 'public', relPath.replace(/^\//, ''));
+          expect(fs.existsSync(fsPath)).toBe(true);
+        }
+      });
+
+      unmount(comp);
+      if (container.parentNode) {
+        target.removeChild(container);
+      }
+    }
   });
 });

@@ -113,7 +113,7 @@ class ArticleRepositoryTest {
 
         Page<Article> page = articleRepository.findAllByPublishedAtNotNullOrderByPublishedAtDesc(PageRequest.of(0, 10));
 
-        // 3 seeded articles + 2 newly saved published articles
-        assertThat(page.getTotalElements()).isEqualTo(5);
+        // 5 seeded articles + 2 newly saved published articles
+        assertThat(page.getTotalElements()).isEqualTo(7);
     }
 }

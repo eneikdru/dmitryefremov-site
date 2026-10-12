@@ -14,6 +14,8 @@ export interface ScrollDepthPayload {
   depth: number; // 25, 50, 75, 100
 }
 
+import { isTelemetryAllowed } from './consent';
+
 export interface OutboundClickPayload {
   destination: string;
   label?: string;
@@ -37,8 +39,11 @@ class TelemetryService {
     return true;
   }
 
-  public trackScrollDepth(articleId: string, depth: number): TelemetryEvent {
+  public trackScrollDepth(articleId: string, depth: number): TelemetryEvent | null {
     this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
     const event: TelemetryEvent = {
       type: 'scroll_depth',
       timestamp: new Date().toISOString(),
@@ -51,8 +56,11 @@ class TelemetryService {
     return event;
   }
 
-  public trackOutboundClick(destination: string, label?: string, platform?: string): TelemetryEvent {
+  public trackOutboundClick(destination: string, label?: string, platform?: string): TelemetryEvent | null {
     this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
     const event: TelemetryEvent = {
       type: 'outbound_click',
       timestamp: new Date().toISOString(),

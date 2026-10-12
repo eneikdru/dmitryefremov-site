@@ -3,10 +3,12 @@
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import ResponsivePicture from './ResponsivePicture.svelte';
+  import ConsentManager from './ConsentManager.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
   export let activeTab: 'article' | 'contact' | 'podcast' = 'article';
   export let showImprintModal: boolean = false;
+  export let isCmpModalOpen: boolean = false;
 
   function toggleTheme() {
     theme = theme === 'dark' ? 'light' : 'dark';
@@ -14,6 +16,10 @@
 
   function toggleImprint() {
     showImprintModal = !showImprintModal;
+  }
+
+  function toggleCmpModal() {
+    isCmpModalOpen = !isCmpModalOpen;
   }
 </script>
 
@@ -115,6 +121,14 @@
       </div>
       <div class="flex items-center gap-4">
         <button
+          id="cmp-persistent-link"
+          type="button"
+          on:click={toggleCmpModal}
+          class="underline hover:text-current transition-colors cursor-pointer"
+        >
+          Privacy Preferences
+        </button>
+        <button
           id="imprint-toggle-btn"
           type="button"
           on:click={toggleImprint}
@@ -150,5 +164,8 @@
         </div>
       </div>
     {/if}
+
+    <!-- Consent Management Platform Banner & Modal -->
+    <ConsentManager {theme} bind:isOpen={isCmpModalOpen} />
   </main>
 </div>
