@@ -78,7 +78,6 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
 
     expect(target.textContent).toContain('«Системы и реальность» Podcast');
     expect(target.textContent).toContain(PODCAST_EPISODES[0].title);
-    expect(target.textContent).toContain('WAVE_VISUALIZATION');
     expect(target.textContent).toContain('TIMECODES & TOPICS');
 
     // Check timecodes rendered

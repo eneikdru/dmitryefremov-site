@@ -1,0 +1,128 @@
+[
+  {
+    "id": "main-header",
+    "left": 240,
+    "top": 32,
+    "width": 960,
+    "height": 289
+  },
+  {
+    "id": "hero-section",
+    "left": 240,
+    "top": 82,
+    "width": 960,
+    "height": 148
+  },
+  {
+    "id": "nav-tabs",
+    "left": 240,
+    "top": 254,
+    "width": 475,
+    "height": 42
+  },
+  {
+    "id": "podcast-player-container",
+    "left": 240,
+    "top": 407,
+    "width": 960,
+    "height": 1705
+  },
+  {
+    "id": "player-top-header",
+    "left": 240,
+    "top": 345,
+    "width": 960,
+    "height": 62
+  },
+  {
+    "id": "media-player-console",
+    "left": 256,
+    "top": 735,
+    "width": 928,
+    "height": 294
+  },
+  {
+    "id": "podcast-cover-container",
+    "left": 273,
+    "top": 752,
+    "width": 80,
+    "height": 80
+  },
+  {
+    "id": "podcast-title",
+    "left": 367,
+    "top": 778,
+    "width": 800,
+    "height": 25
+  },
+  {
+    "id": "waveform-visualizer-module",
+    "left": 273,
+    "top": 848,
+    "width": 894,
+    "height": 91
+  },
+  {
+    "id": "waveform-container",
+    "left": 273,
+    "top": 861,
+    "width": 894,
+    "height": 40
+  },
+  {
+    "id": "audio-controls-block",
+    "left": 273,
+    "top": 955,
+    "width": 894,
+    "height": 57
+  },
+  {
+    "id": "play-pause-btn",
+    "left": 714,
+    "top": 964,
+    "width": 48,
+    "height": 48
+  },
+  {
+    "id": "chapters-section",
+    "left": 256,
+    "top": 1053,
+    "width": 928,
+    "height": 62
+  },
+  {
+    "id": "theses-section",
+    "left": 256,
+    "top": 1139,
+    "width": 928,
+    "height": 463
+  },
+  {
+    "id": "transcript-section",
+    "left": 256,
+    "top": 1626,
+    "width": 928,
+    "height": 321
+  },
+  {
+    "id": "sticky-mini-player",
+    "left": 256,
+    "top": 794,
+    "width": 928,
+    "height": 50
+  },
+  {
+    "id": "bottom-nav-bar",
+    "left": 256,
+    "top": 2045,
+    "width": 928,
+    "height": 51
+  },
+  {
+    "id": "main-footer",
+    "left": 240,
+    "top": 2144,
+    "width": 960,
+    "height": 41
+  }
+]
