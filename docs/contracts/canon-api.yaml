@@ -1,0 +1,291 @@
+openapi: 3.0.3
+info:
+  title: Canon Content Schema & Taxonomy API Contract
+  description: API specification for Tier 1 Canon Content (Evergreen Manifestos, Ontology, and Glossary across 4 practical domains with relational cross-referencing).
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/canon:
+    get:
+      summary: List canon items
+      description: Retrieves a paginated list of Tier 1 Canon items (manifestos, glossary terms, ontology) with optional filtering by domain and type.
+      operationId: listCanonItems
+      parameters:
+        - name: domain
+          in: query
+          description: Filter by domain (AUTONOMOUS_ENGINEERING, AGENTIC_ECONOMY, PRAGMATIC_BUSINESS_STRATEGY, PHILOSOPHY_OF_MIND)
+          required: false
+          schema:
+            type: string
+            enum:
+              - AUTONOMOUS_ENGINEERING
+              - AGENTIC_ECONOMY
+              - PRAGMATIC_BUSINESS_STRATEGY
+              - PHILOSOPHY_OF_MIND
+        - name: type
+          in: query
+          description: Filter by item type (MANIFESTO, GLOSSARY_TERM, ONTOLOGY)
+          required: false
+          schema:
+            type: string
+            enum:
+              - MANIFESTO
+              - GLOSSARY_TERM
+              - ONTOLOGY
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successfully retrieved canon items list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CanonPage'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create canon item
+      description: Creates a new Tier 1 Canon item strongly typed to one of the 4 domains.
+      operationId: createCanonItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CanonItem'
+      responses:
+        '201':
+          description: Canon item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CanonItem'
+        '400':
+          description: Invalid item payload or duplicate slug
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/canon/{slug}:
+    get:
+      summary: Get canon item by slug
+      description: Retrieves a single Canon item by slug, including its incoming and outgoing relational cross-references.
+      operationId: getCanonItemBySlug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Unique URL identifier slug of the canon item
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Canon item found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CanonItem'
+        '404':
+          description: Canon item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/canon/{sourceSlug}/references/{targetSlug}:
+    post:
+      summary: Create relational cross-reference between canon items
+      description: Establishes a relational deep link cross-reference from source canon item to target canon item.
+      operationId: addCrossReference
+      parameters:
+        - name: sourceSlug
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: targetSlug
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: relationshipType
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [REFERENCES, SUPERSEDES, RELATED, DEPENDS_ON, EXTENDS]
+            default: REFERENCES
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Cross reference created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CanonCrossReference'
+        '400':
+          description: Invalid request parameters or source item equal to target
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CanonDomain:
+      type: string
+      enum:
+        - AUTONOMOUS_ENGINEERING
+        - AGENTIC_ECONOMY
+        - PRAGMATIC_BUSINESS_STRATEGY
+        - PHILOSOPHY_OF_MIND
+
+    CanonType:
+      type: string
+      enum:
+        - MANIFESTO
+        - GLOSSARY_TERM
+        - ONTOLOGY
+
+    CanonRelationshipType:
+      type: string
+      enum:
+        - REFERENCES
+        - SUPERSEDES
+        - RELATED
+        - DEPENDS_ON
+        - EXTENDS
+
+    CanonCrossReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        sourceSlug:
+          type: string
+        sourceTitle:
+          type: string
+        targetSlug:
+          type: string
+        targetTitle:
+          type: string
+        relationshipType:
+          $ref: '#/components/schemas/CanonRelationshipType'
+        description:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+
+    CanonItem:
+      type: object
+      required:
+        - slug
+        - title
+        - type
+        - domain
+        - content
+      properties:
+        id:
+          type: integer
+          format: int64
+        slug:
+          type: string
+        title:
+          type: string
+        type:
+          $ref: '#/components/schemas/CanonType'
+        domain:
+          $ref: '#/components/schemas/CanonDomain'
+        summary:
+          type: string
+          nullable: true
+        content:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        outgoingReferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/CanonCrossReference'
+        incomingReferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/CanonCrossReference'
+
+    CanonPage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/CanonItem'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
