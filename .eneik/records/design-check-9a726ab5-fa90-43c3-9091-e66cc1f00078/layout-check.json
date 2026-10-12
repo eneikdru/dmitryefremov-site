@@ -1,0 +1,184 @@
+[
+  {
+    "id": "main-header",
+    "left": 240,
+    "top": 32,
+    "width": 960,
+    "height": 289
+  },
+  {
+    "id": "hero-section",
+    "left": 240,
+    "top": 82,
+    "width": 960,
+    "height": 148
+  },
+  {
+    "id": "nav-tabs",
+    "left": 240,
+    "top": 254,
+    "width": 630,
+    "height": 42
+  },
+  {
+    "id": "tab-btn-intake",
+    "left": 245,
+    "top": 259,
+    "width": 147,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 400,
+    "top": 259,
+    "width": 147,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 555,
+    "top": 259,
+    "width": 140,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 703,
+    "top": 259,
+    "width": 162,
+    "height": 32
+  },
+  {
+    "id": "intake-dossier-root",
+    "left": 384,
+    "top": 345,
+    "width": 672,
+    "height": 1982
+  },
+  {
+    "id": "intake-hero-section",
+    "left": 384,
+    "top": 345,
+    "width": 672,
+    "height": 118
+  },
+  {
+    "id": "intake-dossier-title",
+    "left": 384,
+    "top": 379,
+    "width": 672,
+    "height": 36
+  },
+  {
+    "id": "nda-status-card",
+    "left": 384,
+    "top": 487,
+    "width": 672,
+    "height": 171
+  },
+  {
+    "id": "inspect-covenant-btn",
+    "left": 401,
+    "top": 607,
+    "width": 638,
+    "height": 34
+  },
+  {
+    "id": "section-moniker",
+    "left": 384,
+    "top": 682,
+    "width": 672,
+    "height": 128
+  },
+  {
+    "id": "commission-name",
+    "left": 401,
+    "top": 727,
+    "width": 638,
+    "height": 38
+  },
+  {
+    "id": "section-premise",
+    "left": 384,
+    "top": 834,
+    "width": 672,
+    "height": 145
+  },
+  {
+    "id": "creative-premise",
+    "left": 401,
+    "top": 879,
+    "width": 638,
+    "height": 78
+  },
+  {
+    "id": "section-archetypes",
+    "left": 384,
+    "top": 1003,
+    "width": 672,
+    "height": 296
+  },
+  {
+    "id": "archetype-btn-horology",
+    "left": 401,
+    "top": 1080,
+    "width": 314,
+    "height": 96
+  },
+  {
+    "id": "archetype-btn-metallurgy",
+    "left": 725,
+    "top": 1080,
+    "width": 314,
+    "height": 96
+  },
+  {
+    "id": "section-materiality",
+    "left": 384,
+    "top": 1323,
+    "width": 672,
+    "height": 308
+  },
+  {
+    "id": "material-btn-damascus",
+    "left": 401,
+    "top": 1400,
+    "width": 638,
+    "height": 66
+  },
+  {
+    "id": "section-craftsmanship",
+    "left": 384,
+    "top": 1655,
+    "width": 672,
+    "height": 178
+  },
+  {
+    "id": "section-confidentiality",
+    "left": 384,
+    "top": 1857,
+    "width": 672,
+    "height": 210
+  },
+  {
+    "id": "section-liaison",
+    "left": 384,
+    "top": 2091,
+    "width": 672,
+    "height": 132
+  },
+  {
+    "id": "execute-dossier-btn",
+    "left": 384,
+    "top": 2255,
+    "width": 672,
+    "height": 44
+  },
+  {
+    "id": "main-footer",
+    "left": 240,
+    "top": 2359,
+    "width": 960,
+    "height": 41
+  }
+]
