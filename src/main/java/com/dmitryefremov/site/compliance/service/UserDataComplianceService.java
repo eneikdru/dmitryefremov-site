@@ -105,7 +105,7 @@ public class UserDataComplianceService {
 
     private void validateUserId(String userId) {
         if (userId == null || userId.trim().isEmpty()) {
-            throw new IllegalArgumentException("User ID cannot be null or empty");
+            throw new IllegalArgumentException("User ID or email address cannot be null or empty");
         }
     }
 
