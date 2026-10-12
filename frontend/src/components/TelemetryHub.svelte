@@ -2,11 +2,12 @@
   import ArticleStreamView from './ArticleStreamView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
+  import SemanticSeoView from './SemanticSeoView.svelte';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import ConsentManager from './ConsentManager.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
-  export let activeTab: 'article' | 'contact' | 'podcast' = 'article';
+  export let activeTab: 'article' | 'contact' | 'podcast' | 'seo' = 'article';
   export let showImprintModal: boolean = false;
   export let isCmpModalOpen: boolean = false;
 
@@ -92,6 +93,14 @@
             [PODCAST_MEDIA]
           </button>
           <button
+            id="tab-btn-seo"
+            type="button"
+            class="px-4 py-2 rounded transition-colors {activeTab === 'seo' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+            on:click={() => (activeTab = 'seo')}
+          >
+            [SEO_META_INDEX]
+          </button>
+          <button
             id="tab-btn-contact"
             type="button"
             class="px-4 py-2 rounded transition-colors {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
@@ -108,6 +117,8 @@
           <ArticleStreamView />
         {:else if activeTab === 'podcast'}
           <PodcastPlayerView />
+        {:else if activeTab === 'seo'}
+          <SemanticSeoView />
         {:else}
           <TelemetryContactTerminalView />
         {/if}
