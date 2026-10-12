@@ -1,0 +1,120 @@
+openapi: 3.0.3
+info:
+  title: Client Intake API Contract
+  description: Shared API specification for secure client intake and wishlist submission. Endpoints handle ingestion of NDA-bound client requests and wishlist payloads with encryption at rest.
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/intake/wishlists:
+    post:
+      summary: Submit client wishlist intake
+      description: Ingests client wishlist payloads safely and securely. The payload is encrypted at rest and acknowledged without exposing internal factory mechanics or logs.
+      operationId: submitClientWishlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientIntakeRequest'
+      responses:
+        '201':
+          description: Wishlist intake successfully ingested and acknowledged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientIntakeResponse'
+        '400':
+          description: Invalid request payload or missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ClientIntakeRequest:
+      type: object
+      required:
+        - clientName
+        - clientEmail
+        - wishlistPayload
+      properties:
+        clientName:
+          type: string
+          description: Name of the client or representative submitting the wishlist
+          example: "Alice Smith"
+        clientEmail:
+          type: string
+          format: email
+          description: Contact email address for the client
+          example: "alice@example.com"
+        companyName:
+          type: string
+          nullable: true
+          description: Optional company or organization name
+          example: "Acme Corp"
+        wishlistPayload:
+          type: string
+          description: The raw wishlist or intake proposal content
+          example: "{\"idea\":\"Build AI Turnkey Platform\",\"wishlist\":[\"Secure intake\",\"Encryption at rest\"]}"
+
+    ClientIntakeResponse:
+      type: object
+      required:
+        - id
+        - clientName
+        - clientEmail
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        clientName:
+          type: string
+          example: "Alice Smith"
+        clientEmail:
+          type: string
+          format: email
+          example: "alice@example.com"
+        companyName:
+          type: string
+          nullable: true
+          example: "Acme Corp"
+        status:
+          type: string
+          description: Status of the intake submission
+          example: "NEW"
+        createdAt:
+          type: string
+          format: date-time
+          description: Submission timestamp
+          example: "2026-10-12T20:41:09Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Validation failed: clientEmail: must be a well-formed email address"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-12T20:45:00Z"
