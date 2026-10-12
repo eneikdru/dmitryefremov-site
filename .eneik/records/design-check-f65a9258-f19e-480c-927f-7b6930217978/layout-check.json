@@ -1,0 +1,44 @@
+[
+  {
+    "id": "app",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 1372.875
+  },
+  {
+    "id": "header",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 68
+  },
+  {
+    "id": "main",
+    "left": 380,
+    "top": 0,
+    "width": 680,
+    "height": 1372.875
+  },
+  {
+    "id": "footer",
+    "left": 380,
+    "top": 1119.6875,
+    "width": 680,
+    "height": 109.1875
+  },
+  {
+    "id": "aside",
+    "left": 510,
+    "top": 660,
+    "width": 420,
+    "height": 176
+  },
+  {
+    "id": "nav",
+    "left": 0,
+    "top": 816,
+    "width": 1440,
+    "height": 84
+  }
+]
