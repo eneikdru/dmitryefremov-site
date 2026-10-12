@@ -4,6 +4,8 @@ import com.dmitryefremov.site.telemetry.dto.AgentMetricsDto;
 import com.dmitryefremov.site.telemetry.service.AgentTelemetryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +22,10 @@ public class TelemetryController {
     @GetMapping("/metrics")
     public ResponseEntity<AgentMetricsDto> getMetrics() {
         return ResponseEntity.ok(telemetryService.getMetrics());
+    }
+
+    @PostMapping("/events")
+    public ResponseEntity<Void> receiveEvent(@RequestBody Object event) {
+        return ResponseEntity.ok().build();
     }
 }

@@ -177,6 +177,25 @@ class TelemetryService {
   private recordEvent(event: TelemetryEvent): void {
     this.events.push(event);
     this.listeners.forEach(listener => listener(event));
+
+    if (typeof window !== 'undefined' && typeof window.fetch === 'function') {
+      const anonymizedPayload = { ...event.payload };
+      if ('client_name' in anonymizedPayload) {
+        delete anonymizedPayload['client_name'];
+      }
+      if ('client_email' in anonymizedPayload) {
+        delete anonymizedPayload['client_email'];
+      }
+      const anonymizedEvent = { ...event, payload: anonymizedPayload };
+
+      window.fetch('/api/v1/telemetry/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(anonymizedEvent)
+      }).catch(() => {});
+    }
   }
 
   public getEvents(): TelemetryEvent[] {
