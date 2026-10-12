@@ -6,6 +6,11 @@ import com.dmitryefremov.site.compliance.dto.ErasureResponseDto;
 import com.dmitryefremov.site.compliance.dto.UserDataExportDto;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
+import com.dmitryefremov.site.ai.repository.AiServiceOrderRepository;
+import com.dmitryefremov.site.ai.repository.AiDirectMessageRepository;
+import com.dmitryefremov.site.agent.repository.AgentOrderRepository;
+import com.dmitryefremov.site.agent.repository.AgentMessageRepository;
 import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +38,21 @@ class UserDataComplianceServiceTest {
     @Mock
     private DirectMessageRepository directMessageRepository;
 
+    @Mock
+    private ClientIntakeRepository clientIntakeRepository;
+
+    @Mock
+    private AiServiceOrderRepository aiServiceOrderRepository;
+
+    @Mock
+    private AiDirectMessageRepository aiDirectMessageRepository;
+
+    @Mock
+    private AgentOrderRepository agentOrderRepository;
+
+    @Mock
+    private AgentMessageRepository agentMessageRepository;
+
     private Clock fixedClock;
     private UserDataComplianceService complianceService;
 
@@ -40,7 +60,15 @@ class UserDataComplianceServiceTest {
     void setUp() {
         Instant fixedInstant = Instant.parse("2026-10-12T12:00:00Z");
         fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"));
-        complianceService = new UserDataComplianceService(serviceOrderRepository, directMessageRepository, fixedClock);
+        complianceService = new UserDataComplianceService(
+                serviceOrderRepository,
+                directMessageRepository,
+                clientIntakeRepository,
+                aiServiceOrderRepository,
+                aiDirectMessageRepository,
+                agentOrderRepository,
+                agentMessageRepository,
+                fixedClock);
     }
 
     @Test
@@ -64,7 +92,7 @@ class UserDataComplianceServiceTest {
     }
 
     @Test
-    @DisplayName("eraseUserData should call deleteByUserId on both repositories and return summary")
+    @DisplayName("eraseUserData should call delete methods on all repositories and return summary")
     void testEraseUserData() {
         String userId = "agent-user-456";
         when(serviceOrderRepository.deleteByUserId(userId)).thenReturn(2L);
@@ -80,6 +108,11 @@ class UserDataComplianceServiceTest {
 
         verify(serviceOrderRepository, times(1)).deleteByUserId(userId);
         verify(directMessageRepository, times(1)).deleteByUserId(userId);
+        verify(clientIntakeRepository, times(1)).deleteByClientEmail(userId);
+        verify(aiServiceOrderRepository, times(1)).deleteByUserEmail(userId);
+        verify(aiDirectMessageRepository, times(1)).deleteBySenderEmail(userId);
+        verify(agentOrderRepository, times(1)).deleteByClientEmail(userId);
+        verify(agentMessageRepository, times(1)).deleteBySenderEmail(userId);
     }
 
     @Test

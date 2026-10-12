@@ -5,6 +5,11 @@ import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.dto.*;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
+import com.dmitryefremov.site.ai.repository.AiServiceOrderRepository;
+import com.dmitryefremov.site.ai.repository.AiDirectMessageRepository;
+import com.dmitryefremov.site.agent.repository.AgentOrderRepository;
+import com.dmitryefremov.site.agent.repository.AgentMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,19 +24,40 @@ public class UserDataComplianceService {
 
     private final ServiceOrderRepository serviceOrderRepository;
     private final DirectMessageRepository directMessageRepository;
+    private final ClientIntakeRepository clientIntakeRepository;
+    private final AiServiceOrderRepository aiServiceOrderRepository;
+    private final AiDirectMessageRepository aiDirectMessageRepository;
+    private final AgentOrderRepository agentOrderRepository;
+    private final AgentMessageRepository agentMessageRepository;
     private final Clock clock;
 
     @Autowired
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
-                                     DirectMessageRepository directMessageRepository) {
-        this(serviceOrderRepository, directMessageRepository, Clock.systemUTC());
+                                     DirectMessageRepository directMessageRepository,
+                                     ClientIntakeRepository clientIntakeRepository,
+                                     AiServiceOrderRepository aiServiceOrderRepository,
+                                     AiDirectMessageRepository aiDirectMessageRepository,
+                                     AgentOrderRepository agentOrderRepository,
+                                     AgentMessageRepository agentMessageRepository) {
+        this(serviceOrderRepository, directMessageRepository, clientIntakeRepository,
+             aiServiceOrderRepository, aiDirectMessageRepository, agentOrderRepository, agentMessageRepository, Clock.systemUTC());
     }
 
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
                                      DirectMessageRepository directMessageRepository,
+                                     ClientIntakeRepository clientIntakeRepository,
+                                     AiServiceOrderRepository aiServiceOrderRepository,
+                                     AiDirectMessageRepository aiDirectMessageRepository,
+                                     AgentOrderRepository agentOrderRepository,
+                                     AgentMessageRepository agentMessageRepository,
                                      Clock clock) {
         this.serviceOrderRepository = serviceOrderRepository;
         this.directMessageRepository = directMessageRepository;
+        this.clientIntakeRepository = clientIntakeRepository;
+        this.aiServiceOrderRepository = aiServiceOrderRepository;
+        this.aiDirectMessageRepository = aiDirectMessageRepository;
+        this.agentOrderRepository = agentOrderRepository;
+        this.agentMessageRepository = agentMessageRepository;
         this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
@@ -63,6 +89,13 @@ public class UserDataComplianceService {
 
         long ordersDeleted = serviceOrderRepository.deleteByUserId(userId);
         long messagesDeleted = directMessageRepository.deleteByUserId(userId);
+
+        // Delete from all other tables containing personal data
+        clientIntakeRepository.deleteByClientEmail(userId);
+        aiServiceOrderRepository.deleteByUserEmail(userId);
+        aiDirectMessageRepository.deleteBySenderEmail(userId);
+        agentOrderRepository.deleteByClientEmail(userId);
+        agentMessageRepository.deleteBySenderEmail(userId);
 
         OffsetDateTime now = OffsetDateTime.now(clock);
         String msg = "All personal data for user '" + userId + "' has been permanently erased.";

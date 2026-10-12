@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AiServiceOrderRepository extends JpaRepository<AiServiceOrder, Long> {
+    long deleteByUserEmail(String userEmail);
 }
