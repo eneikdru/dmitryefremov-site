@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Canon Reader - Marcus Aurelius: Meditations (Book IV)</title>
+<!-- Google Fonts: Newsreader (headlines & serif display), Literata (body & footnotes), Hanken Grotesk (labels & UI) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400;1,7..72,500&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary": "#ffffff",
+            "inverse-primary": "#ffb59f",
+            "surface-container-high": "#eee7e3",
+            "primary-container": "#9a3412",
+            "surface": "#fff8f5",
+            "on-secondary-fixed": "#2c1700",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#ffb59f",
+            "tertiary": "#6c2c06",
+            "on-tertiary-fixed-variant": "#76330d",
+            "inverse-surface": "#33302d",
+            "surface-variant": "#e9e1dd",
+            "outline": "#8b716a",
+            "secondary-fixed": "#ffdcbc",
+            "tertiary-fixed-dim": "#ffb693",
+            "on-surface": "#1e1b19",
+            "error": "#ba1a1a",
+            "on-tertiary-container": "#ffbea0",
+            "on-primary-fixed-variant": "#842503",
+            "secondary-container": "#ffb157",
+            "on-primary-fixed": "#3a0a00",
+            "surface-container-highest": "#e9e1dd",
+            "primary-fixed": "#ffdbd1",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#faf2ee",
+            "on-surface-variant": "#57423c",
+            "surface-bright": "#fff8f5",
+            "on-secondary-container": "#734400",
+            "error-container": "#ffdad6",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#f7efeb",
+            "tertiary-fixed": "#ffdbcc",
+            "secondary-fixed-dim": "#ffb86a",
+            "surface-tint": "#a53c19",
+            "outline-variant": "#dec0b7",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#8a421c",
+            "on-background": "#1e1b19",
+            "on-tertiary-fixed": "#351000",
+            "on-primary-container": "#ffbda9",
+            "secondary": "#895200",
+            "surface-container": "#f4ece8",
+            "on-secondary-fixed-variant": "#683d00",
+            "background": "#fff8f5",
+            "surface-dim": "#e0d8d5",
+            "on-error": "#ffffff",
+            "primary": "#781f00"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "2.75rem",
+            "margin": "1.25rem",
+            "margin-desktop": "3.5rem",
+            "space-xs": "0.25rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-desktop": "2.5rem",
+            "space-lg": "1.75rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Newsreader", "serif"],
+            "label-md": ["Hanken Grotesk", "sans-serif"],
+            "body-md": ["Literata", "serif"],
+            "display-hero-mobile": ["Newsreader", "serif"],
+            "headline-lg-mobile": ["Newsreader", "serif"],
+            "headline-md": ["Newsreader", "serif"],
+            "body-marginalia": ["Literata", "serif"],
+            "display-hero": ["Newsreader", "serif"],
+            "body-lg": ["Literata", "serif"],
+            "label-sm": ["Hanken Grotesk", "sans-serif"],
+            "body-xl": ["Literata", "serif"],
+            "headline-sm": ["Newsreader", "serif"],
+            "label-lg": ["Hanken Grotesk", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.015em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "500" }],
+            "body-md": ["17px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "body-marginalia": ["14px", { "lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "body-lg": ["19px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" }],
+            "body-xl": ["21px", { "lineHeight": "38px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-sm": ["22px", { "lineHeight": "30px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Archival reading enhancements */
+    body {
+      background-color: #fff8f5;
+      color: #1e1b19;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    .drop-cap::first-letter {
+      float: left;
+      font-family: 'Newsreader', serif;
+      font-size: 4.5rem;
+      line-height: 0.82;
+      padding-top: 0.35rem;
+      padding-right: 0.75rem;
+      padding-bottom: 0.1rem;
+      color: #781f00;
+      font-weight: 400;
+    }
+
+    /* Ambient paper tint highlight */
+    .amber-highlight {
+      background-color: rgba(255, 177, 87, 0.28);
+      box-shadow: 0 0 0 2px rgba(255, 177, 87, 0.28);
+      border-radius: 2px;
+    }
+
+    .pb-safe {
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom, 12px));
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- ========================================================================= -->
+<!-- TopAppBar (Shared Component Implementation)                               -->
+<!-- ========================================================================= -->
+<header class="fixed top-0 left-0 w-full z-40 flex items-center justify-between px-margin py-space-sm bg-surface/90 dark:bg-inverse-surface/90 backdrop-blur-md transition-all duration-200">
+<!-- Leading Control -->
+<button aria-label="Go back" class="flex items-center justify-center w-10 h-10 rounded-full hover:text-primary dark:hover:text-inverse-primary active:opacity-70 transition-colors duration-150 text-on-surface-variant dark:text-surface-variant" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="arrow_back">arrow_back</span>
+</button>
+<!-- Center Headline & Context -->
+<div class="flex flex-col items-center text-center">
+<span class="text-label-md font-label-md font-semibold tracking-widest text-tertiary dark:text-tertiary-fixed">THE CANON</span>
+<h1 class="text-headline-sm font-headline-sm text-on-surface dark:text-inverse-on-surface tracking-tight leading-none mt-0.5">
+        BOOK IV: MEDITATIONS
+      </h1>
+<span class="text-label-sm font-label-sm text-on-surface-variant/80 mt-0.5 font-medium tracking-normal">
+        18 min left · Marcus Aurelius
+      </span>
+</div>
+<!-- Trailing Action -->
+<div class="flex items-center gap-1">
+<button aria-label="Typography and tone settings" class="flex items-center justify-center w-10 h-10 rounded-full hover:text-primary dark:hover:text-inverse-primary active:opacity-70 transition-colors duration-150 text-on-surface-variant dark:text-surface-variant" type="button">
+<span class="material-symbols-outlined text-[22px]" data-icon="text_fields">text_fields</span>
+</button>
+</div>
+</header>
+<!-- Reading Progress Bar directly under header -->
+<div class="fixed top-[60px] left-0 w-full h-[2.5px] bg-surface-container-high/60 z-40">
+<div class="h-full bg-primary-container w-[28%] transition-all duration-300"></div>
+</div>
+<!-- ========================================================================= -->
+<!-- Main Reading Canvas (Mobile Asymmetrical Editorial Architecture)         -->
+<!-- ========================================================================= -->
+<main class="flex-1 w-full max-w-[680px] mx-auto px-margin pt-24 pb-36 font-body-md text-body-md text-on-surface leading-[1.85]">
+<!-- Editorial Title & Chapter Frontispiece -->
+<div class="pt-6 pb-10 border-b border-outline-variant/30 text-center flex flex-col items-center">
+<span class="text-label-md font-label-md tracking-widest uppercase text-primary font-semibold">
+        CHAPTER IV
+      </span>
+<h2 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface mt-3 max-w-[90%] leading-tight font-normal">
+        On the Soul &amp; Transitory Nature
+      </h2>
+<p class="text-label-md font-label-md text-on-surface-variant mt-2 italic tracking-normal">
+        Translation by Gregory Hays, with scholarly apparatus
+      </p>
+<!-- Classical Epigraph -->
+<div class="mt-8 px-6 py-4 bg-surface-container-low/70 rounded-lg max-w-sm border border-outline-variant/20">
+<p class="font-headline-sm text-headline-sm italic text-on-surface-variant text-center leading-relaxed">
+          “Omnia fluxit: nihil in perpetuum manet, sed mens solum quietem praestat.”
+        </p>
+<span class="block text-label-sm font-label-sm text-tertiary mt-2 uppercase tracking-widest text-center">
+          — Medit. Graecae IV.3
+        </span>
+</div>
+</div>
+<!-- Reading Body Text -->
+<article class="mt-10 space-y-7">
+<!-- Section 3 Opening with Literary Drop Cap -->
+<div class="relative">
+<!-- Subtle Marginal Section Number Marker -->
+<span class="text-label-sm font-label-sm text-outline tracking-wider block mb-2 font-semibold select-none">
+          § 3 · RETREAT INTO THE INNER CITADEL
+        </span>
+<p class="drop-cap text-on-surface font-body-md text-body-md leading-[1.85]">
+          They seek out retreats for themselves in the countryside, by the seashore, or in the mountains, and you yourself are particularly given to craving such solitude. But all this is completely unphilosophical, when it is open to you at any moment to retreat into yourself.
+        </p>
+</div>
+<p class="text-on-surface font-body-md text-body-md leading-[1.85]">
+        For nowhere can a man find a retreat more peaceful or more free from trouble than in his own soul, especially if he has within himself the kind of thoughts which, when he contemplates them, immediately bring about complete equanimity—and by equanimity I mean nothing other than a well-ordered mind.
+      </p>
+<!-- Highlighted Philosophical Selection with Marginalia Card -->
+<div class="my-6 pl-3 border-l-2 border-primary-container space-y-3">
+<p class="font-body-md text-body-md leading-[1.85]">
+<span class="amber-highlight text-on-surface font-medium">
+            Constantly grant yourself this retreat, then, and renew yourself. Let your basic principles be brief and fundamental, the kind that will at once, on close acquaintance, purge all sorrow and send you back without grievance
+          </span> 
+          to those affairs to which you must return.
+        </p>
+<!-- Attached Marginalia Note / Annotation Pill -->
+<div class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-container text-on-surface-variant border border-outline-variant/30 mt-2">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5" data-icon="format_quote">format_quote</span>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm font-semibold text-tertiary">SCHOLIA · THE INNER CITADEL</span>
+<span class="text-label-sm font-label-sm text-outline">P. Hadot</span>
+</div>
+<p class="font-body-marginalia text-body-marginalia text-on-surface-variant mt-1 leading-snug">
+              Pierre Hadot identifies this sanctuary as the unbreachable fortress of the mind: unaffected by outside impressions unless sanctioned by one's own judgment.
+            </p>
+</div>
+</div>
+</div>
+<!-- Philosophical Exposition with Inline Footnote Anchor -->
+<p class="text-on-surface font-body-md text-body-md leading-[1.85]">
+        For with what are you discontented? With the wickedness of humankind? Recall to your mind the judgment that rational beings exist for one another's sake, that tolerance is part of justice, and that wrong is done involuntarily. Recall how many before you, after living in hostility, suspicion, hatred, and warfare, are now laid out in ash.
+      </p>
+<!-- Inline Aphorism / Pull-Quote Card -->
+<figure class="my-8 py-5 px-6 rounded-lg bg-surface-container-low border border-outline-variant/30 relative">
+<span class="font-headline-lg text-headline-lg text-tertiary/20 absolute -top-4 left-4 select-none">“</span>
+<blockquote class="font-headline-sm text-headline-sm italic text-on-surface text-center pt-2 leading-relaxed">
+          “The universe is change; our life is what our thoughts make it.”
+        </blockquote>
+<figcaption class="text-center mt-3 text-label-sm font-label-sm uppercase tracking-widest text-primary font-semibold">
+          — Meditations IV.3.iv
+        </figcaption>
+</figure>
+<!-- Section 4 with Footnote Term -->
+<div class="relative pt-4">
+<span class="text-label-sm font-label-sm text-outline tracking-wider block mb-2 font-semibold select-none">
+          § 4 · THE RULING GOVERNING PRINCIPLE
+        </span>
+<p class="text-on-surface font-body-md text-body-md leading-[1.85]">
+          If the power of thought is common to us all, then reason, by which we are rational beings, is also common. If so, then too the reason that tells us what to do and what not to do is common. If so, there is a common law; and if so, we are fellow citizens.
+        </p>
+<p class="text-on-surface font-body-md text-body-md leading-[1.85] mt-4">
+          Therefore the cosmos is like a single commonwealth. Whence else could our common intellectual capacity derive, or our reason, or our reverence for law? Just as the terrestrial part of my nature is an offshoot of some earth, so my cognitive faculty stems from the sovereign center
+          <sup class="inline-flex items-center justify-center text-primary font-semibold ml-0.5 px-1 py-0.5 rounded bg-primary-fixed text-xs cursor-pointer active:scale-95 transition-transform" title="Expand annotation">1</sup>.
+        </p>
+</div>
+<!-- Expandable Inline Annotation Card for Terminology -->
+<div class="rounded-lg bg-surface-container-high/60 border border-outline-variant/40 p-4 space-y-2 mt-3 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm font-bold text-on-primary bg-primary rounded px-1.5 py-0.5">1</span>
+<span class="text-label-md font-label-md font-bold text-on-surface tracking-wide">Hēgemonikon (ἡγεμονικόν)</span>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary font-semibold uppercase">Philosophical Term</span>
+</div>
+<p class="font-body-marginalia text-body-marginalia text-on-surface-variant leading-relaxed">
+          Literally, <em class="font-body-marginalia">"The Ruling Center"</em> or directive faculty in Stoic psychology. The intellectual nucleus of the soul capable of assenting to or denying presentations, entirely immune to bodily illness or external ruin unless it surrenders its sovereign reason.
+        </p>
+</div>
+<!-- Additional Prose continuation -->
+<p class="text-on-surface font-body-md text-body-md leading-[1.85] pt-2">
+        Nothing can come from nothing, nor can what exists vanish into non-being. What then is death? A dispensation of nature, nothing more. And nothing natural is evil. Keep this truth ever close at hand when the noise of worldly repute threatens your tranquility.
+      </p>
+</article>
+<!-- Scholarly Colophon & Chapter Footnote -->
+<footer class="mt-16 pt-8 border-t border-outline-variant/30 flex flex-col items-center text-center space-y-2">
+<div class="w-8 h-px bg-outline-variant"></div>
+<p class="text-label-md font-label-md text-on-surface-variant italic">
+        Recorded at Sirmium and Carnuntum on the northern Danube frontier
+      </p>
+<p class="text-label-sm font-label-sm text-outline tracking-wider uppercase">
+        End of Section IV.4 · 44 Sections Remaining in Book IV
+      </p>
+</footer>
+</main>
+<!-- ========================================================================= -->
+<!-- Contextual Floating Reader HUD / Audio Bar                                -->
+<!-- ========================================================================= -->
+<aside aria-label="Reading Controls" class="fixed bottom-16 inset-x-0 mx-auto w-[92%] max-w-[420px] z-40">
+<div class="bg-surface-container-lowest/95 dark:bg-inverse-surface/95 backdrop-blur-md rounded-full px-4 py-2.5 flex items-center justify-between shadow-lg border border-outline-variant/20">
+<!-- Audio status and playback snippet -->
+<div class="flex items-center gap-3">
+<button aria-label="Play audio narration" class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div class="flex flex-col text-left">
+<span class="text-label-sm font-label-sm font-bold text-on-surface leading-tight">Narrated by Michael H.</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<!-- Simulated audio waveform micro-bars -->
+<span class="w-0.5 h-2 bg-primary rounded-full animate-pulse"></span>
+<span class="w-0.5 h-3.5 bg-primary rounded-full"></span>
+<span class="w-0.5 h-1.5 bg-primary/60 rounded-full"></span>
+<span class="w-0.5 h-3 bg-primary rounded-full"></span>
+<span class="text-label-sm font-label-sm text-outline ml-1">04:12 / 18:00</span>
+</div>
+</div>
+</div>
+<!-- Quick Context Actions -->
+<div class="flex items-center gap-1">
+<button aria-label="Bookmark current passage" class="p-2 text-on-surface-variant hover:text-primary active:opacity-70 transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="bookmark_add">bookmark_add</span>
+</button>
+<button aria-label="View scholarly footnotes" class="p-2 text-on-surface-variant hover:text-primary active:opacity-70 transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="speaker_notes">speaker_notes</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- BottomNavBar (Shared Component Implementation)                            -->
+<!-- ========================================================================= -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin py-space-xs pb-safe bg-surface-container-lowest/95 dark:bg-inverse-surface/95 backdrop-blur-md shadow-sm border-t border-outline-variant/10 rounded-t-xl">
+<!-- Progress (Active destination for reading stream) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-semibold py-1 hover:text-tertiary dark:hover:text-tertiary-fixed transition-colors duration-150 active:scale-95" href="#progress">
+<span class="material-symbols-outlined text-[22px]" data-icon="menu_book" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="text-label-sm font-label-sm mt-0.5">Progress</span>
+</a>
+<!-- Notes (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant py-1 hover:text-tertiary dark:hover:text-tertiary-fixed transition-colors duration-150 active:scale-95" href="#notes">
+<span class="material-symbols-outlined text-[22px]" data-icon="format_quote">format_quote</span>
+<span class="text-label-sm font-label-sm mt-0.5 font-medium">Notes</span>
+</a>
+<!-- Audio (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant py-1 hover:text-tertiary dark:hover:text-tertiary-fixed transition-colors duration-150 active:scale-95" href="#audio">
+<span class="material-symbols-outlined text-[22px]" data-icon="headphones">headphones</span>
+<span class="text-label-sm font-label-sm mt-0.5 font-medium">Audio</span>
+</a>
+<!-- Format (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant py-1 hover:text-tertiary dark:hover:text-tertiary-fixed transition-colors duration-150 active:scale-95" href="#format">
+<span class="material-symbols-outlined text-[22px]" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm mt-0.5 font-medium">Format</span>
+</a>
+</nav>
+<!-- Interactive Reader Micro-interaction Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle play state on minimal HUD player
+      const playBtn = document.querySelector('aside button[aria-label="Play audio narration"]');
+      if (playBtn) {
+        let isPlaying = false;
+        playBtn.addEventListener('click', () => {
+          isPlaying = !isPlaying;
+          const icon = playBtn.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.textContent = isPlaying ? 'pause' : 'play_arrow';
+          }
+        });
+      }
+
+      // Smooth scroll progress updates
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        const progressBar = document.querySelector('.fixed.top-\\[60px\\] > div');
+        if (progressBar) {
+          progressBar.style.width = `${Math.min(Math.max(scrollPercent, 10), 100)}%`;
+        }
+      });
+    });
+  </script>
+</body></html>
