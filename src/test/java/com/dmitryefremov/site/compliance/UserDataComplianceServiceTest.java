@@ -4,9 +4,15 @@ import com.dmitryefremov.site.compliance.domain.DirectMessage;
 import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.dto.ErasureResponseDto;
 import com.dmitryefremov.site.compliance.dto.UserDataExportDto;
+import com.dmitryefremov.site.ai.domain.AiDirectMessage;
+import com.dmitryefremov.site.ai.domain.AiServiceOrder;
+import com.dmitryefremov.site.ai.repository.AiDirectMessageRepository;
+import com.dmitryefremov.site.ai.repository.AiServiceOrderRepository;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
 import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
+import com.dmitryefremov.site.intake.domain.ClientIntake;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +39,15 @@ class UserDataComplianceServiceTest {
     @Mock
     private DirectMessageRepository directMessageRepository;
 
+    @Mock
+    private ClientIntakeRepository clientIntakeRepository;
+
+    @Mock
+    private AiServiceOrderRepository aiServiceOrderRepository;
+
+    @Mock
+    private AiDirectMessageRepository aiDirectMessageRepository;
+
     private Clock fixedClock;
     private UserDataComplianceService complianceService;
 
@@ -40,7 +55,14 @@ class UserDataComplianceServiceTest {
     void setUp() {
         Instant fixedInstant = Instant.parse("2026-10-12T12:00:00Z");
         fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"));
-        complianceService = new UserDataComplianceService(serviceOrderRepository, directMessageRepository, fixedClock);
+        complianceService = new UserDataComplianceService(
+                serviceOrderRepository,
+                directMessageRepository,
+                clientIntakeRepository,
+                aiServiceOrderRepository,
+                aiDirectMessageRepository,
+                fixedClock
+        );
     }
 
     @Test
@@ -121,5 +143,51 @@ class UserDataComplianceServiceTest {
         assertThatThrownBy(() -> complianceService.exportUserData("  "))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("User ID or email address cannot be null or empty");
+    }
+
+    @Test
+    @DisplayName("eraseUserData should delete records from intake, AI orders, and AI messages repositories")
+    void testEraseAllPersonalDataSources() {
+        String email = "gdpr-user@example.com";
+        when(serviceOrderRepository.deleteByUserId(email)).thenReturn(1L);
+        when(directMessageRepository.deleteByUserId(email)).thenReturn(1L);
+        when(clientIntakeRepository.deleteByClientEmail(email)).thenReturn(2L);
+        when(aiServiceOrderRepository.deleteByUserEmail(email)).thenReturn(1L);
+        when(aiDirectMessageRepository.deleteBySenderEmail(email)).thenReturn(1L);
+
+        ErasureResponseDto response = complianceService.eraseUserData(email);
+
+        assertThat(response.getUserId()).isEqualTo(email);
+        assertThat(response.getOrdersDeleted()).isEqualTo(4L); // 1 service order + 2 intakes + 1 AI order
+        assertThat(response.getMessagesDeleted()).isEqualTo(2L); // 1 direct message + 1 AI message
+
+        verify(serviceOrderRepository).deleteByUserId(email);
+        verify(directMessageRepository).deleteByUserId(email);
+        verify(clientIntakeRepository).deleteByClientEmail(email);
+        verify(aiServiceOrderRepository).deleteByUserEmail(email);
+        verify(aiDirectMessageRepository).deleteBySenderEmail(email);
+    }
+
+    @Test
+    @DisplayName("exportUserData should aggregate client intakes, AI orders and AI messages")
+    void testExportAllPersonalDataSources() {
+        String email = "gdpr-export@example.com";
+
+        ClientIntake intake = new ClientIntake("Client Name", email, "Company", "Wishlist payload", fixedClock);
+        AiServiceOrder aiOrder = new AiServiceOrder("AI User", email, "agent-007", "MVP", "Specs", fixedClock);
+        AiDirectMessage aiMessage = new AiDirectMessage("AI User", email, "agent-007", "AI Message content", fixedClock);
+
+        when(serviceOrderRepository.findByUserId(email)).thenReturn(List.of());
+        when(directMessageRepository.findByUserId(email)).thenReturn(List.of());
+        when(clientIntakeRepository.findByClientEmail(email)).thenReturn(List.of(intake));
+        when(aiServiceOrderRepository.findByUserEmail(email)).thenReturn(List.of(aiOrder));
+        when(aiDirectMessageRepository.findBySenderEmail(email)).thenReturn(List.of(aiMessage));
+
+        UserDataExportDto exportDto = complianceService.exportUserData(email);
+
+        assertThat(exportDto.getUserId()).isEqualTo(email);
+        assertThat(exportDto.getOrders()).hasSize(2); // Intake + AI Order
+        assertThat(exportDto.getMessages()).hasSize(1); // AI Message
+        assertThat(exportDto.getMessages().get(0).getContent()).isEqualTo("AI Message content");
     }
 }

@@ -1,9 +1,15 @@
 package com.dmitryefremov.site.compliance;
 
+import com.dmitryefremov.site.ai.domain.AiDirectMessage;
+import com.dmitryefremov.site.ai.domain.AiServiceOrder;
+import com.dmitryefremov.site.ai.repository.AiDirectMessageRepository;
+import com.dmitryefremov.site.ai.repository.AiServiceOrderRepository;
 import com.dmitryefremov.site.compliance.domain.DirectMessage;
 import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
+import com.dmitryefremov.site.intake.domain.ClientIntake;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.OffsetDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,10 +39,22 @@ class UserDataComplianceControllerTest {
     @Autowired
     private DirectMessageRepository directMessageRepository;
 
+    @Autowired
+    private ClientIntakeRepository clientIntakeRepository;
+
+    @Autowired
+    private AiServiceOrderRepository aiServiceOrderRepository;
+
+    @Autowired
+    private AiDirectMessageRepository aiDirectMessageRepository;
+
     @BeforeEach
     void setUp() {
         serviceOrderRepository.deleteAll();
         directMessageRepository.deleteAll();
+        clientIntakeRepository.deleteAll();
+        aiServiceOrderRepository.deleteAll();
+        aiDirectMessageRepository.deleteAll();
     }
 
     @Test
@@ -247,5 +266,63 @@ class UserDataComplianceControllerTest {
                 .andExpect(jsonPath("$.orders[0].details", is("Keep order")))
                 .andExpect(jsonPath("$.messages", hasSize(1)))
                 .andExpect(jsonPath("$.messages[0].content", is("Keep message")));
+    }
+
+    @Test
+    @DisplayName("Given an intake record and personal data across tables, when deletion API is called, then subsequent queries confirm total erasure across all tables")
+    void testEraseIntakeAndPersonalDataCompletelyFromAllTables() throws Exception {
+        String clientEmail = "intake-gdpr@example.com";
+
+        // 1. Seed intake record
+        ClientIntake intake = new ClientIntake(
+                "Intake Client",
+                clientEmail,
+                "Intake Corp",
+                "{\"wishlist\":[\"Turnkey Solution\"]}",
+                OffsetDateTime.now()
+        );
+        clientIntakeRepository.save(intake);
+
+        // 2. Seed AI service order & direct message
+        AiServiceOrder aiOrder = new AiServiceOrder("Intake Client", clientEmail, "agent-1", "MVP", "Specs", OffsetDateTime.now());
+        aiServiceOrderRepository.save(aiOrder);
+
+        AiDirectMessage aiMsg = new AiDirectMessage("Intake Client", clientEmail, "agent-1", "Secret message", OffsetDateTime.now());
+        aiDirectMessageRepository.save(aiMsg);
+
+        // 3. Seed standard service order & direct message
+        serviceOrderRepository.save(new ServiceOrder(clientEmail, "CONSULTING", "Details", "PENDING", OffsetDateTime.now()));
+        directMessageRepository.save(new DirectMessage(clientEmail, "Msg content", OffsetDateTime.now()));
+
+        // Verify initial database records exist
+        assertThat(clientIntakeRepository.findByClientEmail(clientEmail)).hasSize(1);
+        assertThat(aiServiceOrderRepository.findByUserEmail(clientEmail)).hasSize(1);
+        assertThat(aiDirectMessageRepository.findBySenderEmail(clientEmail)).hasSize(1);
+        assertThat(serviceOrderRepository.findByUserId(clientEmail)).hasSize(1);
+        assertThat(directMessageRepository.findByUserId(clientEmail)).hasSize(1);
+
+        // 4. Call deletion API
+        mockMvc.perform(delete("/api/v1/compliance/erasure")
+                        .param("email", clientEmail)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId", is(clientEmail)))
+                .andExpect(jsonPath("$.ordersDeleted", is(3))) // 1 service order + 1 intake + 1 AI order
+                .andExpect(jsonPath("$.messagesDeleted", is(2))); // 1 direct message + 1 AI message
+
+        // 5. Subsequent queries confirm record is completely removed from all tables
+        assertThat(clientIntakeRepository.findByClientEmail(clientEmail)).isEmpty();
+        assertThat(aiServiceOrderRepository.findByUserEmail(clientEmail)).isEmpty();
+        assertThat(aiDirectMessageRepository.findBySenderEmail(clientEmail)).isEmpty();
+        assertThat(serviceOrderRepository.findByUserId(clientEmail)).isEmpty();
+        assertThat(directMessageRepository.findByUserId(clientEmail)).isEmpty();
+
+        // 6. Confirm export API also returns empty lists
+        mockMvc.perform(get("/api/v1/compliance/export")
+                        .param("email", clientEmail)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.orders", hasSize(0)))
+                .andExpect(jsonPath("$.messages", hasSize(0)));
     }
 }
