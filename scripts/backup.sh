@@ -59,14 +59,14 @@ if [ -n "${OFFSITE_BACKUP_DIR}" ]; then
     echo "[INFO] Database backup persisted to external offsite storage: ${OFFSITE_FILE}"
 
     if [ "${RETENTION_DAYS}" -gt 0 ]; then
-        find "${OFFSITE_BACKUP_DIR}" -name "db_backup_*.dump" -type f -mtime +"${RETENTION_DAYS}" -delete || true
+        find "${OFFSITE_BACKUP_DIR}" -name "db_backup_*" -type f -mtime +"${RETENTION_DAYS}" -delete || true
     fi
 fi
 
 # Cleanup old backups
 if [ "${RETENTION_DAYS}" -gt 0 ]; then
     echo "[INFO] Cleaning up backup files older than ${RETENTION_DAYS} days..."
-    find "${BACKUP_DIR}" -name "db_backup_*.dump" -type f -mtime +"${RETENTION_DAYS}" -delete || true
+    find "${BACKUP_DIR}" -name "db_backup_*" -type f -mtime +"${RETENTION_DAYS}" -delete || true
 fi
 
 echo "[METRIC] backup_status{database=\"${POSTGRES_DB}\"} 1"
