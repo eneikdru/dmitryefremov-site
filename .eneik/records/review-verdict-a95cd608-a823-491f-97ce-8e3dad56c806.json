@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "The PR diff includes committed extraneous patch and diff files (pr87.diff, pr87.patch, pr91.diff, pr91.patch) at the repository root, directly violating the Acceptance Criteria requirement that the PR diff contains only source, config, test, or documentation files needed for this slice.",
+      "concerns": []
+    }
+  ]
+}
