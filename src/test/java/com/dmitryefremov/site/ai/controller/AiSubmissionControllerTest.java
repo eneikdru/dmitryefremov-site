@@ -51,7 +51,7 @@ class AiSubmissionControllerTest {
                 "requirements", "Automate deployment pipeline"
         );
 
-        mockMvc.perform(post("/api/v1/ai/orders")
+        mockMvc.perform(post("/api/v1/ai/submissions/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -72,7 +72,7 @@ class AiSubmissionControllerTest {
                 "content", "Need help with AI agent setup"
         );
 
-        mockMvc.perform(post("/api/v1/ai/messages")
+        mockMvc.perform(post("/api/v1/ai/submissions/messages")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -90,7 +90,7 @@ class AiSubmissionControllerTest {
                 "serviceType", "  "
         );
 
-        mockMvc.perform(post("/api/v1/ai/orders")
+        mockMvc.perform(post("/api/v1/ai/submissions/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())

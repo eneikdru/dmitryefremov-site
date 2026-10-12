@@ -16,7 +16,7 @@ import java.time.Clock;
 import java.time.OffsetDateTime;
 
 @RestController
-@RequestMapping("/api/v1/ai")
+@RequestMapping("/api/v1/ai/submissions")
 public class AiSubmissionController {
 
     private final AiSubmissionService aiSubmissionService;
