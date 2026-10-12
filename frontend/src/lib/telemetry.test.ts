@@ -13,11 +13,22 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     expect(calculateScrollPercentage(600, 1000, 500)).toBe(100);
   });
 
+  it('records essay view telemetry events', () => {
+    const evt = telemetry.trackEssayView('art-101', 'Deontic Logic in Autonomous Process Architecture');
+    expect(evt?.type).toBe('essay_view');
+    expect(evt?.payload.articleId).toBe('art-101');
+    expect(evt?.payload.title).toBe('Deontic Logic in Autonomous Process Architecture');
+
+    const events = telemetry.getEvents();
+    expect(events.length).toBe(1);
+    expect(events[0]).toEqual(evt);
+  });
+
   it('records scroll depth telemetry events', () => {
     const evt25 = telemetry.trackScrollDepth('art-101', 25);
-    expect(evt25.type).toBe('scroll_depth');
-    expect(evt25.payload.articleId).toBe('art-101');
-    expect(evt25.payload.depth).toBe(25);
+    expect(evt25?.type).toBe('scroll_depth');
+    expect(evt25?.payload.articleId).toBe('art-101');
+    expect(evt25?.payload.depth).toBe(25);
 
     const events = telemetry.getEvents();
     expect(events.length).toBe(1);

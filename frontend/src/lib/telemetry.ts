@@ -4,7 +4,7 @@
  */
 
 export interface TelemetryEvent {
-  type: 'scroll_depth' | 'outbound_click';
+  type: 'scroll_depth' | 'outbound_click' | 'essay_view';
   timestamp: string;
   payload: Record<string, unknown>;
 }
@@ -37,6 +37,23 @@ class TelemetryService {
       return cookies === '' || !cookies.includes('telemetry_id');
     }
     return true;
+  }
+
+  public trackEssayView(articleId: string, title?: string): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'essay_view',
+      timestamp: new Date().toISOString(),
+      payload: {
+        articleId,
+        title: title ?? articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
   }
 
   public trackScrollDepth(articleId: string, depth: number): TelemetryEvent | null {

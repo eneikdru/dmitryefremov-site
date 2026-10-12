@@ -7,6 +7,7 @@
     type PodcastEpisode,
     type PodcastTimecode
   } from '../lib/podcast';
+  import { telemetry } from '../lib/telemetry';
   import ResponsivePicture from './ResponsivePicture.svelte';
 
   export let episodes: PodcastEpisode[] = PODCAST_EPISODES;
@@ -122,6 +123,7 @@
           href={currentEpisode.mediaLink}
           target="_blank"
           rel="noopener noreferrer"
+          on:click={() => telemetry.trackOutboundClick(currentEpisode.mediaLink, currentEpisode.title, 'YouTube')}
           class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] transition-colors flex items-center gap-1"
         >
           <span>Media Channel</span>

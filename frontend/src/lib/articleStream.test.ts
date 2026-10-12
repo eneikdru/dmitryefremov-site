@@ -83,11 +83,16 @@ const status = "VERIFIED";
   });
 });
 
+import { resetConsentStatus } from './consent';
+import { telemetry } from './telemetry';
+
 describe('ArticleStreamView Component', () => {
   let target: HTMLElement;
   let component: any;
 
   beforeEach(() => {
+    resetConsentStatus();
+    telemetry.clearEvents();
     target = document.createElement('div');
     document.body.appendChild(target);
     return () => {
@@ -106,6 +111,14 @@ describe('ArticleStreamView Component', () => {
     expect(target.textContent).toContain('Deontic Logic in Autonomous Process Architecture');
     expect(target.textContent).toContain('Theory of Constraints in Distributed Pipeline Throughput');
     expect(target.textContent).toContain('Deterministic State Determinism in Autonomous Loops');
+  });
+
+  it('dispatches essay_view event on page load/mount', async () => {
+    component = mount(ArticleStreamView, { target });
+    await new Promise(r => setTimeout(r, 0));
+
+    const feed = target.querySelector('#telemetry-log-feed');
+    expect(feed?.textContent).toContain('[VIEW_ESSAY] art-01-deontic-logic');
   });
 
   it('renders headers, quotes, and formulas as visually distinct HTML elements in active article view', () => {

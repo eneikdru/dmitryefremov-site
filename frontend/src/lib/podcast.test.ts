@@ -2,6 +2,7 @@
 import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import { mount, unmount } from 'svelte';
 import { formatTime, generateWaveformHeights, PODCAST_EPISODES } from './podcast';
+import { telemetry } from './telemetry';
 import PodcastPlayerView from '../components/PodcastPlayerView.svelte';
 
 beforeAll(() => {
@@ -133,5 +134,25 @@ describe('PodcastPlayerView Component UI Interactions', () => {
     const podcastTitle = target.querySelector('#podcast-title') as HTMLElement;
     expect(podcastTitle.textContent).toBe(secondEp.title);
     expect(target.textContent).toContain(secondEp.thesis);
+  });
+
+  it('tracks outbound click when media channel link is clicked', async () => {
+    component = mount(PodcastPlayerView, { target });
+    const mediaLink = target.querySelector('a[href*="youtube.com"]') as HTMLAnchorElement;
+
+    expect(mediaLink).not.toBeNull();
+
+    let eventDispatched = false;
+    const unsub = telemetry.subscribe((evt) => {
+      if (evt.type === 'outbound_click' && evt.payload.platform === 'YouTube') {
+        eventDispatched = true;
+      }
+    });
+
+    mediaLink.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(eventDispatched).toBe(true);
+    unsub();
   });
 });

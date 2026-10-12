@@ -116,6 +116,14 @@ All non-deterministic sources (timestamps, random number generators, network res
     ? ARTICLES
     : ARTICLES.filter(a => a.topic === filterTopic);
 
+  function trackCurrentEssayView(id: string) {
+    const art = ARTICLES.find(a => a.id === id) || ARTICLES[0];
+    const event = telemetry.trackEssayView(id, art.title);
+    if (event) {
+      loggedEvents = [...loggedEvents, event];
+    }
+  }
+
   function handleArticleSelect(id: string) {
     selectedArticleId = id;
     trackedThresholds = new Set();
@@ -123,6 +131,7 @@ All non-deterministic sources (timestamps, random number generators, network res
     if (scrollContainer) {
       scrollContainer.scrollTop = 0;
     }
+    trackCurrentEssayView(id);
   }
 
   function handleScroll() {
@@ -135,12 +144,15 @@ All non-deterministic sources (timestamps, random number generators, network res
       if (currentPercentage >= threshold && !trackedThresholds.has(threshold)) {
         trackedThresholds.add(threshold);
         const event = telemetry.trackScrollDepth(selectedArticleId, threshold);
-        loggedEvents = [...loggedEvents, event];
+        if (event) {
+          loggedEvents = [...loggedEvents, event];
+        }
       }
     }
   }
 
   onMount(() => {
+    trackCurrentEssayView(selectedArticleId);
     if (scrollContainer) {
       handleScroll();
     }
@@ -289,13 +301,17 @@ All non-deterministic sources (timestamps, random number generators, network res
             <span>[TELEMETRY_EVENT_FEED]</span>
             <span class="text-[#34d399]">ZERO_COOKIE_ACTIVE</span>
           </div>
-          <div class="bg-[#12151e] p-3 rounded border border-[#1f2433] font-mono text-xs max-h-28 overflow-y-auto space-y-1 text-[#a7f3d0]">
+          <div id="telemetry-log-feed" class="bg-[#12151e] p-3 rounded border border-[#1f2433] font-mono text-xs max-h-28 overflow-y-auto space-y-1 text-[#a7f3d0]">
             {#if loggedEvents.length === 0}
               <span class="text-[#64748b]">Scroll the article container above to trigger scroll depth telemetry events...</span>
             {:else}
               {#each loggedEvents as evt}
                 <div class="flex justify-between border-b border-[#1f2433] pb-1">
-                  <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
+                  {#if evt.type === 'essay_view'}
+                    <span>[VIEW_ESSAY] {evt.payload.articleId}</span>
+                  {:else}
+                    <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
+                  {/if}
                   <span class="text-[#64748b]">{evt.timestamp.slice(11, 19)}</span>
                 </div>
               {/each}
