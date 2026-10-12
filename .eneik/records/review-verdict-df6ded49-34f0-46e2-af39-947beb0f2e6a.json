@@ -1,0 +1,26 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR adds a single comprehensive integration test suite. Adding unit-level assertions for individual components in follow-up tasks could improve test granularity.",
+          "severity": "low"
+        }
+      ]
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR implements the responsive picture component and adaptive image variants cleanly, but deleted patch files (pr87.patch, pr91.patch) were part of the diff; clean up transient script files in follow-up work.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
