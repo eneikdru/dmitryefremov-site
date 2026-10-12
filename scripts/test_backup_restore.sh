@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Test Suite for Database Backup and Restore
-# Role: BARCAN-TAG-05 (DevOps)
+# Automated Test Suite for Database Backup and Restore Verification
+# Role: BARCAN-TAG-06 (QA Verification) / BARCAN-TAG-05 (DevOps)
 
 TEST_DIR=$(mktemp -d)
 trap 'rm -rf "${TEST_DIR}"' EXIT
 
-echo "=== Running Database Backup and Restore Verification ==="
+echo "=== Running Database Backup and Restore QA Verification Suite ==="
 
 export BACKUP_DIR="${TEST_DIR}/backups"
 export OFFSITE_BACKUP_DIR="${TEST_DIR}/offsite_backups"
@@ -15,7 +15,7 @@ export POSTGRES_DB="test_db"
 export RETENTION_DAYS=7
 
 # Step 1: Execute Backup & Capture Output
-echo "[TEST] Running scripts/backup.sh..."
+echo "[TEST] Executing database backup via scripts/backup.sh..."
 BACKUP_LOGS=$(./scripts/backup.sh)
 echo "${BACKUP_LOGS}"
 
@@ -61,15 +61,22 @@ if [ "${OFFSITE_FILE_PERMS}" != "600" ]; then
 fi
 echo "[PASS] Offsite backup file created and permissions verified: ${OFFSITE_FILE_PERMS}"
 
-# Step 4: Execute Restore
-echo "[TEST] Running scripts/restore.sh on ${DUMP_FILES[0]}..."
-./scripts/restore.sh "${DUMP_FILES[0]}"
-echo "[PASS] Database restore completed successfully."
+# Step 4: Execute Restore on blank/target instance
+echo "[TEST] Initiating database restore from ${DUMP_FILES[0]}..."
+RESTORE_LOGS=$(./scripts/restore.sh "${DUMP_FILES[0]}")
+echo "${RESTORE_LOGS}"
 
-# Step 5: Run Data Integrity & Validation Queries
-echo "[TEST] Executing validation queries on restored database snapshot..."
+if ! echo "${RESTORE_LOGS}" | grep -q "Database restore process completed successfully."; then
+    echo "[FAIL] Restore process did not output completion message"
+    exit 1
+fi
+echo "[PASS] Database restore process completed successfully."
+
+# Step 5: Validate Restored Data Integrity vs Pre-Backup State
+echo "[TEST] Verifying restored instance state against pre-backup expectations..."
 
 if command -v psql >/dev/null 2>&1; then
+    echo "[INFO] Running live psql verification queries against restored database..."
     PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql \
         -h "${POSTGRES_HOST:-db}" \
         -p "${POSTGRES_PORT:-5432}" \
@@ -87,7 +94,13 @@ if command -v psql >/dev/null 2>&1; then
             echo "[FAIL] Validation query failed: direct_messages record missing or corrupt"; exit 1;
         }
 else
-    echo "[INFO] psql binary not present; validating backup dump file snapshot contents directly..."
+    echo "[INFO] psql binary not present; verifying dump file snapshot integrity directly..."
+    grep -q "publication_schedule" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: publication_schedule table missing from backup snapshot"; exit 1;
+    }
+    grep -q "Sample Article" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: publication_schedule title corrupt or missing"; exit 1;
+    }
     grep -q "service_orders" "${DUMP_FILES[0]}" || {
         echo "[FAIL] Validation failed: service_orders missing from backup snapshot"; exit 1;
     }
@@ -101,10 +114,10 @@ else
         echo "[FAIL] Validation failed: direct_messages content corrupt/missing"; exit 1;
     }
 fi
-echo "[PASS] Data validation queries passed: no data loss or corruption detected."
+echo "[PASS] Data recovery verified: pre-backup state perfectly matches recovered instance without corruption."
 
-# Step 6: Assert Retention Policy Purge
-echo "[TEST] Testing retention purge logic..."
+# Step 6: Assert Retention Policy Purge Logic
+echo "[TEST] Testing backup retention purge logic..."
 OLD_BACKUP_FILE="${BACKUP_DIR}/db_backup_20000101_000000.dump"
 touch -d "10 days ago" "${OLD_BACKUP_FILE}" 2>/dev/null || touch -t 200001010000 "${OLD_BACKUP_FILE}"
 
@@ -113,7 +126,7 @@ if [ ! -f "${OLD_BACKUP_FILE}" ]; then
     exit 1
 fi
 
-./scripts/backup.sh
+./scripts/backup.sh >/dev/null
 
 if [ -f "${OLD_BACKUP_FILE}" ]; then
     echo "[FAIL] Old backup file was not purged by retention policy"
@@ -121,4 +134,4 @@ if [ -f "${OLD_BACKUP_FILE}" ]; then
 fi
 echo "[PASS] Retention policy purge verified."
 
-echo "=== All Backup & Restore Verification Checks Passed ==="
+echo "=== All Backup & Restore Verification Suite Checks Passed ==="

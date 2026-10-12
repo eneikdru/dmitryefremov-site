@@ -106,35 +106,45 @@
   <!-- Header & Domain Indicator -->
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2433] pb-4">
     <div>
-      <div class="flex items-center gap-2 mb-1">
+      <div class="flex items-center gap-2 mb-1 flex-wrap">
         <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
           [PODCAST_CATALOG]
         </span>
         <span class="text-xs font-mono text-[#94a3b8]">Episodes: {episodes.length}</span>
       </div>
-      <h2 class="text-xl font-bold tracking-tight text-white">«Системы и реальность» Podcast</h2>
+      <h2 class="text-xl font-bold tracking-tight text-white break-words">«Системы и реальность» Podcast</h2>
     </div>
 
     <!-- External Media Subscription Links -->
     <div class="flex flex-wrap gap-2 text-xs font-mono">
-      {#if currentEpisode?.mediaLink}
-        <a
-          href={currentEpisode.mediaLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] transition-colors flex items-center gap-1"
-        >
-          <span>Media Channel</span>
-          <span>↗</span>
-        </a>
-      {/if}
+      <a
+        href={currentEpisode?.youtubeUrl || (currentEpisode?.mediaLink?.includes('youtube') ? currentEpisode.mediaLink : 'https://youtube.com/@efremov_dmitriy')}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="YouTube Channel"
+        class="px-2.5 py-1 rounded bg-[#12151e] text-[#ef4444] border border-[#1f2433] hover:border-[#ef4444] transition-colors flex items-center gap-1"
+      >
+        <span>YouTube</span>
+        <span>↗</span>
+      </a>
+      <a
+        href={currentEpisode?.telegramUrl || (currentEpisode?.mediaLink?.includes('t.me') ? currentEpisode.mediaLink : 'https://t.me/efremov_mvp')}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Telegram Channel"
+        class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] transition-colors flex items-center gap-1"
+      >
+        <span>Telegram</span>
+        <span>↗</span>
+      </a>
       <a
         href="/feed.xml"
         target="_blank"
         rel="noopener noreferrer"
-        class="px-2.5 py-1 rounded bg-[#12151e] text-[#94a3b8] border border-[#1f2433] hover:text-white transition-colors"
+        aria-label="RSS Feed"
+        class="px-2.5 py-1 rounded bg-[#12151e] text-[#94a3b8] border border-[#1f2433] hover:text-white transition-colors flex items-center gap-1"
       >
-        RSS Feed
+        <span>RSS Feed</span>
       </a>
     </div>
   </div>
