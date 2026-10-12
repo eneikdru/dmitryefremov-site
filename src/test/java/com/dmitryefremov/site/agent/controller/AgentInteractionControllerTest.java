@@ -59,6 +59,8 @@ class AgentInteractionControllerTest {
     void setUp() {
         orderRepository.deleteAll();
         messageRepository.deleteAll();
+        telemetryRepository.save(new com.dmitryefremov.site.agent.domain.AgentInteractionTelemetry("ORDER", 0L, java.time.OffsetDateTime.now(fixedClock)));
+        telemetryRepository.save(new com.dmitryefremov.site.agent.domain.AgentInteractionTelemetry("MESSAGE", 0L, java.time.OffsetDateTime.now(fixedClock)));
         agentInteractionController.setClock(fixedClock);
         agentInteractionService.setClock(fixedClock);
     }
@@ -167,5 +169,29 @@ class AgentInteractionControllerTest {
                 .andExpect(jsonPath("$.status", is(400)))
                 .andExpect(jsonPath("$.message", is("Client name is required")))
                 .andExpect(jsonPath("$.timestamp", containsString("2026-10-12T12:00:00Z")));
+    }
+
+    @Test
+    void testFailedOrRejectedApiInteractionsDoNotIncrementSuccessMetrics() throws Exception {
+        // Attempt invalid order submission (missing client email)
+        AgentOrderRequest invalidOrder = new AgentOrderRequest("Test Agent", "", "MVP", "Invalid order");
+        mockMvc.perform(post("/api/v1/agent/orders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidOrder)))
+                .andExpect(status().isBadRequest());
+
+        // Attempt invalid message submission (missing message body)
+        AgentMessageRequest invalidMessage = new AgentMessageRequest("Test Agent", "agent@test.com", "");
+        mockMvc.perform(post("/api/v1/agent/messages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidMessage)))
+                .andExpect(status().isBadRequest());
+
+        // Verify that success metric counters remain at 0
+        mockMvc.perform(get("/api/v1/agent/telemetry"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalOrders", is(0)))
+                .andExpect(jsonPath("$.totalMessages", is(0)))
+                .andExpect(jsonPath("$.totalInteractions", is(0)));
     }
 }
