@@ -119,19 +119,25 @@ echo "[PASS] Data recovery verified: pre-backup state perfectly matches recovere
 # Step 6: Assert Retention Policy Purge Logic
 echo "[TEST] Testing backup retention purge logic..."
 OLD_BACKUP_FILE="${BACKUP_DIR}/db_backup_20000101_000000.dump"
+OLD_OFFSITE_FILE="${OFFSITE_BACKUP_DIR}/db_backup_20000101_000000.dump"
 touch -d "10 days ago" "${OLD_BACKUP_FILE}" 2>/dev/null || touch -t 200001010000 "${OLD_BACKUP_FILE}"
+touch -d "10 days ago" "${OLD_OFFSITE_FILE}" 2>/dev/null || touch -t 200001010000 "${OLD_OFFSITE_FILE}"
 
-if [ ! -f "${OLD_BACKUP_FILE}" ]; then
-    echo "[FAIL] Failed to create mock old backup file for retention testing."
+if [ ! -f "${OLD_BACKUP_FILE}" ] || [ ! -f "${OLD_OFFSITE_FILE}" ]; then
+    echo "[FAIL] Failed to create mock old backup files for retention testing."
     exit 1
 fi
 
 ./scripts/backup.sh >/dev/null
 
 if [ -f "${OLD_BACKUP_FILE}" ]; then
-    echo "[FAIL] Old backup file was not purged by retention policy"
+    echo "[FAIL] Old local backup file was not purged by retention policy"
     exit 1
 fi
-echo "[PASS] Retention policy purge verified."
+if [ -f "${OLD_OFFSITE_FILE}" ]; then
+    echo "[FAIL] Old offsite backup file was not purged by retention policy"
+    exit 1
+fi
+echo "[PASS] Retention policy purge verified for local and offsite storage."
 
 echo "=== All Backup & Restore Verification Suite Checks Passed ==="
