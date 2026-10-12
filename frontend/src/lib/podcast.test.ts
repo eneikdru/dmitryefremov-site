@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
-import { mount, unmount } from 'svelte';
+import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest';
+import { mount, unmount, flushSync } from 'svelte';
 import { formatTime, generateWaveformHeights, PODCAST_EPISODES } from './podcast';
 import PodcastPlayerView from '../components/PodcastPlayerView.svelte';
 
 beforeAll(() => {
-  window.HTMLMediaElement.prototype.play = () => Promise.resolve();
-  window.HTMLMediaElement.prototype.pause = () => {};
+  window.HTMLMediaElement.prototype.play = vi.fn().mockImplementation(() => Promise.resolve());
+  window.HTMLMediaElement.prototype.pause = vi.fn();
 });
 
 describe('Podcast Helpers & Utilities', () => {
@@ -58,7 +58,7 @@ describe('Podcast Helpers & Utilities', () => {
   });
 });
 
-describe('PodcastPlayerView Component UI Interactions', () => {
+describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   let target: HTMLElement;
   let component: any;
 
@@ -91,29 +91,51 @@ describe('PodcastPlayerView Component UI Interactions', () => {
     const tgLink = target.querySelector('a[aria-label="Telegram Channel"]') as HTMLAnchorElement;
 
     expect(ytLink).not.toBeNull();
-    expect(ytLink.href).toContain('youtube.com');
+    expect(ytLink.getAttribute('href')).toMatch(/^https:\/\/youtube\.com/);
+    expect(ytLink.getAttribute('target')).toBe('_blank');
+    expect(ytLink.getAttribute('rel')).toBe('noopener noreferrer');
+
     expect(tgLink).not.toBeNull();
-    expect(tgLink.href).toContain('t.me');
+    expect(tgLink.getAttribute('href')).toMatch(/^https:\/\/t\.me/);
+    expect(tgLink.getAttribute('target')).toBe('_blank');
+    expect(tgLink.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
-  it('toggles play/pause state when clicking play button', async () => {
+  it('toggles play/pause state when clicking play button and interacts with audio element', () => {
     component = mount(PodcastPlayerView, { target });
     const playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
 
     expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
 
     playBtn.click();
-    await new Promise(r => setTimeout(r, 0));
+    flushSync();
 
     expect(playBtn.getAttribute('aria-label')).toBe('Pause Podcast Episode');
 
     playBtn.click();
-    await new Promise(r => setTimeout(r, 0));
+    flushSync();
 
     expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
   });
 
-  it('seeks directly to timestamp when a timecode button is clicked', async () => {
+  it('handles audio playback completion (ended event) by resetting playback state', () => {
+    component = mount(PodcastPlayerView, { target });
+    const playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
+    const audioElement = target.querySelector('audio') as HTMLAudioElement;
+
+    playBtn.click();
+    flushSync();
+    expect(playBtn.getAttribute('aria-label')).toBe('Pause Podcast Episode');
+
+    audioElement.dispatchEvent(new Event('ended'));
+    flushSync();
+
+    expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
+    const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
+    expect(currentTimeVal.textContent).toBe('00:00');
+  });
+
+  it('seeks directly to timestamp when a timecode button is clicked', () => {
     component = mount(PodcastPlayerView, { target });
 
     // Timecode 2 for Episode 01 is 195 seconds ("03:15")
@@ -122,14 +144,37 @@ describe('PodcastPlayerView Component UI Interactions', () => {
     expect(timecodeBtn).not.toBeNull();
 
     timecodeBtn.click();
-    await new Promise(r => setTimeout(r, 0));
+    flushSync();
 
     const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
     expect(currentTimeVal.textContent).toBe('03:15');
     expect(target.textContent).toContain('NOW_PLAYING');
   });
 
-  it('switches active podcast episode when selecting from catalog', async () => {
+  it('handles waveform keyboard navigation and component seekTo exported function', () => {
+    component = mount(PodcastPlayerView, { target });
+    const waveform = target.querySelector('#waveform-container') as HTMLElement;
+
+    // Test exported seekTo function directly
+    component.seekTo(620);
+    flushSync();
+
+    const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
+    // 620 seconds = 10:20
+    expect(currentTimeVal.textContent).toBe('10:20');
+
+    // Test ArrowRight key down (adds 5 seconds -> 625 seconds = 10:25)
+    waveform.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    flushSync();
+    expect(currentTimeVal.textContent).toBe('10:25');
+
+    // Test ArrowLeft key down (subtracts 5 seconds -> 620 seconds = 10:20)
+    waveform.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    flushSync();
+    expect(currentTimeVal.textContent).toBe('10:20');
+  });
+
+  it('switches active podcast episode when selecting from catalog', () => {
     component = mount(PodcastPlayerView, { target });
 
     const secondEp = PODCAST_EPISODES[1];
@@ -137,7 +182,7 @@ describe('PodcastPlayerView Component UI Interactions', () => {
     expect(ep2Card).not.toBeNull();
 
     ep2Card.click();
-    await new Promise(r => setTimeout(r, 0));
+    flushSync();
 
     const podcastTitle = target.querySelector('#podcast-title') as HTMLElement;
     expect(podcastTitle.textContent).toBe(secondEp.title);
