@@ -4,7 +4,7 @@
  */
 
 export interface TelemetryEvent {
-  type: 'scroll_depth' | 'outbound_click';
+  type: 'scroll_depth' | 'outbound_click' | 'canon_dwell_tick' | 'form_step_complete';
   timestamp: string;
   payload: Record<string, unknown>;
 }
@@ -20,6 +20,20 @@ export interface OutboundClickPayload {
   destination: string;
   label?: string;
   platform?: string;
+}
+
+export interface CanonDwellPayload {
+  session: string;
+  dwell_ms: number;
+  active_tab: boolean;
+  viewport_ratio: number;
+}
+
+export interface FormStepPayload {
+  form_id: string;
+  step: number;
+  completion_ms: number;
+  status: string;
 }
 
 class TelemetryService {
@@ -50,6 +64,44 @@ class TelemetryService {
       payload: {
         articleId,
         depth
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackCanonDwell(session: string, dwell_ms: number, active_tab: boolean, viewport_ratio: number): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'canon_dwell_tick',
+      timestamp: new Date().toISOString(),
+      payload: {
+        session,
+        dwell_ms,
+        active_tab,
+        viewport_ratio
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackFormStep(form_id: string, step: number, completion_ms: number, status: string): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'form_step_complete',
+      timestamp: new Date().toISOString(),
+      payload: {
+        form_id,
+        step,
+        completion_ms,
+        status
       }
     };
     this.recordEvent(event);

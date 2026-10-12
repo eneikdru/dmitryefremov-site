@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
 
   export let articleId: string = 'art-01-deontic-logic';
@@ -16,6 +16,14 @@
   let trackedThresholds: Set<number> = new Set();
   let currentPercentage = 0;
   let loggedEvents: TelemetryEvent[] = [];
+
+  // Dwell Tracking logic
+  let dwellStart: number = 0;
+  let dwellInterval: ReturnType<typeof setInterval>;
+  let totalDwellMs: number = 0;
+  let hasTracked30s: boolean = false;
+  let hasTracked45s: boolean = false;
+  const sessionId = `usr_${Math.floor(Math.random() * 10000)}`;
 
   function handleScroll() {
     if (!scrollContainer) return;
@@ -37,6 +45,30 @@
   onMount(() => {
     if (scrollContainer) {
       handleScroll();
+    }
+
+    // Start Dwell tracking
+    dwellStart = Date.now();
+    dwellInterval = setInterval(() => {
+      totalDwellMs = Date.now() - dwellStart;
+
+      if (totalDwellMs >= 30000 && !hasTracked30s) {
+        hasTracked30s = true;
+        const event = telemetry.trackCanonDwell(sessionId, totalDwellMs, true, 1.0);
+        if (event) loggedEvents = [...loggedEvents, event];
+      }
+
+      if (totalDwellMs >= 45000 && !hasTracked45s) {
+        hasTracked45s = true;
+        const event = telemetry.trackCanonDwell(sessionId, totalDwellMs, true, 1.0);
+        if (event) loggedEvents = [...loggedEvents, event];
+      }
+    }, 1000);
+  });
+
+  onDestroy(() => {
+    if (dwellInterval) {
+      clearInterval(dwellInterval);
     }
   });
 </script>
