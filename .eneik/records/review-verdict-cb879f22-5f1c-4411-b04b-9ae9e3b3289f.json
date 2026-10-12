@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "Direct contradiction of Acceptance Criteria ('passes without unrelated scope' and 'contains only source, config, test, or documentation files needed for this slice'): the PR includes unrelated frontend UI changes (ArticleStreamView.svelte), deletes unrelated backend files (SparkController.java, SparkService.java), and commits a temporary helper script (update_migration_sparks.sh).",
+      "concerns": []
+    }
+  ]
+}
