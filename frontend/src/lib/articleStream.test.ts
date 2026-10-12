@@ -98,40 +98,49 @@ describe('ArticleStreamView Component', () => {
     };
   });
 
-  it('renders list of available longreads and active article reader', () => {
+  it('renders list of available longreads and active article reader with initial realistic Russian essay', () => {
     component = mount(ArticleStreamView, { target });
 
     expect(target.textContent).toContain('Articles & Thought Stream');
     expect(target.textContent).toContain('AVAILABLE_LONGREADS');
+    expect(target.textContent).toContain('Эстетика инженерного молчания и редакционный минимализм');
+    expect(target.textContent).toContain('Деонтическая логика и нормативные инварианты в распределенных сервисах');
     expect(target.textContent).toContain('Deontic Logic in Autonomous Process Architecture');
-    expect(target.textContent).toContain('Theory of Constraints in Distributed Pipeline Throughput');
-    expect(target.textContent).toContain('Deterministic State Determinism in Autonomous Loops');
   });
 
-  it('renders headers, quotes, and formulas as visually distinct HTML elements in active article view', () => {
+  it('renders realistic Russian essay content, headings, blockquotes, and lists successfully when navigated to', async () => {
     component = mount(ArticleStreamView, { target });
 
     const h1 = target.querySelector('#article-header h1');
     expect(h1).not.toBeNull();
-    expect(h1?.textContent).toBe('Deontic Logic in Autonomous Process Architecture');
+    expect(h1?.textContent).toBe('Эстетика инженерного молчания и редакционный минимализм');
 
     const articleContainer = target.querySelector('#article-scroll-container');
     expect(articleContainer).not.toBeNull();
 
     const h2 = articleContainer?.querySelector('h2');
     expect(h2).not.toBeNull();
-    expect(h2?.textContent).toBe('Mathematical Formulation of Normative Invariants');
-
-    const formulaBlock = articleContainer?.querySelector('.formula-block');
-    expect(formulaBlock).not.toBeNull();
-    expect(formulaBlock?.textContent).toContain('[FORMULA_MATH]');
-
-    const formulaInline = articleContainer?.querySelector('.formula-inline');
-    expect(formulaInline).not.toBeNull();
+    expect(h2?.textContent).toBe('Введение');
 
     const quoteBlock = articleContainer?.querySelector('.article-blockquote');
     expect(quoteBlock).not.toBeNull();
-    expect(quoteBlock?.textContent).toContain('Your code and your decisions are who you truly are.');
+    expect(quoteBlock?.textContent).toContain('Настоящая архитектура не заявляет о себе громкими терминальными логами');
+
+    // Switch to second realistic Russian essay
+    const buttons = target.querySelectorAll('button.article-card');
+    const secondArticleCard = Array.from(buttons).find(b =>
+      b.textContent?.includes('Деонтическая логика и нормативные инварианты')
+    );
+    expect(secondArticleCard).toBeDefined();
+
+    secondArticleCard?.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    const updatedH1 = target.querySelector('#article-header h1');
+    expect(updatedH1?.textContent).toBe('Деонтическая логика и нормативные инварианты в распределенных сервисах');
+
+    const formulaBlock = target.querySelector('.formula-block');
+    expect(formulaBlock).not.toBeNull();
   });
 
   it('filters articles when topic filter button is clicked', async () => {
