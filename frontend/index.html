@@ -4,7 +4,100 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dmitry Efremov - Telemetry Implementation</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: EB Garamond & Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&amp;family=Manrope:wght@200..800&amp;display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "on-error": "#690005",
+              "surface": "#141312",
+              "on-primary-fixed-variant": "#574500",
+              "secondary-container": "#514839",
+              "secondary-fixed-dim": "#d3c4b1",
+              "error": "#ffb4ab",
+              "surface-tint": "#e9c349",
+              "surface-variant": "#363433",
+              "on-background": "#e6e1df",
+              "error-container": "#93000a",
+              "secondary-fixed": "#f0e0cc",
+              "background": "#141312",
+              "on-surface": "#e6e1df",
+              "inverse-surface": "#e6e1df",
+              "on-secondary-fixed": "#221a0e",
+              "outline-variant": "#4d4635",
+              "primary-fixed-dim": "#e9c349",
+              "on-secondary": "#382f22",
+              "on-tertiary": "#2c3226",
+              "inverse-primary": "#735c00",
+              "on-primary-container": "#554300",
+              "primary-fixed": "#ffe088",
+              "surface-container-high": "#2b2a28",
+              "tertiary-fixed-dim": "#c2c9b8",
+              "on-tertiary-fixed-variant": "#42493c",
+              "on-tertiary-fixed": "#171d13",
+              "on-secondary-fixed-variant": "#4f4537",
+              "primary-container": "#d4af37",
+              "surface-bright": "#3b3937",
+              "surface-container-low": "#1d1b1a",
+              "outline": "#99907c",
+              "on-secondary-container": "#c4b6a3",
+              "inverse-on-surface": "#32302f",
+              "tertiary-container": "#aeb5a4",
+              "secondary": "#d3c4b1",
+              "on-primary-fixed": "#241a00",
+              "surface-dim": "#141312",
+              "tertiary": "#cad1bf",
+              "surface-container-lowest": "#0f0e0d",
+              "on-surface-variant": "#d0c5af",
+              "tertiary-fixed": "#dee5d3",
+              "primary": "#f2ca50",
+              "surface-container": "#211f1e",
+              "on-primary": "#3c2f00",
+              "on-error-container": "#ffdad6",
+              "on-tertiary-container": "#40473a",
+              "surface-container-highest": "#363433"
+            },
+            "borderRadius": {
+              "DEFAULT": "0.125rem",
+              "lg": "0.25rem",
+              "xl": "0.5rem",
+              "full": "0.75rem"
+            },
+            "spacing": {
+              "space-xs": "0.375rem",
+              "space-md": "1.5rem",
+              "margin-mobile": "1.5rem",
+              "space-lg": "2.5rem",
+              "margin": "4rem",
+              "gutter-mobile": "1rem",
+              "gutter": "2rem",
+              "space-sm": "0.75rem",
+              "space-xl": "4rem"
+            },
+            "fontFamily": {
+              "headline-lg-mobile": ["EB Garamond"],
+              "body-md": ["Manrope"],
+              "display-lg-mobile": ["EB Garamond"],
+              "headline-sm": ["EB Garamond"],
+              "headline-md": ["EB Garamond"],
+              "body-sm": ["Manrope"],
+              "body-lg": ["Manrope"],
+              "display-lg": ["EB Garamond"],
+              "label-md": ["Manrope"],
+              "label-sm": ["Manrope"],
+              "headline-lg": ["EB Garamond"]
+            }
+          }
+        }
+      }
+    </script>
   </head>
   <body class="bg-[#090a0f] text-[#e2e8f0]">
     <div id="app"></div>
