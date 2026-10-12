@@ -8,5 +8,5 @@
   ],
   "coverageDeltaPercent": 0,
   "verdict": "pass",
-  "notes": "Executed scripts/test_backup_restore.sh. All 8 verification steps (backup creation, metric emission, file permissions 600, offsite persistence, restore execution, data integrity query/content checks, and retention purging) passed cleanly."
+  "notes": "Executed scripts/test_backup_restore.sh test suite. Verified backup creation, log/metric emission, permissions 600, offsite persistence, restore execution, data integrity and state recovery matching, and retention purging."
 }
