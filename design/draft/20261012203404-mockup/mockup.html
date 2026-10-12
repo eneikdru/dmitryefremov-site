@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dispatch Audio • Nocturne Dispatch EP. 42</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface": "#e3e1e9",
+            "on-primary-fixed-variant": "#653e00",
+            "secondary-fixed": "#ffdcc3",
+            "surface-container-lowest": "#0d0e13",
+            "on-background": "#e3e1e9",
+            "surface-container-highest": "#34343a",
+            "inverse-surface": "#e3e1e9",
+            "on-primary-fixed": "#2a1700",
+            "surface-variant": "#34343a",
+            "on-tertiary-fixed-variant": "#534600",
+            "on-primary-container": "#613b00",
+            "outline-variant": "#534434",
+            "primary-fixed-dim": "#ffb95f",
+            "surface-container-low": "#1a1b21",
+            "on-secondary-container": "#432100",
+            "inverse-on-surface": "#2f3036",
+            "secondary-fixed-dim": "#ffb77d",
+            "on-tertiary": "#3a3000",
+            "surface-tint": "#ffb95f",
+            "tertiary-fixed-dim": "#dcc66e",
+            "on-secondary": "#4d2600",
+            "on-primary": "#472a00",
+            "tertiary-container": "#c5b15b",
+            "on-error": "#690005",
+            "outline": "#a08e7a",
+            "inverse-primary": "#855300",
+            "primary-container": "#f59e0b",
+            "tertiary-fixed": "#f9e287",
+            "on-tertiary-fixed": "#221b00",
+            "error": "#ffb4ab",
+            "on-tertiary-container": "#504300",
+            "surface-container": "#1e1f25",
+            "secondary": "#ffb77d",
+            "background": "#121318",
+            "primary": "#ffc174",
+            "error-container": "#93000a",
+            "tertiary": "#e2cc73",
+            "primary-fixed": "#ffddb8",
+            "surface-dim": "#121318",
+            "on-error-container": "#ffdad6",
+            "on-surface-variant": "#d8c3ad",
+            "surface-container-high": "#292a2f",
+            "surface-bright": "#38393f",
+            "surface": "#121318",
+            "on-secondary-fixed-variant": "#6e3900",
+            "secondary-container": "#d97707",
+            "on-secondary-fixed": "#2f1500"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "margin-mobile": "1.25rem",
+            "space-xl": "2.5rem",
+            "margin": "3rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "code-time": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "code-time": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+            "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-md": ["15px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "body-sm": ["13px", { "lineHeight": "20px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    @keyframes pulse-wave {
+      0%, 100% { height: 6px; }
+      50% { height: 18px; }
+    }
+    .wave-bar-1 { animation: pulse-wave 1.1s ease-in-out infinite; }
+    .wave-bar-2 { animation: pulse-wave 0.8s ease-in-out 0.2s infinite; }
+    .wave-bar-3 { animation: pulse-wave 1.3s ease-in-out 0.4s infinite; }
+    .wave-bar-4 { animation: pulse-wave 0.9s ease-in-out 0.1s infinite; }
+
+    /* Custom hairline border glow */
+    .tactile-border {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .amber-glow {
+      box-shadow: 0 0 16px -2px rgba(245, 158, 11, 0.4);
+    }
+    .amber-glow-subtle {
+      box-shadow: 0 0 12px 0 rgba(245, 158, 11, 0.25);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary selection:text-surface-container-lowest pb-28">
+<!-- Top Bar: Shared Component TopAppBar Docked Layout -->
+<header class="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-margin-mobile h-14 bg-surface-container-low/90 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<button aria-label="Go back" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-highest/50 active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm tracking-wider uppercase text-on-surface-variant">NOCTURNE DISPATCH • EP. 42</span>
+<span class="text-title-md font-title-md font-bold text-on-surface tracking-tight truncate max-w-[170px] sm:max-w-xs">Dispatch Audio</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-primary border border-primary/20">
+        48kHz Lossless
+      </span>
+<button aria-label="Share episode" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest/50 active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+<button aria-label="Bookmark" class="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-highest/50 active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="bookmark" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="w-full max-w-2xl mx-auto pt-16 px-margin-mobile flex flex-col gap-5">
+<!-- Unified Media Player Header (Hero Studio Console) -->
+<section class="mt-2 bg-surface-container-low rounded-xl p-4 tactile-border shadow-[0_8px_24px_-4px_rgba(0,0,0,0.6)]">
+<!-- Episode Identity Meta Row -->
+<div class="flex items-start gap-3.5">
+<div class="relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-outline-variant/30 shadow-inner group">
+<img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" data-alt="A cinematic editorial cover artwork depicting high-tech studio recording gear, geometric audio waveforms, and warm amber light beams cutting through a dark obsidian room. Deep midnight charcoal backgrounds create contrast with glowing burnished golden contours, exuding contemplative intellectual depth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUXWNyBybgktfCFrb6NaMJVKN6JQhMyKV_gNVWk2XQoAqqRVdz-giaX4jI7U7QTOazC33Don47sBzOuuK1ZPtwo_rTu6SRUhMba-ZFf004fLTiXT1OFjkaWUyw87YN5pp19OZoqcIQgbPuhhCxpOiBu9lHAQWZgc-K61EyxUag8waXWYYCdbnMOxibSwgRs1Itqzf5YJ3nGSnTwvFssGltz0mBsk0C3s8qdVK5bs1lDMIMps2ub7EVTdHX9iAZQ311fOmI-aeMyPE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent flex items-end p-1">
+<span class="text-label-sm font-label-sm text-primary px-1 bg-surface-container-lowest/80 rounded backdrop-blur-sm">EP. 42</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2 mb-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-primary/10 text-primary border border-primary/25">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+              Chapter 3: Cognitive Scaffolding
+            </span>
+</div>
+<h1 class="text-headline-sm font-headline-sm text-on-surface font-bold leading-snug tracking-tight line-clamp-2">
+            The Post-Capitalist Protocol: Decentralized Coordination at Scale
+          </h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant truncate mt-0.5">
+            Elena Vance &amp; Dr. K. Aris
+          </p>
+</div>
+</div>
+<!-- Waveform Visualizer & Scrubber Module -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20">
+<!-- Frequency Bars Canvas Representation -->
+<div class="h-10 w-full flex items-end justify-between gap-[2px] px-0.5 mb-2 cursor-pointer select-none" title="Interactive Waveform Timeline">
+<!-- Played Section (Amber Glow Active Bars) -->
+<span class="w-1 bg-primary h-2 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-4 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-6 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-5 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-8 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-7 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-4 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-9 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-6 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-10 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-8 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-5 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-7 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-9 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-4 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-6 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-10 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-8 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-9 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-7 rounded-t-sm"></span>
+<span class="w-1 bg-primary h-5 rounded-t-sm"></span>
+<!-- Scrubber Needle Marker -->
+<div class="relative flex items-center justify-center">
+<span class="w-1.5 bg-primary-container h-10 rounded-t-sm shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
+</div>
+<!-- Unplayed Section (Muted Charcoal Bars) -->
+<span class="w-1 bg-surface-container-highest/80 h-8 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-5 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-7 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-9 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-6 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-4 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-7 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-8 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-5 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-6 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-9 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-4 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-8 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-6 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-5 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-3 rounded-t-sm"></span>
+<span class="w-1 bg-surface-container-highest/80 h-6 rounded-t-sm"></span>
+</div>
+<!-- Continuous Progress Track Rail -->
+<div class="relative w-full h-1.5 bg-surface-container-highest rounded-full overflow-visible group cursor-pointer">
+<div class="absolute left-0 top-0 h-full bg-gradient-to-r from-secondary-container to-primary-container rounded-full" style="width: 28%;"></div>
+<!-- Chapter split markers -->
+<div class="absolute top-0 bottom-0 left-[12%] w-[2px] bg-background"></div>
+<div class="absolute top-0 bottom-0 left-[28%] w-[2px] bg-background"></div>
+<div class="absolute top-0 bottom-0 left-[55%] w-[2px] bg-background"></div>
+<div class="absolute top-0 bottom-0 left-[79%] w-[2px] bg-background"></div>
+<!-- Tactile Drag Thumb -->
+<div class="absolute top-1/2 left-[28%] -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-on-surface border-2 border-primary-container rounded-full amber-glow cursor-grab active:cursor-grabbing"></div>
+</div>
+<!-- Time Indicators -->
+<div class="flex justify-between items-center mt-1.5 text-code-time font-code-time text-on-surface-variant font-mono">
+<span class="text-primary font-semibold">14:28</span>
+<span class="text-label-sm font-label-sm font-sans tracking-wide text-on-surface-variant/80">SYNCHRONIZED WITH THESIS 01</span>
+<span>52:10</span>
+</div>
+</div>
+<!-- Studio Tactile Audio Controls Strip -->
+<div class="mt-3 flex items-center justify-between pt-2">
+<!-- Speed & Dynamics Presets -->
+<div class="flex items-center gap-1">
+<button aria-label="Playback Speed" class="px-2 py-1 rounded bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/30 text-label-sm font-label-sm font-semibold text-primary active:scale-95 transition-transform">
+            1.25×
+          </button>
+<button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Speech Crispness Boost">
+<span class="material-symbols-outlined" data-icon="equalizer">equalizer</span>
+</button>
+</div>
+<!-- Central Playback Cluster -->
+<div class="flex items-center gap-3">
+<button aria-label="Skip back 15 seconds" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="replay_10">replay_10</span>
+</button>
+<!-- Primary Amber Play/Pause Action -->
+<button aria-label="Pause Audio" class="w-12 h-12 rounded-full bg-primary-container text-on-primary-fixed flex items-center justify-center amber-glow hover:bg-secondary-container active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[26px]" data-icon="pause" data-weight="fill" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<button aria-label="Skip forward 30 seconds" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="forward_30">forward_30</span>
+</button>
+</div>
+<!-- Auxiliary Tools (Sleep timer, Volume/Cast) -->
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Sleep Timer Active (45m)">
+<span class="material-symbols-outlined text-primary" data-icon="timer">timer</span>
+</button>
+<button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Cast Audio">
+<span class="material-symbols-outlined" data-icon="cast">cast</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Synchronized Chapters Carousel Strip -->
+<section class="space-y-2">
+<div class="flex items-center justify-between px-1">
+<h2 class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="format_list_bulleted">format_list_bulleted</span>
+          Synchronized Chapters
+        </h2>
+<span class="text-label-sm font-label-sm text-primary font-medium cursor-pointer hover:underline">View All (6)</span>
+</div>
+<!-- Horizontal Pills Segment Filter -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+<button class="flex-shrink-0 px-3 py-1.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/30 hover:border-outline-variant transition-colors">
+          All
+        </button>
+<button class="flex-shrink-0 px-3 py-1.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/30 hover:border-outline-variant transition-colors">
+          00:00 Intro
+        </button>
+<button class="flex-shrink-0 px-3 py-1.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/30 hover:border-outline-variant transition-colors">
+          06:14 Mechanism Design
+        </button>
+<button class="flex-shrink-0 px-3 py-1.5 rounded-full text-label-sm font-label-sm bg-primary-container text-on-primary-fixed font-bold shadow-sm flex items-center gap-1.5 border border-primary">
+<span class="w-2 h-2 rounded-full bg-on-primary-fixed animate-pulse"></span>
+          14:28 Cognitive Scaffolding (Playing)
+        </button>
+<button class="flex-shrink-0 px-3 py-1.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/30 hover:border-outline-variant transition-colors">
+          28:50 Capital Flywheels
+        </button>
+<button class="flex-shrink-0 px-3 py-1.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/30 hover:border-outline-variant transition-colors">
+          41:12 Synthesis
+        </button>
+</div>
+</section>
+<!-- Core Theses & Executive Syntheses Section -->
+<section class="space-y-3.5">
+<div class="flex items-end justify-between px-1">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-bold tracking-tight flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="lightbulb" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+            Core Theses
+          </h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Key arguments highlighted and synced to playback
+          </p>
+</div>
+<div class="flex items-center gap-1 text-code-time font-code-time text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+<span class="material-symbols-outlined text-[14px]" data-icon="sync">sync</span>
+          LIVE SYNC
+        </div>
+</div>
+<!-- Thesis Card 1 (Active Synced State) -->
+<article class="bg-surface-container-low rounded-xl p-4 tactile-border border-l-4 border-l-primary relative overflow-hidden amber-glow-subtle transition-all">
+<!-- Background Subtle Audio Visualizer Ambience -->
+<div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-primary/5 blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-2.5">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-primary/15 text-primary border border-primary/30 font-semibold font-mono">
+<!-- Live Equalizer Bars -->
+<span class="flex items-end gap-0.5 h-3">
+<span class="w-0.5 bg-primary rounded-full wave-bar-1"></span>
+<span class="w-0.5 bg-primary rounded-full wave-bar-2"></span>
+<span class="w-0.5 bg-primary rounded-full wave-bar-3"></span>
+<span class="w-0.5 bg-primary rounded-full wave-bar-4"></span>
+</span>
+              14:28 • Thesis 01
+            </span>
+<span class="text-label-sm font-label-sm text-secondary font-medium">Currently Discussed</span>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container-high transition-colors" title="Bookmark thesis">
+<span class="material-symbols-outlined text-primary" data-icon="bookmark_added">bookmark_added</span>
+</button>
+</div>
+<h3 class="text-title-md font-title-md font-bold text-on-surface leading-snug">
+          Trustless consensus shifts governance from human discretion to algorithmic verification.
+        </h3>
+<!-- Editorial Styled Blockquote with Amber Glow Edge -->
+<blockquote class="my-3 pl-3.5 py-1 border-l-2 border-primary-container bg-surface-container/60 rounded-r-lg">
+<p class="text-body-md font-body-md italic text-on-surface/90">
+            “Decentralization is not merely political resistance; it is an ergonomic necessity for complex network states.”
+          </p>
+<cite class="block text-label-sm font-label-sm text-on-surface-variant not-italic mt-1 font-medium">
+            — Elena Vance, 14:42
+          </cite>
+</blockquote>
+<!-- Action Bar for Thesis Card -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/20 mt-3">
+<button class="inline-flex items-center gap-1.5 text-label-sm font-label-sm font-semibold text-primary hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="play_circle">play_circle</span>
+            Jump to 14:28
+          </button>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-container-highest text-label-sm font-label-sm text-on-surface border border-outline-variant/30 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[15px]" data-icon="content_copy">content_copy</span>
+              Copy Quote
+            </button>
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary-container hover:bg-secondary-container text-on-primary-fixed font-semibold text-label-sm font-label-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[15px]" data-icon="save">save</span>
+              Save Thesis
+            </button>
+</div>
+</div>
+</article>
+<!-- Thesis Card 2 (Upcoming at 28:50) -->
+<article class="bg-surface-container-low rounded-xl p-4 tactile-border opacity-90 hover:opacity-100 transition-opacity">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-highest text-on-surface-variant font-mono">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+              28:50 • Thesis 02
+            </span>
+<span class="text-label-sm font-label-sm text-on-surface-variant/80">Upcoming in 14 mins</span>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container-high transition-colors" title="Bookmark thesis">
+<span class="material-symbols-outlined" data-icon="bookmark_border">bookmark_border</span>
+</button>
+</div>
+<h3 class="text-title-md font-title-md font-bold text-on-surface leading-snug">
+          Liquidity follows clarity: Capital flywheels fail when coordination costs exceed yield.
+        </h3>
+<!-- Key Synthesized Takeaways -->
+<ul class="my-2.5 space-y-1.5 text-body-sm font-body-sm text-on-surface-variant list-none">
+<li class="flex items-start gap-2">
+<span class="text-primary mt-1 text-[14px] material-symbols-outlined" data-icon="arrow_right">arrow_right</span>
+<span>Coordination friction compounds exponentially when governance tokenholders face asymmetric incentive models.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-primary mt-1 text-[14px] material-symbols-outlined" data-icon="arrow_right">arrow_right</span>
+<span>Empirical capital deployment trends demonstrate automated yield distribution outperforms council-managed treasuries by 4.2x.</span>
+</li>
+</ul>
+<!-- Action Bar -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/20 mt-3">
+<button class="inline-flex items-center gap-1 text-label-sm font-label-sm font-medium text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="fast_forward">fast_forward</span>
+            Preview Chapter (28:50)
+          </button>
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-container-highest text-label-sm font-label-sm text-on-surface border border-outline-variant/30 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[15px]" data-icon="bookmark">bookmark</span>
+            Queue Bookmark
+          </button>
+</div>
+</article>
+</section>
+<!-- Live Companion Transcript / Reading Notes Accordion -->
+<section class="bg-surface-container-low rounded-xl p-4 tactile-border mb-4">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/30 cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="segment">segment</span>
+<h2 class="text-title-md font-title-md font-bold text-on-surface">Live Companion Transcript</h2>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-primary font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+            Auto-Scroll ON
+          </span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="expand_less">expand_less</span>
+</div>
+</div>
+<!-- Synced Dialogue Stream -->
+<div class="mt-3 space-y-3 font-body-sm text-body-sm">
+<!-- Prior Statement -->
+<div class="opacity-60 text-on-surface-variant hover:opacity-90 transition-opacity">
+<div class="flex items-center justify-between text-code-time font-code-time text-on-surface-variant mb-0.5">
+<span class="font-bold">Dr. K. Aris</span>
+<span>14:10</span>
+</div>
+<p>
+            When we examined the early ledger configurations, the bottleneck wasn't throughput or block sizes—it was the cognitive friction of participants reconciling contradictory rules.
+          </p>
+</div>
+<!-- Active Playing Row (Synchronized Amber Focus) -->
+<div class="bg-surface-container-high/90 p-3 rounded-lg border-l-2 border-primary tactile-border shadow-sm">
+<div class="flex items-center justify-between text-code-time font-code-time mb-1 text-primary">
+<span class="font-bold flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              Elena Vance
+            </span>
+<span class="bg-primary/20 px-1.5 py-0.5 rounded font-mono">14:28 (ACTIVE)</span>
+</div>
+<p class="text-on-surface font-medium leading-relaxed">
+            Exactly. Trustless consensus shifts governance from human discretion to algorithmic verification. If a community must vote on every operational micro-adjustment, you haven’t engineered a protocol; you’ve simply digitized a bureaucratic parliament.
+          </p>
+<div class="flex items-center justify-end gap-2 mt-2 pt-2 border-t border-outline-variant/20">
+<button class="inline-flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[15px]" data-icon="edit_note">edit_note</span>
+              Add Reading Note
+            </button>
+<button class="inline-flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[15px]" data-icon="share">share</span>
+              Clip Audio (30s)
+            </button>
+</div>
+</div>
+<!-- Following Statement Preview -->
+<div class="opacity-60 text-on-surface-variant hover:opacity-90 transition-opacity">
+<div class="flex items-center justify-between text-code-time font-code-time text-on-surface-variant mb-0.5">
+<span class="font-bold">Dr. K. Aris</span>
+<span>15:02</span>
+</div>
+<p>
+            And that is precisely where mechanism design provides the antidote. By pre-allocating deterministic verification bounds, consensus settles before fatigue sets in...
+          </p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar: Shared Component BottomNavBar Matching Specifications -->
+<!-- Active Destination Logic: Theses tab is actively focused during synchronized thesis reading -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter-mobile py-2 bg-surface-container/95 backdrop-blur-md shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+<!-- Tab 1: Listen -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim active:scale-95 transition-transform duration-150" href="#listen">
+<span class="material-symbols-outlined text-[22px]" data-icon="graphic_eq">graphic_eq</span>
+<span class="text-label-sm font-label-sm mt-0.5">Listen</span>
+</a>
+<!-- Tab 2: Chapters -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim active:scale-95 transition-transform duration-150" href="#chapters">
+<span class="material-symbols-outlined text-[22px]" data-icon="format_list_bulleted">format_list_bulleted</span>
+<span class="text-label-sm font-label-sm mt-0.5">Chapters</span>
+</a>
+<!-- Tab 3: Theses (ACTIVE STATE as per core thesis focus of page) -->
+<a class="flex flex-col items-center justify-center text-primary font-semibold transition-colors active:scale-95 transition-transform duration-150" href="#theses">
+<span class="material-symbols-outlined text-[22px]" data-icon="lightbulb" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<span class="text-label-sm font-label-sm mt-0.5">Theses</span>
+</a>
+<!-- Tab 4: Notes -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim active:scale-95 transition-transform duration-150" href="#notes">
+<span class="material-symbols-outlined text-[22px]" data-icon="notes">notes</span>
+<span class="text-label-sm font-label-sm mt-0.5">Notes</span>
+</a>
+</nav>
+<!-- Persistent Sticky Mini-Player Ribbon (When scrolled or in reading flow) -->
+<div class="fixed bottom-[60px] left-0 right-0 max-w-2xl mx-auto px-margin-mobile z-40 pointer-events-none">
+<div class="pointer-events-auto bg-surface-container-high/95 backdrop-blur-lg px-3.5 py-2 rounded-xl tactile-border shadow-2xl flex items-center justify-between border-t border-outline-variant/30">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]" data-icon="graphic_eq">graphic_eq</span>
+</div>
+<div class="min-w-0">
+<p class="text-label-md font-label-md text-on-surface font-semibold truncate leading-tight">
+            14:28 • Thesis 01: Trustless consensus
+          </p>
+<p class="text-label-sm font-label-sm text-primary font-mono truncate">
+            Playing Chapter 3 • 1.25x
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<button aria-label="Toggle Play" class="w-8 h-8 rounded-full bg-primary-container text-on-primary-fixed flex items-center justify-center active:scale-90 transition-transform amber-glow">
+<span class="material-symbols-outlined text-[20px]" data-icon="pause" data-weight="fill" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>
