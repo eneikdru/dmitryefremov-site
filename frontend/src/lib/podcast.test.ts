@@ -73,7 +73,7 @@ describe('PodcastPlayerView Component UI Interactions', () => {
     };
   });
 
-  it('renders episode title, catalog list, wave visualizer, and timecodes', () => {
+  it('renders episode title, catalog list, wave visualizer, timecodes, and external YouTube & Telegram links', () => {
     component = mount(PodcastPlayerView, { target });
 
     expect(target.textContent).toContain('«Системы и реальность» Podcast');
@@ -85,6 +85,15 @@ describe('PodcastPlayerView Component UI Interactions', () => {
     PODCAST_EPISODES[0].timecodes.forEach(tc => {
       expect(target.textContent).toContain(tc.title);
     });
+
+    // Check external platform links (YouTube & Telegram)
+    const ytLink = target.querySelector('a[aria-label="YouTube Channel"]') as HTMLAnchorElement;
+    const tgLink = target.querySelector('a[aria-label="Telegram Channel"]') as HTMLAnchorElement;
+
+    expect(ytLink).not.toBeNull();
+    expect(ytLink.href).toContain('youtube.com');
+    expect(tgLink).not.toBeNull();
+    expect(tgLink.href).toContain('t.me');
   });
 
   it('toggles play/pause state when clicking play button', async () => {
