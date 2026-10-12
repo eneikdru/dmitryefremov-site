@@ -1,8 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { telemetry, calculateScrollPercentage, type TelemetryEvent } from './telemetry';
+import { setConsentStatus, resetConsentStatus } from './consent';
 
 describe('Telemetry Service Invariants & Acceptance Criteria', () => {
   beforeEach(() => {
+    resetConsentStatus();
+    setConsentStatus('accepted');
     telemetry.clearEvents();
   });
 
