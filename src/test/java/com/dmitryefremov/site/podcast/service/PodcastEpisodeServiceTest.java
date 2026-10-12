@@ -72,6 +72,20 @@ class PodcastEpisodeServiceTest {
     }
 
     @Test
+    void testGetEpisodesWhenEmptyReturnsEmptyPageDto() {
+        Page<PodcastEpisode> emptyPage = new PageImpl<>(List.of(), PageRequest.of(0, 20), 0);
+        when(podcastEpisodeRepository.findAllByOrderByPublishedAtDesc(any())).thenReturn(emptyPage);
+
+        PodcastEpisodePageDto result = podcastEpisodeService.getEpisodes(0, 20);
+
+        assertThat(result.getPage()).isEqualTo(0);
+        assertThat(result.getSize()).isEqualTo(20);
+        assertThat(result.getTotalElements()).isEqualTo(0);
+        assertThat(result.getTotalPages()).isEqualTo(0);
+        assertThat(result.getContent()).isEmpty();
+    }
+
+    @Test
     void testGetEpisodesThrowsOnInvalidPagination() {
         assertThatThrownBy(() -> podcastEpisodeService.getEpisodes(-1, 20))
                 .isInstanceOf(IllegalArgumentException.class)
