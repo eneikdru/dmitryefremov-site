@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Canon Telemetry Audit | Epic GQM Inspector</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#dfe2f1",
+            "tertiary-fixed-dim": "#c0c1ff",
+            "surface-variant": "#313540",
+            "secondary-container": "#00a572",
+            "on-primary-fixed": "#002022",
+            "inverse-primary": "#006970",
+            "surface": "#0f131d",
+            "outline": "#849495",
+            "tertiary": "#f8f4ff",
+            "on-primary-fixed-variant": "#004f54",
+            "on-tertiary-fixed": "#07006c",
+            "tertiary-container": "#d7d6ff",
+            "surface-container-highest": "#313540",
+            "surface-tint": "#00dbe9",
+            "primary-fixed-dim": "#00dbe9",
+            "surface-container-high": "#262a35",
+            "on-primary": "#00363a",
+            "on-secondary-fixed-variant": "#005236",
+            "on-secondary": "#003824",
+            "on-surface-variant": "#b9cacb",
+            "surface-container-low": "#171b26",
+            "surface-container-lowest": "#0a0e18",
+            "on-secondary-fixed": "#002113",
+            "on-tertiary": "#1000a9",
+            "surface-bright": "#353944",
+            "tertiary-fixed": "#e1e0ff",
+            "secondary-fixed-dim": "#4edea3",
+            "primary": "#dbfcff",
+            "on-error-container": "#ffdad6",
+            "inverse-on-surface": "#2c303b",
+            "error": "#ffb4ab",
+            "on-tertiary-fixed-variant": "#2f2ebe",
+            "on-primary-container": "#006970",
+            "on-error": "#690005",
+            "on-tertiary-container": "#494bd7",
+            "error-container": "#93000a",
+            "primary-fixed": "#7df4ff",
+            "surface-container": "#1c1f2a",
+            "outline-variant": "#3b494b",
+            "on-background": "#dfe2f1",
+            "background": "#0f131d",
+            "secondary-fixed": "#6ffbbe",
+            "secondary": "#4edea3",
+            "primary-container": "#00f0ff",
+            "surface-dim": "#0f131d",
+            "on-secondary-container": "#00311f",
+            "on-surface": "#dfe2f1"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-md": "0.75rem",
+            "space-lg": "1.25rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin-desktop": "2rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Geist"],
+            "headline-xl-mobile": ["Geist"],
+            "label-sm": ["JetBrains Mono"],
+            "headline-md": ["Geist"],
+            "headline-xl": ["Geist"],
+            "label-md": ["JetBrains Mono"],
+            "headline-lg-mobile": ["Geist"],
+            "body-lg": ["Geist"],
+            "body-sm": ["Geist"],
+            "code-sm": ["JetBrains Mono"],
+            "body-md": ["Geist"],
+            "code-lg": ["JetBrains Mono"],
+            "code-md": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-sm": ["0.625rem", { "lineHeight": "0.875rem", "letterSpacing": "0.08em", "fontWeight": "600" }],
+            "headline-md": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "headline-xl": ["3rem", { "lineHeight": "3.5rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1.125rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "code-sm": ["0.6875rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "400" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "code-lg": ["0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "code-md": ["0.75rem", { "lineHeight": "1.125rem", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
+    }
+    .status-pulse {
+      animation: pulse-subtle 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-24 selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar (From JSON Anchors) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-space-md py-space-sm bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline-variant">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="terminal">terminal</span>
+<h1 class="font-headline-md text-headline-md font-semibold text-primary tracking-tight">Canon Telemetry Audit</h1>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-high border border-outline-variant rounded">
+<span class="h-2 w-2 rounded-full bg-secondary status-pulse"></span>
+<span class="font-label-sm text-label-sm text-secondary">INGEST 1.4K EPS</span>
+</div>
+<button aria-label="Filters and Configuration" class="flex items-center justify-center p-space-xs text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors rounded">
+<span class="material-symbols-outlined text-lg" data-icon="tune">tune</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="pt-16 max-w-7xl mx-auto px-margin md:px-margin-desktop space-y-space-lg">
+<!-- Active Epic Meta Strip -->
+<section class="mt-space-md bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="font-label-sm text-label-sm px-space-sm py-space-xs rounded bg-surface-container-highest border border-outline-variant text-primary-fixed">
+          ACTIVE TARGET
+        </span>
+<div class="flex items-center gap-space-xs">
+<span class="font-code-md text-code-md text-on-surface font-semibold">EPIC-4209: Canon Intake &amp; Conversion</span>
+<span class="font-code-sm text-code-sm px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant border border-outline-variant">v2.4.1-rc</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="h-2.5 w-2.5 rounded-full bg-secondary status-pulse"></span>
+<span class="font-code-sm text-code-sm text-secondary">Telemetry Stream: Healthy 99.8% fired</span>
+</div>
+<div class="hidden md:flex items-center gap-space-xs font-code-sm text-code-sm text-on-surface-variant border-l border-outline-variant pl-space-md">
+<span>LATENCY:</span>
+<span class="text-primary font-medium">18.4ms</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid Section: Core Alignment & Visual Metrics -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop">
+<!-- Left Column: Epic Goal-Question-Metric (GQM) Alignment Card (7 Cols) -->
+<section class="lg:col-span-7 bg-surface-container-low border border-outline-variant rounded-lg p-space-lg flex flex-col justify-between space-y-space-lg">
+<!-- Goal Tier -->
+<div class="space-y-space-xs border-b border-outline-variant pb-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary-fixed tracking-wider uppercase">GQM Framework Tier 1: Strategic Goal</span>
+<span class="font-label-sm text-label-sm text-secondary px-space-xs py-0.5 rounded bg-surface-container-highest border border-secondary/30">ALIGNMENT 94%</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">
+            Optimize Canon intake flow engagement and completion rate
+          </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Telemetry audit targeting cognitive friction points, field interaction bottlenecks, and user verification drop-offs across native Canon intake modules.
+          </p>
+</div>
+<!-- Question 1 Tier & Metric M-101 -->
+<div class="bg-surface-container border border-outline-variant rounded p-space-md space-y-space-md">
+<div class="flex items-start justify-between gap-space-sm">
+<div>
+<span class="font-label-sm text-label-sm text-tertiary-fixed-dim uppercase">Question 01</span>
+<h3 class="font-body-md text-body-md font-medium text-on-surface">
+                What is the median active dwell time across Canon intake steps?
+              </h3>
+</div>
+<span class="font-code-sm text-code-sm text-primary bg-surface-container-highest px-space-sm py-space-xs rounded border border-outline-variant whitespace-nowrap">
+              METRIC M-101
+            </span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-space-xs pt-space-xs">
+<div>
+<div class="flex items-baseline gap-space-sm">
+<span class="font-headline-lg text-headline-lg font-bold text-primary font-headline-lg">2m 48s</span>
+<span class="font-code-sm text-code-sm text-secondary">-18.4s vs benchmark</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Median aggregate session dwell duration</span>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant">THRESHOLD TARGET: &lt; 3m 30s</span>
+</div>
+</div>
+<!-- Micro bar comparison: Focus vs Idle -->
+<div class="space-y-space-xs">
+<div class="flex justify-between font-code-sm text-code-sm text-on-surface-variant">
+<span>Active Viewport Interaction (81.2%)</span>
+<span>Background / Idle Dwell (18.8%)</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded flex overflow-hidden">
+<div class="bg-primary-container h-full" style="width: 81.2%;"></div>
+<div class="bg-outline-variant h-full" style="width: 18.8%;"></div>
+</div>
+</div>
+</div>
+<!-- Question 2 Tier & Metric M-102 -->
+<div class="bg-surface-container border border-outline-variant rounded p-space-md space-y-space-md">
+<div class="flex items-start justify-between gap-space-sm">
+<div>
+<span class="font-label-sm text-label-sm text-tertiary-fixed-dim uppercase">Question 02</span>
+<h3 class="font-body-md text-body-md font-medium text-on-surface">
+                Where do users drop off prior to conversion submission?
+              </h3>
+</div>
+<span class="font-code-sm text-code-sm text-secondary bg-surface-container-highest px-space-sm py-space-xs rounded border border-outline-variant whitespace-nowrap">
+              METRIC M-102
+            </span>
+</div>
+<!-- Conversion Sequence Flow -->
+<div class="space-y-space-sm pt-space-xs">
+<div class="grid grid-cols-3 gap-space-sm text-center">
+<div class="p-space-sm bg-surface-container-low border border-outline-variant rounded">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">STEP 1: INTAKE</span>
+<span class="font-code-lg text-code-lg font-bold text-primary">94.2%</span>
+<span class="font-code-sm text-code-sm text-secondary block">Healthy</span>
+</div>
+<div class="p-space-sm bg-surface-container-low border border-outline-variant rounded relative">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">STEP 2: VERIFY</span>
+<span class="font-code-lg text-code-lg font-bold text-tertiary-fixed-dim">78.5%</span>
+<span class="font-code-sm text-code-sm text-error block">-15.7% drop</span>
+</div>
+<div class="p-space-sm bg-surface-container-low border border-outline-variant rounded">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">SUBMIT CONVERT</span>
+<span class="font-code-lg text-code-lg font-bold text-secondary">63.8%</span>
+<span class="font-code-sm text-code-sm text-primary-fixed block">Terminal End</span>
+</div>
+</div>
+<!-- Funnel Progression Visual Ribbon -->
+<div class="relative h-2.5 w-full bg-surface-container-highest rounded overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 94.2%;" title="Step 1"></div>
+<div class="bg-tertiary-fixed-dim h-full" style="width: 78.5%;" title="Step 2"></div>
+<div class="bg-secondary h-full" style="width: 63.8%;" title="Submit"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Dwell Analytics & Target Benchmarks (5 Cols) -->
+<section class="lg:col-span-5 space-y-space-lg">
+<!-- Dwell Time Analytics Module -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-space-lg space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-base" data-icon="timer">timer</span>
+<h3 class="font-label-md text-label-md text-primary uppercase">Dwell Time Analytics</h3>
+</div>
+<span class="font-code-sm text-code-sm text-secondary bg-surface-container px-space-xs py-0.5 rounded border border-outline-variant">P90 = 3m 12s</span>
+</div>
+<!-- Tri-segment Visual Breakdown Bar -->
+<div class="space-y-space-xs">
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>CANON INTAKE INTERACTION PARTITION</span>
+<span>100% TOTAL DURATION</span>
+</div>
+<div class="h-4 w-full rounded flex overflow-hidden border border-outline-variant bg-surface-container-highest">
+<div class="bg-primary-container h-full transition-all" style="width: 74%;" title="Active Viewport 74%"></div>
+<div class="bg-secondary h-full transition-all" style="width: 18%;" title="Form Field Focus 18%"></div>
+<div class="bg-surface-bright h-full transition-all" style="width: 8%;" title="Inactive/Idle 8%"></div>
+</div>
+<!-- Legend Pills -->
+<div class="grid grid-cols-3 gap-space-xs pt-space-xs">
+<div class="p-space-xs bg-surface-container rounded border border-outline-variant">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-code-sm text-code-sm text-on-surface">74%</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block truncate">Active Viewport</span>
+</div>
+<div class="p-space-xs bg-surface-container rounded border border-outline-variant">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-code-sm text-code-sm text-on-surface">18%</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block truncate">Field Focus</span>
+</div>
+<div class="p-space-xs bg-surface-container rounded border border-outline-variant">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-surface-bright"></span>
+<span class="font-code-sm text-code-sm text-on-surface">8%</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block truncate">Inactive / Idle</span>
+</div>
+</div>
+</div>
+<!-- Benchmark Meter vs Target Threshold -->
+<div class="bg-surface-container p-space-md rounded border border-outline-variant space-y-space-sm">
+<div class="flex justify-between items-center">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">SLA SPECIFICATION</span>
+<div class="font-code-md text-code-md font-semibold text-on-surface">Intake Friction Index</div>
+</div>
+<div class="text-right">
+<span class="font-code-sm text-code-sm text-secondary font-semibold">PASS (SAFE)</span>
+<div class="font-code-sm text-code-sm text-on-surface-variant">&lt; 3m 30s SLA</div>
+</div>
+</div>
+<!-- Gauge bar with pointer marker -->
+<div class="relative pt-3 pb-1">
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full flex overflow-hidden">
+<div class="bg-secondary h-full" style="width: 65%;"></div>
+<div class="bg-outline h-full" style="width: 15%;"></div>
+<div class="bg-error h-full" style="width: 20%;"></div>
+</div>
+<!-- Benchmark needle indicator at 2m 48s (~72% relative pos) -->
+<div class="absolute top-0 left-[72%] -translate-x-1/2 flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-primary font-bold">2m 48s</span>
+<span class="w-1.5 h-1.5 bg-primary-container rotate-45 -mt-0.5"></span>
+</div>
+</div>
+<div class="flex justify-between text-[10px] font-label-sm text-on-surface-variant">
+<span>0m 00s</span>
+<span>Target: 3m 30s Max</span>
+<span>5m 00s</span>
+</div>
+</div>
+<!-- Micro Metric Highlights -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-space-sm bg-surface-container rounded border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant">HEARTBEAT FREQ</span>
+<div class="font-code-md text-code-md text-primary font-bold">5000ms</div>
+<span class="font-code-sm text-code-sm text-secondary">0 packet drops</span>
+</div>
+<div class="p-space-sm bg-surface-container rounded border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant">BLUR EVENT DELTA</span>
+<div class="font-code-md text-code-md text-on-surface font-bold">3.2 / session</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Nominal scope</span>
+</div>
+</div>
+</div>
+<!-- Telemetry Instrumentation Trigger Matrix -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-space-md space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface uppercase">Instrumentation Triggers</span>
+<span class="font-code-sm text-code-sm text-primary">4 / 4 ACTIVE</span>
+</div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between p-space-xs bg-surface-container rounded border border-outline-variant font-code-sm text-code-sm">
+<div class="flex items-center gap-space-xs">
+<span class="h-1.5 w-1.5 rounded-full bg-primary-container"></span>
+<span class="text-primary">canon_dwell_heartbeat</span>
+</div>
+<span class="text-on-surface-variant">5s intervals</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container rounded border border-outline-variant font-code-sm text-code-sm">
+<div class="flex items-center gap-space-xs">
+<span class="h-1.5 w-1.5 rounded-full bg-secondary"></span>
+<span class="text-on-surface">form_field_focused</span>
+</div>
+<span class="text-on-surface-variant">Input focus state</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container rounded border border-outline-variant font-code-sm text-code-sm">
+<div class="flex items-center gap-space-xs">
+<span class="h-1.5 w-1.5 rounded-full bg-tertiary-fixed-dim"></span>
+<span class="text-on-surface">form_validation_passed</span>
+</div>
+<span class="text-on-surface-variant">Client regex pass</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container rounded border border-outline-variant font-code-sm text-code-sm">
+<div class="flex items-center gap-space-xs">
+<span class="h-1.5 w-1.5 rounded-full bg-secondary-fixed"></span>
+<span class="text-secondary">canon_submit_converted</span>
+</div>
+<span class="text-secondary font-medium">Conversion terminal</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Live Telemetry Event Stream Snippet (Full Width Terminal Pane) -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden">
+<div class="bg-surface-container px-space-md py-space-xs border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="data_object">data_object</span>
+<span class="font-label-md text-label-md text-on-surface uppercase">Live Telemetry Event Stream</span>
+<span class="font-code-sm text-code-sm px-1.5 py-0.5 rounded bg-surface-container-high text-secondary border border-secondary/30">
+            SOCKET: WS_CONNECTED
+          </span>
+</div>
+<div class="flex items-center gap-space-xs font-code-sm text-code-sm text-on-surface-variant">
+<span>BUFF: 50 EVT</span>
+<button class="hover:text-primary transition-colors flex items-center" title="Pause Stream">
+<span class="material-symbols-outlined text-base" data-icon="pause_circle">pause_circle</span>
+</button>
+</div>
+</div>
+<!-- Terminal Lines -->
+<div class="p-space-md font-code-sm text-code-sm space-y-2 overflow-x-auto select-text">
+<div class="flex items-start gap-space-md text-on-surface-variant hover:bg-surface-container-high/40 p-1 rounded transition-colors">
+<span class="text-outline shrink-0 font-mono">14:02:18.912</span>
+<span class="px-1.5 rounded bg-surface-container text-primary shrink-0 border border-outline-variant">canon_dwell_heartbeat</span>
+<span class="text-on-surface truncate font-mono">
+            {"dwell_ms": 12400, "step": "canon_payment_auth", "status": "200_OK", "active_tab": true, "scroll_depth": 0.88}
+          </span>
+</div>
+<div class="flex items-start gap-space-md text-on-surface-variant hover:bg-surface-container-high/40 p-1 rounded transition-colors">
+<span class="text-outline shrink-0 font-mono">14:02:16.402</span>
+<span class="px-1.5 rounded bg-surface-container text-secondary shrink-0 border border-outline-variant">form_field_focused</span>
+<span class="text-on-surface truncate font-mono">
+            {"field_id": "auth_token_key", "focus_ms": 4120, "prior_keystrokes": 14, "validation": "pending"}
+          </span>
+</div>
+<div class="flex items-start gap-space-md text-on-surface-variant hover:bg-surface-container-high/40 p-1 rounded transition-colors">
+<span class="text-outline shrink-0 font-mono">14:02:14.281</span>
+<span class="px-1.5 rounded bg-surface-container text-tertiary-fixed-dim shrink-0 border border-outline-variant">form_validation_passed</span>
+<span class="text-on-surface truncate font-mono">
+            {"step": "step_2_verification", "latency_ms": 32, "rules_evaluated": 6, "checksum": "a7e4b9"}
+          </span>
+</div>
+<div class="flex items-start gap-space-md text-on-surface-variant hover:bg-surface-container-high/40 p-1 rounded transition-colors">
+<span class="text-outline shrink-0 font-mono">14:02:10.004</span>
+<span class="px-1.5 rounded bg-surface-container text-secondary-fixed shrink-0 border border-outline-variant">canon_submit_converted</span>
+<span class="text-secondary truncate font-mono">
+            {"session_id": "canon_sess_948a", "total_dwell_ms": 168000, "status": "200_OK", "converted": true}
+          </span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component from JSON Blueprint) -->
+<!-- Contextual Active mapping: 'GQM Core' is active for this GQM Inspector Screen -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-sm py-space-xs border-t border-outline-variant dark:border-outline-variant bg-surface-container-lowest dark:bg-surface-container-lowest">
+<!-- Tab 1: Dwell (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant font-label-sm text-label-sm py-space-xs hover:text-primary dark:hover:text-primary transition-colors duration-150 active:scale-95 transition-transform duration-100" href="#dwell">
+<span class="material-symbols-outlined text-lg" data-icon="timer">timer</span>
+<span class="mt-0.5">Dwell</span>
+</a>
+<!-- Tab 2: Funnels (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant font-label-sm text-label-sm py-space-xs hover:text-primary dark:hover:text-primary transition-colors duration-150 active:scale-95 transition-transform duration-100" href="#funnels">
+<span class="material-symbols-outlined text-lg" data-icon="filter_alt">filter_alt</span>
+<span class="mt-0.5">Funnels</span>
+</a>
+<!-- Tab 3: GQM Core (Active as per page intent) -->
+<a class="flex flex-col items-center justify-center text-primary-container dark:text-primary-container font-label-sm text-label-sm py-space-xs active:scale-95 transition-transform duration-100" href="#gqm">
+<span class="material-symbols-outlined text-lg" data-icon="track_changes" data-weight="fill" style="font-variation-settings: 'FILL' 1;">track_changes</span>
+<span class="mt-0.5">GQM Core</span>
+</a>
+<!-- Tab 4: Live Stream (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant font-label-sm text-label-sm py-space-xs hover:text-primary dark:hover:text-primary transition-colors duration-150 active:scale-95 transition-transform duration-100" href="#livestream">
+<span class="material-symbols-outlined text-lg" data-icon="data_object">data_object</span>
+<span class="mt-0.5">Live Stream</span>
+</a>
+</nav>
+</body></html>
