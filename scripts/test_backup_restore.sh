@@ -38,4 +38,22 @@ echo "[TEST] Running scripts/restore.sh on ${DUMP_FILES[0]}..."
 ./scripts/restore.sh "${DUMP_FILES[0]}"
 echo "[PASS] Database restore completed successfully."
 
+# Step 5: Assert Retention Policy Purge
+echo "[TEST] Testing retention purge logic..."
+OLD_BACKUP_FILE="${BACKUP_DIR}/db_backup_20000101_000000.dump"
+touch -d "10 days ago" "${OLD_BACKUP_FILE}" 2>/dev/null || touch -t 200001010000 "${OLD_BACKUP_FILE}"
+
+if [ ! -f "${OLD_BACKUP_FILE}" ]; then
+    echo "[FAIL] Failed to create mock old backup file for retention testing."
+    exit 1
+fi
+
+./scripts/backup.sh
+
+if [ -f "${OLD_BACKUP_FILE}" ]; then
+    echo "[FAIL] Old backup file was not purged by retention policy"
+    exit 1
+fi
+echo "[PASS] Retention policy purge verified."
+
 echo "=== All Backup & Restore Verification Checks Passed ==="
