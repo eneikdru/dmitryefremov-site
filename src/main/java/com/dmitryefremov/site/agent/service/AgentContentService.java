@@ -10,7 +10,10 @@ import com.dmitryefremov.site.article.domain.Article;
 import com.dmitryefremov.site.article.dto.ArticleDto;
 import com.dmitryefremov.site.article.repository.ArticleRepository;
 import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
+import com.dmitryefremov.site.podcast.domain.PodcastQuote;
+import com.dmitryefremov.site.podcast.domain.PodcastTimecode;
 import com.dmitryefremov.site.podcast.dto.PodcastEpisodeDto;
+import com.dmitryefremov.site.podcast.dto.PodcastQuoteDto;
 import com.dmitryefremov.site.podcast.dto.PodcastTimecodeDto;
 import com.dmitryefremov.site.podcast.repository.PodcastEpisodeRepository;
 import org.springframework.data.domain.Sort;
@@ -263,6 +266,24 @@ public class AgentContentService {
         if (dto.mediaLink() != null) {
             episode.setMediaLink(dto.mediaLink());
         }
+        if (dto.youtubeUrl() != null) {
+            episode.setYoutubeUrl(dto.youtubeUrl());
+        }
+        if (dto.telegramUrl() != null) {
+            episode.setTelegramUrl(dto.telegramUrl());
+        }
+        if (dto.spotifyUrl() != null) {
+            episode.setSpotifyUrl(dto.spotifyUrl());
+        }
+        if (dto.applePodcastsUrl() != null) {
+            episode.setApplePodcastsUrl(dto.applePodcastsUrl());
+        }
+        if (dto.platforms() != null) {
+            episode.setPlatforms(dto.platforms());
+        }
+        if (dto.conceptLinks() != null) {
+            episode.setConceptLinks(dto.conceptLinks());
+        }
         if (dto.durationSeconds() != null) {
             episode.setDurationSeconds(dto.durationSeconds());
         }
@@ -271,6 +292,22 @@ public class AgentContentService {
             episode.setPublishedAt(dto.publishedAt());
         } else if (episode.getPublishedAt() == null) {
             episode.setPublishedAt(OffsetDateTime.now());
+        }
+
+        if (dto.timecodes() != null) {
+            episode.getTimecodes().clear();
+            for (PodcastTimecodeDto tcDto : dto.timecodes()) {
+                PodcastTimecode tc = new PodcastTimecode(tcDto.getTimeOffsetSeconds(), tcDto.getTitle(), tcDto.getDescription(), tcDto.getDisplayOrder());
+                episode.addTimecode(tc);
+            }
+        }
+
+        if (dto.quotes() != null) {
+            episode.getQuotes().clear();
+            for (PodcastQuoteDto qDto : dto.quotes()) {
+                PodcastQuote q = new PodcastQuote(qDto.getQuoteText(), qDto.getSpeaker(), qDto.getTimeOffsetSeconds(), qDto.getConceptLinks(), qDto.getDisplayOrder());
+                episode.addQuote(q);
+            }
         }
 
         PodcastEpisode saved = podcastEpisodeRepository.save(episode);
@@ -290,6 +327,12 @@ public class AgentContentService {
         String description = null;
         String audioUrl = null;
         String mediaLink = null;
+        String youtubeUrl = null;
+        String telegramUrl = null;
+        String spotifyUrl = null;
+        String applePodcastsUrl = null;
+        String platforms = null;
+        String conceptLinks = null;
         Integer durationSeconds = null;
         OffsetDateTime publishedAt = null;
         String body = markdown;
@@ -310,6 +353,18 @@ public class AgentContentService {
                     audioUrl = unquote(line.substring(line.indexOf(':') + 1).trim());
                 } else if (line.startsWith("mediaLink:") || line.startsWith("media_link:")) {
                     mediaLink = unquote(line.substring(line.indexOf(':') + 1).trim());
+                } else if (line.startsWith("youtubeUrl:") || line.startsWith("youtube_url:")) {
+                    youtubeUrl = unquote(line.substring(line.indexOf(':') + 1).trim());
+                } else if (line.startsWith("telegramUrl:") || line.startsWith("telegram_url:")) {
+                    telegramUrl = unquote(line.substring(line.indexOf(':') + 1).trim());
+                } else if (line.startsWith("spotifyUrl:") || line.startsWith("spotify_url:")) {
+                    spotifyUrl = unquote(line.substring(line.indexOf(':') + 1).trim());
+                } else if (line.startsWith("applePodcastsUrl:") || line.startsWith("apple_podcasts_url:")) {
+                    applePodcastsUrl = unquote(line.substring(line.indexOf(':') + 1).trim());
+                } else if (line.startsWith("platforms:")) {
+                    platforms = unquote(line.substring(10).trim());
+                } else if (line.startsWith("conceptLinks:") || line.startsWith("concept_links:")) {
+                    conceptLinks = unquote(line.substring(line.indexOf(':') + 1).trim());
                 } else if (line.startsWith("durationSeconds:") || line.startsWith("duration_seconds:")) {
                     try {
                         durationSeconds = Integer.parseInt(unquote(line.substring(line.indexOf(':') + 1).trim()));
@@ -335,8 +390,16 @@ public class AgentContentService {
                 description,
                 audioUrl,
                 mediaLink,
+                youtubeUrl,
+                telegramUrl,
+                spotifyUrl,
+                applePodcastsUrl,
+                platforms,
+                conceptLinks,
                 durationSeconds,
-                publishedAt
+                publishedAt,
+                null,
+                null
         );
 
         return updatePodcastJson(slug, dto, agent);
@@ -358,6 +421,9 @@ public class AgentContentService {
         List<PodcastTimecodeDto> timecodes = entity.getTimecodes() != null ?
                 entity.getTimecodes().stream().map(tc -> new PodcastTimecodeDto(tc.getId(), tc.getTimeOffsetSeconds(), tc.getTitle(), tc.getDescription(), tc.getDisplayOrder())).toList() : List.of();
 
+        List<PodcastQuoteDto> quotes = entity.getQuotes() != null ?
+                entity.getQuotes().stream().map(q -> new PodcastQuoteDto(q.getId(), q.getQuoteText(), q.getSpeaker(), q.getTimeOffsetSeconds(), q.getConceptLinks(), q.getDisplayOrder())).toList() : List.of();
+
         return new PodcastEpisodeDto(
                 entity.getId(),
                 entity.getSlug(),
@@ -366,10 +432,17 @@ public class AgentContentService {
                 entity.getDescription(),
                 entity.getAudioUrl(),
                 entity.getMediaLink(),
+                entity.getYoutubeUrl(),
+                entity.getTelegramUrl(),
+                entity.getSpotifyUrl(),
+                entity.getApplePodcastsUrl(),
+                entity.getPlatforms(),
+                entity.getConceptLinks(),
                 entity.getDurationSeconds(),
                 entity.getPublishedAt(),
                 entity.getCreatedAt(),
-                timecodes
+                timecodes,
+                quotes
         );
     }
 

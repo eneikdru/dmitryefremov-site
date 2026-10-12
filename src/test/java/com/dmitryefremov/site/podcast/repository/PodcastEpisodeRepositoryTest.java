@@ -1,6 +1,7 @@
 package com.dmitryefremov.site.podcast.repository;
 
 import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
+import com.dmitryefremov.site.podcast.domain.PodcastQuote;
 import com.dmitryefremov.site.podcast.domain.PodcastTimecode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ class PodcastEpisodeRepositoryTest {
                 "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'PODCAST_TIMECODES'",
                 Integer.class
         );
+        Integer quoteTableCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'PODCAST_QUOTES'",
+                Integer.class
+        );
         Integer episodesViewCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'EPISODES'",
                 Integer.class
@@ -39,6 +44,7 @@ class PodcastEpisodeRepositoryTest {
 
         assertThat(episodeTableCount).isGreaterThan(0);
         assertThat(timecodeTableCount).isGreaterThan(0);
+        assertThat(quoteTableCount).isGreaterThan(0);
         assertThat(episodesViewCount).isGreaterThan(0);
     }
 
@@ -107,5 +113,51 @@ class PodcastEpisodeRepositoryTest {
                 Integer.class
         );
         assertThat(viewCount).isEqualTo(1);
+    }
+
+    @Test
+    void testInsertEpisodeWithQuotesAndConceptLinks() {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 12, 10, 0, 0, 0, ZoneOffset.UTC);
+
+        PodcastEpisode episode = new PodcastEpisode(
+                "ruth-barcan-marcus-ep1",
+                "Философия сознания: Рут Баркан Маркус",
+                "Необходимая модальность и прямое наименование.",
+                "Разбор философского наследия Рут Баркан Маркус.",
+                "https://cdn.dmitryefremov.com/podcast/marcus.mp3",
+                "https://youtube.com/watch?v=marcus",
+                "https://youtube.com/watch?v=marcus",
+                "https://t.me/efremov_mvp/101",
+                "https://open.spotify.com/episode/marcus",
+                "https://podcasts.apple.com/podcast/marcus",
+                "YOUTUBE,TELEGRAM,SPOTIFY,APPLE",
+                2700,
+                publishedAt
+        );
+        episode.setConceptLinks("https://dmitryefremov.com/ontology/modal-logic,https://dmitryefremov.com/ontology/direct-reference");
+
+        PodcastTimecode tc = new PodcastTimecode(300, "Формула Баркан", "Обсуждение модальной логики", 1);
+        episode.addTimecode(tc);
+
+        PodcastQuote quote = new PodcastQuote(
+                "Идентичность есть необходимое отношение между объектом и им самим.",
+                "Рут Баркан Маркус",
+                360,
+                "https://dmitryefremov.com/ontology/modal-logic",
+                1
+        );
+        episode.addQuote(quote);
+
+        PodcastEpisode saved = podcastEpisodeRepository.save(episode);
+        podcastEpisodeRepository.flush();
+
+        assertThat(saved.getId()).isNotNull();
+
+        Optional<PodcastEpisode> fetched = podcastEpisodeRepository.findBySlug("ruth-barcan-marcus-ep1");
+        assertThat(fetched).isPresent();
+        assertThat(fetched.get().getConceptLinks()).contains("modal-logic");
+        assertThat(fetched.get().getQuotes()).hasSize(1);
+        assertThat(fetched.get().getQuotes().get(0).getQuoteText()).contains("Идентичность есть необходимое отношение");
+        assertThat(fetched.get().getQuotes().get(0).getSpeaker()).isEqualTo("Рут Баркан Маркус");
     }
 }

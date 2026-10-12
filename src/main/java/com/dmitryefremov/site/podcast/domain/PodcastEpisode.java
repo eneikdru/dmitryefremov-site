@@ -47,6 +47,9 @@ public class PodcastEpisode {
     @Column(name = "platforms")
     private String platforms;
 
+    @Column(name = "concept_links")
+    private String conceptLinks;
+
     @Column(name = "duration_seconds")
     private Integer durationSeconds;
 
@@ -59,6 +62,10 @@ public class PodcastEpisode {
     @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("displayOrder ASC, timeOffsetSeconds ASC")
     private List<PodcastTimecode> timecodes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("displayOrder ASC, id ASC")
+    private List<PodcastQuote> quotes = new ArrayList<>();
 
     public PodcastEpisode() {
     }
@@ -100,6 +107,16 @@ public class PodcastEpisode {
     public void removeTimecode(PodcastTimecode timecode) {
         timecodes.remove(timecode);
         timecode.setEpisode(null);
+    }
+
+    public void addQuote(PodcastQuote quote) {
+        quotes.add(quote);
+        quote.setEpisode(this);
+    }
+
+    public void removeQuote(PodcastQuote quote) {
+        quotes.remove(quote);
+        quote.setEpisode(null);
     }
 
     public Long getId() {
@@ -194,6 +211,14 @@ public class PodcastEpisode {
         this.platforms = platforms;
     }
 
+    public String getConceptLinks() {
+        return conceptLinks;
+    }
+
+    public void setConceptLinks(String conceptLinks) {
+        this.conceptLinks = conceptLinks;
+    }
+
     public Integer getDurationSeconds() {
         return durationSeconds;
     }
@@ -216,6 +241,10 @@ public class PodcastEpisode {
 
     public List<PodcastTimecode> getTimecodes() {
         return timecodes;
+    }
+
+    public List<PodcastQuote> getQuotes() {
+        return quotes;
     }
 
     @Override
