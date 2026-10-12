@@ -156,4 +156,35 @@ describe('ArticleStreamView Component', () => {
     expect(target.textContent).toContain('AVAILABLE_LONGREADS (1)');
     expect(target.textContent).toContain('Theory of Constraints in Distributed Pipeline Throughput');
   });
+
+  it('renders default Telegram sparks stream in the UI stream', () => {
+    component = mount(ArticleStreamView, { target });
+
+    const sparksSection = target.querySelector('#sparks-stream-section');
+    expect(sparksSection).not.toBeNull();
+    expect(target.textContent).toContain('[TELEGRAM_SPARKS_STREAM]');
+    expect(target.textContent).toContain('Exploring agentic economy and A2A protocols');
+    expect(target.textContent).toContain('TG_MSG_#4096');
+  });
+
+  it('surfaces custom simulated Telegram spark payload in the UI stream', () => {
+    const simulatedSpark = {
+      id: 'spark-9999',
+      telegramMessageId: 9999,
+      content: 'Simulated real-time insight from Telegram webhook stream testing',
+      domain: 'Pragmatic Business Strategy',
+      tags: 'business,strategy',
+      author: '@efremov_mvp',
+      publishedAt: '2026-10-12 21:30'
+    };
+
+    component = mount(ArticleStreamView, {
+      target,
+      props: { sparks: [simulatedSpark] }
+    });
+
+    expect(target.textContent).toContain('Simulated real-time insight from Telegram webhook stream testing');
+    expect(target.textContent).toContain('TG_MSG_#9999');
+    expect(target.textContent).toContain('Pragmatic Business Strategy');
+  });
 });

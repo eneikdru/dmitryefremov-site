@@ -15,6 +15,16 @@
     contentMarkdown: string;
   }
 
+  export interface SparkItem {
+    id: string | number;
+    telegramMessageId?: number;
+    content: string;
+    domain?: string;
+    tags?: string;
+    author?: string;
+    publishedAt: string;
+  }
+
   export const ARTICLES: Article[] = [
     {
       id: 'high-end-editorial-minimalism',
@@ -147,8 +157,30 @@ All non-deterministic sources (timestamps, random number generators, network res
     }
   ];
 
+  export const INITIAL_SPARKS: SparkItem[] = [
+    {
+      id: 'spark-4096',
+      telegramMessageId: 4096,
+      content: 'Exploring agentic economy and A2A protocols for autonomous agents. #a2a #strategy',
+      domain: 'Agentic Economy (A2A)',
+      tags: 'a2a,strategy',
+      author: 'Dmitry Efremov',
+      publishedAt: '2026-10-12 18:00'
+    },
+    {
+      id: 'spark-4097',
+      telegramMessageId: 4097,
+      content: 'Autonomous engineering requirement: strict deterministic state transitions with zero random side effects. #engineering #architecture',
+      domain: 'Autonomous Engineering',
+      tags: 'engineering,architecture',
+      author: 'Dmitry Efremov',
+      publishedAt: '2026-10-12 19:30'
+    }
+  ];
+
   export let selectedArticleId: string = ARTICLES[0].id;
   export let filterTopic: 'all' | 'deontic' | 'toc' | 'autonomous' | 'systems' = 'all';
+  export let sparks: SparkItem[] = INITIAL_SPARKS;
 
   let scrollContainer: HTMLElement;
   let trackedThresholds: Set<number> = new Set();
@@ -211,7 +243,7 @@ All non-deterministic sources (timestamps, random number generators, network res
         <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
           [THOUGHT_STREAM]
         </span>
-        <span class="text-xs font-mono text-[#94a3b8]">Articles: {ARTICLES.length}</span>
+        <span class="text-xs font-mono text-[#94a3b8]">Articles: {ARTICLES.length} | Telegram Sparks: {sparks.length}</span>
       </div>
       <h2 class="text-xl font-bold tracking-tight text-white">Articles & Thought Stream</h2>
     </div>
@@ -249,40 +281,70 @@ All non-deterministic sources (timestamps, random number generators, network res
     </div>
   </div>
 
-  <!-- Main Grid: Available Longreads List (Left) & Active Article Reader (Right) -->
+  <!-- Main Grid: Available Longreads List & Telegram Sparks Stream (Left) & Active Article Reader (Right) -->
   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-    <!-- Available Longreads List -->
-    <div id="longreads-list-section" class="md:col-span-5 space-y-3">
-      <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
-        <span>AVAILABLE_LONGREADS ({filteredArticles.length})</span>
-        <span>SELECT_TO_READ</span>
+    <!-- Available Longreads List & Telegram Sparks Feed -->
+    <div id="longreads-list-section" class="md:col-span-5 space-y-6">
+      <div class="space-y-3">
+        <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
+          <span>AVAILABLE_LONGREADS ({filteredArticles.length})</span>
+          <span>SELECT_TO_READ</span>
+        </div>
+
+        <div class="space-y-3" role="list" aria-label="Available Longreads">
+          {#each filteredArticles as article}
+            <button
+              type="button"
+              class="article-card w-full p-4 rounded-lg border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#38bdf8] {selectedArticleId === article.id ? 'bg-[#12151e] border-[#38bdf8] shadow-md' : 'bg-[#090a0f] border-[#1f2433] hover:border-[#34d399]/50 hover:bg-[#12151e]/50'}"
+              on:click={() => handleArticleSelect(article.id)}
+            >
+              <div class="flex justify-between items-center text-xs font-mono mb-2">
+                <span class="px-1.5 py-0.5 rounded bg-[#1f2433] text-[#38bdf8] uppercase">
+                  {article.topic}
+                </span>
+                <span class="text-[#64748b]">{article.readTime}</span>
+              </div>
+              <h3 class="font-bold text-white text-base mb-1 hover:text-[#38bdf8] transition-colors">
+                {article.title}
+              </h3>
+              <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
+                {article.summary}
+              </p>
+              <div class="mt-3 text-[11px] font-mono text-[#64748b] flex justify-between items-center">
+                <span>{article.publishedAt}</span>
+                <span class="text-[#38bdf8]">{selectedArticleId === article.id ? '● READING' : 'READ →'}</span>
+              </div>
+            </button>
+          {/each}
+        </div>
       </div>
 
-      <div class="space-y-3" role="list" aria-label="Available Longreads">
-        {#each filteredArticles as article}
-          <button
-            type="button"
-            class="article-card w-full p-4 rounded-lg border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#38bdf8] {selectedArticleId === article.id ? 'bg-[#12151e] border-[#38bdf8] shadow-md' : 'bg-[#090a0f] border-[#1f2433] hover:border-[#34d399]/50 hover:bg-[#12151e]/50'}"
-            on:click={() => handleArticleSelect(article.id)}
-          >
-            <div class="flex justify-between items-center text-xs font-mono mb-2">
-              <span class="px-1.5 py-0.5 rounded bg-[#1f2433] text-[#38bdf8] uppercase">
-                {article.topic}
-              </span>
-              <span class="text-[#64748b]">{article.readTime}</span>
+      <!-- Telegram Sparks Stream (Tier 3 Quantized Thoughts) -->
+      <div id="sparks-stream-section" class="pt-4 border-t border-[#1f2433] space-y-3">
+        <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
+          <span class="text-[#38bdf8] font-bold">[TELEGRAM_SPARKS_STREAM]</span>
+          <span>QUANTIZED_THOUGHTS ({sparks.length})</span>
+        </div>
+
+        <div class="space-y-3" role="list" aria-label="Telegram Sparks Stream">
+          {#each sparks as spark}
+            <div class="spark-card p-3 rounded-lg border border-[#1f2433] bg-[#12151e]/60 font-mono text-xs space-y-2">
+              <div class="flex justify-between items-center text-[11px] text-[#94a3b8]">
+                <span class="px-1.5 py-0.5 rounded bg-[#1f2433] text-[#34d399]">
+                  {spark.telegramMessageId ? `TG_MSG_#${spark.telegramMessageId}` : 'TG_MSG'}
+                </span>
+                <span class="text-[#64748b]">{spark.domain || 'General'}</span>
+              </div>
+              <p class="text-[#e2e8f0] font-sans leading-relaxed text-xs">
+                {spark.content}
+              </p>
+              <div class="flex justify-between items-center text-[10px] text-[#64748b]">
+                <span>{spark.author || '@efremov_mvp'}</span>
+                <span>{spark.publishedAt}</span>
+              </div>
             </div>
-            <h3 class="font-bold text-white text-base mb-1 hover:text-[#38bdf8] transition-colors">
-              {article.title}
-            </h3>
-            <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
-              {article.summary}
-            </p>
-            <div class="mt-3 text-[11px] font-mono text-[#64748b] flex justify-between items-center">
-              <span>{article.publishedAt}</span>
-              <span class="text-[#38bdf8]">{selectedArticleId === article.id ? '● READING' : 'READ →'}</span>
-            </div>
-          </button>
-        {/each}
+          {/each}
+        </div>
       </div>
     </div>
 
