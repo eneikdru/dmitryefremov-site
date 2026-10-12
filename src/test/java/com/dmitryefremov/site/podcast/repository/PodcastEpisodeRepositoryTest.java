@@ -23,7 +23,7 @@ class PodcastEpisodeRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     @Test
-    void testFlywayMigrationCreatedTables() {
+    void testFlywayMigrationCreatedTablesAndEpisodesView() {
         Integer episodeTableCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'PODCAST_EPISODES'",
                 Integer.class
@@ -32,9 +32,14 @@ class PodcastEpisodeRepositoryTest {
                 "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'PODCAST_TIMECODES'",
                 Integer.class
         );
+        Integer episodesViewCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'EPISODES'",
+                Integer.class
+        );
 
         assertThat(episodeTableCount).isGreaterThan(0);
         assertThat(timecodeTableCount).isGreaterThan(0);
+        assertThat(episodesViewCount).isGreaterThan(0);
     }
 
     @Test
@@ -50,7 +55,7 @@ class PodcastEpisodeRepositoryTest {
     }
 
     @Test
-    void testInsertEpisodeWithMultipleTimecodes() {
+    void testInsertEpisodeWithMultipleTimecodesAndPlatforms() {
         OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 9, 12, 0, 0, 0, ZoneOffset.UTC);
 
         PodcastEpisode episode = new PodcastEpisode(
@@ -60,6 +65,11 @@ class PodcastEpisodeRepositoryTest {
                 "Полное описание третьего выпуска.",
                 "https://cdn.dmitryefremov.com/podcast/ep3.mp3",
                 "https://youtube.com/watch?v=ep3",
+                "https://youtube.com/watch?v=ep3",
+                "https://t.me/efremov_mvp/100",
+                "https://open.spotify.com/episode/ep3",
+                "https://podcasts.apple.com/podcast/ep3",
+                "YOUTUBE,TELEGRAM,SPOTIFY,APPLE",
                 3600,
                 publishedAt
         );
@@ -83,9 +93,19 @@ class PodcastEpisodeRepositoryTest {
         PodcastEpisode fetchedEpisode = fetchedOptional.get();
         assertThat(fetchedEpisode.getTitle()).isEqualTo("Системы и реальность: Выпуск 3");
         assertThat(fetchedEpisode.getThesis()).contains("деонтической логике");
+        assertThat(fetchedEpisode.getYoutubeUrl()).isEqualTo("https://youtube.com/watch?v=ep3");
+        assertThat(fetchedEpisode.getTelegramUrl()).isEqualTo("https://t.me/efremov_mvp/100");
+        assertThat(fetchedEpisode.getPlatforms()).isEqualTo("YOUTUBE,TELEGRAM,SPOTIFY,APPLE");
         assertThat(fetchedEpisode.getTimecodes()).hasSize(3);
         assertThat(fetchedEpisode.getTimecodes())
                 .extracting(PodcastTimecode::getTitle)
                 .containsExactly("Введение и манифест", "Теория ограничений", "Деонтическая логика");
+
+        // Verify episodes view query
+        Integer viewCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM episodes WHERE slug = 'systems-and-reality-ep3'",
+                Integer.class
+        );
+        assertThat(viewCount).isEqualTo(1);
     }
 }

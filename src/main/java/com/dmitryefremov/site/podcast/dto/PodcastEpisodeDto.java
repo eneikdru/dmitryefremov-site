@@ -12,6 +12,11 @@ public class PodcastEpisodeDto {
     private String description;
     private String audioUrl;
     private String mediaLink;
+    private String youtubeUrl;
+    private String telegramUrl;
+    private String spotifyUrl;
+    private String applePodcastsUrl;
+    private String platforms;
     private Integer durationSeconds;
     private OffsetDateTime publishedAt;
     private OffsetDateTime createdAt;
@@ -24,6 +29,14 @@ public class PodcastEpisodeDto {
                              String audioUrl, String mediaLink, Integer durationSeconds,
                              OffsetDateTime publishedAt, OffsetDateTime createdAt,
                              List<PodcastTimecodeDto> timecodes) {
+        this(id, slug, title, thesis, description, audioUrl, mediaLink, null, null, null, null, null, durationSeconds, publishedAt, createdAt, timecodes);
+    }
+
+    public PodcastEpisodeDto(Long id, String slug, String title, String thesis, String description,
+                             String audioUrl, String mediaLink, String youtubeUrl, String telegramUrl,
+                             String spotifyUrl, String applePodcastsUrl, String platforms,
+                             Integer durationSeconds, OffsetDateTime publishedAt, OffsetDateTime createdAt,
+                             List<PodcastTimecodeDto> timecodes) {
         this.id = id;
         this.slug = slug;
         this.title = title;
@@ -31,6 +44,11 @@ public class PodcastEpisodeDto {
         this.description = description;
         this.audioUrl = audioUrl;
         this.mediaLink = mediaLink;
+        this.youtubeUrl = youtubeUrl;
+        this.telegramUrl = telegramUrl;
+        this.spotifyUrl = spotifyUrl;
+        this.applePodcastsUrl = applePodcastsUrl;
+        this.platforms = platforms;
         this.durationSeconds = durationSeconds;
         this.publishedAt = publishedAt;
         this.createdAt = createdAt;
@@ -93,6 +111,46 @@ public class PodcastEpisodeDto {
 
     public void setMediaLink(String mediaLink) {
         this.mediaLink = mediaLink;
+    }
+
+    public String getYoutubeUrl() {
+        return youtubeUrl;
+    }
+
+    public void setYoutubeUrl(String youtubeUrl) {
+        this.youtubeUrl = youtubeUrl;
+    }
+
+    public String getTelegramUrl() {
+        return telegramUrl;
+    }
+
+    public void setTelegramUrl(String telegramUrl) {
+        this.telegramUrl = telegramUrl;
+    }
+
+    public String getSpotifyUrl() {
+        return spotifyUrl;
+    }
+
+    public void setSpotifyUrl(String spotifyUrl) {
+        this.spotifyUrl = spotifyUrl;
+    }
+
+    public String getApplePodcastsUrl() {
+        return applePodcastsUrl;
+    }
+
+    public void setApplePodcastsUrl(String applePodcastsUrl) {
+        this.applePodcastsUrl = applePodcastsUrl;
+    }
+
+    public String getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(String platforms) {
+        this.platforms = platforms;
     }
 
     public Integer getDurationSeconds() {

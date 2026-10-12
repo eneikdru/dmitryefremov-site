@@ -32,6 +32,21 @@ public class PodcastEpisode {
     @Column(name = "media_link")
     private String mediaLink;
 
+    @Column(name = "youtube_url")
+    private String youtubeUrl;
+
+    @Column(name = "telegram_url")
+    private String telegramUrl;
+
+    @Column(name = "spotify_url")
+    private String spotifyUrl;
+
+    @Column(name = "apple_podcasts_url")
+    private String applePodcastsUrl;
+
+    @Column(name = "platforms")
+    private String platforms;
+
     @Column(name = "duration_seconds")
     private Integer durationSeconds;
 
@@ -55,6 +70,24 @@ public class PodcastEpisode {
         this.description = description;
         this.audioUrl = audioUrl;
         this.mediaLink = mediaLink;
+        this.durationSeconds = durationSeconds;
+        this.publishedAt = publishedAt;
+    }
+
+    public PodcastEpisode(String slug, String title, String thesis, String description, String audioUrl, String mediaLink,
+                          String youtubeUrl, String telegramUrl, String spotifyUrl, String applePodcastsUrl, String platforms,
+                          Integer durationSeconds, OffsetDateTime publishedAt) {
+        this.slug = slug;
+        this.title = title;
+        this.thesis = thesis;
+        this.description = description;
+        this.audioUrl = audioUrl;
+        this.mediaLink = mediaLink;
+        this.youtubeUrl = youtubeUrl;
+        this.telegramUrl = telegramUrl;
+        this.spotifyUrl = spotifyUrl;
+        this.applePodcastsUrl = applePodcastsUrl;
+        this.platforms = platforms;
         this.durationSeconds = durationSeconds;
         this.publishedAt = publishedAt;
     }
@@ -119,6 +152,46 @@ public class PodcastEpisode {
 
     public void setMediaLink(String mediaLink) {
         this.mediaLink = mediaLink;
+    }
+
+    public String getYoutubeUrl() {
+        return youtubeUrl;
+    }
+
+    public void setYoutubeUrl(String youtubeUrl) {
+        this.youtubeUrl = youtubeUrl;
+    }
+
+    public String getTelegramUrl() {
+        return telegramUrl;
+    }
+
+    public void setTelegramUrl(String telegramUrl) {
+        this.telegramUrl = telegramUrl;
+    }
+
+    public String getSpotifyUrl() {
+        return spotifyUrl;
+    }
+
+    public void setSpotifyUrl(String spotifyUrl) {
+        this.spotifyUrl = spotifyUrl;
+    }
+
+    public String getApplePodcastsUrl() {
+        return applePodcastsUrl;
+    }
+
+    public void setApplePodcastsUrl(String applePodcastsUrl) {
+        this.applePodcastsUrl = applePodcastsUrl;
+    }
+
+    public String getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(String platforms) {
+        this.platforms = platforms;
     }
 
     public Integer getDurationSeconds() {
