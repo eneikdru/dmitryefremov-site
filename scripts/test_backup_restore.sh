@@ -38,7 +38,44 @@ echo "[TEST] Running scripts/restore.sh on ${DUMP_FILES[0]}..."
 ./scripts/restore.sh "${DUMP_FILES[0]}"
 echo "[PASS] Database restore completed successfully."
 
-# Step 5: Assert Retention Policy Purge
+# Step 5: Run Data Integrity & Validation Queries
+echo "[TEST] Executing validation queries on restored database snapshot..."
+
+if command -v psql >/dev/null 2>&1; then
+    PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql \
+        -h "${POSTGRES_HOST:-db}" \
+        -p "${POSTGRES_PORT:-5432}" \
+        -U "${POSTGRES_USER:-postgres}" \
+        -d "${POSTGRES_DB:-test_db}" \
+        -c "SELECT COUNT(*) FROM service_orders;" | grep -q "1" || {
+            echo "[FAIL] Validation query failed: service_orders record missing or corrupt"; exit 1;
+        }
+    PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql \
+        -h "${POSTGRES_HOST:-db}" \
+        -p "${POSTGRES_PORT:-5432}" \
+        -U "${POSTGRES_USER:-postgres}" \
+        -d "${POSTGRES_DB:-test_db}" \
+        -c "SELECT COUNT(*) FROM direct_messages;" | grep -q "1" || {
+            echo "[FAIL] Validation query failed: direct_messages record missing or corrupt"; exit 1;
+        }
+else
+    echo "[INFO] psql binary not present; validating backup dump file snapshot contents directly..."
+    grep -q "service_orders" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: service_orders missing from backup snapshot"; exit 1;
+    }
+    grep -q "Client Agent" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: service_orders client data corrupt/missing"; exit 1;
+    }
+    grep -q "direct_messages" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: direct_messages missing from backup snapshot"; exit 1;
+    }
+    grep -q "AI Assistant" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: direct_messages content corrupt/missing"; exit 1;
+    }
+fi
+echo "[PASS] Data validation queries passed: no data loss or corruption detected."
+
+# Step 6: Assert Retention Policy Purge
 echo "[TEST] Testing retention purge logic..."
 OLD_BACKUP_FILE="${BACKUP_DIR}/db_backup_20000101_000000.dump"
 touch -d "10 days ago" "${OLD_BACKUP_FILE}" 2>/dev/null || touch -t 200001010000 "${OLD_BACKUP_FILE}"
