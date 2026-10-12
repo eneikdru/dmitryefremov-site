@@ -207,6 +207,52 @@ class AgentContentApiIntegrationTest {
     }
 
     @Test
+    void testUpdatePodcastJsonWithQuotesAndConceptLinks() throws Exception {
+        String jsonPayload = """
+                {
+                    "title": "Andy Clark & Extended Mind",
+                    "thesis": "The mind extends into external tools and media.",
+                    "description": "Deep dive into Andy Clark, Susan Hurley, and extended mind theory.",
+                    "audioUrl": "https://example.com/extended-mind.mp3",
+                    "youtubeUrl": "https://youtube.com/watch?v=extmind",
+                    "conceptLinks": "https://dmitryefremov.com/ontology/extended-mind",
+                    "durationSeconds": 3600,
+                    "timecodes": [
+                        {
+                            "timeOffsetSeconds": 0,
+                            "title": "Introduction to Extended Mind",
+                            "displayOrder": 1
+                        }
+                    ],
+                    "quotes": [
+                        {
+                            "quoteText": "Where does the mind stop and the rest of the world begin?",
+                            "speaker": "Andy Clark",
+                            "timeOffsetSeconds": 120,
+                            "conceptLinks": "https://dmitryefremov.com/ontology/extended-mind",
+                            "displayOrder": 1
+                        }
+                    ]
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/agent/content/podcasts/andy-clark-extended-mind")
+                        .header("X-API-Token", rawToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("andy-clark-extended-mind")))
+                .andExpect(jsonPath("$.title", is("Andy Clark & Extended Mind")))
+                .andExpect(jsonPath("$.conceptLinks", is("https://dmitryefremov.com/ontology/extended-mind")))
+                .andExpect(jsonPath("$.timecodes", hasSize(1)))
+                .andExpect(jsonPath("$.quotes", hasSize(1)))
+                .andExpect(jsonPath("$.quotes[0].speaker", is("Andy Clark")))
+                .andExpect(jsonPath("$.quotes[0].quoteText", containsString("Where does the mind stop")));
+
+        assertThat(podcastEpisodeRepository.findBySlug("andy-clark-extended-mind")).isPresent();
+    }
+
+    @Test
     void testUpdateArticleInvalidPayloadReturnsBadRequest() throws Exception {
         String markdownPayload = "   ";
 

@@ -1,9 +1,11 @@
 package com.dmitryefremov.site.podcast.service;
 
 import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
+import com.dmitryefremov.site.podcast.domain.PodcastQuote;
 import com.dmitryefremov.site.podcast.domain.PodcastTimecode;
 import com.dmitryefremov.site.podcast.dto.PodcastEpisodeDto;
 import com.dmitryefremov.site.podcast.dto.PodcastEpisodePageDto;
+import com.dmitryefremov.site.podcast.dto.PodcastQuoteDto;
 import com.dmitryefremov.site.podcast.dto.PodcastTimecodeDto;
 import com.dmitryefremov.site.podcast.repository.PodcastEpisodeRepository;
 import org.springframework.data.domain.Page;
@@ -56,9 +58,15 @@ public class PodcastEpisodeService {
     }
 
     public PodcastEpisodeDto mapToDto(PodcastEpisode entity) {
-        List<PodcastTimecodeDto> timecodeDtos = entity.getTimecodes().stream()
-                .map(this::mapTimecodeToDto)
-                .collect(Collectors.toList());
+        List<PodcastTimecodeDto> timecodeDtos = entity.getTimecodes() != null ?
+                entity.getTimecodes().stream()
+                        .map(this::mapTimecodeToDto)
+                        .collect(Collectors.toList()) : List.of();
+
+        List<PodcastQuoteDto> quoteDtos = entity.getQuotes() != null ?
+                entity.getQuotes().stream()
+                        .map(this::mapQuoteToDto)
+                        .collect(Collectors.toList()) : List.of();
 
         return new PodcastEpisodeDto(
                 entity.getId(),
@@ -73,10 +81,12 @@ public class PodcastEpisodeService {
                 entity.getSpotifyUrl(),
                 entity.getApplePodcastsUrl(),
                 entity.getPlatforms(),
+                entity.getConceptLinks(),
                 entity.getDurationSeconds(),
                 entity.getPublishedAt(),
                 entity.getCreatedAt(),
-                timecodeDtos
+                timecodeDtos,
+                quoteDtos
         );
     }
 
@@ -86,6 +96,17 @@ public class PodcastEpisodeService {
                 entity.getTimeOffsetSeconds(),
                 entity.getTitle(),
                 entity.getDescription(),
+                entity.getDisplayOrder()
+        );
+    }
+
+    private PodcastQuoteDto mapQuoteToDto(PodcastQuote entity) {
+        return new PodcastQuoteDto(
+                entity.getId(),
+                entity.getQuoteText(),
+                entity.getSpeaker(),
+                entity.getTimeOffsetSeconds(),
+                entity.getConceptLinks(),
                 entity.getDisplayOrder()
         );
     }

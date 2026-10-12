@@ -17,10 +17,12 @@ public class PodcastEpisodeDto {
     private String spotifyUrl;
     private String applePodcastsUrl;
     private String platforms;
+    private String conceptLinks;
     private Integer durationSeconds;
     private OffsetDateTime publishedAt;
     private OffsetDateTime createdAt;
     private List<PodcastTimecodeDto> timecodes = new ArrayList<>();
+    private List<PodcastQuoteDto> quotes = new ArrayList<>();
 
     public PodcastEpisodeDto() {
     }
@@ -37,6 +39,15 @@ public class PodcastEpisodeDto {
                              String spotifyUrl, String applePodcastsUrl, String platforms,
                              Integer durationSeconds, OffsetDateTime publishedAt, OffsetDateTime createdAt,
                              List<PodcastTimecodeDto> timecodes) {
+        this(id, slug, title, thesis, description, audioUrl, mediaLink, youtubeUrl, telegramUrl, spotifyUrl, applePodcastsUrl, platforms, null, durationSeconds, publishedAt, createdAt, timecodes, null);
+    }
+
+    public PodcastEpisodeDto(Long id, String slug, String title, String thesis, String description,
+                             String audioUrl, String mediaLink, String youtubeUrl, String telegramUrl,
+                             String spotifyUrl, String applePodcastsUrl, String platforms,
+                             String conceptLinks, Integer durationSeconds, OffsetDateTime publishedAt,
+                             OffsetDateTime createdAt, List<PodcastTimecodeDto> timecodes,
+                             List<PodcastQuoteDto> quotes) {
         this.id = id;
         this.slug = slug;
         this.title = title;
@@ -49,11 +60,15 @@ public class PodcastEpisodeDto {
         this.spotifyUrl = spotifyUrl;
         this.applePodcastsUrl = applePodcastsUrl;
         this.platforms = platforms;
+        this.conceptLinks = conceptLinks;
         this.durationSeconds = durationSeconds;
         this.publishedAt = publishedAt;
         this.createdAt = createdAt;
         if (timecodes != null) {
             this.timecodes = timecodes;
+        }
+        if (quotes != null) {
+            this.quotes = quotes;
         }
     }
 
@@ -153,6 +168,14 @@ public class PodcastEpisodeDto {
         this.platforms = platforms;
     }
 
+    public String getConceptLinks() {
+        return conceptLinks;
+    }
+
+    public void setConceptLinks(String conceptLinks) {
+        this.conceptLinks = conceptLinks;
+    }
+
     public Integer getDurationSeconds() {
         return durationSeconds;
     }
@@ -183,5 +206,13 @@ public class PodcastEpisodeDto {
 
     public void setTimecodes(List<PodcastTimecodeDto> timecodes) {
         this.timecodes = timecodes;
+    }
+
+    public List<PodcastQuoteDto> getQuotes() {
+        return quotes;
+    }
+
+    public void setQuotes(List<PodcastQuoteDto> quotes) {
+        this.quotes = quotes;
     }
 }
