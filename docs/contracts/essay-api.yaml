@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: Essay Reader API Contract
+  description: Shared API specification for Dmitry Efremov's Editorial Essay Reader. Defines endpoints for retrieving essays, paginated essay lists, and individual essay content in raw Markdown.
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/essays:
+    get:
+      summary: List essays
+      description: Retrieves a paginated list of published essays in the Essay Reader, ordered by publication date descending.
+      operationId: listEssays
+      parameters:
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successfully retrieved essay list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EssayPage'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/essays/{slug}:
+    get:
+      summary: Get essay by slug
+      description: Retrieves a single essay including its raw Markdown body content, summary, and publication date.
+      operationId: getEssayBySlug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Unique URL identifier slug of the essay
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Essay found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Essay'
+        '404':
+          description: Essay not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Essay:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - content
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        slug:
+          type: string
+          description: Unique URL-friendly slug of the essay
+          example: "deontic-logic-and-editorial-minimalism"
+        title:
+          type: string
+          description: Title of the essay
+          example: "Deontic Logic and Editorial Minimalism"
+        summary:
+          type: string
+          nullable: true
+          description: Short summary or excerpt of the essay
+          example: "An analysis of deontic logic and high-end dark design aesthetics."
+        content:
+          type: string
+          description: Raw Markdown body of the essay
+          example: "# Deontic Logic\n\nYour code and your decisions are who you truly are."
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the essay was published
+          example: "2026-10-12T18:00:00Z"
+        createdAt:
+          type: string
+          format: date-time
+          description: Record creation timestamp
+          example: "2026-10-12T18:32:32Z"
+
+    EssayPage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Essay'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 1
+        totalPages:
+          type: integer
+          example: 1
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: "Essay with slug 'unknown-slug' was not found"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-12T18:35:00Z"
