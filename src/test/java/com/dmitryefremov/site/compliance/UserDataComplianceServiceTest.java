@@ -1,0 +1,92 @@
+package com.dmitryefremov.site.compliance;
+
+import com.dmitryefremov.site.compliance.domain.DirectMessage;
+import com.dmitryefremov.site.compliance.domain.ServiceOrder;
+import com.dmitryefremov.site.compliance.dto.ErasureResponseDto;
+import com.dmitryefremov.site.compliance.dto.UserDataExportDto;
+import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
+import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
+import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class UserDataComplianceServiceTest {
+
+    @Mock
+    private ServiceOrderRepository serviceOrderRepository;
+
+    @Mock
+    private DirectMessageRepository directMessageRepository;
+
+    private Clock fixedClock;
+    private UserDataComplianceService complianceService;
+
+    @BeforeEach
+    void setUp() {
+        Instant fixedInstant = Instant.parse("2026-10-12T12:00:00Z");
+        fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"));
+        complianceService = new UserDataComplianceService(serviceOrderRepository, directMessageRepository, fixedClock);
+    }
+
+    @Test
+    @DisplayName("exportUserData should return user orders and direct messages with reproducible clock timestamp")
+    void testExportUserData() {
+        String userId = "agent-user-123";
+        ServiceOrder order = new ServiceOrder(userId, "MVP", "MVP specification", "PENDING", fixedClock.instant().atOffset(ZoneOffset.UTC));
+        DirectMessage message = new DirectMessage(userId, "Hello from ChatGPT agent", fixedClock.instant().atOffset(ZoneOffset.UTC));
+
+        when(serviceOrderRepository.findByUserId(userId)).thenReturn(List.of(order));
+        when(directMessageRepository.findByUserId(userId)).thenReturn(List.of(message));
+
+        UserDataExportDto result = complianceService.exportUserData(userId);
+
+        assertThat(result.getUserId()).isEqualTo(userId);
+        assertThat(result.getOrders()).hasSize(1);
+        assertThat(result.getOrders().get(0).getServiceType()).isEqualTo("MVP");
+        assertThat(result.getMessages()).hasSize(1);
+        assertThat(result.getMessages().get(0).getContent()).isEqualTo("Hello from ChatGPT agent");
+        assertThat(result.getExportedAt()).isEqualTo(fixedClock.instant().atOffset(ZoneOffset.UTC));
+    }
+
+    @Test
+    @DisplayName("eraseUserData should call deleteByUserId on both repositories and return summary")
+    void testEraseUserData() {
+        String userId = "agent-user-456";
+        when(serviceOrderRepository.deleteByUserId(userId)).thenReturn(2L);
+        when(directMessageRepository.deleteByUserId(userId)).thenReturn(3L);
+
+        ErasureResponseDto result = complianceService.eraseUserData(userId);
+
+        assertThat(result.getUserId()).isEqualTo(userId);
+        assertThat(result.getOrdersDeleted()).isEqualTo(2);
+        assertThat(result.getMessagesDeleted()).isEqualTo(3);
+        assertThat(result.getErasedAt()).isEqualTo(fixedClock.instant().atOffset(ZoneOffset.UTC));
+        assertThat(result.getStatusMessage()).contains("permanently erased");
+
+        verify(serviceOrderRepository, times(1)).deleteByUserId(userId);
+        verify(directMessageRepository, times(1)).deleteByUserId(userId);
+    }
+
+    @Test
+    @DisplayName("exportUserData should throw IllegalArgumentException when userId is blank")
+    void testExportUserDataValidation() {
+        assertThatThrownBy(() -> complianceService.exportUserData("  "))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("User ID cannot be null or empty");
+    }
+}
