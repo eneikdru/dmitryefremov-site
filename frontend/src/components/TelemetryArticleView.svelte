@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
 
   export let articleId: string = 'art-01-deontic-logic';
@@ -16,6 +16,8 @@
   let trackedThresholds: Set<number> = new Set();
   let currentPercentage = 0;
   let loggedEvents: TelemetryEvent[] = [];
+  let dwellMs = 0;
+  let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
 
   function handleScroll() {
     if (!scrollContainer) return;
@@ -38,6 +40,17 @@
     if (scrollContainer) {
       handleScroll();
     }
+    heartbeatTimer = setInterval(() => {
+      dwellMs += 5000;
+      const heartbeatEvt = telemetry.trackCanonDwellHeartbeat(dwellMs, articleId, currentPercentage, true);
+      if (heartbeatEvt) {
+        loggedEvents = [...loggedEvents, heartbeatEvt];
+      }
+    }, 5000);
+  });
+
+  onDestroy(() => {
+    if (heartbeatTimer) clearInterval(heartbeatTimer);
   });
 </script>
 
