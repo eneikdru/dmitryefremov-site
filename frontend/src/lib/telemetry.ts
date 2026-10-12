@@ -3,8 +3,16 @@
  * Tracks article scroll depth and contact terminal outbound clicks with zero non-essential cookies.
  */
 
+import { isTelemetryAllowed } from './consent';
+
 export interface TelemetryEvent {
-  type: 'scroll_depth' | 'outbound_click';
+  type:
+    | 'scroll_depth'
+    | 'outbound_click'
+    | 'canon_dwell_heartbeat'
+    | 'form_field_focused'
+    | 'form_validation_passed'
+    | 'canon_submit_converted';
   timestamp: string;
   payload: Record<string, unknown>;
 }
@@ -14,12 +22,26 @@ export interface ScrollDepthPayload {
   depth: number; // 25, 50, 75, 100
 }
 
-import { isTelemetryAllowed } from './consent';
-
 export interface OutboundClickPayload {
   destination: string;
   label?: string;
   platform?: string;
+}
+
+export interface CanonDwellPayload {
+  dwellMs: number;
+  step: string;
+  scrollDepth?: number;
+  activeTab?: boolean;
+}
+
+export interface FormConversionPayload {
+  sessionId?: string;
+  totalDwellMs?: number;
+  fieldId?: string;
+  step?: string;
+  converted?: boolean;
+  status?: string;
 }
 
 class TelemetryService {
@@ -50,6 +72,84 @@ class TelemetryService {
       payload: {
         articleId,
         depth
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackCanonDwellHeartbeat(dwellMs: number, step: string = 'canon_reader', scrollDepth: number = 0, activeTab: boolean = true): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'canon_dwell_heartbeat',
+      timestamp: new Date().toISOString(),
+      payload: {
+        dwell_ms: dwellMs,
+        step,
+        scroll_depth: scrollDepth,
+        active_tab: activeTab,
+        status: '200_OK'
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackFormFieldFocused(fieldId: string, focusMs: number = 0, priorKeystrokes: number = 0): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'form_field_focused',
+      timestamp: new Date().toISOString(),
+      payload: {
+        field_id: fieldId,
+        focus_ms: focusMs,
+        prior_keystrokes: priorKeystrokes,
+        validation: 'pending'
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackFormValidationPassed(step: string, latencyMs: number = 10, rulesEvaluated: number = 1): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'form_validation_passed',
+      timestamp: new Date().toISOString(),
+      payload: {
+        step,
+        latency_ms: latencyMs,
+        rules_evaluated: rulesEvaluated,
+        checksum: 'v1_pass'
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackCanonSubmitConverted(sessionId: string, totalDwellMs: number, additionalData: Record<string, unknown> = {}): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'canon_submit_converted',
+      timestamp: new Date().toISOString(),
+      payload: {
+        session_id: sessionId,
+        total_dwell_ms: totalDwellMs,
+        status: '200_OK',
+        converted: true,
+        ...additionalData
       }
     };
     this.recordEvent(event);

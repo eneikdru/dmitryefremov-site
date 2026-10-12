@@ -112,4 +112,56 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
       });
     });
   });
+
+  describe('GQM Telemetry Instrumentation (Dwell Time & Form Conversions)', () => {
+    it('dispatches canon_dwell_heartbeat telemetry events with correct payload', () => {
+      const evt = telemetry.trackCanonDwellHeartbeat(15000, 'canon_reader', 75, true);
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('canon_dwell_heartbeat');
+      expect(evt?.payload.dwell_ms).toBe(15000);
+      expect(evt?.payload.step).toBe('canon_reader');
+      expect(evt?.payload.scroll_depth).toBe(75);
+      expect(evt?.payload.active_tab).toBe(true);
+      expect(evt?.payload.status).toBe('200_OK');
+    });
+
+    it('tracks form field focus events for intake forms', () => {
+      const evt = telemetry.trackFormFieldFocused('client_name', 1200, 5);
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('form_field_focused');
+      expect(evt?.payload.field_id).toBe('client_name');
+      expect(evt?.payload.focus_ms).toBe(1200);
+      expect(evt?.payload.prior_keystrokes).toBe(5);
+    });
+
+    it('tracks form validation pass events', () => {
+      const evt = telemetry.trackFormValidationPassed('step_1_verification', 20, 2);
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('form_validation_passed');
+      expect(evt?.payload.step).toBe('step_1_verification');
+      expect(evt?.payload.latency_ms).toBe(20);
+      expect(evt?.payload.rules_evaluated).toBe(2);
+      expect(evt?.payload.checksum).toBe('v1_pass');
+    });
+
+    it('dispatches canon_submit_converted conversion event on intake submission', () => {
+      const evt = telemetry.trackCanonSubmitConverted('canon_sess_test123', 45000, {
+        client_name: 'Dmitry Efremov',
+        client_email: 'contact@dmitryefremov.com'
+      });
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('canon_submit_converted');
+      expect(evt?.payload.session_id).toBe('canon_sess_test123');
+      expect(evt?.payload.total_dwell_ms).toBe(45000);
+      expect(evt?.payload.converted).toBe(true);
+      expect(evt?.payload.client_name).toBe('Dmitry Efremov');
+
+      const events = telemetry.getEvents();
+      expect(events).toContainEqual(evt);
+    });
+  });
 });
