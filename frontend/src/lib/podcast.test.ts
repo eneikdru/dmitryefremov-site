@@ -134,4 +134,24 @@ describe('PodcastPlayerView Component UI Interactions', () => {
     expect(podcastTitle.textContent).toBe(secondEp.title);
     expect(target.textContent).toContain(secondEp.thesis);
   });
+
+  it('renders accessible external links for YouTube and Telegram platforms', () => {
+    component = mount(PodcastPlayerView, { target });
+
+    const youtubeLink = target.querySelector('#link-youtube') as HTMLAnchorElement;
+    expect(youtubeLink).not.toBeNull();
+    expect(youtubeLink.getAttribute('href')).toContain('youtube.com');
+    expect(youtubeLink.getAttribute('target')).toBe('_blank');
+    expect(youtubeLink.getAttribute('aria-label')).toContain('YouTube Channel');
+
+    const telegramLink = target.querySelector('#link-telegram') as HTMLAnchorElement;
+    expect(telegramLink).not.toBeNull();
+    expect(telegramLink.getAttribute('href')).toContain('t.me');
+    expect(telegramLink.getAttribute('target')).toBe('_blank');
+    expect(telegramLink.getAttribute('aria-label')).toContain('Telegram Channel');
+
+    const rssLink = target.querySelector('#link-rss') as HTMLAnchorElement;
+    expect(rssLink).not.toBeNull();
+    expect(rssLink.getAttribute('href')).toBe('/feed.xml');
+  });
 });

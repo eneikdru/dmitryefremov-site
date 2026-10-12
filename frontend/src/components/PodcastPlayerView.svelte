@@ -102,37 +102,50 @@
   }
 </script>
 
-<div id="podcast-player-container" class="space-y-6">
+<div id="podcast-player-container" class="space-y-6 max-w-full overflow-hidden">
   <!-- Header & Domain Indicator -->
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2433] pb-4">
     <div>
-      <div class="flex items-center gap-2 mb-1">
+      <div class="flex items-center gap-2 mb-1 flex-wrap">
         <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
           [PODCAST_CATALOG]
         </span>
         <span class="text-xs font-mono text-[#94a3b8]">Episodes: {episodes.length}</span>
       </div>
-      <h2 class="text-xl font-bold tracking-tight text-white">«Системы и реальность» Podcast</h2>
+      <h2 class="text-xl font-bold tracking-tight text-white break-words">«Системы и реальность» Podcast</h2>
     </div>
 
     <!-- External Media Subscription Links -->
-    <div class="flex flex-wrap gap-2 text-xs font-mono">
-      {#if currentEpisode?.mediaLink}
-        <a
-          href={currentEpisode.mediaLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] transition-colors flex items-center gap-1"
-        >
-          <span>Media Channel</span>
-          <span>↗</span>
-        </a>
-      {/if}
+    <div id="external-podcast-links" class="flex flex-wrap gap-2 text-xs font-mono">
       <a
+        id="link-youtube"
+        href={currentEpisode?.youtubeUrl || 'https://youtube.com/@efremov_dmitriy'}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="YouTube Channel for Podcast Systems & Reality"
+        class="px-2.5 py-1 rounded bg-[#12151e] text-[#ef4444] border border-[#1f2433] hover:border-[#ef4444] transition-colors flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-[#ef4444]"
+      >
+        <span>YouTube</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+      <a
+        id="link-telegram"
+        href={currentEpisode?.telegramUrl || 'https://t.me/efremov_mvp'}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Telegram Channel for Podcast Systems & Reality"
+        class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] transition-colors flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-[#38bdf8]"
+      >
+        <span>Telegram</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+      <a
+        id="link-rss"
         href="/feed.xml"
         target="_blank"
         rel="noopener noreferrer"
-        class="px-2.5 py-1 rounded bg-[#12151e] text-[#94a3b8] border border-[#1f2433] hover:text-white transition-colors"
+        aria-label="RSS Feed for Podcast Episodes"
+        class="px-2.5 py-1 rounded bg-[#12151e] text-[#94a3b8] border border-[#1f2433] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#34d399]"
       >
         RSS Feed
       </a>
