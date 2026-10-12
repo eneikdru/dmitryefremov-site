@@ -3,6 +3,7 @@
   import { parseMarkdown } from '../lib/markdown';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
   import ResponsivePicture from './ResponsivePicture.svelte';
+  import SeoMeta from './SeoMeta.svelte';
 
   export interface Article {
     id: string;
@@ -148,6 +149,15 @@ All non-deterministic sources (timestamps, random number generators, network res
     }
   });
 </script>
+
+<SeoMeta
+  title="{selectedArticle.title} | Dmitry Efremov"
+  description={selectedArticle.summary}
+  type="article"
+  url="https://dmitryefremov.com/article/{selectedArticle.id}"
+  publishedAt={selectedArticle.publishedAt}
+  keywords={[selectedArticle.topic, 'Autonomous Systems', 'Deontic Logic', 'AI Crawlers']}
+/>
 
 <div id="article-stream-container" class="space-y-6">
   <!-- Section Header & Filter Options -->
