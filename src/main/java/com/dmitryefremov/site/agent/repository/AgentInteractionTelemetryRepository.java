@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 @Repository
 public interface AgentInteractionTelemetryRepository extends JpaRepository<AgentInteractionTelemetry, String> {
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE AgentInteractionTelemetry t SET t.counter = t.counter + 1, t.updatedAt = :now WHERE t.interactionType = :interactionType")
     int incrementCounter(@Param("interactionType") String interactionType, @Param("now") OffsetDateTime now);
 }
