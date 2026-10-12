@@ -3,8 +3,8 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-test('generate design verification artifacts for responsive picture implementation', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-c4dfc4a4-4d71-4c51-a883-8dcf56ef4518');
+test('generate design verification artifacts for High-End Dark UI/UX Design System', async () => {
+  const targetDir = path.resolve('../.eneik/records/design-check-948289c4-106b-49aa-a059-a1608a8d1c35');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Build frontend first
@@ -38,40 +38,34 @@ test('generate design verification artifacts for responsive picture implementati
     await desktopPage.goto('http://localhost:4173');
     await desktopPage.waitForSelector('#app-root');
 
-    // Click on [PODCAST_MEDIA] tab
-    await desktopPage.click('#tab-btn-podcast');
-    await desktopPage.waitForTimeout(300);
-
     await desktopPage.screenshot({ path: path.join(targetDir, 'desktop-1440.png'), fullPage: true });
 
     // Extract layout geometry bounding boxes
     const layoutBoundingBoxes = await desktopPage.evaluate(() => {
       const elementsToTrack = [
         'main-header',
+        'sys-core-badge',
+        'sys-domain',
+        'theme-toggle-btn',
         'hero-section',
         'hero-avatar-container',
         'hero-avatar-img',
         'hero-title',
         'hero-subtitle',
         'hero-manifest',
-        'theme-toggle-btn',
         'nav-tabs',
         'tab-btn-article',
         'tab-btn-podcast',
         'tab-btn-contact',
-        'podcast-player-container',
-        'podcast-episodes-section',
-        'podcast-player-section',
-        'podcast-player-card',
-        'podcast-header',
-        'podcast-cover-container',
-        'podcast-cover-img',
-        'podcast-title',
-        'audio-controls-block',
-        'play-pause-btn',
-        'time-display',
-        'waveform-container',
-        'timecodes-section',
+        'content-view',
+        'article-stream-container',
+        'longreads-list-section',
+        'article-reader-section',
+        'article-reader-root',
+        'article-header',
+        'article-cover-container',
+        'article-scroll-container',
+        'article-telemetry-log',
         'main-footer'
       ];
 
@@ -101,9 +95,6 @@ test('generate design verification artifacts for responsive picture implementati
     const mobilePage = await mobileContext.newPage();
     await mobilePage.goto('http://localhost:4173');
     await mobilePage.waitForSelector('#app-root');
-
-    await mobilePage.click('#tab-btn-podcast');
-    await mobilePage.waitForTimeout(300);
 
     await mobilePage.screenshot({ path: path.join(targetDir, 'mobile-375.png'), fullPage: true });
 
