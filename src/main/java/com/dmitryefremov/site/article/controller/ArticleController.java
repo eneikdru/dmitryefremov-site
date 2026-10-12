@@ -13,7 +13,7 @@ import java.time.Clock;
 import java.time.OffsetDateTime;
 
 @RestController("siteArticleController")
-@RequestMapping("/api/v1/articles")
+@RequestMapping({"/api/v1/articles", "/api/v1/essays"})
 public class ArticleController {
 
     private final ArticleService articleService;

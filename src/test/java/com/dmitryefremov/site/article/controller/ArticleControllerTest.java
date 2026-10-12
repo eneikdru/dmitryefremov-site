@@ -94,6 +94,35 @@ class ArticleControllerTest {
     }
 
     @Test
+    void testGetEssayBySlugReturns200WithStructuredEssayData() throws Exception {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 9, 12, 0, 0, 0, ZoneOffset.UTC);
+        String markdown = "# Essay\n\nStructured essay data matching BARCAN-TAG-12 contract.";
+
+        ArticleDto essay = new ArticleDto(
+                2L,
+                "deontic-systems",
+                "Deontic Logic in Systems",
+                "Deontic systems summary",
+                markdown,
+                publishedAt,
+                publishedAt
+        );
+
+        when(articleService.getArticleBySlug("deontic-systems"))
+                .thenReturn(Optional.of(essay));
+
+        mockMvc.perform(get("/api/v1/essays/deontic-systems")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(2)))
+                .andExpect(jsonPath("$.slug", is("deontic-systems")))
+                .andExpect(jsonPath("$.title", is("Deontic Logic in Systems")))
+                .andExpect(jsonPath("$.summary", is("Deontic systems summary")))
+                .andExpect(jsonPath("$.content", is(markdown)));
+    }
+
+    @Test
     void testGetArticleBySlugNotFoundReturns404() throws Exception {
         when(articleService.getArticleBySlug("non-existent-article"))
                 .thenReturn(Optional.empty());
@@ -103,6 +132,19 @@ class ArticleControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", is(404)))
                 .andExpect(jsonPath("$.message", is("Article with slug 'non-existent-article' was not found")))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    void testGetEssayBySlugNotFoundReturns404() throws Exception {
+        when(articleService.getArticleBySlug("non-existent-essay"))
+                .thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/v1/essays/non-existent-essay")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", is(404)))
+                .andExpect(jsonPath("$.message", is("Article with slug 'non-existent-essay' was not found")))
                 .andExpect(jsonPath("$.timestamp").exists());
     }
 
