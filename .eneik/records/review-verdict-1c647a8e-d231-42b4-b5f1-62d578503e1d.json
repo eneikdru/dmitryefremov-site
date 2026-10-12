@@ -1,0 +1,46 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 2,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 3,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 4,
+      "verdict": "block",
+      "criticalReason": "Committed stray media files outside .eneik/records/ (e.g. frontend/public/images/dmitry-efremov-hero-desktop.avif)",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 5,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 6,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    }
+  ]
+}
