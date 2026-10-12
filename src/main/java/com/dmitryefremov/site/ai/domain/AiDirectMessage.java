@@ -1,6 +1,7 @@
 package com.dmitryefremov.site.ai.domain;
 
 import jakarta.persistence.*;
+import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -28,40 +29,30 @@ public class AiDirectMessage {
     private String status = "NEW";
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    private OffsetDateTime updatedAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt;
 
     public AiDirectMessage() {
     }
 
     public AiDirectMessage(String senderName, String senderEmail, String agentIdentifier, String content) {
+        this(senderName, senderEmail, agentIdentifier, content, Clock.systemUTC());
+    }
+
+    public AiDirectMessage(String senderName, String senderEmail, String agentIdentifier, String content, Clock clock) {
+        this(senderName, senderEmail, agentIdentifier, content, clock != null ? OffsetDateTime.now(clock) : null);
+    }
+
+    public AiDirectMessage(String senderName, String senderEmail, String agentIdentifier, String content, OffsetDateTime timestamp) {
         this.senderName = senderName;
         this.senderEmail = senderEmail;
         this.agentIdentifier = agentIdentifier;
         this.content = content;
         this.status = "NEW";
-        this.createdAt = OffsetDateTime.now();
-        this.updatedAt = OffsetDateTime.now();
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (createdAt == null) {
-            createdAt = OffsetDateTime.now();
-        }
-        if (updatedAt == null) {
-            updatedAt = OffsetDateTime.now();
-        }
-        if (status == null) {
-            status = "NEW";
-        }
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = OffsetDateTime.now();
+        this.createdAt = timestamp;
+        this.updatedAt = timestamp;
     }
 
     public Long getId() {

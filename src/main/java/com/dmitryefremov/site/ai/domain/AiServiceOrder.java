@@ -1,6 +1,7 @@
 package com.dmitryefremov.site.ai.domain;
 
 import jakarta.persistence.*;
+import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -31,41 +32,31 @@ public class AiServiceOrder {
     private String status = "NEW";
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    private OffsetDateTime updatedAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt;
 
     public AiServiceOrder() {
     }
 
     public AiServiceOrder(String userName, String userEmail, String agentIdentifier, String serviceType, String requirements) {
+        this(userName, userEmail, agentIdentifier, serviceType, requirements, Clock.systemUTC());
+    }
+
+    public AiServiceOrder(String userName, String userEmail, String agentIdentifier, String serviceType, String requirements, Clock clock) {
+        this(userName, userEmail, agentIdentifier, serviceType, requirements, clock != null ? OffsetDateTime.now(clock) : null);
+    }
+
+    public AiServiceOrder(String userName, String userEmail, String agentIdentifier, String serviceType, String requirements, OffsetDateTime timestamp) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.agentIdentifier = agentIdentifier;
         this.serviceType = serviceType;
         this.requirements = requirements;
         this.status = "NEW";
-        this.createdAt = OffsetDateTime.now();
-        this.updatedAt = OffsetDateTime.now();
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (createdAt == null) {
-            createdAt = OffsetDateTime.now();
-        }
-        if (updatedAt == null) {
-            updatedAt = OffsetDateTime.now();
-        }
-        if (status == null) {
-            status = "NEW";
-        }
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = OffsetDateTime.now();
+        this.createdAt = timestamp;
+        this.updatedAt = timestamp;
     }
 
     public Long getId() {

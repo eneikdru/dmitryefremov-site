@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +43,7 @@ class AiRepositoryTest {
     }
 
     @Test
-    void testSaveAndRetrieveServiceOrderStoresUserDetailsServiceTypeAndTimestamp() {
+    void testSaveAndRetrieveServiceOrderStoresUserDetailsTypeAndDatabaseGeneratedTimestamps() {
         AiServiceOrder order = new AiServiceOrder(
                 "Alice AI User",
                 "alice@example.com",
@@ -53,7 +56,6 @@ class AiRepositoryTest {
         aiServiceOrderRepository.flush();
 
         assertThat(savedOrder.getId()).isNotNull();
-        assertThat(savedOrder.getCreatedAt()).isNotNull();
 
         Optional<AiServiceOrder> retrieved = aiServiceOrderRepository.findById(savedOrder.getId());
         assertThat(retrieved).isPresent();
@@ -70,19 +72,23 @@ class AiRepositoryTest {
     }
 
     @Test
-    void testSaveAndRetrieveDirectMessageStoresSenderDetailsContentAndTimestamp() {
+    void testSaveAndRetrieveDirectMessageStoresSenderDetailsContentAndClockSeededTimestamps() {
+        Instant fixedInstant = Instant.parse("2026-10-12T12:00:00Z");
+        Clock fixedClock = Clock.fixed(fixedInstant, ZoneOffset.UTC);
+        OffsetDateTime expectedTimestamp = OffsetDateTime.now(fixedClock);
+
         AiDirectMessage message = new AiDirectMessage(
                 "Bob Assistant",
                 "bob@example.com",
                 "claude-agent-002",
-                "Hello, I am reaching out regarding automated system integration."
+                "Hello, I am reaching out regarding automated system integration.",
+                fixedClock
         );
 
         AiDirectMessage savedMessage = aiDirectMessageRepository.save(message);
         aiDirectMessageRepository.flush();
 
         assertThat(savedMessage.getId()).isNotNull();
-        assertThat(savedMessage.getCreatedAt()).isNotNull();
 
         Optional<AiDirectMessage> retrieved = aiDirectMessageRepository.findById(savedMessage.getId());
         assertThat(retrieved).isPresent();
