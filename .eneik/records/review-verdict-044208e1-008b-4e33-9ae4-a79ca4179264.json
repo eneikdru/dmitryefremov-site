@@ -1,4 +1,0 @@
-{"verdicts": [
-  {"sourceIndex": 0, "verdict": "approve", "criticalReason": "", "concerns": [{"text": "Uses non-deterministic OffsetDateTime.now() which may affect test reliability. Consider using a fixed clock or dependency injection.", "severity": "low"}]},
-  {"sourceIndex": 1, "verdict": "block", "criticalReason": "The PR destructively modifies `frontend/generate-design-artifacts.spec.ts` deleting podcast tests, and incorrectly deleted the generated AVIF/WebP image assets in frontend/public/images/ violating the acceptance criteria.", "concerns": []}
-]}
