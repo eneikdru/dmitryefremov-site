@@ -1,0 +1,135 @@
+[
+  {
+    "id": "main-header",
+    "left": 240,
+    "top": 32,
+    "width": 960,
+    "height": 289
+  },
+  {
+    "id": "hero-section",
+    "left": 240,
+    "top": 82,
+    "width": 960,
+    "height": 148
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 240,
+    "top": 84,
+    "width": 144,
+    "height": 144
+  },
+  {
+    "id": "hero-title",
+    "left": 408,
+    "top": 82,
+    "width": 792,
+    "height": 40
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 408,
+    "top": 134,
+    "width": 792,
+    "height": 28
+  },
+  {
+    "id": "hero-manifest",
+    "left": 408,
+    "top": 174,
+    "width": 792,
+    "height": 56
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1058,
+    "top": 32,
+    "width": 142,
+    "height": 26
+  },
+  {
+    "id": "nav-tabs",
+    "left": 240,
+    "top": 254,
+    "width": 475,
+    "height": 42
+  },
+  {
+    "id": "content-view",
+    "left": 240,
+    "top": 345,
+    "width": 960,
+    "height": 1103
+  },
+  {
+    "id": "cmp-modal-overlay",
+    "left": 384,
+    "top": 357,
+    "width": 672,
+    "height": 520
+  },
+  {
+    "id": "cmp-container",
+    "left": 408,
+    "top": 381,
+    "width": 624,
+    "height": 472
+  },
+  {
+    "id": "cmp-badge",
+    "left": 429,
+    "top": 402,
+    "width": 107,
+    "height": 26
+  },
+  {
+    "id": "cmp-title",
+    "left": 544,
+    "top": 405,
+    "width": 225,
+    "height": 20
+  },
+  {
+    "id": "cmp-description",
+    "left": 429,
+    "top": 457,
+    "width": 582,
+    "height": 59
+  },
+  {
+    "id": "cmp-categories-container",
+    "left": 429,
+    "top": 568,
+    "width": 582,
+    "height": 192
+  },
+  {
+    "id": "cmp-actions",
+    "left": 429,
+    "top": 789,
+    "width": 582,
+    "height": 42
+  },
+  {
+    "id": "cmp-decline-btn",
+    "left": 429,
+    "top": 793,
+    "width": 285,
+    "height": 38
+  },
+  {
+    "id": "cmp-accept-btn",
+    "left": 726,
+    "top": 793,
+    "width": 285,
+    "height": 38
+  },
+  {
+    "id": "main-footer",
+    "left": 240,
+    "top": 1480,
+    "width": 960,
+    "height": 41
+  }
+]
