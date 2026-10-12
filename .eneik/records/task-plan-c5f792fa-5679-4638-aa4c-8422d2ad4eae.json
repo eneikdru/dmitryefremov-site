@@ -1,0 +1,440 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "b2684962-438c-471e-be5e-7360c97fa7db",
+      "title": "Core Experience and Identity",
+      "jtbd": "When a visitor lands on the site, I want to immediately understand the author's focus and have clear ways to contact them, so that I can explore their work or get in touch.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Zero visual regressions from Stitch mockups and 100% successful render of essays",
+      "tocConstraintRef": "frontend asset optimization",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The site must implement the generated High-End Dark / Editorial design system without any debug terminal frames or telemetry logs on the frontend.",
+        "R2: The site must use grotesque headers and comfortable reading typography for essays and quotes.",
+        "R3: The site must include a clean, distraction-free reader view for essays and deontic logic articles.",
+        "R4: The site must include an aesthetic contact card.",
+        "R5: The implementation must be a pixel-perfect translation of the Stitch mockup into Svelte components.",
+        "R6: The reader must load and display published essays via an API, handling empty states and potential errors gracefully (completeness).",
+        "R7: Content authoring is handled externally; this epic is strictly bounded to the read-only presentation of published essays (completeness exception).",
+        "R8: The UI must be fully usable on mobile screens, provide visible interaction feedback, and meet WCAG 2.1 AA accessibility standards (keyboard operability, contrast, focus)."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Finalize High-End Dark UI/UX Design System",
+          "roleTag": "BARCAN-TAG-03",
+          "jtbd": "When implementing the visual identity for this epic, I want to finalize the Stitch mockups, so that developers have a deterministic design system to implement.",
+          "acceptanceCriteria": "Given a generated Stitch mockup\nWhen reviewed against the High-End Dark/Editorial criteria\nThen it must include grotesque headers, comfortable essay typography, and an aesthetic contact card\nGiven the need for development\nWhen finalized\nThen the design must be saved as a committed HTML/CSS mockup reference file.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "design approval",
+          "sixSigmaMetric": "100% coverage of required screen types",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Define Essay Database Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the essay reader for this epic, I want to define the database schema, so that essay content can be persisted and queried.",
+          "acceptanceCriteria": "Given the need to store essays\nWhen defining the schema\nThen Flyway migrations must be created for an 'essays' table with required text and metadata fields\nGiven the schema\nWhen deployed\nThen indices must be configured for efficient read queries.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "schema normalisation",
+          "sixSigmaMetric": "100% of schema scripts pass Flyway validation",
+          "hasUi": false,
+          "requirementRefs": [
+            "R6"
+          ]
+        },
+        {
+          "title": "Define Reader API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the essay reader for this epic, I want to define the shared API contract, so that the backend and frontend can be built in parallel without integration mismatches.",
+          "acceptanceCriteria": "Given the need for frontend and backend parallelism\nWhen defining the API contract\nThen a precise OpenAPI or equivalent document must be committed detailing the endpoints, request/response shapes, and DTOs for fetching essays.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "contract agreement",
+          "sixSigmaMetric": "0 breaking changes to contract during implementation",
+          "hasUi": false,
+          "requirementRefs": [
+            "R6"
+          ]
+        },
+        {
+          "title": "Implement Reader Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the essay reader for this epic, I want to build the backend endpoint to serve essay content, so that the frontend has data to render.",
+          "acceptanceCriteria": "Given a valid request for an essay\nWhen the endpoint is called\nThen it must return the structured essay data matching the BARCAN-TAG-12 contract\nGiven a request for a non-existent essay\nWhen the endpoint is called\nThen it must return a 404 response.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "database query performance",
+          "sixSigmaMetric": "<100ms endpoint response time",
+          "hasUi": false,
+          "requirementRefs": [
+            "R6"
+          ]
+        },
+        {
+          "title": "Implement Core Svelte Identity and Contact Card",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the visual identity for this epic, I want to build the base layout and contact card in Svelte, so that the primary brand presence is established.",
+          "acceptanceCriteria": "Given the finalized Stitch mockup\nWhen implementing the base layout\nThen it must be a pixel-perfect Svelte component with High-End Dark styling and zero debug logs\nGiven a mobile user\nWhen viewing the contact card\nThen it must be responsive, accessible (WCAG 2.1 AA), and provide visible interaction feedback.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "CSS modularity",
+          "sixSigmaMetric": "Zero layout shifts on initial load",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R4",
+            "R5",
+            "R8"
+          ]
+        },
+        {
+          "title": "Implement Svelte Essay Reader",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the essay reader for this epic, I want to build the distraction-free reading component, so that visitors can comfortably read articles.",
+          "acceptanceCriteria": "Given published essay data\nWhen rendered in the reader component\nThen it must use grotesque headers and optimized typography for comfortable reading\nGiven an essay fetch failure\nWhen the reader initializes\nThen it must show a clear, stylized error state allowing the user to return to the index.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "font loading strategy",
+          "sixSigmaMetric": "100% WCAG AA contrast ratio for text",
+          "hasUi": true,
+          "requirementRefs": [
+            "R2",
+            "R3",
+            "R5",
+            "R6",
+            "R7",
+            "R8"
+          ]
+        },
+        {
+          "title": "QA Verification for Core Identity",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the core identity for this epic, I want to verify the end-to-end functionality and visuals, so that the delivered experience matches the requirements without regressions.",
+          "acceptanceCriteria": "Given the deployed site\nWhen performing visual regression testing\nThen the frontend must exactly match the Stitch mockups across mobile and desktop\nGiven the essay reader\nWhen accessed end-to-end\nThen it must fetch real data from the API and render accessibly without debug logs.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "E2E test flakiness",
+          "sixSigmaMetric": "100% pass rate for critical path E2E tests",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6",
+            "R7",
+            "R8"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "c2a7643f-884f-4e0d-a5ae-840a14169074",
+      "title": "Podcast Media Hub",
+      "jtbd": "When a visitor wants to listen to the podcast, I want to browse episodes with detailed show notes and audio playback, so that I can consume the audio content directly.",
+      "kanoClass": "Performance",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Zero audio playback initialization failures across major browsers",
+      "tocConstraintRef": "audio streaming stability",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The site must integrate a media hub for the 'Systems and Reality' podcast.",
+        "R2: The media hub must feature a functional audio player for episodes.",
+        "R3: The media hub must provide clear outbound links to external platforms like YouTube and Telegram.",
+        "R4: The podcast metadata and URLs must be fetched from an API and a defined database schema, providing fallback UI if the load fails (completeness).",
+        "R5: The UI must be fully responsive on mobile devices and accessible (WCAG 2.1 AA keyboard/screen reader compatible)."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Define Podcast Episode Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the podcast hub for this epic, I want to define the database schema, so that episode metadata can be queried.",
+          "acceptanceCriteria": "Given the need to store podcast episodes\nWhen defining the schema\nThen Flyway migrations must be created for an 'episodes' table including media URLs and platforms\nGiven the schema\nWhen deployed\nThen it must cleanly integrate with the backend ORM.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "schema normalisation",
+          "sixSigmaMetric": "100% of schema scripts pass Flyway validation",
+          "hasUi": false,
+          "requirementRefs": [
+            "R4"
+          ]
+        },
+        {
+          "title": "Define Podcast API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the podcast hub for this epic, I want to define the shared API contract, so that the frontend and backend teams align on the episode payload structure.",
+          "acceptanceCriteria": "Given the need for podcast data\nWhen defining the API contract\nThen a committed schema must detail episode metadata, media URLs, and external links.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "contract agreement",
+          "sixSigmaMetric": "0 breaking changes to contract during implementation",
+          "hasUi": false,
+          "requirementRefs": [
+            "R4"
+          ]
+        },
+        {
+          "title": "Implement Podcast Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the podcast hub for this epic, I want to serve episode data, so that the frontend player can load media and metadata.",
+          "acceptanceCriteria": "Given a request for podcast episodes\nWhen the endpoint is called\nThen it must return a valid list of episodes adhering to the BARCAN-TAG-12 contract\nGiven no available episodes\nWhen queried\nThen it must return an empty list gracefully.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "database query performance",
+          "sixSigmaMetric": "<100ms endpoint response time",
+          "hasUi": false,
+          "requirementRefs": [
+            "R4"
+          ]
+        },
+        {
+          "title": "Implement Svelte Podcast Hub UI",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the podcast hub for this epic, I want to build the audio player and external links, so that users can interact with the podcast.",
+          "acceptanceCriteria": "Given episode data\nWhen rendering the hub\nThen an accessible audio player and external links to YouTube and Telegram must be displayed\nGiven mobile layout\nWhen viewing the player\nThen it must fit the screen without horizontal scrolling and remain fully operable.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "browser audio policies",
+          "sixSigmaMetric": "100% of media controls keyboard accessible",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R5"
+          ]
+        },
+        {
+          "title": "QA Verification for Podcast Hub",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the podcast hub for this epic, I want to verify audio playback and external integrations, so that listeners have a seamless experience.",
+          "acceptanceCriteria": "Given the deployed media hub\nWhen initiating playback\nThen the audio must play without errors across desktop and mobile\nGiven the external links\nWhen clicked\nThen they must navigate correctly to the intended YouTube and Telegram destinations.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "E2E cross-browser testing",
+          "sixSigmaMetric": "100% pass rate for audio integration tests",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "69e36127-e778-4851-83e6-37a2d16cedf7",
+      "title": "Platform Telemetry and Measurement",
+      "jtbd": "When operating the site, I want to measure visitor engagement with my content and external links, so that I know if the site successfully drives interest in my work.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "100% of defined critical business events are tracked accurately",
+      "tocConstraintRef": "analytics pipeline latency",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The system must track reader engagement (essays viewed) to answer 'Are visitors actually reading the essays?'.",
+        "R2: The system must track podcast playback initialization to answer 'Are visitors listening to the podcast on-site?'.",
+        "R3: The system must track outbound clicks to YouTube and Telegram to answer 'Is the site successfully routing audience to external platforms?'.",
+        "R4: Telemetry must be implemented securely without exposing PII."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Implement Frontend Telemetry Integration",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing telemetry for this epic, I want to integrate tracking events in Svelte, so that engagement data is captured.",
+          "acceptanceCriteria": "Given a visitor viewing an essay\nWhen the page loads\nThen a tracking event for essay view must be dispatched\nGiven an outbound link to YouTube or Telegram\nWhen clicked\nThen an outbound click event must be recorded.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "event payload size",
+          "sixSigmaMetric": "<50ms performance impact on UI thread",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "QA Verification for Telemetry Events",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing telemetry for this epic, I want to verify that events are correctly fired, so that analytics data is reliable.",
+          "acceptanceCriteria": "Given the frontend application\nWhen critical interactions (read essay, play podcast, click outbound) occur\nThen the corresponding telemetry network requests must be validated for correctness\nGiven telemetry execution\nWhen inspected\nThen no PII must be included in the payloads.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "network interception in tests",
+          "sixSigmaMetric": "100% event delivery success in E2E simulation",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "bb19579b-628f-4eaf-900d-94e6eeea2e20",
+      "title": "Initial Content and Acceptance",
+      "jtbd": "When receiving the delivered system, I want to see it populated with realistic content, so that I can verify all paths and features work end-to-end.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "100% of user journeys are traversable with seed data",
+      "tocConstraintRef": "database seeding execution",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The deployed database must be seeded with at least one realistic Russian-language essay for the reader.",
+        "R2: The deployed database must be seeded with at least one realistic 'Systems and Reality' podcast episode entry.",
+        "R3: The full critical path (landing -> read essay, landing -> play podcast) must be successfully traversable on the deployed instance."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Create Database Seeding Migration",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the initial content for this epic, I want to create Flyway seeding scripts, so that the database has realistic data on startup.",
+          "acceptanceCriteria": "Given an empty database schema\nWhen Flyway migrations run\nThen the database must contain realistic Russian-language essay and podcast data\nGiven the seeded data\nWhen queried\nThen it must conform to all structural constraints and relationships.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "migration idempotent execution",
+          "sixSigmaMetric": "0 migration failures on clean database",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        },
+        {
+          "title": "QA Verification for Initial Content and Paths",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the initial content for this epic, I want to verify full end-to-end traversal, so that the delivered system is proven functional.",
+          "acceptanceCriteria": "Given the seeded deployed instance\nWhen a user navigates to an essay\nThen the realistic Russian content must render successfully\nGiven the seeded instance\nWhen a user interacts with the podcast hub\nThen the initial episode must load correctly.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "production instance accessibility",
+          "sixSigmaMetric": "100% success on manual smoke test script",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "0b02652b-2f5d-4812-8a9f-0955154176e2",
+      "title": "Data Protection and Recovery",
+      "jtbd": "When the database experiences a failure, I want to be able to restore the system state from a backup, so that I do not lose my published content.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "<1 hour Recovery Time Objective (RTO) for full database restore",
+      "tocConstraintRef": "backup storage I/O",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The system must automatically perform regular database backups of all published essays and metadata.",
+        "R2: A full database restore must be actually performed and verified in a test environment to prove the backup strategy works."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Configure Automated Database Backups",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing data protection for this epic, I want to configure the backup cron/script, so that data is safely stored offsite.",
+          "acceptanceCriteria": "Given the production database container\nWhen the backup schedule triggers\nThen a secure dump must be created and persisted to external storage\nGiven the backup process\nWhen completed\nThen it must emit a success metric/log.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "cron execution reliability",
+          "sixSigmaMetric": "100% success rate for daily automated backups",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "QA Verification for Backup Restore",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing data protection for this epic, I want to execute a real database restore, so that we guarantee the backups are viable.",
+          "acceptanceCriteria": "Given a generated backup file\nWhen a restore is initiated on a blank test instance\nThen the data must be fully recovered without corruption\nGiven the recovered instance\nWhen verified\nThen it must perfectly match the pre-backup state.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "restore procedure automation",
+          "sixSigmaMetric": "100% data integrity verified post-restore",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Privacy Consent Management",
+      "jtbd": "When a visitor arrives on the site, I want to be asked for consent before any non-essential trackers load, so that my privacy preferences are respected and the site complies with ePrivacy regulations.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "0 analytics trackers fired before explicit user opt-in",
+      "tocConstraintRef": "frontend initialization blocking",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The site must capture explicit opt-in consent before loading any telemetry or analytics scripts.",
+        "R2: The site must integrate an established consent management platform rather than building a custom banner.",
+        "R3: The user must be able to refuse consent with the same ease (same number of clicks) as accepting it.",
+        "R4: The user's choice must be recorded, and a persistent control must allow them to revoke or change their consent later."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Integrate Consent Management Platform",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing privacy controls for this epic, I want to integrate a CMP, so that we can legally block or allow telemetry based on user choice.",
+          "acceptanceCriteria": "Given a new visitor\nWhen the site loads\nThen the CMP banner must appear, offering equal options to accept or decline trackers\nGiven a returning visitor\nWhen they wish to change preferences\nThen a persistent link must reopen the CMP modal.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "third-party script execution order",
+          "sixSigmaMetric": "100% of telemetry scripts successfully gated by CMP state",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "QA Verification for Tracker Blocking",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing privacy controls for this epic, I want to verify that tracking scripts are strictly gated, so that we avoid regulatory breaches.",
+          "acceptanceCriteria": "Given a visitor who has not consented\nWhen they navigate the site\nThen no analytics network requests must be initiated\nGiven a visitor who accepts and later revokes consent\nWhen they revoke\nThen subsequent tracking requests must immediately cease.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "network interception in automated tests",
+          "sixSigmaMetric": "0 network calls to telemetry endpoints without consent state=true",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    }
+  ]
+}
