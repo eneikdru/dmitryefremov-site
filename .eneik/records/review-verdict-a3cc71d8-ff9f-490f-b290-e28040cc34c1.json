@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "PR deletes unrelated backend Java classes (SparkController, SparkService, SparkDto, TelegramWebhookIntegrationTest) in a frontend UI slice, directly contradicting the Acceptance Criteria that requires only files needed for this slice.",
+      "concerns": []
+    }
+  ]
+}
