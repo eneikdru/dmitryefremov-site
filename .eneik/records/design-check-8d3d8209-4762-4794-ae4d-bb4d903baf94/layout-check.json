@@ -1,0 +1,135 @@
+[
+  {
+    "id": "main-header",
+    "left": 240,
+    "top": 32,
+    "width": 960,
+    "height": 289
+  },
+  {
+    "id": "hero-section",
+    "left": 240,
+    "top": 82,
+    "width": 960,
+    "height": 148
+  },
+  {
+    "id": "hero-title",
+    "left": 408,
+    "top": 82,
+    "width": 792,
+    "height": 40
+  },
+  {
+    "id": "nav-tabs",
+    "left": 240,
+    "top": 254,
+    "width": 475,
+    "height": 42
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 400,
+    "top": 259,
+    "width": 140,
+    "height": 32
+  },
+  {
+    "id": "podcast-player-container",
+    "left": 240,
+    "top": 345,
+    "width": 960,
+    "height": 1898
+  },
+  {
+    "id": "podcast-episodes-section",
+    "left": 240,
+    "top": 524,
+    "width": 304,
+    "height": 1719
+  },
+  {
+    "id": "podcast-player-section",
+    "left": 568,
+    "top": 524,
+    "width": 632,
+    "height": 1719
+  },
+  {
+    "id": "podcast-player-card",
+    "left": 568,
+    "top": 524,
+    "width": 632,
+    "height": 1719
+  },
+  {
+    "id": "podcast-header",
+    "left": 593,
+    "top": 549,
+    "width": 582,
+    "height": 149
+  },
+  {
+    "id": "podcast-cover-container",
+    "left": 593,
+    "top": 596,
+    "width": 80,
+    "height": 80
+  },
+  {
+    "id": "podcast-title",
+    "left": 689,
+    "top": 591,
+    "width": 486,
+    "height": 64
+  },
+  {
+    "id": "audio-controls-block",
+    "left": 593,
+    "top": 722,
+    "width": 582,
+    "height": 292
+  },
+  {
+    "id": "play-pause-btn",
+    "left": 856,
+    "top": 882,
+    "width": 56,
+    "height": 56
+  },
+  {
+    "id": "time-display",
+    "left": 610,
+    "top": 845,
+    "width": 548,
+    "height": 17
+  },
+  {
+    "id": "waveform-container",
+    "left": 610,
+    "top": 767,
+    "width": 548,
+    "height": 56
+  },
+  {
+    "id": "core-theses-section",
+    "left": 593,
+    "top": 1093,
+    "width": 582,
+    "height": 648
+  },
+  {
+    "id": "timecodes-section",
+    "left": 593,
+    "top": 1765,
+    "width": 582,
+    "height": 382
+  },
+  {
+    "id": "main-footer",
+    "left": 240,
+    "top": 2275,
+    "width": 960,
+    "height": 41
+  }
+]

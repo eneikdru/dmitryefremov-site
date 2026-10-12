@@ -151,6 +151,25 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     expect(target.textContent).toContain('NOW_PLAYING');
   });
 
+  it('seeks directly to thesis timestamp when a thesis seek button is clicked', () => {
+    component = mount(PodcastPlayerView, { target });
+
+    const ep1 = PODCAST_EPISODES[0];
+    const firstThesis = ep1.coreTheses![0]; // timestamp 525s = "08:45"
+
+    const seekBtn = target.querySelector(`#thesis-seek-btn-${firstThesis.id}`) as HTMLButtonElement;
+    expect(seekBtn).not.toBeNull();
+
+    seekBtn.click();
+    flushSync();
+
+    const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
+    expect(currentTimeVal.textContent).toBe('08:45');
+
+    const thesisCard = target.querySelector(`#thesis-card-${firstThesis.id}`) as HTMLElement;
+    expect(thesisCard.textContent).toContain('NOW PLAYING');
+  });
+
   it('handles waveform keyboard navigation and component seekTo exported function', () => {
     component = mount(PodcastPlayerView, { target });
     const waveform = target.querySelector('#waveform-container') as HTMLElement;
@@ -187,5 +206,20 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     const podcastTitle = target.querySelector('#podcast-title') as HTMLElement;
     expect(podcastTitle.textContent).toBe(secondEp.title);
     expect(target.textContent).toContain(secondEp.thesis);
+  });
+
+  it('complies with WCAG 2.1 AA accessibility properties and aria roles', () => {
+    component = mount(PodcastPlayerView, { target });
+
+    const waveform = target.querySelector('#waveform-container');
+    expect(waveform?.getAttribute('role')).toBe('slider');
+    expect(waveform?.getAttribute('aria-label')).toBe('Audio Waveform Visualization Progress Bar');
+
+    const tabList = target.querySelector('[role="tablist"]');
+    expect(tabList).not.toBeNull();
+
+    const thesesTab = target.querySelector('#tab-btn-theses');
+    expect(thesesTab?.getAttribute('role')).toBe('tab');
+    expect(thesesTab?.getAttribute('aria-selected')).toBe('true');
   });
 });
