@@ -3,11 +3,13 @@ package com.dmitryefremov.site.agent.controller;
 import com.dmitryefremov.site.agent.dto.*;
 import com.dmitryefremov.site.agent.service.AgentInteractionService;
 import com.dmitryefremov.site.podcast.dto.ErrorResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Clock;
 import java.time.OffsetDateTime;
 
 @RestController
@@ -15,9 +17,17 @@ import java.time.OffsetDateTime;
 public class AgentInteractionController {
 
     private final AgentInteractionService agentInteractionService;
+    private Clock clock = Clock.systemUTC();
 
     public AgentInteractionController(AgentInteractionService agentInteractionService) {
         this.agentInteractionService = agentInteractionService;
+    }
+
+    @Autowired(required = false)
+    public void setClock(Clock clock) {
+        if (clock != null) {
+            this.clock = clock;
+        }
     }
 
     @PostMapping("/api/v1/agent/orders")
@@ -71,7 +81,7 @@ public class AgentInteractionController {
         ErrorResponseDto error = new ErrorResponseDto(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                OffsetDateTime.now()
+                OffsetDateTime.now(clock)
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }

@@ -5,6 +5,7 @@ import com.dmitryefremov.site.agent.dto.AgentOrderRequest;
 import com.dmitryefremov.site.agent.repository.AgentInteractionTelemetryRepository;
 import com.dmitryefremov.site.agent.repository.AgentMessageRepository;
 import com.dmitryefremov.site.agent.repository.AgentOrderRepository;
+import com.dmitryefremov.site.agent.service.AgentInteractionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -41,10 +46,21 @@ class AgentInteractionControllerTest {
     @Autowired
     private AgentInteractionTelemetryRepository telemetryRepository;
 
+    @Autowired
+    private AgentInteractionController agentInteractionController;
+
+    @Autowired
+    private AgentInteractionService agentInteractionService;
+
+    private final Instant fixedInstant = Instant.parse("2026-10-12T12:00:00Z");
+    private final Clock fixedClock = Clock.fixed(fixedInstant, ZoneOffset.UTC);
+
     @BeforeEach
     void setUp() {
         orderRepository.deleteAll();
         messageRepository.deleteAll();
+        agentInteractionController.setClock(fixedClock);
+        agentInteractionService.setClock(fixedClock);
     }
 
     @Test
@@ -141,7 +157,7 @@ class AgentInteractionControllerTest {
     }
 
     @Test
-    void testSubmitOrderValidationFailureReturns400() throws Exception {
+    void testSubmitOrderValidationFailureReturns400WithInjectedTimestamp() throws Exception {
         AgentOrderRequest invalidOrder = new AgentOrderRequest("", "invalid@email.com", "MVP", "Notes");
 
         mockMvc.perform(post("/api/v1/agent/orders")
@@ -149,6 +165,7 @@ class AgentInteractionControllerTest {
                         .content(objectMapper.writeValueAsString(invalidOrder)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.message", is("Client name is required")));
+                .andExpect(jsonPath("$.message", is("Client name is required")))
+                .andExpect(jsonPath("$.timestamp", containsString("2026-10-12T12:00:00Z")));
     }
 }
