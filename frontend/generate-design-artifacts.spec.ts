@@ -3,8 +3,8 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-test('generate design verification artifacts for podcast media UI', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-67c6d186-4f25-4d6b-87a6-393a9d5e67d9');
+test('generate design verification artifacts for responsive picture UI', async () => {
+  const targetDir = path.resolve('../.eneik/records/design-check-c4dfc4a4-4d71-4c51-a883-8dcf56ef4518');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Build frontend first
@@ -38,17 +38,6 @@ test('generate design verification artifacts for podcast media UI', async () => 
     await desktopPage.goto('http://localhost:4173');
     await desktopPage.waitForSelector('#app-root');
 
-    // Click on [PODCAST_MEDIA] tab
-    await desktopPage.click('#tab-btn-podcast');
-    await desktopPage.waitForTimeout(300);
-
-    // Click on timecode button to demonstrate precise timestamp seek
-    const secondTimecodeBtn = await desktopPage.locator('[id^="timecode-btn-"]').nth(1);
-    if (await secondTimecodeBtn.isVisible()) {
-      await secondTimecodeBtn.click();
-      await desktopPage.waitForTimeout(300);
-    }
-
     await desktopPage.screenshot({ path: path.join(targetDir, 'desktop-1440.png'), fullPage: true });
 
     // Extract layout geometry bounding boxes
@@ -56,6 +45,7 @@ test('generate design verification artifacts for podcast media UI', async () => 
       const elementsToTrack = [
         'main-header',
         'hero-section',
+        'hero-author-portrait',
         'hero-title',
         'hero-subtitle',
         'hero-manifest',
@@ -64,17 +54,8 @@ test('generate design verification artifacts for podcast media UI', async () => 
         'tab-btn-article',
         'tab-btn-podcast',
         'tab-btn-contact',
-        'podcast-player-container',
-        'podcast-episodes-section',
-        'podcast-player-section',
-        'podcast-player-card',
-        'podcast-header',
-        'podcast-title',
-        'audio-controls-block',
-        'play-pause-btn',
-        'time-display',
-        'waveform-container',
-        'timecodes-section',
+        'article-stream-container',
+        'article-author-portrait',
         'main-footer'
       ];
 
@@ -104,10 +85,6 @@ test('generate design verification artifacts for podcast media UI', async () => 
     const mobilePage = await mobileContext.newPage();
     await mobilePage.goto('http://localhost:4173');
     await mobilePage.waitForSelector('#app-root');
-
-    // Navigate to podcast media tab on mobile
-    await mobilePage.click('#tab-btn-podcast');
-    await mobilePage.waitForTimeout(300);
 
     await mobilePage.screenshot({ path: path.join(targetDir, 'mobile-375.png'), fullPage: true });
 

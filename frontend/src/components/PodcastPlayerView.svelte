@@ -7,6 +7,7 @@
     type PodcastEpisode,
     type PodcastTimecode
   } from '../lib/podcast';
+  import ResponsivePicture from './ResponsivePicture.svelte';
 
   export let episodes: PodcastEpisode[] = PODCAST_EPISODES;
   export let selectedEpisodeId: number | string = PODCAST_EPISODES[0]?.id;
@@ -180,17 +181,28 @@
     <div id="podcast-player-section" class="md:col-span-7 flex flex-col space-y-6">
       <div id="podcast-player-card" class="bg-[#090a0f] text-[#e2e8f0] p-6 rounded-lg border border-[#1f2433] space-y-5 font-sans">
         <!-- Episode Header -->
-        <header id="podcast-header" class="border-b border-[#1f2433] pb-4">
-          <div class="flex items-center justify-between gap-2 mb-2">
-            <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
-              [SYS_PLAYER]
-            </span>
-            <span class="text-xs font-mono text-[#94a3b8]">{currentEpisode.slug}</span>
+        <header id="podcast-header" class="border-b border-[#1f2433] pb-4 flex flex-col sm:flex-row gap-4 items-start">
+          <div id="podcast-cover-container" class="shrink-0 w-20 h-20 rounded-lg overflow-hidden border border-[#1f2433]">
+            <ResponsivePicture
+              id="podcast-author-portrait"
+              assetKey="dmitrii_efremov"
+              alt="Студийное обложечное фото подкаста Дмитрия Ефремова"
+              sizes="80px"
+              imgClass="w-full h-full object-cover rounded-lg"
+            />
           </div>
-          <h1 id="podcast-title" class="text-xl font-bold tracking-tight text-white mb-2">{currentEpisode.title}</h1>
-          <blockquote class="p-3 rounded bg-[#12151e] border-l-2 border-[#34d399] text-xs italic text-[#cbd5e1] leading-relaxed">
-            «{currentEpisode.thesis}»
-          </blockquote>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
+                [SYS_PLAYER]
+              </span>
+              <span class="text-xs font-mono text-[#94a3b8]">{currentEpisode.slug}</span>
+            </div>
+            <h1 id="podcast-title" class="text-xl font-bold tracking-tight text-white mb-2">{currentEpisode.title}</h1>
+            <blockquote class="p-3 rounded bg-[#12151e] border-l-2 border-[#34d399] text-xs italic text-[#cbd5e1] leading-relaxed">
+              «{currentEpisode.thesis}»
+            </blockquote>
+          </div>
         </header>
 
         <!-- Hidden Native HTML5 Audio Element for Playback State -->

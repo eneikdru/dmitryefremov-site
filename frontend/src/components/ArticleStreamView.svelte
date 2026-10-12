@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { parseMarkdown } from '../lib/markdown';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
+  import ResponsivePicture from './ResponsivePicture.svelte';
 
   export interface Article {
     id: string;
@@ -233,17 +234,28 @@ All non-deterministic sources (timestamps, random number generators, network res
     <div id="article-reader-section" class="md:col-span-7 flex flex-col">
       <div id="article-reader-root" class="bg-[#090a0f] text-[#e2e8f0] p-6 rounded-lg border border-[#1f2433] h-full flex flex-col justify-between font-sans">
         <!-- Header -->
-        <header id="article-header" class="border-b border-[#1f2433] pb-4 mb-4">
-          <div class="flex items-center justify-between gap-2 mb-2">
-            <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
-              [SYS_ARTICLE]
-            </span>
-            <span class="text-xs font-mono text-[#94a3b8]">{selectedArticle.id}</span>
+        <header id="article-header" class="border-b border-[#1f2433] pb-4 mb-4 flex gap-4 items-start">
+          <div id="article-author-portrait-container" class="shrink-0 w-16 h-16 rounded-lg overflow-hidden border border-[#1f2433]">
+            <ResponsivePicture
+              id="article-author-portrait"
+              assetKey="dmitrii_efremov"
+              alt="Иллюстрация автора к статье Дмитрия Ефремова"
+              sizes="64px"
+              imgClass="w-full h-full object-cover rounded-lg"
+            />
           </div>
-          <h1 class="text-2xl font-bold tracking-tight text-white mb-2">{selectedArticle.title}</h1>
-          <div class="flex items-center justify-between text-xs text-[#94a3b8] font-mono">
-            <span>Author: Dmitry Efremov</span>
-            <span>Scroll Depth Logged: {trackedThresholds.size}/4</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
+                [SYS_ARTICLE]
+              </span>
+              <span class="text-xs font-mono text-[#94a3b8]">{selectedArticle.id}</span>
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight text-white mb-2">{selectedArticle.title}</h1>
+            <div class="flex items-center justify-between text-xs text-[#94a3b8] font-mono">
+              <span>Author: Dmitry Efremov</span>
+              <span>Scroll Depth Logged: {trackedThresholds.size}/4</span>
+            </div>
           </div>
         </header>
 

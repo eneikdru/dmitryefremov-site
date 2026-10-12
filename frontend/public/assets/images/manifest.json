@@ -1,0 +1,73 @@
+{
+  "pipeline": "Automated Asset Encoding Pipeline",
+  "breakpoints": [
+    375,
+    768,
+    1440
+  ],
+  "formats": [
+    "WEBP",
+    "AVIF"
+  ],
+  "assets": [
+    {
+      "asset_key": "dmitrii_efremov",
+      "source_path": "tmp_source/dmitrii_efremov.png",
+      "original_width": 2560,
+      "original_height": 1440,
+      "original_size_bytes": 105936,
+      "variants": [
+        {
+          "format": "WEBP",
+          "breakpoint_width": 375,
+          "width": 375,
+          "height": 211,
+          "file_path": "images/dmitrii_efremov/dmitrii_efremov_375w.webp",
+          "file_size_bytes": 1554
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 375,
+          "width": 375,
+          "height": 211,
+          "file_path": "images/dmitrii_efremov/dmitrii_efremov_375w.avif",
+          "file_size_bytes": 1789
+        },
+        {
+          "format": "WEBP",
+          "breakpoint_width": 768,
+          "width": 768,
+          "height": 432,
+          "file_path": "images/dmitrii_efremov/dmitrii_efremov_768w.webp",
+          "file_size_bytes": 3606
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 768,
+          "width": 768,
+          "height": 432,
+          "file_path": "images/dmitrii_efremov/dmitrii_efremov_768w.avif",
+          "file_size_bytes": 3541
+        },
+        {
+          "format": "WEBP",
+          "breakpoint_width": 1440,
+          "width": 1440,
+          "height": 810,
+          "file_path": "images/dmitrii_efremov/dmitrii_efremov_1440w.webp",
+          "file_size_bytes": 8194
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 1440,
+          "width": 1440,
+          "height": 810,
+          "file_path": "images/dmitrii_efremov/dmitrii_efremov_1440w.avif",
+          "file_size_bytes": 6996
+        }
+      ],
+      "total_variants_size_bytes": 25680,
+      "payload_reduction_percent": 75.76
+    }
+  ]
+}
