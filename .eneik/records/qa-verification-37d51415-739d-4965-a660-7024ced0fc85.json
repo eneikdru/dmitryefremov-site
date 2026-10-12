@@ -1,0 +1,12 @@
+{
+  "testsRun": 44,
+  "testsPassed": 44,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given a visitor who has not consented, when they navigate the site, then no analytics network requests must be initiated",
+    "Given a visitor who accepts and later revokes consent, when they revoke, then subsequent tracking requests must immediately cease"
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified that unconsented visitors (null consent status) and revoked consent visitors strictly block tracking requests across telemetry functions and UI components."
+}

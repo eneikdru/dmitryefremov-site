@@ -59,10 +59,10 @@ export function resetConsentStatus(): void {
 
 export function isTelemetryAllowed(): boolean {
   if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-    return true;
+    return false;
   }
   const status = getConsentStatus();
-  // Telemetry is allowed if explicitly accepted or if default non-declined
-  // If user declined, telemetry is strictly blocked.
-  return status !== 'declined';
+  // Telemetry is strictly gated and allowed ONLY if consent is explicitly 'accepted'.
+  // Unconsented visitors (null) or revoked/declined consent ('declined') block tracking requests.
+  return status === 'accepted';
 }

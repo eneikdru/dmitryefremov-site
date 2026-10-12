@@ -27,7 +27,9 @@
       if (currentPercentage >= threshold && !trackedThresholds.has(threshold)) {
         trackedThresholds.add(threshold);
         const event = telemetry.trackScrollDepth(articleId, threshold);
-        loggedEvents = [...loggedEvents, event];
+        if (event) {
+          loggedEvents = [...loggedEvents, event];
+        }
       }
     }
   }

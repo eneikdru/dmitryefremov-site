@@ -21,7 +21,9 @@
 
   function handleOutboundClick(link: ContactLink, e: MouseEvent) {
     const event = telemetry.trackOutboundClick(link.url, link.label, link.platform);
-    loggedEvents = [...loggedEvents, event];
+    if (event) {
+      loggedEvents = [...loggedEvents, event];
+    }
   }
 </script>
 

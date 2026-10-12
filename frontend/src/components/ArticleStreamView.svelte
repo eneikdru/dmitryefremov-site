@@ -135,7 +135,9 @@ All non-deterministic sources (timestamps, random number generators, network res
       if (currentPercentage >= threshold && !trackedThresholds.has(threshold)) {
         trackedThresholds.add(threshold);
         const event = telemetry.trackScrollDepth(selectedArticleId, threshold);
-        loggedEvents = [...loggedEvents, event];
+        if (event) {
+          loggedEvents = [...loggedEvents, event];
+        }
       }
     }
   }
