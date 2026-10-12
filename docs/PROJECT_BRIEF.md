@@ -40,7 +40,30 @@ it is the referent every later artifact is checked against.
 
 5. Полная трансформация визуального стиля и архитектуры фронтенда персональной платформы Дмитрия Ефремова. Генерация через Stitch детерминированной дизайн-системы: премиальный минимализм (High-End Dark / Editorial), типографика (заголовки гротеск, эссе и цитаты с комфортным чтением), ликвидация любых отладочных терминальных рамок и логов телеметрии на фасаде. Полноценная интеграция медиахаба подкаста «Системы и реальность» с плеером и платформами (YouTube, Telegram), чистый ридер эссе и статей деонтической логики, эстетичная контактная карточка. Pixel-perfect перенос сгенерированного Stitch-макета в компоненты Svelte.
 
+6. # Product Evolution: Sovereign Digital Node of Dmitry Efremov (A2A Gateway & Real Thought Stream)
+   
+   ## 1. Zero Hallucination: Real Content Synchronization
+   - Replace all placeholder/mock content with Dmitry Efremov's genuine intellectual artifacts.
+   - Sync episodes from podcast/YouTube archive (Ruth Barcan Marcus, Paul Thagard, Susan Hurley, Gilbert Ryle, Daniel Dennett, Andy Clark, David Chalmers) with key insights, timestamps, and quotes.
+   - Sync real-world insights from Telegram channel @efremov_mvp (MVP pragmatics, autonomous engineering, business survival in AI era).
+   
+   ## 2. 3-Tier Content Architecture on Frontend
+   - Tier 1: The Canon (Evergreen manifestos, ontology, glossary of autonomy and extended mind).
+   - Tier 2: The Stream / Episodes (Unified media player + structured anatomy: core thesis, paradoxes, timestamps, concept links).
+   - Tier 3: The Sparks / Quantized Thoughts (Fast stream of real-time insights from Telegram).
+   - Organize across 4 practical domains: Autonomous Engineering, Agentic Economy (A2A), Pragmatic Business Strategy, Philosophy of Mind.
+   
+   ## 3. High-Traffic Machine Layer (For Hundreds of Thousands of External Agents)
+   - Provide /.well-known/llms.txt and /.well-known/ai-agent.json providing clean markdown index of all concepts.
+   - Semantic SEO & Open Graph meta tags optimized for LLM web crawlers (PerplexityBot, GPTBot, ClaudeBot).
+   - Clean high-density text representations without heavy DOM/JS blocking for machine readers.
+   
+   ## 4. Black Box Architecture & Absolute NDA
+   - Strict Black Box invariant: Zero internal factory mechanics (Jules, TOC, Poka-Yoke pipelines) exposed to visitors.
+   - Clean client intake: Input idea/wishlist -> output turnkey result.
+   - Commercial confidentiality and NDA guaranteed.
+
 ---
 
-Entries: 5. Anything this product claims - a page
+Entries: 6. Anything this product claims - a page
 heading, a filter, a capability - must trace to one of them or to a declared route.
