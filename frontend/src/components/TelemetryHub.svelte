@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CanonReaderView from './CanonReaderView.svelte';
   import ArticleStreamView from './ArticleStreamView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
@@ -8,7 +9,7 @@
   import SeoMeta from './SeoMeta.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
-  export let activeTab: 'article' | 'contact' | 'podcast' | 'gqm' = 'article';
+  export let activeTab: 'canon' | 'article' | 'contact' | 'podcast' | 'gqm' = 'canon';
   export let showImprintModal: boolean = false;
   export let isCmpModalOpen: boolean = false;
 
@@ -87,6 +88,14 @@
         <!-- Navigation Tabs -->
         <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1 rounded border font-mono text-xs w-fit {theme === 'dark' ? 'bg-[#12151e] border-[#1f2433]' : 'bg-[#f1f5f9] border-[#cbd5e1]'}">
           <button
+            id="tab-btn-canon"
+            type="button"
+            class="px-4 py-2 rounded transition-colors {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+            on:click={() => (activeTab = 'canon')}
+          >
+            [CANON_READER]
+          </button>
+          <button
             id="tab-btn-article"
             type="button"
             class="px-4 py-2 rounded transition-colors {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
@@ -123,7 +132,9 @@
 
       <!-- Content View -->
       <section id="content-view" class="mt-6">
-        {#if activeTab === 'article'}
+        {#if activeTab === 'canon'}
+          <CanonReaderView />
+        {:else if activeTab === 'article'}
           <ArticleStreamView />
         {:else if activeTab === 'podcast'}
           <PodcastPlayerView />

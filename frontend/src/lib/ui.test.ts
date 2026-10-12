@@ -45,7 +45,7 @@ describe('TelemetryHub Component & CMP Integration', () => {
   });
 
   it('navigates seamlessly between article stream and podcast hub, loading initial episode correctly', async () => {
-    component = mount(TelemetryHub, { target });
+    component = mount(TelemetryHub, { target, props: { activeTab: 'article' } });
 
     // Initial state: Article Stream with realistic Russian essay
     expect(target.textContent).toContain('Эстетика инженерного молчания и редакционный минимализм');

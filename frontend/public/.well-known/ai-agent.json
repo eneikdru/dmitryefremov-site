@@ -1,0 +1,9 @@
+{
+  "agent": {
+    "name": "Dmitry Efremov Core System",
+    "description": "Evergreen manifestos, ontology, and glossary of autonomy and extended mind.",
+    "endpoints": {
+      "canon": "/canon"
+    }
+  }
+}

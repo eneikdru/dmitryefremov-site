@@ -1,0 +1,23 @@
+[
+  {
+    "id": "canon-reader-root",
+    "left": 240,
+    "top": 345,
+    "width": 960,
+    "height": 719
+  },
+  {
+    "id": "canon-manifesto-list",
+    "left": 240,
+    "top": 440,
+    "width": 386,
+    "height": 624
+  },
+  {
+    "id": "canon-active-content",
+    "left": 650,
+    "top": 440,
+    "width": 550,
+    "height": 624
+  }
+]

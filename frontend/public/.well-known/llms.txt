@@ -1,0 +1,7 @@
+Title: Dmitry Efremov Canon Index
+Description: Clean markdown index of all concepts for machine readers.
+Domains:
+- Autonomous Engineering
+- Agentic Economy (A2A)
+- Pragmatic Business Strategy
+- Philosophy of Mind
