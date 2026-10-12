@@ -54,7 +54,7 @@ public class AgentInteractionController {
         return ResponseEntity.ok(telemetry);
     }
 
-    @GetMapping(value = {"/api/v1/agent/llms.txt", "/llms.txt"}, produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/api/v1/agent/llms.txt", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getLlmInstructions() {
         String manifest = """
                 # Dmitry Efremov Site - AI Agent API Specification

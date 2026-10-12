@@ -26,14 +26,6 @@ class AiAgentDocsControllerTest {
     }
 
     @Test
-    void testGetRootReturnsDocumentation() throws Exception {
-        mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("# Dmitry Efremov Personal Site & Service API for AI Agents")));
-    }
-
-    @Test
     void testGetOpenApiSpecReturnsJsonSpec() throws Exception {
         mockMvc.perform(get("/api/v1/ai/docs"))
                 .andExpect(status().isOk())

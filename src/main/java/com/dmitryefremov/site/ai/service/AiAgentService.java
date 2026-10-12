@@ -6,8 +6,11 @@ import com.dmitryefremov.site.ai.dto.AiDirectMessageRequestDto;
 import com.dmitryefremov.site.ai.dto.AiDirectMessageResponseDto;
 import com.dmitryefremov.site.ai.dto.AiServiceOrderRequestDto;
 import com.dmitryefremov.site.ai.dto.AiServiceOrderResponseDto;
+import com.dmitryefremov.site.ai.event.AiDirectMessageCreatedEvent;
+import com.dmitryefremov.site.ai.event.AiServiceOrderCreatedEvent;
 import com.dmitryefremov.site.ai.repository.AiDirectMessageRepository;
 import com.dmitryefremov.site.ai.repository.AiServiceOrderRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,13 +22,16 @@ public class AiAgentService {
 
     private final AiServiceOrderRepository orderRepository;
     private final AiDirectMessageRepository messageRepository;
+    private final ApplicationEventPublisher eventPublisher;
     private final Clock clock;
 
     public AiAgentService(AiServiceOrderRepository orderRepository,
                           AiDirectMessageRepository messageRepository,
+                          ApplicationEventPublisher eventPublisher,
                           Clock clock) {
         this.orderRepository = orderRepository;
         this.messageRepository = messageRepository;
+        this.eventPublisher = eventPublisher;
         this.clock = clock;
     }
 
@@ -42,6 +48,10 @@ public class AiAgentService {
         );
 
         AiServiceOrder saved = orderRepository.save(order);
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(new AiServiceOrderCreatedEvent(saved));
+        }
+
         String ackMessage = "Service order for '" + saved.getServiceType() + "' received successfully. We will follow up shortly via " + saved.getUserEmail();
 
         return new AiServiceOrderResponseDto(
@@ -64,6 +74,10 @@ public class AiAgentService {
         );
 
         AiDirectMessage saved = messageRepository.save(message);
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(new AiDirectMessageCreatedEvent(saved));
+        }
+
         String ackMessage = "Direct message received successfully. Thank you for reaching out!";
 
         return new AiDirectMessageResponseDto(
