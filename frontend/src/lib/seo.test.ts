@@ -19,6 +19,13 @@ describe('SEO & Open Graph Metadata Utility', () => {
     }
   };
 
+  beforeEach(() => {
+    if (typeof document !== 'undefined') {
+      document.head.innerHTML = '';
+      document.title = '';
+    }
+  });
+
   it('generates valid JSON-LD structured data for TechArticle', () => {
     const jsonLd = generateJsonLd(sampleArticleConfig) as any;
 
@@ -66,21 +73,76 @@ describe('SEO & Open Graph Metadata Utility', () => {
     expect(getMeta('ClaudeBot', 'name')).toBe('index, follow, max-snippet:-1');
   });
 
-  it('updates document head correctly in DOM environment', () => {
-    document.head.innerHTML = '';
+  it('updates document head correctly in DOM environment and verifies presence of all SEO tags', () => {
     updateHeadMeta(sampleArticleConfig);
 
     expect(document.title).toBe(sampleArticleConfig.title);
 
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    expect(ogTitle?.getAttribute('content')).toBe(sampleArticleConfig.title);
+    // Meta Description & Robots
+    expect(document.querySelector('meta[name="description"]')?.getAttribute('content')).toBe(sampleArticleConfig.description);
+    expect(document.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('index, follow, max-snippet:-1, max-image-preview:large');
+    expect(document.querySelector('meta[name="googlebot"]')?.getAttribute('content')).toBe('index, follow, max-snippet:-1, max-image-preview:large');
 
-    const gptBot = document.querySelector('meta[name="GPTBot"]');
-    expect(gptBot?.getAttribute('content')).toBe('index, follow, max-snippet:-1');
+    // AI Crawlers Policy
+    expect(document.querySelector('meta[name="GPTBot"]')?.getAttribute('content')).toBe('index, follow, max-snippet:-1');
+    expect(document.querySelector('meta[name="PerplexityBot"]')?.getAttribute('content')).toBe('index, follow, max-snippet:-1');
+    expect(document.querySelector('meta[name="ClaudeBot"]')?.getAttribute('content')).toBe('index, follow, max-snippet:-1');
 
+    // Open Graph
+    expect(document.querySelector('meta[property="og:title"]')?.getAttribute('content')).toBe(sampleArticleConfig.title);
+    expect(document.querySelector('meta[property="og:description"]')?.getAttribute('content')).toBe(sampleArticleConfig.description);
+    expect(document.querySelector('meta[property="og:type"]')?.getAttribute('content')).toBe('article');
+    expect(document.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe(sampleArticleConfig.url);
+    expect(document.querySelector('meta[property="og:image"]')?.getAttribute('content')).toBe(sampleArticleConfig.imageUrl);
+    expect(document.querySelector('meta[property="og:image:alt"]')?.getAttribute('content')).toBe(sampleArticleConfig.imageAlt);
+    expect(document.querySelector('meta[property="og:locale"]')?.getAttribute('content')).toBe('en_US');
+
+    // Twitter
+    expect(document.querySelector('meta[name="twitter:card"]')?.getAttribute('content')).toBe('summary_large_image');
+    expect(document.querySelector('meta[name="twitter:title"]')?.getAttribute('content')).toBe(sampleArticleConfig.title);
+    expect(document.querySelector('meta[name="twitter:description"]')?.getAttribute('content')).toBe(sampleArticleConfig.description);
+    expect(document.querySelector('meta[name="twitter:image"]')?.getAttribute('content')).toBe(sampleArticleConfig.imageUrl);
+    expect(document.querySelector('meta[name="twitter:image:alt"]')?.getAttribute('content')).toBe(sampleArticleConfig.imageAlt);
+
+    // JSON-LD Script
     const jsonLdScript = document.querySelector('script[type="application/ld+json"]');
     expect(jsonLdScript).not.toBeNull();
     const parsed = JSON.parse(jsonLdScript?.textContent || '{}');
     expect(parsed['@type']).toBe('TechArticle');
+    expect(parsed.headline).toBe(sampleArticleConfig.title);
+  });
+
+  it('handles restricted crawler policy directives in DOM head', () => {
+    const restrictedConfig: SeoMetaProps = {
+      ...sampleArticleConfig,
+      aiCrawlerPolicy: {
+        gptBotAllowed: false,
+        perplexityBotAllowed: false,
+        claudeBotAllowed: false
+      }
+    };
+
+    updateHeadMeta(restrictedConfig);
+
+    expect(document.querySelector('meta[name="GPTBot"]')?.getAttribute('content')).toBe('noindex');
+    expect(document.querySelector('meta[name="PerplexityBot"]')?.getAttribute('content')).toBe('noindex');
+    expect(document.querySelector('meta[name="ClaudeBot"]')?.getAttribute('content')).toBe('noindex');
+  });
+
+  it('updates existing DOM meta tags idempotently without duplicating tags', () => {
+    updateHeadMeta(sampleArticleConfig);
+    const initialMetaCount = document.head.querySelectorAll('meta').length;
+
+    const updatedConfig: SeoMetaProps = {
+      ...sampleArticleConfig,
+      title: 'Updated Article Title'
+    };
+
+    updateHeadMeta(updatedConfig);
+    const newMetaCount = document.head.querySelectorAll('meta').length;
+
+    expect(newMetaCount).toBe(initialMetaCount);
+    expect(document.title).toBe('Updated Article Title');
+    expect(document.querySelector('meta[property="og:title"]')?.getAttribute('content')).toBe('Updated Article Title');
   });
 });

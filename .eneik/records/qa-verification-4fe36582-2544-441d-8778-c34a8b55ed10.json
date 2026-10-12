@@ -1,0 +1,14 @@
+{
+  "testsRun": 199,
+  "testsPassed": 199,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given live endpoints, when the test suite parses them, then it validates exact markdown format for /.well-known/llms.txt and /llms.txt.",
+    "Given live endpoints, when the test suite parses them, then it validates exact JSON structure for /.well-known/ai-agent.json and /api/v1/ai/docs.",
+    "Given live endpoints, when the test suite parses them, then it validates RSS and sitemap XML structures for /feed.xml and /sitemap.xml.",
+    "Given frontend page render, when DOM head is parsed, then it validates DOM presence and attribute accuracy for standard SEO tags, OpenGraph, Twitter, AI crawler directives (GPTBot, PerplexityBot, ClaudeBot), and JSON-LD structured data."
+  ],
+  "coverageDeltaPercent": 0.0,
+  "verdict": "pass",
+  "notes": "All backend machine-readability endpoints and frontend SEO DOM meta tag utilities verified with automated test suites."
+}

@@ -11,7 +11,6 @@ import com.dmitryefremov.site.podcast.dto.PodcastEpisodePageDto;
 import com.dmitryefremov.site.podcast.service.PodcastEpisodeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,8 +44,9 @@ class WellKnownControllerTest {
 
     @BeforeEach
     void setUp() {
-        ArticleDto article = new ArticleDto(1L, "article-slug", "Article Title", "Article Summary", "Content", OffsetDateTime.now(), OffsetDateTime.now());
-        ArticlePageDto articlePage = new ArticlePageDto(List.of(article), 0, 100, 1, 1);
+        ArticleDto article1 = new ArticleDto(1L, "article-slug-1", "Article Title 1", "Article Summary 1", "Content 1", OffsetDateTime.now(), OffsetDateTime.now());
+        ArticleDto article2 = new ArticleDto(2L, "article-slug-2", "Article Title 2", null, "Content 2", OffsetDateTime.now(), OffsetDateTime.now());
+        ArticlePageDto articlePage = new ArticlePageDto(List.of(article1, article2), 0, 100, 2, 1);
         when(articleService.getArticles(anyInt(), anyInt())).thenReturn(articlePage);
 
         EssayDto essay = new EssayDto(1L, "essay-slug", "Essay Title", "Essay Summary", "Content", OffsetDateTime.now(), OffsetDateTime.now());
@@ -58,29 +59,55 @@ class WellKnownControllerTest {
     }
 
     @Test
-    void testGetLlmsTxt() throws Exception {
+    void testGetLlmsTxtMarkdownFormat() throws Exception {
         mockMvc.perform(get("/.well-known/llms.txt"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
                 .andExpect(content().string(containsString("# Dmitry Efremov Canon Index")))
-                .andExpect(content().string(containsString("- [Article Title](/api/v1/articles/article-slug): Article Summary")))
+                .andExpect(content().string(containsString("> Dynamic index of articles, essays, and podcasts.")))
+                .andExpect(content().string(containsString("## Articles")))
+                .andExpect(content().string(containsString("- [Article Title 1](/api/v1/articles/article-slug-1): Article Summary 1")))
+                .andExpect(content().string(containsString("- [Article Title 2](/api/v1/articles/article-slug-2): ")))
+                .andExpect(content().string(containsString("## Essays")))
                 .andExpect(content().string(containsString("- [Essay Title](/api/v1/essays/essay-slug): Essay Summary")))
+                .andExpect(content().string(containsString("## Podcasts")))
                 .andExpect(content().string(containsString("- [Podcast Title](/api/v1/podcasts/podcast-slug): Podcast Thesis")));
     }
 
     @Test
-    void testGetAiAgentJson() throws Exception {
+    void testGetAiAgentJsonStructure() throws Exception {
         mockMvc.perform(get("/.well-known/ai-agent.json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.articles[0].title").value("Article Title"))
-                .andExpect(jsonPath("$.articles[0].slug").value("article-slug"))
-                .andExpect(jsonPath("$.articles[0].url").value("/api/v1/articles/article-slug"))
+                .andExpect(jsonPath("$.articles", hasSize(2)))
+                .andExpect(jsonPath("$.articles[0].title").value("Article Title 1"))
+                .andExpect(jsonPath("$.articles[0].slug").value("article-slug-1"))
+                .andExpect(jsonPath("$.articles[0].url").value("/api/v1/articles/article-slug-1"))
+                .andExpect(jsonPath("$.articles[1].title").value("Article Title 2"))
+                .andExpect(jsonPath("$.essays", hasSize(1)))
                 .andExpect(jsonPath("$.essays[0].title").value("Essay Title"))
                 .andExpect(jsonPath("$.essays[0].slug").value("essay-slug"))
                 .andExpect(jsonPath("$.essays[0].url").value("/api/v1/essays/essay-slug"))
+                .andExpect(jsonPath("$.podcasts", hasSize(1)))
                 .andExpect(jsonPath("$.podcasts[0].title").value("Podcast Title"))
                 .andExpect(jsonPath("$.podcasts[0].slug").value("podcast-slug"))
                 .andExpect(jsonPath("$.podcasts[0].url").value("/api/v1/podcasts/podcast-slug"));
+    }
+
+    @Test
+    void testGetAiAgentJsonAndLlmsTxtWithEmptyContent() throws Exception {
+        when(articleService.getArticles(anyInt(), anyInt())).thenReturn(new ArticlePageDto(List.of(), 0, 100, 0, 0));
+        when(essayService.getEssays(anyInt(), anyInt())).thenReturn(new EssayPageDto(List.of(), 0, 100, 0, 0));
+        when(podcastEpisodeService.getEpisodes(anyInt(), anyInt())).thenReturn(new PodcastEpisodePageDto(List.of(), 0, 100, 0, 0));
+
+        mockMvc.perform(get("/.well-known/ai-agent.json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.articles", hasSize(0)))
+                .andExpect(jsonPath("$.essays", hasSize(0)))
+                .andExpect(jsonPath("$.podcasts", hasSize(0)));
+
+        mockMvc.perform(get("/.well-known/llms.txt"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("# Dmitry Efremov Canon Index")));
     }
 }
