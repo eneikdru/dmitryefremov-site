@@ -12,10 +12,12 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       BACKUP_DIR: /backups
+      OFFSITE_BACKUP_DIR: ${OFFSITE_BACKUP_DIR:-/offsite_backups}
       RETENTION_DAYS: ${RETENTION_DAYS:-7}
       CRON_SCHEDULE: ${BACKUP_SCHEDULE:-0 2 * * *}
     volumes:
       - backup-data:/backups
+      - offsite-backup-data:/offsite_backups
       - ./scripts/backup.sh:/usr/local/bin/backup.sh:ro
       - ./scripts/restore.sh:/usr/local/bin/restore.sh:ro
     entrypoint:
@@ -32,4 +34,6 @@ services:
 
 volumes:
   backup-data:
+    driver: local
+  offsite-backup-data:
     driver: local

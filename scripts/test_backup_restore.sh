@@ -10,12 +10,27 @@ trap 'rm -rf "${TEST_DIR}"' EXIT
 echo "=== Running Database Backup and Restore Verification ==="
 
 export BACKUP_DIR="${TEST_DIR}/backups"
+export OFFSITE_BACKUP_DIR="${TEST_DIR}/offsite_backups"
 export POSTGRES_DB="test_db"
 export RETENTION_DAYS=7
 
-# Step 1: Execute Backup
+# Step 1: Execute Backup & Capture Output
 echo "[TEST] Running scripts/backup.sh..."
-./scripts/backup.sh
+BACKUP_LOGS=$(./scripts/backup.sh)
+echo "${BACKUP_LOGS}"
+
+# Assert success metric and log emission
+if ! echo "${BACKUP_LOGS}" | grep -q "\[METRIC\] backup_status{database=\"test_db\"} 1"; then
+    echo "[FAIL] Success metric 'backup_status{database=\"test_db\"} 1' was not emitted"
+    exit 1
+fi
+echo "[PASS] Verified emission of success metric: backup_status"
+
+if ! echo "${BACKUP_LOGS}" | grep -q "\[SUCCESS\] Backup process completed successfully."; then
+    echo "[FAIL] Success log '[SUCCESS] Backup process completed successfully.' was not emitted"
+    exit 1
+fi
+echo "[PASS] Verified emission of success log message"
 
 # Step 2: Assert backup file created
 DUMP_FILES=("${BACKUP_DIR}"/db_backup_*.dump)
@@ -32,6 +47,19 @@ if [ "${FILE_PERMS}" != "600" ]; then
     exit 1
 fi
 echo "[PASS] Backup file permission verified: ${FILE_PERMS}"
+
+# Assert offsite backup persistence
+OFFSITE_DUMP_FILES=("${OFFSITE_BACKUP_DIR}"/db_backup_*.dump)
+if [ ! -f "${OFFSITE_DUMP_FILES[0]}" ]; then
+    echo "[FAIL] Offsite backup file was not created in ${OFFSITE_BACKUP_DIR}"
+    exit 1
+fi
+OFFSITE_FILE_PERMS=$(stat -c "%a" "${OFFSITE_DUMP_FILES[0]}" 2>/dev/null || stat -f "%Lp" "${OFFSITE_DUMP_FILES[0]}")
+if [ "${OFFSITE_FILE_PERMS}" != "600" ]; then
+    echo "[FAIL] Offsite backup file permission is ${OFFSITE_FILE_PERMS}, expected 600"
+    exit 1
+fi
+echo "[PASS] Offsite backup file created and permissions verified: ${OFFSITE_FILE_PERMS}"
 
 # Step 4: Execute Restore
 echo "[TEST] Running scripts/restore.sh on ${DUMP_FILES[0]}..."

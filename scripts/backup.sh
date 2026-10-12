@@ -10,6 +10,7 @@ POSTGRES_DB="${POSTGRES_DB:-dmitryefremov}"
 POSTGRES_USER="${POSTGRES_USER:-postgres}"
 POSTGRES_PASSWORD="${POSTGRES_PASSWORD:-postgres}"
 BACKUP_DIR="${BACKUP_DIR:-./backups}"
+OFFSITE_BACKUP_DIR="${OFFSITE_BACKUP_DIR:-}"
 RETENTION_DAYS="${RETENTION_DAYS:-7}"
 
 mkdir -p "${BACKUP_DIR}"
@@ -48,10 +49,25 @@ fi
 chmod 600 "${BACKUP_FILE}"
 echo "[INFO] Database backup created successfully: ${BACKUP_FILE}"
 
+# Copy to offsite external storage if configured
+if [ -n "${OFFSITE_BACKUP_DIR}" ]; then
+    mkdir -p "${OFFSITE_BACKUP_DIR}"
+    chmod 700 "${OFFSITE_BACKUP_DIR}"
+    OFFSITE_FILE="${OFFSITE_BACKUP_DIR}/$(basename "${BACKUP_FILE}")"
+    cp "${BACKUP_FILE}" "${OFFSITE_FILE}"
+    chmod 600 "${OFFSITE_FILE}"
+    echo "[INFO] Database backup persisted to external offsite storage: ${OFFSITE_FILE}"
+
+    if [ "${RETENTION_DAYS}" -gt 0 ]; then
+        find "${OFFSITE_BACKUP_DIR}" -name "db_backup_*.dump" -type f -mtime +"${RETENTION_DAYS}" -delete || true
+    fi
+fi
+
 # Cleanup old backups
 if [ "${RETENTION_DAYS}" -gt 0 ]; then
     echo "[INFO] Cleaning up backup files older than ${RETENTION_DAYS} days..."
     find "${BACKUP_DIR}" -name "db_backup_*.dump" -type f -mtime +"${RETENTION_DAYS}" -delete || true
 fi
 
-echo "[INFO] Backup process completed."
+echo "[METRIC] backup_status{database=\"${POSTGRES_DB}\"} 1"
+echo "[SUCCESS] Backup process completed successfully."
