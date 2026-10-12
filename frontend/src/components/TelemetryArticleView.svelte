@@ -33,6 +33,7 @@
   }
 
   onMount(() => {
+    telemetry.trackArticleView(articleId);
     if (scrollContainer) {
       handleScroll();
     }
@@ -81,23 +82,4 @@
     {/each}
   </div>
 
-  <!-- Telemetry Event Log View -->
-  <footer id="article-telemetry-log" class="mt-6 pt-4 border-t border-[#1f2433]">
-    <div class="text-xs font-mono text-[#94a3b8] mb-2 flex items-center justify-between">
-      <span>[TELEMETRY_EVENT_FEED]</span>
-      <span class="text-[#34d399]">ZERO_COOKIE_ACTIVE</span>
-    </div>
-    <div class="bg-[#12151e] p-3 rounded border border-[#1f2433] font-mono text-xs max-h-32 overflow-y-auto space-y-1 text-[#a7f3d0]">
-      {#if loggedEvents.length === 0}
-        <span class="text-[#64748b]">Scroll the article container above to trigger scroll depth telemetry events...</span>
-      {:else}
-        {#each loggedEvents as evt}
-          <div class="flex justify-between border-b border-[#1f2433] pb-1">
-            <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
-            <span class="text-[#64748b]">{evt.timestamp.slice(11, 19)}</span>
-          </div>
-        {/each}
-      {/if}
-    </div>
-  </footer>
 </div>

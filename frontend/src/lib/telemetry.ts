@@ -4,7 +4,7 @@
  */
 
 export interface TelemetryEvent {
-  type: 'scroll_depth' | 'outbound_click';
+  type: 'scroll_depth' | 'outbound_click' | 'article_view';
   timestamp: string;
   payload: Record<string, unknown>;
 }
@@ -12,6 +12,10 @@ export interface TelemetryEvent {
 export interface ScrollDepthPayload {
   articleId: string;
   depth: number; // 25, 50, 75, 100
+}
+
+export interface ArticleViewPayload {
+  articleId: string;
 }
 
 export interface OutboundClickPayload {
@@ -35,6 +39,19 @@ class TelemetryService {
       return cookies === '' || !cookies.includes('telemetry_id');
     }
     return true;
+  }
+
+  public trackArticleView(articleId: string): TelemetryEvent {
+    this.verifyPrivacyCompliance();
+    const event: TelemetryEvent = {
+      type: 'article_view',
+      timestamp: new Date().toISOString(),
+      payload: {
+        articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
   }
 
   public trackScrollDepth(articleId: string, depth: number): TelemetryEvent {

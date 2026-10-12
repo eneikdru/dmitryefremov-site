@@ -8,6 +8,7 @@
     type PodcastTimecode
   } from '../lib/podcast';
   import ResponsivePicture from './ResponsivePicture.svelte';
+  import { telemetry } from '../lib/telemetry';
 
   export let episodes: PodcastEpisode[] = PODCAST_EPISODES;
   export let selectedEpisodeId: number | string = PODCAST_EPISODES[0]?.id;
@@ -100,6 +101,23 @@
     isPlaying = false;
     currentTime = 0;
   }
+
+  function handleMediaChannelClick(url: string) {
+    const isYoutube = url.includes('youtube.com');
+    const isTelegram = url.includes('t.me');
+
+    let platform = 'external';
+    let label = 'Media Channel';
+    if (isYoutube) {
+      platform = 'YouTube';
+      label = 'YouTube Channel';
+    } else if (isTelegram) {
+      platform = 'Telegram';
+      label = 'Telegram Channel';
+    }
+
+    telemetry.trackOutboundClick(url, label, platform);
+  }
 </script>
 
 <div id="podcast-player-container" class="space-y-6">
@@ -122,6 +140,7 @@
           href={currentEpisode.mediaLink}
           target="_blank"
           rel="noopener noreferrer"
+          on:click={() => handleMediaChannelClick(currentEpisode.mediaLink)}
           class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] transition-colors flex items-center gap-1"
         >
           <span>Media Channel</span>

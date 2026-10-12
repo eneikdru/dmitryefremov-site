@@ -24,6 +24,17 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     expect(events[0]).toEqual(evt25);
   });
 
+  it('records article view telemetry events', () => {
+    const evt = telemetry.trackArticleView('art-101');
+    expect(evt.type).toBe('article_view');
+    expect(evt.payload.articleId).toBe('art-101');
+    expect(evt.payload.depth).toBeUndefined();
+
+    const events = telemetry.getEvents();
+    expect(events.length).toBe(1);
+    expect(events[0]).toEqual(evt);
+  });
+
   describe('Contact Link Analytics Event Dispatching', () => {
     it('dispatches correct analytics payload when a contact link is clicked', () => {
       const dispatchedEvents: TelemetryEvent[] = [];
