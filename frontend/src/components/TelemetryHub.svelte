@@ -4,6 +4,7 @@
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import ConsentManager from './ConsentManager.svelte';
+  import SeoMeta from './SeoMeta.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
   export let activeTab: 'article' | 'contact' | 'podcast' = 'article';
@@ -22,6 +23,15 @@
     isCmpModalOpen = !isCmpModalOpen;
   }
 </script>
+
+{#if activeTab !== 'article'}
+  <SeoMeta
+    title="Dmitry Efremov - Telemetry & Autonomous Architecture Terminal"
+    description="Evergreen manifestos, ONTOLOGY, and media stream for autonomous software systems."
+    type="website"
+    url="https://dmitryefremov.com"
+  />
+{/if}
 
 <div id="theme-root" class={theme === 'dark' ? 'dark-void bg-[#090a0f] text-[#e2e8f0]' : 'light-monochrome bg-[#f8fafc] text-[#0f172a]'}>
   <main id="app-root" class="min-h-screen p-4 sm:p-8 flex flex-col justify-between max-w-5xl mx-auto space-y-8 font-sans transition-colors duration-200">
