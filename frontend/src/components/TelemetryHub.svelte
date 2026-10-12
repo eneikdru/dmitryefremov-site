@@ -1,6 +1,6 @@
 <script lang="ts">
   import ArticleStreamView from './ArticleStreamView.svelte';
-  import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
+  import VaultIntakeView from './VaultIntakeView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import GqmTelemetryView from './GqmTelemetryView.svelte';
   import ResponsivePicture from './ResponsivePicture.svelte';
@@ -108,7 +108,7 @@
             class="px-4 py-2 rounded transition-colors {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
             on:click={() => (activeTab = 'contact')}
           >
-            [CONTACT_TERMINAL]
+            [VAULT_INTAKE]
           </button>
           <button
             id="tab-btn-gqm"
@@ -130,7 +130,7 @@
         {:else if activeTab === 'gqm'}
           <GqmTelemetryView />
         {:else}
-          <TelemetryContactTerminalView />
+          <VaultIntakeView />
         {/if}
       </section>
     </div>

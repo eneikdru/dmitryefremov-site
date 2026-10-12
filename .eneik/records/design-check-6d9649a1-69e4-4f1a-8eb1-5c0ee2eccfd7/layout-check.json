@@ -1,0 +1,261 @@
+[
+  {
+    "id": "app",
+    "left": 0,
+    "top": -259,
+    "width": 1440,
+    "height": 1634.5
+  },
+  {
+    "id": "theme-root",
+    "left": 0,
+    "top": -259,
+    "width": 1440,
+    "height": 1634.5
+  },
+  {
+    "id": "app-root",
+    "left": 208,
+    "top": -259,
+    "width": 1024,
+    "height": 1634.5
+  },
+  {
+    "id": "main-header",
+    "left": 240,
+    "top": -227,
+    "width": 960,
+    "height": 289
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 240,
+    "top": -225,
+    "width": 90.015625,
+    "height": 22
+  },
+  {
+    "id": "sys-domain",
+    "left": 338.015625,
+    "top": -222,
+    "width": 122.421875,
+    "height": 16
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1057.96875,
+    "top": -227,
+    "width": 142.03125,
+    "height": 26
+  },
+  {
+    "id": "hero-section",
+    "left": 240,
+    "top": -177,
+    "width": 960,
+    "height": 148
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 240,
+    "top": -175,
+    "width": 144,
+    "height": 144
+  },
+  {
+    "id": "hero-avatar-img",
+    "left": 242,
+    "top": -173,
+    "width": 140,
+    "height": 140
+  },
+  {
+    "id": "hero-title",
+    "left": 408,
+    "top": -177,
+    "width": 792,
+    "height": 40
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 408,
+    "top": -125,
+    "width": 792,
+    "height": 28
+  },
+  {
+    "id": "hero-manifest",
+    "left": 408,
+    "top": -85,
+    "width": 792,
+    "height": 56
+  },
+  {
+    "id": "nav-tabs",
+    "left": 240,
+    "top": -5,
+    "width": 594.109375,
+    "height": 42
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 245,
+    "top": 0,
+    "width": 147.21875,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 400.21875,
+    "top": 0,
+    "width": 140.03125,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 548.25,
+    "top": 0,
+    "width": 132.828125,
+    "height": 32
+  },
+  {
+    "id": "tab-btn-gqm",
+    "left": 689.078125,
+    "top": 0,
+    "width": 140.03125,
+    "height": 32
+  },
+  {
+    "id": "content-view",
+    "left": 240,
+    "top": 86,
+    "width": 960,
+    "height": 1184.5
+  },
+  {
+    "id": "codename",
+    "left": 384,
+    "top": 329,
+    "width": 672,
+    "height": 48
+  },
+  {
+    "id": "confidentiality-tier-label",
+    "left": 384,
+    "top": 401,
+    "width": 158.421875,
+    "height": 16
+  },
+  {
+    "id": "execution-window",
+    "left": 384,
+    "top": 791,
+    "width": 672,
+    "height": 44
+  },
+  {
+    "id": "main-footer",
+    "left": 240,
+    "top": 1302.5,
+    "width": 960,
+    "height": 41
+  },
+  {
+    "id": "cmp-persistent-link",
+    "left": 881.53125,
+    "top": 1327.5,
+    "width": 136.828125,
+    "height": 16
+  },
+  {
+    "id": "imprint-toggle-btn",
+    "left": 1034.359375,
+    "top": 1327.5,
+    "width": 165.640625,
+    "height": 16
+  },
+  {
+    "id": "cmp-modal-overlay",
+    "left": 384,
+    "top": 166.5,
+    "width": 672,
+    "height": 709.5
+  },
+  {
+    "id": "cmp-container",
+    "left": 408,
+    "top": 190.5,
+    "width": 624,
+    "height": 661.5
+  },
+  {
+    "id": "cmp-badge",
+    "left": 433,
+    "top": 215.5,
+    "width": 122.015625,
+    "height": 22
+  },
+  {
+    "id": "cmp-title",
+    "left": 563.015625,
+    "top": 216.5,
+    "width": 242.40625,
+    "height": 20
+  },
+  {
+    "id": "cmp-description",
+    "left": 433,
+    "top": 304.5,
+    "width": 574,
+    "height": 58.5
+  },
+  {
+    "id": "cmp-cat-analytics",
+    "left": 957,
+    "top": 502,
+    "width": 1,
+    "height": 1
+  },
+  {
+    "id": "cmp-cat-functional",
+    "left": 957,
+    "top": 576.5,
+    "width": 1,
+    "height": 1
+  },
+  {
+    "id": "cmp-cat-advertising",
+    "left": 957,
+    "top": 651,
+    "width": 1,
+    "height": 1
+  },
+  {
+    "id": "cmp-actions",
+    "left": 433,
+    "top": 711,
+    "width": 574,
+    "height": 52
+  },
+  {
+    "id": "cmp-decline-btn",
+    "left": 433,
+    "top": 719,
+    "width": 281,
+    "height": 44
+  },
+  {
+    "id": "cmp-accept-btn",
+    "left": 726,
+    "top": 719,
+    "width": 281,
+    "height": 44
+  },
+  {
+    "id": "cmp-save-btn",
+    "left": 592.609375,
+    "top": 783,
+    "width": 254.78125,
+    "height": 20
+  }
+]
