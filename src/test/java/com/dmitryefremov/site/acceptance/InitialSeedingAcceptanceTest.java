@@ -122,4 +122,25 @@ class InitialSeedingAcceptanceTest {
         );
         assertThat(scheduleCount).isEqualTo(2);
     }
+
+    @Test
+    void testGenuineContentSeeding() throws Exception {
+        Integer manifestoCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM canon_items WHERE slug = 'autonomous-engineering-manifesto'",
+                Integer.class
+        );
+        assertThat(manifestoCount).isEqualTo(1);
+
+        Integer episodeCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM podcast_episodes WHERE slug = 'daniel-dennett-extended-mind'",
+                Integer.class
+        );
+        assertThat(episodeCount).isEqualTo(1);
+
+        Integer sparkCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM sparks WHERE telegram_message_id = 1001",
+                Integer.class
+        );
+        assertThat(sparkCount).isEqualTo(1);
+    }
 }
