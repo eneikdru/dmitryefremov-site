@@ -1,0 +1,63 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c19ada93-abd4-4f81-9271-55359d5de80d",
+      "title": "Privacy Consent Management",
+      "jtbd": "When a visitor arrives on the site, I want to be asked for consent before any non-essential trackers load, so that my privacy preferences are respected and the site complies with ePrivacy regulations.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "100% of non-essential trackers blocked prior to explicit opt-in",
+      "tocConstraintRef": "initial page render blocking",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Opt-in consent must be captured before any non-essential cookie or tracker loads.",
+        "R2: Refusing consent must be as easy as accepting it.",
+        "R3: The visitor's consent choice must be recorded and must be revocable via a persistent link.",
+        "R4: An established external consent platform must be used rather than a custom-built banner.",
+        "R5: The product must supply the initial legal text content for the banner in the client's language.",
+        "R6: Consent state is maintained by the external platform and does not require custom backend storage."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Integrate external consent management platform script",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the consent platform for this epic, I want to integrate the external CMP script, so that non-essential trackers are correctly gated behind explicit user consent.",
+          "acceptanceCriteria": "Given a visitor arrives on the site without prior consent\nWhen the page renders\nThen the CMP banner is displayed with real legal text and non-essential trackers are blocked\nGiven a visitor is presented with the consent banner\nWhen they click to reject non-essential trackers\nThen the banner is dismissed and no non-essential trackers are loaded\nGiven a visitor who has previously made a consent choice\nWhen they click the consent revocation link in the site footer\nThen the banner is shown again to allow updating preferences\nGiven the CMP banner is visible on the screen\nWhen the user navigates using a keyboard or screen reader\nThen all interactive controls meet WCAG 2.1 level AA accessibility standards",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "third-party script execution time",
+          "sixSigmaMetric": "TTFB degradation < 50ms",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        },
+        {
+          "title": "QA verify consent gating and tracker blocking",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA coverage for this epic, I want to verify that the consent gate correctly blocks and allows trackers based on choice, so that regulatory compliance is demonstrably assured.",
+          "acceptanceCriteria": "Given a clean browser session\nWhen the site loads\nThen automated E2E tests assert that no non-essential network requests or cookies are generated\nGiven a clean browser session with the consent banner visible\nWhen the test suite clicks the accept button\nThen the expected non-essential trackers are successfully loaded and the consent state is persisted\nGiven a clean browser session with the consent banner visible\nWhen the test suite clicks the reject button\nThen the test asserts that no non-essential trackers are loaded and the rejection state is persisted\nGiven a persisted consent state\nWhen the automated test triggers the revocation link\nThen the test confirms that trackers are blocked on subsequent page interactions",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "browser automation network interception stability",
+          "sixSigmaMetric": "0 false positive non-essential tracker loads",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        }
+      ]
+    }
+  ]
+}
