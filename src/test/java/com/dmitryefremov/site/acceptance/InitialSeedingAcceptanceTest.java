@@ -2,6 +2,8 @@ package com.dmitryefremov.site.acceptance;
 
 import com.dmitryefremov.site.article.domain.Article;
 import com.dmitryefremov.site.article.repository.ArticleRepository;
+import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
+import com.dmitryefremov.site.podcast.repository.PodcastEpisodeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,6 +32,9 @@ class InitialSeedingAcceptanceTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private PodcastEpisodeRepository podcastEpisodeRepository;
 
     @Test
     void testSeededApiCredentialsExistInDatabase() {
@@ -67,5 +74,46 @@ class InitialSeedingAcceptanceTest {
         mockMvc.perform(get("/api/v1/articles/headless-api-agent-content-sync"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Headless API (Updated)"));
+    }
+
+    @Test
+    void testNewlySeededRussianEssaysAndPodcastWithTimecodesExistAndConformToRelationships() throws Exception {
+        // Test article 1
+        mockMvc.perform(get("/api/v1/articles/high-end-editorial-minimalism"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug").value("high-end-editorial-minimalism"))
+                .andExpect(jsonPath("$.title").value("Эстетика инженерного молчания и редакционный минимализм"));
+
+        // Test article 2
+        mockMvc.perform(get("/api/v1/articles/deontic-operators-in-distributed-systems"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug").value("deontic-operators-in-distributed-systems"))
+                .andExpect(jsonPath("$.title").value("Деонтическая логика и нормативные инварианты в распределенных сервисах"));
+
+        // Test podcast episode 4
+        mockMvc.perform(get("/api/v1/podcasts/systems-and-reality-ep4"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug").value("systems-and-reality-ep4"))
+                .andExpect(jsonPath("$.title").value("Системы и реальность #4: Редакционный дизайн и деонтика интерфейсов"));
+
+        // Verify foreign key relationship and timecodes for Episode 4
+        Optional<PodcastEpisode> ep4Optional = podcastEpisodeRepository.findBySlug("systems-and-reality-ep4");
+        assertThat(ep4Optional).isPresent();
+        PodcastEpisode ep4 = ep4Optional.get();
+        assertThat(ep4.getTimecodes()).hasSize(3);
+        assertThat(ep4.getTimecodes())
+                .extracting("title")
+                .containsExactly(
+                        "Введение: Чистый UI и инженерная этика",
+                        "Деонтика пользовательского опыта",
+                        "Архитектура медиахаба"
+                );
+
+        // Verify publication schedules count
+        Integer scheduleCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM publication_schedules WHERE title IN ('Эстетика инженерного молчания', 'Системы и реальность #4')",
+                Integer.class
+        );
+        assertThat(scheduleCount).isEqualTo(2);
     }
 }
