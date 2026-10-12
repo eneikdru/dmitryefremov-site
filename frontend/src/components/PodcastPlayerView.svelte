@@ -7,6 +7,7 @@
     type PodcastEpisode,
     type PodcastTimecode
   } from '../lib/podcast';
+  import ResponsivePicture from './ResponsivePicture.svelte';
 
   export let episodes: PodcastEpisode[] = PODCAST_EPISODES;
   export let selectedEpisodeId: number | string = PODCAST_EPISODES[0]?.id;
@@ -180,14 +181,27 @@
     <div id="podcast-player-section" class="md:col-span-7 flex flex-col space-y-6">
       <div id="podcast-player-card" class="bg-[#090a0f] text-[#e2e8f0] p-6 rounded-lg border border-[#1f2433] space-y-5 font-sans">
         <!-- Episode Header -->
-        <header id="podcast-header" class="border-b border-[#1f2433] pb-4">
-          <div class="flex items-center justify-between gap-2 mb-2">
-            <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
-              [SYS_PLAYER]
-            </span>
-            <span class="text-xs font-mono text-[#94a3b8]">{currentEpisode.slug}</span>
+        <header id="podcast-header" class="border-b border-[#1f2433] pb-4 space-y-3">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div id="podcast-cover-container" class="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-lg overflow-hidden border border-[#34d399]/40 shadow">
+              <ResponsivePicture
+                id="podcast-cover-img"
+                assetKey="podcast_studio_cover"
+                alt="Обложка подкаста Системы и реальность — Студийное оформление"
+                imgClass="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
+            <div class="flex-1 space-y-1">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
+                  [SYS_PLAYER]
+                </span>
+                <span class="text-xs font-mono text-[#94a3b8]">{currentEpisode.slug}</span>
+              </div>
+              <h1 id="podcast-title" class="text-xl font-bold tracking-tight text-white">{currentEpisode.title}</h1>
+            </div>
           </div>
-          <h1 id="podcast-title" class="text-xl font-bold tracking-tight text-white mb-2">{currentEpisode.title}</h1>
           <blockquote class="p-3 rounded bg-[#12151e] border-l-2 border-[#34d399] text-xs italic text-[#cbd5e1] leading-relaxed">
             «{currentEpisode.thesis}»
           </blockquote>
