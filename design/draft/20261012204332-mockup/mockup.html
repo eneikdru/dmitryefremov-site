@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LLM Index &amp; OG Meta - AI Crawler &amp; Semantic SEO</title>
+<!-- Material Symbols Font -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Geist & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#2c303a",
+            "secondary-fixed-dim": "#d0bcff",
+            "on-surface-variant": "#bbcabf",
+            "inverse-primary": "#006c49",
+            "on-tertiary-container": "#523200",
+            "tertiary-fixed-dim": "#ffb95f",
+            "outline-variant": "#3c4a42",
+            "inverse-surface": "#dfe2ef",
+            "on-secondary-container": "#c4abff",
+            "tertiary-container": "#e29100",
+            "error": "#ffb4ab",
+            "surface": "#0f131c",
+            "surface-container": "#1c1f29",
+            "on-error": "#690005",
+            "surface-bright": "#353943",
+            "surface-container-highest": "#31353f",
+            "on-secondary-fixed-variant": "#5516be",
+            "primary-container": "#10b981",
+            "on-background": "#dfe2ef",
+            "outline": "#86948a",
+            "on-primary-container": "#00422b",
+            "on-primary-fixed-variant": "#005236",
+            "secondary-fixed": "#e9ddff",
+            "on-primary-fixed": "#002113",
+            "secondary": "#d0bcff",
+            "secondary-container": "#571bc1",
+            "surface-container-low": "#181b25",
+            "surface-container-high": "#262a34",
+            "on-secondary": "#3c0091",
+            "tertiary-fixed": "#ffddb8",
+            "surface-dim": "#0f131c",
+            "on-primary": "#003824",
+            "on-tertiary-fixed-variant": "#653e00",
+            "on-secondary-fixed": "#23005c",
+            "surface-variant": "#31353f",
+            "primary": "#4edea3",
+            "on-error-container": "#ffdad6",
+            "error-container": "#93000a",
+            "on-tertiary-fixed": "#2a1700",
+            "tertiary": "#ffb95f",
+            "surface-tint": "#4edea3",
+            "background": "#0f131c",
+            "primary-fixed-dim": "#4edea3",
+            "primary-fixed": "#6ffbbe",
+            "on-tertiary": "#472a00",
+            "on-surface": "#dfe2ef",
+            "surface-container-lowest": "#0a0e17"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem",
+            "margin": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "gutter-desktop": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2.25rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "display-lg-mobile": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "headline-lg": ["Geist"],
+            "label-code": ["JetBrains Mono"],
+            "display-lg": ["Geist"],
+            "headline-md": ["Geist"],
+            "headline-sm": ["Geist"],
+            "label-sm": ["Geist"],
+            "code-inline": ["JetBrains Mono"],
+            "body-md": ["Geist"],
+            "body-lg": ["Geist"],
+            "body-sm": ["Geist"]
+          },
+          "fontSize": {
+            "display-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-code": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Custom subtle pulse */
+    @keyframes subtle-glow {
+      0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 4px rgba(78, 222, 163, 0.4)); }
+      50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(78, 222, 163, 0.8)); }
+    }
+    .pulse-glow {
+      animation: subtle-glow 2.5s infinite ease-in-out;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen selection:bg-primary selection:text-on-primary">
+<!-- TOP APP BAR (Shared Component Anchor) -->
+<header class="sticky top-0 z-40 bg-surface dark:bg-surface border-b border-outline-variant shadow-none">
+<div class="flex justify-between items-center w-full px-margin h-14 max-w-7xl mx-auto">
+<!-- Leading Icon & Brand Headline -->
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary dark:text-primary text-[20px]" data-icon="terminal">terminal</span>
+<div>
+<h1 class="text-headline-sm font-headline-sm font-semibold tracking-tight text-on-surface dark:text-on-surface">
+            LLM Index &amp; OG Meta
+          </h1>
+<div class="flex items-center space-x-1.5 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary pulse-glow"></span>
+<span class="font-label-code text-label-code text-primary uppercase">Active Injection ON</span>
+</div>
+</div>
+</div>
+<!-- Trailing Action -->
+<button aria-label="Settings" class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors duration-150 active:opacity-80">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings_suggest">settings_suggest</span>
+</button>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT CANVAS (Mobile First Bento & Diagnostics) -->
+<main class="w-full max-w-7xl mx-auto px-margin pt-space-md pb-28 space-y-space-md">
+<!-- SUBTITLE HERO STRIP -->
+<div class="flex items-center justify-between bg-surface-container-low px-space-md py-space-sm rounded-lg border border-outline-variant">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="hub">hub</span>
+<span class="font-label-code text-label-code text-on-surface">TARGET: /blog/ai-search-synthesis</span>
+</div>
+<span class="font-label-code text-label-code text-primary px-1.5 py-0.5 bg-primary-container/20 rounded border border-primary/30">CANONICAL 200</span>
+</div>
+<!-- SECTION 1: INDEXING HEALTH OVERVIEW -->
+<section class="bg-surface-container rounded-lg p-space-md border border-outline-variant">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-code text-label-code text-on-surface-variant">ENGINE READINESS</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface mt-0.5">98% AI Indexed</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Vector and token structures fully ingested.</p>
+</div>
+<!-- Minimalist Radial Score Badge -->
+<div class="relative w-14 h-14 flex items-center justify-center rounded-full bg-surface-container-lowest border-2 border-primary/50 shadow-inner">
+<span class="material-symbols-outlined text-primary text-[26px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<!-- Quick Telemetry Row -->
+<div class="grid grid-cols-3 gap-2 mt-space-md pt-space-sm border-t border-outline-variant">
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant/60">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-label-code text-on-surface-variant">GPTBot</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<p class="font-label-code text-label-code text-primary mt-1">Allowed</p>
+<p class="font-body-sm text-[10px] text-outline">24m ago</p>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant/60">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-label-code text-on-surface-variant">Perplexity</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<p class="font-label-code text-label-code text-primary mt-1">Verified</p>
+<p class="font-body-sm text-[10px] text-outline">12m ago</p>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant/60">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-label-code text-on-surface-variant">ClaudeBot</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<p class="font-label-code text-label-code text-primary mt-1">Allowed</p>
+<p class="font-body-sm text-[10px] text-outline">1h ago</p>
+</div>
+</div>
+</section>
+<!-- SECTION 2: DEDICATED BOT CRAWLER STATUS CARDS -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="smart_toy">smart_toy</span>
+<span>Active LLM Scrapers</span>
+</h3>
+<span class="font-label-code text-label-code text-on-surface-variant">2 ACTIVE TARGETS</span>
+</div>
+<!-- Card 1: PerplexityBot -->
+<article class="bg-surface-container rounded-lg p-space-md border border-outline-variant space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded bg-secondary-container/40 flex items-center justify-center text-secondary border border-secondary/30">
+<span class="material-symbols-outlined text-[18px]" data-icon="travel_explore">travel_explore</span>
+</div>
+<div>
+<div class="flex items-center space-x-1.5">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface">PerplexityBot</span>
+<span class="font-label-code text-label-code px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">Allowed 200 OK</span>
+</div>
+<span class="font-label-code text-[11px] text-outline">User-Agent: PerplexityBot/1.0</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-code text-label-code text-tertiary">RANK #3</span>
+<p class="font-body-sm text-[10px] text-on-surface-variant">Top 3 Citations</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded border border-outline-variant/60 font-label-code text-label-code text-on-surface-variant leading-relaxed">
+<span class="text-secondary font-semibold">&gt; telemetry:</span> Direct citation extraction active with semantic entity anchors.
+        </div>
+<div class="flex items-center justify-between font-label-code text-label-code text-outline pt-1">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="speed">speed</span>
+            Frequency: <span class="text-on-surface">High (Realtime)</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="nest_clock_freshen">cloud_download</span>
+            Latency: <span class="text-primary">38ms</span>
+</span>
+</div>
+</article>
+<!-- Card 2: GPTBot -->
+<article class="bg-surface-container rounded-lg p-space-md border border-outline-variant space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center text-primary border border-primary/30">
+<span class="material-symbols-outlined text-[18px]" data-icon="psychology">psychology</span>
+</div>
+<div>
+<div class="flex items-center space-x-1.5">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface">GPTBot</span>
+<span class="font-label-code text-label-code px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">Allowed 200 OK</span>
+</div>
+<span class="font-label-code text-[11px] text-outline">OpenAI Search / WebBrowse</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-code text-label-code text-primary">OPTIMIZED</span>
+<p class="font-body-sm text-[10px] text-on-surface-variant">Token Budget</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded border border-outline-variant/60 font-label-code text-label-code text-on-surface-variant leading-relaxed">
+<span class="text-primary font-semibold">&gt; payload:</span> Vectorized contextual summary matched with 99.4% cosine similarity.
+        </div>
+<div class="flex items-center justify-between font-label-code text-label-code text-outline pt-1">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
+            Fetch: <span class="text-on-surface">6 mins ago</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="memory">memory</span>
+            Tokens: <span class="text-primary">1,420 tk</span>
+</span>
+</div>
+</article>
+</section>
+<!-- SECTION 3: SEMANTIC & OPEN GRAPH TAGS INJECTION MODULE -->
+<section class="bg-surface-container rounded-lg p-space-md border border-outline-variant space-y-space-md">
+<!-- Section Header with Injection Toggle -->
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="code_blocks">code_blocks</span>
+<span>Metadata &amp; Schema</span>
+</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Dynamic meta injection to head</p>
+</div>
+<!-- Toggle Switch -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-bright peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface peer-checked:bg-primary-container after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container after:border-surface after:border after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</label>
+</div>
+<!-- Tag List -->
+<div class="space-y-2.5">
+<!-- Item 1: og:title -->
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant/60">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-code text-label-code text-secondary font-semibold">property="og:title"</span>
+<span class="font-label-code text-[10px] text-primary bg-primary/10 px-1 rounded">VALIDATED</span>
+</div>
+<div class="font-code-inline text-code-inline text-on-surface bg-surface-container-lowest p-2 rounded border border-outline-variant/40 break-words">
+            "Next-Gen Semantic Knowledge Engine"
+          </div>
+</div>
+<!-- Item 2: og:description -->
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant/60">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-code text-label-code text-secondary font-semibold">property="og:description"</span>
+<span class="font-label-code text-[10px] text-outline">118 CHARS</span>
+</div>
+<div class="font-code-inline text-code-inline text-on-surface-variant bg-surface-container-lowest p-2 rounded border border-outline-variant/40 text-[12px] leading-relaxed">
+            Structured metadata and entity definitions optimized for direct LLM synthesis and citation.
+          </div>
+</div>
+<!-- Item 3: og:type & article:tag -->
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant/60">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-code text-label-code text-secondary font-semibold">property="article:tag"</span>
+<span class="font-label-code text-[10px] text-on-surface-variant">3 ENTITIES</span>
+</div>
+<div class="flex flex-wrap gap-1.5">
+<span class="font-label-code text-label-code px-2 py-0.5 rounded bg-surface-container-high text-on-surface border border-outline-variant">AI Engineering</span>
+<span class="font-label-code text-label-code px-2 py-0.5 rounded bg-surface-container-high text-on-surface border border-outline-variant">LLM Indexing</span>
+<span class="font-label-code text-label-code px-2 py-0.5 rounded bg-surface-container-high text-on-surface border border-outline-variant">Schema.org</span>
+</div>
+</div>
+<!-- Item 4: JSON-LD Schema Snippet -->
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant/60 flex items-center justify-between">
+<div>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-tertiary text-[16px]" data-icon="schema">schema</span>
+<span class="font-label-code text-label-code text-on-surface font-semibold">application/ld+json</span>
+</div>
+<p class="font-body-sm text-[11px] text-outline mt-0.5">TechArticle &amp; AboutPage</p>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-code text-label-code border border-outline-variant flex items-center space-x-1 active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[14px]" data-icon="visibility">visibility</span>
+<span>View Schema</span>
+</button>
+</div>
+</div>
+</section>
+<!-- SECTION 4: SIMULATED AI SEARCH ENGINE CITATION PREVIEW -->
+<section class="bg-surface-container rounded-lg p-space-md border border-outline-variant space-y-space-sm">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="preview">preview</span>
+<span>Simulated LLM Citation</span>
+</h3>
+<span class="font-label-code text-label-code px-2 py-0.5 rounded bg-secondary/10 text-secondary border border-secondary/30">
+          Perplexity / ChatGPT
+        </span>
+</div>
+<!-- Preview Mock Bubble -->
+<div class="bg-surface-container-lowest p-3.5 rounded-lg border border-outline-variant/80 space-y-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-code text-label-code text-on-surface-variant uppercase tracking-wider">Direct Answer Extraction</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-snug">
+          According to the verified specification, modern discovery architectures prioritize semantic schema mapping to allow real-time crawler ingestion without synthetic latency.
+        </p>
+<!-- Bullet Highlights synthesized from Meta -->
+<div class="space-y-1.5 pl-2 border-l-2 border-primary/40 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-start space-x-1.5">
+<span class="text-primary font-bold">•</span>
+<span>Explicit OpenGraph tags provide exact citation titles for LLM summaries.</span>
+</div>
+<div class="flex items-start space-x-1.5">
+<span class="text-primary font-bold">•</span>
+<span>Direct JSON-LD entity anchors guarantee attribution placement.</span>
+</div>
+</div>
+<!-- Footnote Citation Pill -->
+<div class="pt-2 flex items-center justify-between border-t border-outline-variant/40">
+<div class="inline-flex items-center space-x-1 bg-surface-container-high px-2 py-0.5 rounded border border-outline-variant font-label-code text-label-code text-on-surface">
+<span class="text-primary font-bold">[1]</span>
+<span>Synthetic Index · nextgen.ai</span>
+</div>
+<button class="font-label-code text-[11px] text-secondary hover:underline flex items-center gap-0.5">
+<span>OG Card Preview</span>
+<span class="material-symbols-outlined text-[13px]" data-icon="open_in_new">open_in_new</span>
+</button>
+</div>
+</div>
+</section>
+<!-- SECTION 5: ACTION BUTTONS -->
+<section class="space-y-2 pt-space-xs">
+<!-- Primary Action -->
+<button class="w-full bg-primary-container text-on-primary-container font-headline-sm text-[14px] font-semibold h-[42px] rounded flex items-center justify-center space-x-2 hover:bg-primary transition-colors duration-150 active:opacity-85 shadow-none">
+<span class="material-symbols-outlined text-[18px]" data-icon="send">send</span>
+<span>Test Crawl Ping (Simulate Bot)</span>
+</button>
+<!-- Secondary Action -->
+<button class="w-full bg-surface-container-high border border-outline-variant text-on-surface font-headline-sm text-[14px] font-medium h-[40px] rounded flex items-center justify-center space-x-2 hover:bg-surface-bright transition-colors duration-150 active:opacity-85 shadow-none">
+<span class="material-symbols-outlined text-[18px]" data-icon="file_download">file_download</span>
+<span>Export robots.txt / Meta Snippet</span>
+</button>
+</section>
+</main>
+<!-- FIXED BOTTOM NAVIGATION BAR (Shared Component Blueprint Anchor) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin py-space-xs bg-surface-container-low dark:bg-surface-container-low border-t border-outline-variant shadow-none">
+<!-- Item 1: Crawler Bots (Active Tab for current bot status context) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary font-medium hover:text-primary dark:hover:text-primary transition-colors duration-150 active:scale-95 transition-transform duration-100" href="#crawlers">
+<span class="material-symbols-outlined text-[22px]" data-icon="smart_toy">smart_toy</span>
+<span class="text-label-code font-label-code mt-0.5">Crawler Bots</span>
+</a>
+<!-- Item 2: Metadata -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-150 active:scale-95 transition-transform duration-100" href="#metadata">
+<span class="material-symbols-outlined text-[22px]" data-icon="code_blocks">code_blocks</span>
+<span class="text-label-code font-label-code mt-0.5">Metadata</span>
+</a>
+<!-- Item 3: Preview -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-150 active:scale-95 transition-transform duration-100" href="#preview">
+<span class="material-symbols-outlined text-[22px]" data-icon="visibility">visibility</span>
+<span class="text-label-code font-label-code mt-0.5">Preview</span>
+</a>
+<!-- Item 4: Directives -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-150 active:scale-95 transition-transform duration-100" href="#directives">
+<span class="material-symbols-outlined text-[22px]" data-icon="rule">rule</span>
+<span class="text-label-code font-label-code mt-0.5">Directives</span>
+</a>
+</nav>
+<!-- Lightweight Micro-Interactions Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle visual feedback for crawl simulator
+      const simulateBtn = document.querySelector('button:has(span[data-icon="send"])');
+      if (simulateBtn) {
+        simulateBtn.addEventListener('click', () => {
+          const originalText = simulateBtn.innerHTML;
+          simulateBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">autorenew</span><span>Simulating GPTBot Ping...</span>';
+          simulateBtn.classList.add('opacity-75');
+          setTimeout(() => {
+            simulateBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span><span>Ping Verified (200 OK)</span>';
+            simulateBtn.classList.remove('opacity-75');
+            setTimeout(() => {
+              simulateBtn.innerHTML = originalText;
+            }, 2000);
+          }, 1200);
+        });
+      }
+    });
+  </script>
+</body></html>
