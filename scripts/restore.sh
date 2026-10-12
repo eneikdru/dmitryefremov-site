@@ -24,7 +24,7 @@ POSTGRES_PASSWORD="${POSTGRES_PASSWORD:-postgres}"
 
 echo "[INFO] Starting database restore from file '${BACKUP_FILE}' to database '${POSTGRES_DB}' on host '${POSTGRES_HOST}:${POSTGRES_PORT}'..."
 
-if command -v pg_restore >/dev/null 2>&1; then
+if command -v pg_restore >/dev/null 2>&1 && pg_restore -l "${BACKUP_FILE}" >/dev/null 2>&1; then
     PGPASSWORD="${POSTGRES_PASSWORD}" pg_restore \
         --clean \
         --if-exists \
@@ -33,6 +33,13 @@ if command -v pg_restore >/dev/null 2>&1; then
         -U "${POSTGRES_USER}" \
         -d "${POSTGRES_DB}" \
         "${BACKUP_FILE}"
+elif command -v psql >/dev/null 2>&1; then
+    PGPASSWORD="${POSTGRES_PASSWORD}" psql \
+        -h "${POSTGRES_HOST}" \
+        -p "${POSTGRES_PORT}" \
+        -U "${POSTGRES_USER}" \
+        -d "${POSTGRES_DB}" \
+        -f "${BACKUP_FILE}"
 elif [ -n "${RESTORE_CMD:-}" ]; then
     eval "${RESTORE_CMD}" "${BACKUP_FILE}"
 else
