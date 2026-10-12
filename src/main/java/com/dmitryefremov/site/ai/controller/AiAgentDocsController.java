@@ -11,7 +11,7 @@ import java.util.Map;
 @RestController
 public class AiAgentDocsController {
 
-    @GetMapping(value = {"/", "/llms.txt"}, produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/llms.txt", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getLlmsTxt() {
         String content = """
                 # Dmitry Efremov Personal Site & Service API for AI Agents
