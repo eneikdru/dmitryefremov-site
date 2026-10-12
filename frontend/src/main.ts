@@ -1,7 +1,7 @@
-import TelemetryHub from './components/TelemetryHub.svelte';
+import CanonReaderView from './components/CanonReaderView.svelte';
 import { mount } from 'svelte';
 
-const app = mount(TelemetryHub, {
+const app = mount(CanonReaderView, {
   target: document.getElementById('app')!
 });
 
