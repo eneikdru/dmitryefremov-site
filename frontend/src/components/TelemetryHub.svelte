@@ -2,6 +2,7 @@
   import ArticleStreamView from './ArticleStreamView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
+  import ResponsivePicture from './ResponsivePicture.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
   export let activeTab: 'article' | 'contact' | 'podcast' = 'article';
@@ -43,16 +44,27 @@
         </div>
 
         <!-- Hero Branding & Manifest -->
-        <section id="hero-section" class="space-y-3">
-          <h1 id="hero-title" class="text-3xl sm:text-4xl font-extrabold tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
-            Дмитрий Ефремов
-          </h1>
-          <p id="hero-subtitle" class="text-base sm:text-lg font-mono font-medium {theme === 'dark' ? 'text-[#38bdf8]' : 'text-[#0284c7]'}">
-            Системы, логика мышления и автономные процессы
-          </p>
-          <blockquote id="hero-manifest" class="p-4 rounded border-l-4 italic text-sm sm:text-base leading-relaxed {theme === 'dark' ? 'bg-[#12151e] border-[#38bdf8] text-[#cbd5e1]' : 'bg-[#f1f5f9] border-[#0284c7] text-[#334155]'}">
-            «Ваш код и ваши решения — это то, кто вы есть на самом деле.»
-          </blockquote>
+        <section id="hero-section" class="flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div id="hero-portrait" class="w-24 h-24 sm:w-32 sm:h-32 shrink-0 border-2 rounded-xl overflow-hidden {theme === 'dark' ? 'border-[#38bdf8] bg-[#12151e]' : 'border-[#0284c7] bg-white shadow-sm'}">
+            <ResponsivePicture
+              srcBase="/images/dmitry-efremov-hero"
+              alt="Portrait of Dmitry Efremov, Systems Architect and Content Creator (@dmitrii.efremov)"
+              width={128}
+              height={128}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div class="space-y-3 flex-1">
+            <h1 id="hero-title" class="text-3xl sm:text-4xl font-extrabold tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
+              Дмитрий Ефремов
+            </h1>
+            <p id="hero-subtitle" class="text-base sm:text-lg font-mono font-medium {theme === 'dark' ? 'text-[#38bdf8]' : 'text-[#0284c7]'}">
+              Системы, логика мышления и автономные процессы
+            </p>
+            <blockquote id="hero-manifest" class="p-4 rounded border-l-4 italic text-sm sm:text-base leading-relaxed {theme === 'dark' ? 'bg-[#12151e] border-[#38bdf8] text-[#cbd5e1]' : 'bg-[#f1f5f9] border-[#0284c7] text-[#334155]'}">
+              «Ваш код и ваши решения — это то, кто вы есть на самом деле.»
+            </blockquote>
+          </div>
         </section>
 
         <!-- Navigation Tabs -->
