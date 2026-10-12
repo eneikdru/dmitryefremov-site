@@ -3,8 +3,8 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-test('generate design verification artifacts for responsive picture implementation', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-c4dfc4a4-4d71-4c51-a883-8dcf56ef4518');
+test('generate design verification artifacts for essay reader implementation', async () => {
+  const targetDir = path.resolve('../.eneik/records/design-check-b15560ed-e980-46d1-a482-574ad3cbf54d');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Build frontend first
@@ -38,8 +38,8 @@ test('generate design verification artifacts for responsive picture implementati
     await desktopPage.goto('http://localhost:4173');
     await desktopPage.waitForSelector('#app-root');
 
-    // Click on [PODCAST_MEDIA] tab
-    await desktopPage.click('#tab-btn-podcast');
+    // Click on [ARTICLE_STREAM] tab to ensure essay reader is visible
+    await desktopPage.click('#tab-btn-article');
     await desktopPage.waitForTimeout(300);
 
     await desktopPage.screenshot({ path: path.join(targetDir, 'desktop-1440.png'), fullPage: true });
@@ -59,19 +59,15 @@ test('generate design verification artifacts for responsive picture implementati
         'tab-btn-article',
         'tab-btn-podcast',
         'tab-btn-contact',
-        'podcast-player-container',
-        'podcast-episodes-section',
-        'podcast-player-section',
-        'podcast-player-card',
-        'podcast-header',
-        'podcast-cover-container',
-        'podcast-cover-img',
-        'podcast-title',
-        'audio-controls-block',
-        'play-pause-btn',
-        'time-display',
-        'waveform-container',
-        'timecodes-section',
+        'article-stream-container',
+        'longreads-list-section',
+        'article-reader-section',
+        'article-reader-root',
+        'article-header',
+        'article-cover-container',
+        'article-cover-img',
+        'article-scroll-container',
+        'article-telemetry-log',
         'main-footer'
       ];
 
@@ -102,7 +98,7 @@ test('generate design verification artifacts for responsive picture implementati
     await mobilePage.goto('http://localhost:4173');
     await mobilePage.waitForSelector('#app-root');
 
-    await mobilePage.click('#tab-btn-podcast');
+    await mobilePage.click('#tab-btn-article');
     await mobilePage.waitForTimeout(300);
 
     await mobilePage.screenshot({ path: path.join(targetDir, 'mobile-375.png'), fullPage: true });

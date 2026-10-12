@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { parseMarkdown } from './markdown';
 import ArticleStreamView from '../components/ArticleStreamView.svelte';
+import EssayReader from '../components/EssayReader.svelte';
 import { mount, unmount } from 'svelte';
 
 describe('Markdown & Formula Parser (parseMarkdown)', () => {
@@ -83,6 +84,71 @@ const status = "VERIFIED";
   });
 });
 
+describe('EssayReader Component', () => {
+  let target: HTMLElement;
+  let component: any;
+
+  beforeEach(() => {
+    target = document.createElement('div');
+    document.body.appendChild(target);
+    return () => {
+      if (component) {
+        unmount(component);
+      }
+      document.body.removeChild(target);
+    };
+  });
+
+  it('renders published essay data with grotesque headers and optimized reading typography', () => {
+    const mockArticle = {
+      id: 'essay-01',
+      title: 'Deontic Modal Invariants',
+      contentMarkdown: '# Grotesque Main Header\n\nOptimized body paragraph for distraction-free reading.'
+    };
+
+    component = mount(EssayReader, {
+      target,
+      props: { article: mockArticle }
+    });
+
+    const h1 = target.querySelector('h1');
+    expect(h1).not.toBeNull();
+    expect(h1?.classList.contains('font-sans')).toBe(true);
+    expect(h1?.classList.contains('font-extrabold')).toBe(true);
+    expect(h1?.textContent).toContain('Deontic Modal Invariants');
+
+    const contentArea = target.querySelector('#article-scroll-container');
+    expect(contentArea).not.toBeNull();
+    expect(contentArea?.classList.contains('font-serif')).toBe(true);
+    expect(contentArea?.textContent).toContain('Optimized body paragraph for distraction-free reading.');
+  });
+
+  it('displays a stylized error state [FETCH_ERROR] on essay fetch failure and allows returning to index', async () => {
+    const onReturnToIndex = vi.fn();
+
+    component = mount(EssayReader, {
+      target,
+      props: {
+        fetchError: 'Failed to load essay from backend server (Status: 500)',
+        onReturnToIndex
+      }
+    });
+
+    expect(target.querySelector('#essay-reader-error')).not.toBeNull();
+    expect(target.textContent).toContain('[FETCH_ERROR]');
+    expect(target.textContent).toContain('Failed to load essay from backend server (Status: 500)');
+
+    const returnBtn = target.querySelector('#return-to-index-btn') as HTMLButtonElement;
+    expect(returnBtn).not.toBeNull();
+    expect(returnBtn.textContent).toContain('Return to Index');
+
+    returnBtn.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(onReturnToIndex).toHaveBeenCalledOnce();
+  });
+});
+
 describe('ArticleStreamView Component', () => {
   let target: HTMLElement;
   let component: any;
@@ -113,7 +179,7 @@ describe('ArticleStreamView Component', () => {
 
     const h1 = target.querySelector('#article-header h1');
     expect(h1).not.toBeNull();
-    expect(h1?.textContent).toBe('Deontic Logic in Autonomous Process Architecture');
+    expect(h1?.textContent).toContain('Deontic Logic in Autonomous Process Architecture');
 
     const articleContainer = target.querySelector('#article-scroll-container');
     expect(articleContainer).not.toBeNull();
@@ -146,5 +212,25 @@ describe('ArticleStreamView Component', () => {
 
     expect(target.textContent).toContain('AVAILABLE_LONGREADS (1)');
     expect(target.textContent).toContain('Theory of Constraints in Distributed Pipeline Throughput');
+  });
+
+  it('renders error state and handles returning to index when fetchError is present in ArticleStreamView', async () => {
+    component = mount(ArticleStreamView, {
+      target,
+      props: {
+        fetchError: 'Network error fetching essay'
+      }
+    });
+
+    expect(target.textContent).toContain('[FETCH_ERROR]');
+
+    const returnBtn = target.querySelector('#return-to-index-btn') as HTMLButtonElement;
+    expect(returnBtn).not.toBeNull();
+
+    returnBtn.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(target.textContent).not.toContain('[FETCH_ERROR]');
+    expect(target.textContent).toContain('Deontic Logic in Autonomous Process Architecture');
   });
 });
