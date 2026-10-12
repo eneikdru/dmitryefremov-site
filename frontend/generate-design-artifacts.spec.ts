@@ -4,10 +4,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 test('generate design verification artifacts and image performance audit for responsive picture implementation', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-c4dfc4a4-4d71-4c51-a883-8dcf56ef4518');
-  const generalTargetDir = path.resolve('../.eneik/records/design-check');
+  const targetDir = path.resolve('../.eneik/records/design-check-e8fb8693-a0db-4d73-aa93-f0060c069c38');
   fs.mkdirSync(targetDir, { recursive: true });
-  fs.mkdirSync(generalTargetDir, { recursive: true });
 
   // Build frontend first
   const buildProcess = spawn('npx', ['vite', 'build'], {
@@ -46,7 +44,6 @@ test('generate design verification artifacts and image performance audit for res
 
     const desktopScreenshotPath = path.join(targetDir, 'desktop-1440.png');
     await desktopPage.screenshot({ path: desktopScreenshotPath, fullPage: true });
-    fs.copyFileSync(desktopScreenshotPath, path.join(generalTargetDir, 'desktop-1440.png'));
 
     // Extract layout geometry bounding boxes
     const layoutBoundingBoxes = await desktopPage.evaluate(() => {
@@ -71,6 +68,10 @@ test('generate design verification artifacts and image performance audit for res
         'podcast-cover-container',
         'podcast-cover-img',
         'podcast-title',
+        'external-podcast-links',
+        'link-youtube',
+        'link-telegram',
+        'link-rss',
         'audio-controls-block',
         'play-pause-btn',
         'time-display',
@@ -95,7 +96,6 @@ test('generate design verification artifacts and image performance audit for res
 
     const layoutCheckPath = path.join(targetDir, 'layout-check.json');
     fs.writeFileSync(layoutCheckPath, JSON.stringify(layoutBoundingBoxes, null, 2));
-    fs.copyFileSync(layoutCheckPath, path.join(generalTargetDir, 'layout-check.json'));
 
     // Desktop Image Audit (CLS, LCP, image loading verification)
     const desktopAudit = await desktopPage.evaluate(() => {
@@ -143,7 +143,6 @@ test('generate design verification artifacts and image performance audit for res
 
     const mobileScreenshotPath = path.join(targetDir, 'mobile-375.png');
     await mobilePage.screenshot({ path: mobileScreenshotPath, fullPage: true });
-    fs.copyFileSync(mobileScreenshotPath, path.join(generalTargetDir, 'mobile-375.png'));
 
     // Mobile Image Sizing Audit
     const mobileAudit = await mobilePage.evaluate(() => {
