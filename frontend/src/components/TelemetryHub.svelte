@@ -2,12 +2,14 @@
   import ArticleStreamView from './ArticleStreamView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
+  import GqmTelemetryView from './GqmTelemetryView.svelte';
   import IntakeDossierView from './IntakeDossierView.svelte';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import ConsentManager from './ConsentManager.svelte';
+  import SeoMeta from './SeoMeta.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
-  export let activeTab: 'article' | 'contact' | 'podcast' | 'intake' = 'article';
+  export let activeTab: 'article' | 'contact' | 'podcast' | 'intake' | 'gqm' = 'article';
   export let showImprintModal: boolean = false;
   export let isCmpModalOpen: boolean = false;
 
@@ -23,6 +25,15 @@
     isCmpModalOpen = !isCmpModalOpen;
   }
 </script>
+
+{#if activeTab !== 'article'}
+  <SeoMeta
+    title="Dmitry Efremov - Telemetry & Autonomous Architecture Terminal"
+    description="Evergreen manifestos, ONTOLOGY, and media stream for autonomous software systems."
+    type="website"
+    url="https://dmitryefremov.com"
+  />
+{/if}
 
 <div id="theme-root" class={theme === 'dark' ? 'dark-void bg-[#090a0f] text-[#e2e8f0]' : 'light-monochrome bg-[#f8fafc] text-[#0f172a]'}>
   <main id="app-root" class="min-h-screen p-4 sm:p-8 flex flex-col justify-between max-w-5xl mx-auto space-y-8 font-sans transition-colors duration-200">
@@ -108,6 +119,14 @@
           >
             [CONTACT_TERMINAL]
           </button>
+          <button
+            id="tab-btn-gqm"
+            type="button"
+            class="px-4 py-2 rounded transition-colors {activeTab === 'gqm' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-white text-[#0f172a] font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+            on:click={() => (activeTab = 'gqm')}
+          >
+            [GQM_TELEMETRY]
+          </button>
         </nav>
       </header>
 
@@ -119,6 +138,8 @@
           <ArticleStreamView />
         {:else if activeTab === 'podcast'}
           <PodcastPlayerView />
+        {:else if activeTab === 'gqm'}
+          <GqmTelemetryView />
         {:else}
           <TelemetryContactTerminalView />
         {/if}

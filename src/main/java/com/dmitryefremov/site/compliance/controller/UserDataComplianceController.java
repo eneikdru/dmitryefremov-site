@@ -30,14 +30,20 @@ public class UserDataComplianceController {
     }
 
     @GetMapping({"/api/v1/compliance/export", "/api/v1/user-data/export"})
-    public ResponseEntity<UserDataExportDto> exportUserData(@RequestParam("userId") String userId) {
-        UserDataExportDto exportData = complianceService.exportUserData(userId);
+    public ResponseEntity<UserDataExportDto> exportUserData(
+            @RequestParam(value = "userId", required = false) String userId,
+            @RequestParam(value = "email", required = false) String email) {
+        String identifier = (email != null && !email.isBlank()) ? email : userId;
+        UserDataExportDto exportData = complianceService.exportUserData(identifier);
         return ResponseEntity.ok(exportData);
     }
 
     @DeleteMapping({"/api/v1/compliance/erasure", "/api/v1/user-data"})
-    public ResponseEntity<ErasureResponseDto> eraseUserData(@RequestParam("userId") String userId) {
-        ErasureResponseDto result = complianceService.eraseUserData(userId);
+    public ResponseEntity<ErasureResponseDto> eraseUserData(
+            @RequestParam(value = "userId", required = false) String userId,
+            @RequestParam(value = "email", required = false) String email) {
+        String identifier = (email != null && !email.isBlank()) ? email : userId;
+        ErasureResponseDto result = complianceService.eraseUserData(identifier);
         return ResponseEntity.ok(result);
     }
 
