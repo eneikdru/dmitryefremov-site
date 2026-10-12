@@ -51,7 +51,7 @@ public class BackupRestoreIntegrationTest {
 
         // Write a fake restore cmd to simulate db restoration that works on mock data
         File restoreCmd = new File("target/fake-pg-restore.sh");
-        Files.writeString(restoreCmd.toPath(), "#!/bin/bash\ncat \"$1\" | grep 'publication_schedule' > /dev/null\nexit 0");
+        Files.writeString(restoreCmd.toPath(), "#!/bin/bash\ngrep 'publication_schedule' \"$1\" > /dev/null\nexit 0");
         restoreCmd.setExecutable(true);
 
         // 2. Run restore script
