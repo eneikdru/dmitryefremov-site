@@ -91,29 +91,8 @@ class ArticleApiIntegrationTest {
     }
 
     @Test
-    void testGetEssayBySlugReturnsAccurateStoredEssayContent() throws Exception {
-        mockMvc.perform(get("/api/v1/essays/integration-test-deontic-logic")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.slug", is("integration-test-deontic-logic")))
-                .andExpect(jsonPath("$.title", is("Deontic Logic in Autonomous Process Architecture")))
-                .andExpect(jsonPath("$.summary", is("Exploring normative modal logic as a foundational model.")))
-                .andExpect(jsonPath("$.content", is("# Deontic Logic\n\n$$\\mathcal{O}(\\varphi) \\iff \\neg \\mathcal{P}(\\neg \\varphi)$$\n\n> Quote")));
-    }
-
-    @Test
     void testGetArticleBySlugNotFound() throws Exception {
         mockMvc.perform(get("/api/v1/articles/unknown-slug")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", is(404)))
-                .andExpect(jsonPath("$.message", is("Article with slug 'unknown-slug' was not found")));
-    }
-
-    @Test
-    void testGetEssayBySlugNotFound() throws Exception {
-        mockMvc.perform(get("/api/v1/essays/unknown-slug")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", is(404)))
