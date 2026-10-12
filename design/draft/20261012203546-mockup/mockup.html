@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Review · Media Hub Player</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&amp;family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ffb4ab",
+            "on-surface-variant": "#dec0b7",
+            "inverse-primary": "#a23f1a",
+            "primary": "#ffb59c",
+            "on-background": "#e2e2e8",
+            "on-error-container": "#ffdad6",
+            "on-primary-fixed": "#390c00",
+            "surface": "#111317",
+            "on-secondary-fixed": "#2c1600",
+            "surface-dim": "#111317",
+            "primary-fixed-dim": "#ffb59c",
+            "outline": "#a58b83",
+            "on-tertiary-container": "#1d2b38",
+            "on-surface": "#e2e2e8",
+            "on-secondary-container": "#e1af7e",
+            "tertiary-container": "#8492a2",
+            "error-container": "#93000a",
+            "secondary-container": "#65411a",
+            "surface-container-low": "#1a1c20",
+            "secondary-fixed": "#ffdcbd",
+            "inverse-on-surface": "#2f3035",
+            "primary-container": "#e36f46",
+            "on-tertiary-fixed": "#0f1d29",
+            "on-primary-container": "#511500",
+            "on-error": "#690005",
+            "on-tertiary": "#24323f",
+            "on-primary-fixed-variant": "#812803",
+            "surface-bright": "#37393e",
+            "inverse-surface": "#e2e2e8",
+            "surface-container-lowest": "#0c0e12",
+            "surface-variant": "#333539",
+            "secondary": "#f0bd8b",
+            "surface-container": "#1e2024",
+            "tertiary-fixed-dim": "#bac8d9",
+            "on-secondary-fixed-variant": "#623f18",
+            "surface-container-highest": "#333539",
+            "on-tertiary-fixed-variant": "#3a4856",
+            "tertiary": "#bac8d9",
+            "surface-container-high": "#282a2e",
+            "outline-variant": "#57423b",
+            "tertiary-fixed": "#d6e4f5",
+            "on-primary": "#5c1900",
+            "background": "#111317",
+            "secondary-fixed-dim": "#f0bd8b",
+            "on-secondary": "#482904",
+            "primary-fixed": "#ffdbcf",
+            "surface-tint": "#ffb59c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "margin": "1.25rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2.5rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "display-hero-mobile": ["Newsreader", "serif"],
+            "headline-lg": ["Newsreader", "serif"],
+            "label-md": ["Hanken Grotesk", "sans-serif"],
+            "display-hero": ["Newsreader", "serif"],
+            "body-lg": ["Hanken Grotesk", "sans-serif"],
+            "headline-md": ["Newsreader", "serif"],
+            "mono-timestamp": ["Hanken Grotesk", "monospace"],
+            "body-sm": ["Hanken Grotesk", "sans-serif"],
+            "headline-lg-mobile": ["Newsreader", "serif"],
+            "label-caps": ["Hanken Grotesk", "sans-serif"],
+            "quote-editorial": ["Newsreader", "serif"],
+            "headline-sm": ["Hanken Grotesk", "sans-serif"],
+            "body-md": ["Hanken Grotesk", "sans-serif"]
+          },
+          "fontSize": {
+            "display-hero-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "400" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "display-hero": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "500" }],
+            "mono-timestamp": ["12px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "quote-editorial": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Frequency visualizer equalizer animation */
+    @keyframes barPulse {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+    .eq-bar-1 { animation: barPulse 0.9s ease-in-out infinite; }
+    .eq-bar-2 { animation: barPulse 0.7s ease-in-out infinite 0.2s; }
+    .eq-bar-3 { animation: barPulse 1.1s ease-in-out infinite 0.4s; }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface antialiased min-h-screen pb-44 selection:bg-primary-container selection:text-on-primary-container">
+<!-- ========================================================================= -->
+<!-- TOP APP BAR (Shared Component Anchor) -->
+<!-- ========================================================================= -->
+<header class="fixed top-0 left-0 w-full z-40 flex items-center justify-between px-margin h-14 bg-surface border-b border-outline-variant">
+<div class="flex items-center space-x-3">
+<button class="p-2 -ml-2 text-on-surface-variant hover:text-primary active:opacity-80 transition-opacity duration-150 flex items-center justify-center rounded">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface tracking-tight">The Review</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant tracking-wider uppercase text-[10px]">Audio Essays</span>
+</div>
+</div>
+<div class="flex items-center space-x-1">
+<button class="p-2 text-on-surface-variant hover:text-primary active:opacity-80 transition-opacity rounded flex items-center">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary active:opacity-80 transition-opacity rounded flex items-center">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+</button>
+</div>
+</header>
+<!-- Sub-Header Metabar / Issue Tag -->
+<div class="pt-16 pb-2 px-margin border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container animate-ping"></span>
+<span class="font-label-caps text-label-caps text-secondary font-bold">ISSUE 48 · THE ALGORITHMIC SUBLIME</span>
+</div>
+<div class="flex items-center space-x-3 text-on-surface-variant">
+<span class="font-mono-timestamp text-mono-timestamp bg-surface-container px-2 py-0.5 rounded border border-outline-variant text-on-surface">1.2x</span>
+<span class="material-symbols-outlined text-[18px] hover:text-primary cursor-pointer" data-icon="airplay">airplay</span>
+<span class="material-symbols-outlined text-[18px] hover:text-primary cursor-pointer" data-icon="notes">notes</span>
+</div>
+</div>
+<!-- MAIN CANVAS -->
+<main class="px-margin pt-5 max-w-2xl mx-auto space-y-6">
+<!-- ========================================================================= -->
+<!-- UNIFIED MEDIA PLAYER HUB (Hero Player Card) -->
+<!-- ========================================================================= -->
+<section class="bg-surface-container-low border border-outline-variant rounded-xl p-5 relative overflow-hidden shadow-2xl">
+<!-- Ambient Glow Behind Controls -->
+<div class="absolute -top-16 -right-16 w-48 h-48 bg-primary-container/10 blur-3xl pointer-events-none rounded-full"></div>
+<!-- Episode Header & Metadata -->
+<div class="relative z-10 space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Monograph Lecture</span>
+<span class="font-mono-timestamp text-mono-timestamp text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">42 Min Audio Essay</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-serif leading-snug">
+          The Velocity of Thought: Why Synthetic Media Reshapes Cognitive Depth
+        </h1>
+<div class="pt-1 flex items-center space-x-2 text-on-surface-variant">
+<div class="w-6 h-6 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center text-[10px] font-bold text-secondary">EV</div>
+<p class="font-body-sm text-body-sm">
+            Written by <span class="text-on-surface font-medium">Elena Vance</span> · Read by <span class="text-on-surface font-medium">Marcus Sterling</span>
+</p>
+</div>
+</div>
+<!-- Waveform Visualizer Display -->
+<div class="mt-6 pt-2 pb-1 bg-surface-container-lowest/80 rounded-lg p-3 border border-outline-variant/60">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-label-md text-label-md text-on-surface font-medium">Chapter 3: The Atrophy of Friction</span>
+</div>
+<span class="font-mono-timestamp text-mono-timestamp text-primary font-bold">14:32</span>
+</div>
+<!-- Waveform Simulation Bars -->
+<div class="h-12 flex items-end justify-between gap-[2px] py-1">
+<!-- Played Bars (Primary Terracotta / Ember) -->
+<div class="w-[3px] bg-primary-container rounded-t h-4"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-7"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-9"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-5"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-8"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-11"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-6"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-10"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-12"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-8"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-6"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-10"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-7"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-11"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-9"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-4"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-8"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-12"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-10"></div>
+<div class="w-[3px] bg-primary-container rounded-t h-7"></div>
+<!-- Scrubber Needle Marker -->
+<div class="w-[4px] bg-primary h-12 rounded ring-2 ring-primary-container/30"></div>
+<!-- Remaining Bars (Recessed Outline Tint) -->
+<div class="w-[3px] bg-surface-container-high rounded-t h-9"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-6"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-11"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-8"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-5"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-10"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-12"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-7"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-6"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-9"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-5"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-8"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-11"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-6"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-4"></div>
+<div class="w-[3px] bg-surface-container-high rounded-t h-7"></div>
+</div>
+<!-- Scrubber Track & Precise Timestamps -->
+<div class="relative w-full mt-2">
+<div class="h-1 bg-surface-container w-full rounded">
+<div class="h-1 bg-primary-container w-[35%] rounded relative">
+<span class="absolute right-0 -top-1.5 w-3.5 h-3.5 bg-surface-container-lowest border-2 border-primary-container rounded-full"></span>
+</div>
+</div>
+<div class="flex justify-between items-center mt-2 font-mono-timestamp text-[11px] text-on-surface-variant">
+<span>14:32</span>
+<span class="text-outline">Remaining: 27:43</span>
+<span>42:15</span>
+</div>
+</div>
+</div>
+<!-- Tactile Playback Controls -->
+<div class="mt-6 flex items-center justify-around">
+<button class="text-on-surface-variant hover:text-on-surface transition active:scale-95 p-2 rounded" title="Previous Chapter">
+<span class="material-symbols-outlined text-2xl" data-icon="skip_previous">skip_previous</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition active:scale-95 p-2 rounded flex flex-col items-center" title="Rewind 15s">
+<span class="material-symbols-outlined text-2xl" data-icon="replay_10">replay_10</span>
+<span class="text-[9px] font-mono-timestamp -mt-1">15s</span>
+</button>
+<!-- Main Play/Pause Button with Terracotta Glow -->
+<button class="w-14 h-14 rounded-full bg-primary-container hover:bg-primary text-on-primary-container flex items-center justify-center shadow-lg shadow-primary-container/20 transition-transform active:scale-95 border border-primary/40 ring-4 ring-primary-container/20">
+<span class="material-symbols-outlined text-3xl material-symbols-fill" data-icon="pause">pause</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition active:scale-95 p-2 rounded flex flex-col items-center" title="Forward 30s">
+<span class="material-symbols-outlined text-2xl" data-icon="forward_30">forward_30</span>
+<span class="text-[9px] font-mono-timestamp -mt-1">30s</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition active:scale-95 p-2 rounded" title="Next Chapter">
+<span class="material-symbols-outlined text-2xl" data-icon="skip_next">skip_next</span>
+</button>
+</div>
+<!-- Quick Action Pills Row -->
+<div class="mt-6 pt-4 border-t border-outline-variant/60 flex items-center space-x-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="flex items-center space-x-1.5 px-3 py-1.5 bg-surface-container border border-primary-container/40 rounded text-primary font-label-md text-label-md whitespace-nowrap active:opacity-80">
+<span class="material-symbols-outlined text-sm" data-icon="sync">sync</span>
+<span>Sync Reading Mode</span>
+</button>
+<button class="flex items-center space-x-1 px-2.5 py-1.5 bg-surface-container border border-outline-variant rounded text-on-surface font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm" data-icon="speed">speed</span>
+<span>Speed 1.2x</span>
+</button>
+<button class="flex items-center space-x-1 px-2.5 py-1.5 bg-surface-container border border-outline-variant rounded text-on-surface font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+<span>Sleep 30m</span>
+</button>
+<button class="flex items-center space-x-1 px-2.5 py-1.5 bg-surface-container border border-outline-variant rounded text-on-surface font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm" data-icon="graphic_eq">graphic_eq</span>
+<span>Enhance Dialogue</span>
+</button>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- SEGMENTED NAVIGATION TABS -->
+<!-- ========================================================================= -->
+<section>
+<div class="flex items-center space-x-2 overflow-x-auto pb-1 border-b border-outline-variant no-scrollbar">
+<!-- Active Tab: Core Theses -->
+<button class="flex items-center space-x-1.5 pb-2.5 border-b-2 border-primary-container text-primary font-label-md text-label-md whitespace-nowrap font-semibold px-1">
+<span class="material-symbols-outlined text-base" data-icon="lightbulb">lightbulb</span>
+<span>Core Theses (3)</span>
+</button>
+<button class="flex items-center space-x-1.5 pb-2.5 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-md text-label-md whitespace-nowrap px-2 transition">
+<span class="material-symbols-outlined text-base" data-icon="list">list</span>
+<span>Timestamps &amp; Chapters (6)</span>
+</button>
+<button class="flex items-center space-x-1.5 pb-2.5 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-md text-label-md whitespace-nowrap px-2 transition">
+<span class="material-symbols-outlined text-base" data-icon="subject">subject</span>
+<span>Full Transcript</span>
+</button>
+<button class="flex items-center space-x-1.5 pb-2.5 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-md text-label-md whitespace-nowrap px-2 transition">
+<span class="material-symbols-outlined text-base" data-icon="auto_stories">auto_stories</span>
+<span>Cited Works</span>
+</button>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- CORE THESES HIGH-IMPACT SECTION -->
+<!-- ========================================================================= -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center space-x-2">
+<span>Key Critical Theses</span>
+</h2>
+<span class="font-label-caps text-label-caps text-secondary uppercase">Click to Listen</span>
+</div>
+<!-- Thesis 1: Active Playing -->
+<article class="bg-surface-container-low border border-primary-container/80 rounded-lg p-4 relative overflow-hidden shadow-lg ring-1 ring-primary-container/20">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-container"></div>
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="font-label-caps text-label-caps text-secondary uppercase">CENTRAL THESIS</span>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-label-caps font-bold bg-primary-container text-on-primary-container animate-pulse">
+              NOW PLAYING
+            </span>
+</div>
+<span class="font-mono-timestamp text-mono-timestamp text-primary font-bold bg-surface-container px-2 py-0.5 rounded border border-outline-variant">
+            [12:45]
+          </span>
+</div>
+<blockquote class="mt-3 font-quote-editorial text-quote-editorial text-on-surface leading-snug">
+          “Frictionless consumption suppresses associative memory formation.”
+        </blockquote>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant">
+          When generative summarizers eliminate the cognitive labour of parsing, neural retention rates plummet by 37% across repeated trials.
+        </p>
+<div class="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<div class="flex items-center space-x-1 h-3">
+<span class="w-[2px] bg-primary eq-bar-1"></span>
+<span class="w-[2px] bg-primary eq-bar-2"></span>
+<span class="w-[2px] bg-primary eq-bar-3"></span>
+</div>
+<span class="font-body-sm text-body-sm text-primary font-medium">Currently sounding at 14:32</span>
+</div>
+<button class="flex items-center space-x-1 text-primary hover:text-on-surface font-label-md text-label-md active:scale-95 transition">
+<span class="material-symbols-outlined text-base material-symbols-fill" data-icon="play_circle">play_circle</span>
+<span>Seek 12:45</span>
+</button>
+</div>
+</article>
+<!-- Thesis 2 -->
+<article class="bg-surface-container-low border border-outline-variant rounded-lg p-4 relative pl-5 hover:border-outline transition">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<div class="flex items-start justify-between">
+<span class="font-label-caps text-label-caps text-secondary uppercase">CORE PREMISE II</span>
+<div class="flex items-center space-x-2">
+<button class="text-on-surface-variant hover:text-primary transition p-1" title="Bookmark thesis">
+<span class="material-symbols-outlined text-base" data-icon="bookmark_add">bookmark_add</span>
+</button>
+<span class="font-mono-timestamp text-mono-timestamp text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+              [24:10]
+            </span>
+</div>
+</div>
+<blockquote class="mt-3 font-quote-editorial text-quote-editorial text-on-surface leading-snug">
+          “Synthetic fluency creates an illusion of cognitive mastery without conceptual scaffolding.”
+        </blockquote>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant">
+          Polished syntax is mistaken for verified truth, leaving the reader disarmed against structural logical omissions.
+        </p>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-outline">Part III: Epistemic Debt</span>
+<button class="flex items-center space-x-1 text-on-surface hover:text-primary font-label-md text-label-md active:scale-95 transition">
+<span class="material-symbols-outlined text-base" data-icon="play_arrow">play_arrow</span>
+<span>Jump to audio</span>
+</button>
+</div>
+</article>
+<!-- Thesis 3 -->
+<article class="bg-surface-container-low border border-outline-variant rounded-lg p-4 relative pl-5 hover:border-outline transition">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-outline"></div>
+<div class="flex items-start justify-between">
+<span class="font-label-caps text-label-caps text-secondary uppercase">SYNTHESIS CONCLUSION</span>
+<div class="flex items-center space-x-2">
+<button class="text-on-surface-variant hover:text-primary transition p-1" title="Bookmark thesis">
+<span class="material-symbols-outlined text-base" data-icon="bookmark_add">bookmark_add</span>
+</button>
+<span class="font-mono-timestamp text-mono-timestamp text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+              [35:50]
+            </span>
+</div>
+</div>
+<blockquote class="mt-3 font-quote-editorial text-quote-editorial text-on-surface leading-snug">
+          “Slow retrieval is not latency; it is the biological mechanism of original synthesis.”
+        </blockquote>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant">
+          Delay produces combinatorial collisions that real-time predictive feeds intentionally suppress for speed.
+        </p>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-outline">Conclusion: Deliberation</span>
+<button class="flex items-center space-x-1 text-on-surface hover:text-primary font-label-md text-label-md active:scale-95 transition">
+<span class="material-symbols-outlined text-base" data-icon="play_arrow">play_arrow</span>
+<span>Jump to audio</span>
+</button>
+</div>
+</article>
+</section>
+<!-- ========================================================================= -->
+<!-- SYNCHRONIZED TIMESTAMPS & CHAPTERS STREAM -->
+<!-- ========================================================================= -->
+<section class="space-y-3 pt-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Synchronized Chapters</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">5 Chapters · 42:15 Total</span>
+</div>
+<div class="divide-y divide-outline-variant/60 border border-outline-variant rounded-lg bg-surface-container-low overflow-hidden">
+<!-- Chapter 1 (Completed) -->
+<div class="p-3.5 flex items-center justify-between hover:bg-surface-container transition">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="check_circle">check_circle</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Introduction: The Disappearance of Cognitive Resistance</p>
+<span class="font-mono-timestamp text-mono-timestamp text-outline">00:00 – 05:20</span>
+</div>
+</div>
+<span class="font-mono-timestamp text-mono-timestamp text-on-surface-variant">5:20</span>
+</div>
+<!-- Chapter 2 (Completed) -->
+<div class="p-3.5 flex items-center justify-between hover:bg-surface-container transition">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="check_circle">check_circle</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Part I: Speed vs. Comprehension in the Generative Era</p>
+<span class="font-mono-timestamp text-mono-timestamp text-outline">05:21 – 12:44</span>
+</div>
+</div>
+<span class="font-mono-timestamp text-mono-timestamp text-on-surface-variant">7:23</span>
+</div>
+<!-- Chapter 3 (CURRENTLY PLAYING - Highlighted) -->
+<div class="p-3.5 bg-surface-container border-l-4 border-primary-container flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-7 h-7 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-base material-symbols-fill" data-icon="pause">pause</span>
+</div>
+<div>
+<div class="flex items-center space-x-2">
+<p class="font-label-md text-label-md text-primary font-bold">Part II: The Atrophy of Friction</p>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] bg-primary-container text-on-primary-container font-mono-timestamp uppercase">Active</span>
+</div>
+<span class="font-mono-timestamp text-mono-timestamp text-secondary">12:45 – 22:30 (Elapsed 1:47)</span>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<div class="flex items-center space-x-1 h-3">
+<span class="w-[2px] bg-primary eq-bar-1"></span>
+<span class="w-[2px] bg-primary eq-bar-2"></span>
+<span class="w-[2px] bg-primary eq-bar-3"></span>
+</div>
+<span class="font-mono-timestamp text-mono-timestamp text-primary font-bold">9:45</span>
+</div>
+</div>
+<!-- Chapter 4 (Upcoming) -->
+<div class="p-3.5 flex items-center justify-between hover:bg-surface-container transition opacity-75">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="schedule">schedule</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Part III: Epistemic Debt and the New Illiteracy</p>
+<span class="font-mono-timestamp text-mono-timestamp text-outline">22:31 – 33:15</span>
+</div>
+</div>
+<span class="font-mono-timestamp text-mono-timestamp text-on-surface-variant">10:44</span>
+</div>
+<!-- Chapter 5 (Upcoming) -->
+<div class="p-3.5 flex items-center justify-between hover:bg-surface-container transition opacity-75">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="schedule">schedule</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Conclusion: Designing for Deliberate Contemplation</p>
+<span class="font-mono-timestamp text-mono-timestamp text-outline">33:16 – 42:15</span>
+</div>
+</div>
+<span class="font-mono-timestamp text-mono-timestamp text-on-surface-variant">8:59</span>
+</div>
+</div>
+</section>
+<!-- Interactive Transcript Peek Card -->
+<section class="p-4 rounded-lg bg-surface-container-low border border-outline-variant space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-secondary uppercase">SYNCHRONIZED TRANSCRIPT EXCERPT</span>
+<span class="font-body-sm text-body-sm text-primary flex items-center cursor-pointer hover:underline">
+          Full Text <span class="material-symbols-outlined text-sm ml-1" data-icon="arrow_forward">arrow_forward</span>
+</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+<span class="text-on-surface">"...we do not simply read slower for the sake of endurance;</span>
+<mark class="bg-primary-container/20 text-on-surface px-1 rounded border-b border-primary">friction is the neurological tax required to convert external data</mark>
+<span class="text-outline">into internal dialectic structure. Without the resistance of the sentence..."</span>
+</p>
+</section>
+</main>
+<!-- ========================================================================= -->
+<!-- PERSISTENT MINI-PLAYER DOCKING BAR (Above Bottom Nav) -->
+<!-- ========================================================================= -->
+<aside class="fixed bottom-16 left-0 w-full z-40 bg-surface-container border-t border-outline-variant shadow-2xl">
+<!-- Slim scrubber progress bar at very top edge -->
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="h-1 bg-primary-container w-[35%]"></div>
+</div>
+<div class="flex items-center justify-between px-margin py-2.5">
+<!-- Media Info with Small Disc Badge -->
+<div class="flex items-center space-x-3 overflow-hidden pr-2">
+<div class="relative w-10 h-10 rounded bg-surface-container-high border border-outline-variant flex-shrink-0 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="graphic_eq">graphic_eq</span>
+<div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-primary-container rounded-full border border-surface"></div>
+</div>
+<div class="truncate">
+<p class="font-label-md text-label-md text-on-surface truncate font-medium">The Velocity of Thought</p>
+<div class="flex items-center space-x-1 font-mono-timestamp text-[11px] text-on-surface-variant">
+<span class="text-primary font-semibold">14:32</span>
+<span>·</span>
+<span class="truncate">Ch 3: Atrophy of Friction</span>
+</div>
+</div>
+</div>
+<!-- Quick Playback Controls in Mini-Player -->
+<div class="flex items-center space-x-1 flex-shrink-0">
+<button class="p-2 text-on-surface-variant hover:text-on-surface active:scale-95 transition" title="Rewind 15s">
+<span class="material-symbols-outlined text-xl" data-icon="replay_10">replay_10</span>
+</button>
+<button class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center hover:bg-primary active:scale-95 transition" title="Pause">
+<span class="material-symbols-outlined text-xl material-symbols-fill" data-icon="pause">pause</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface active:scale-95 transition" title="Fast Forward 30s">
+<span class="material-symbols-outlined text-xl" data-icon="forward_30">forward_30</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- BOTTOM NAVIGATION BAR (Shared Component Anchor) -->
+<!-- Context Match: Media Hub / Audio Player maps directly to "Listen" tab -->
+<!-- ========================================================================= -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter h-16 bg-surface-container-low border-t border-outline-variant pb-safe">
+<!-- Item 1: Journal (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-on-surface active:scale-95 transition-transform duration-150" href="#journal">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps mt-0.5">Journal</span>
+</a>
+<!-- Item 2: Listen (ACTIVE DESTINATION) -->
+<a class="flex flex-col items-center justify-center text-primary py-1 hover:text-on-surface active:scale-95 transition-transform duration-150 font-medium" href="#listen">
+<span class="material-symbols-outlined material-symbols-fill" data-icon="graphic_eq">graphic_eq</span>
+<span class="font-label-caps text-label-caps mt-0.5">Listen</span>
+</a>
+<!-- Item 3: Archive (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-on-surface active:scale-95 transition-transform duration-150" href="#archive">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-label-caps text-label-caps mt-0.5">Archive</span>
+</a>
+<!-- Item 4: Saved (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-on-surface active:scale-95 transition-transform duration-150" href="#saved">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+<span class="font-label-caps text-label-caps mt-0.5">Saved</span>
+</a>
+</nav>
+</body></html>
