@@ -1,0 +1,40 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "The PR uses a non-injectable OffsetDateTime.now() in AgentInteractionController.handleIllegalArgument, violating the requirement that any current-time value must be injectable/seedable.",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "block",
+      "criticalReason": "The PR uses a non-injectable OffsetDateTime.now() in UserDataComplianceController's handleIllegalArgument and in domain entities (DirectMessage and ServiceOrder) via @PrePersist, violating the requirement that any current-time value must be injectable/seedable.",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 2,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 3,
+      "verdict": "block",
+      "criticalReason": "The PR uses a non-injectable OffsetDateTime.now() in AiDirectMessage and AiServiceOrder domain entities, violating the requirement that any current-time value must be injectable/seedable.",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 4,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 5,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    }
+  ]
+}
