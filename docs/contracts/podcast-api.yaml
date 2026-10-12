@@ -158,6 +158,35 @@ components:
           nullable: true
           description: External video/audio platform link (e.g. YouTube, Spotify)
           example: "https://youtube.com/watch?v=example"
+        youtubeUrl:
+          type: string
+          format: uri
+          nullable: true
+          description: External YouTube platform link for the episode
+          example: "https://youtube.com/watch?v=example"
+        telegramUrl:
+          type: string
+          format: uri
+          nullable: true
+          description: External Telegram channel or post link for the episode
+          example: "https://t.me/efremov_mvp/123"
+        spotifyUrl:
+          type: string
+          format: uri
+          nullable: true
+          description: External Spotify platform link for the episode
+          example: "https://open.spotify.com/episode/example"
+        applePodcastsUrl:
+          type: string
+          format: uri
+          nullable: true
+          description: External Apple Podcasts platform link for the episode
+          example: "https://podcasts.apple.com/podcast/id123456789"
+        platforms:
+          type: string
+          nullable: true
+          description: Comma-separated or string list of available external distribution platforms
+          example: "YouTube, Telegram, Spotify, Apple Podcasts"
         durationSeconds:
           type: integer
           nullable: true
