@@ -35,6 +35,10 @@ public class UserDataComplianceService {
         this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
+    public Clock getClock() {
+        return clock;
+    }
+
     @Transactional(readOnly = true)
     public UserDataExportDto exportUserData(String userId) {
         validateUserId(userId);

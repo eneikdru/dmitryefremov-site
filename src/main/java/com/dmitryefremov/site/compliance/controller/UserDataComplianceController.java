@@ -3,20 +3,30 @@ package com.dmitryefremov.site.compliance.controller;
 import com.dmitryefremov.site.compliance.dto.*;
 import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
 import com.dmitryefremov.site.podcast.dto.ErrorResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Clock;
 import java.time.OffsetDateTime;
 
 @RestController("siteUserDataComplianceController")
 public class UserDataComplianceController {
 
     private final UserDataComplianceService complianceService;
+    private final Clock clock;
 
-    public UserDataComplianceController(@Qualifier("siteUserDataComplianceService") UserDataComplianceService complianceService) {
+    @Autowired
+    public UserDataComplianceController(@Qualifier("siteUserDataComplianceService") UserDataComplianceService complianceService,
+                                        @Autowired(required = false) Clock clock) {
         this.complianceService = complianceService;
+        this.clock = clock != null ? clock : (complianceService != null ? complianceService.getClock() : Clock.systemUTC());
+    }
+
+    public UserDataComplianceController(UserDataComplianceService complianceService) {
+        this(complianceService, null);
     }
 
     @GetMapping({"/api/v1/compliance/export", "/api/v1/user-data/export"})
@@ -55,7 +65,7 @@ public class UserDataComplianceController {
         ErrorResponseDto error = new ErrorResponseDto(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                OffsetDateTime.now()
+                OffsetDateTime.now(clock)
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
