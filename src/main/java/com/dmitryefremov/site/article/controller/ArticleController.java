@@ -3,11 +3,13 @@ package com.dmitryefremov.site.article.controller;
 import com.dmitryefremov.site.article.dto.ArticlePageDto;
 import com.dmitryefremov.site.article.service.ArticleService;
 import com.dmitryefremov.site.podcast.dto.ErrorResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Clock;
 import java.time.OffsetDateTime;
 
 @RestController("siteArticleController")
@@ -15,9 +17,17 @@ import java.time.OffsetDateTime;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final Clock clock;
 
-    public ArticleController(@Qualifier("siteArticleService") ArticleService articleService) {
+    @Autowired
+    public ArticleController(@Qualifier("siteArticleService") ArticleService articleService,
+                             @Autowired(required = false) Clock clock) {
         this.articleService = articleService;
+        this.clock = clock != null ? clock : Clock.systemUTC();
+    }
+
+    public ArticleController(ArticleService articleService) {
+        this(articleService, null);
     }
 
     @GetMapping
@@ -36,7 +46,7 @@ public class ArticleController {
                     ErrorResponseDto error = new ErrorResponseDto(
                             HttpStatus.NOT_FOUND.value(),
                             "Article with slug '" + slug + "' was not found",
-                            OffsetDateTime.now()
+                            OffsetDateTime.now(clock)
                     );
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
                 });
@@ -47,7 +57,7 @@ public class ArticleController {
         ErrorResponseDto error = new ErrorResponseDto(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                OffsetDateTime.now()
+                OffsetDateTime.now(clock)
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }

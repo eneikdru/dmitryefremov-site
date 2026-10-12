@@ -102,7 +102,8 @@ class ArticleControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", is(404)))
-                .andExpect(jsonPath("$.message", is("Article with slug 'non-existent-article' was not found")));
+                .andExpect(jsonPath("$.message", is("Article with slug 'non-existent-article' was not found")))
+                .andExpect(jsonPath("$.timestamp").exists());
     }
 
     @Test
