@@ -6,46 +6,42 @@
   export let isOpen: boolean = false;
 
   let currentStatus: ConsentStatus = null;
-  let analyticsEnabled: boolean = false;
-  let functionalEnabled: boolean = false;
-  let showDetails: boolean = false;
+  let analyticsAllowed: boolean = true;
+  let functionalAllowed: boolean = true;
+  let advertisingAllowed: boolean = false;
 
   const unsubscribe = consentStore.subscribe((value) => {
     currentStatus = value;
-    if (value === 'accepted') {
-      analyticsEnabled = true;
-      functionalEnabled = true;
-    } else if (value === 'declined') {
-      analyticsEnabled = false;
-      functionalEnabled = false;
-    }
   });
 
   onMount(() => {
+    function handleKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && showBannerOrModal && currentStatus !== null) {
+        handleClose();
+      }
+    }
+    window.addEventListener('keydown', handleKeydown);
     return () => {
       unsubscribe();
+      window.removeEventListener('keydown', handleKeydown);
     };
   });
 
   // Show banner if status is null (new visitor) or if isOpen is true (reopened via persistent link)
   $: showBannerOrModal = isOpen || currentStatus === null;
 
-  function handleAcceptAll() {
-    analyticsEnabled = true;
-    functionalEnabled = true;
+  function handleAccept() {
     setConsentStatus('accepted');
     isOpen = false;
   }
 
-  function handleDeclineAll() {
-    analyticsEnabled = false;
-    functionalEnabled = false;
+  function handleDecline() {
     setConsentStatus('declined');
     isOpen = false;
   }
 
   function handleSavePreferences() {
-    if (analyticsEnabled) {
+    if (analyticsAllowed) {
       setConsentStatus('accepted');
     } else {
       setConsentStatus('declined');
@@ -55,10 +51,6 @@
 
   function handleClose() {
     isOpen = false;
-  }
-
-  function toggleDetails() {
-    showDetails = !showDetails;
   }
 </script>
 
@@ -73,19 +65,16 @@
   >
     <div
       id="cmp-container"
-      class="rounded-xl border shadow-2xl p-5 font-mono text-xs space-y-4 backdrop-blur-md transition-colors duration-200 {theme === 'dark' ? 'bg-[#12151e]/98 border-[#1f2433] text-[#ffffff]' : 'bg-white/98 border-[#cbd5e1] text-[#0f172a]'}"
+      class="rounded-xl border shadow-2xl p-5 sm:p-6 font-sans text-xs space-y-4 backdrop-blur-md max-h-[85vh] overflow-y-auto custom-scrollbar {theme === 'dark' ? 'bg-[#0f172a]/95 border-[#1e293b] text-[#f8fafc]' : 'bg-white/95 border-[#cbd5e1] text-[#0f172a]'}"
     >
-      <!-- Header Bar -->
-      <div class="flex items-center justify-between border-b pb-3 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
+      <!-- Header / Top Bar -->
+      <div class="flex items-center justify-between border-b pb-3 {theme === 'dark' ? 'border-[#1e293b]' : 'border-[#e2e8f0]'}">
         <div class="flex items-center gap-2">
-          <span
-            id="cmp-badge"
-            class="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider border {theme === 'dark' ? 'bg-[#1f2433] text-[#38bdf8] border-[#38bdf8]/40' : 'bg-[#e0f2fe] text-[#0369a1] border-[#0284c7]/40'}"
-          >
-            [PRIVACY_CMP]
+          <span id="cmp-badge" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider border {theme === 'dark' ? 'bg-[#1e293b] text-[#38bdf8] border-[#38bdf8]/40' : 'bg-[#f0f9ff] text-[#0284c7] border-[#0284c7]/30'}">
+            [TRUSTGUARD_CMP]
           </span>
-          <h2 id="cmp-title" class="font-bold text-sm tracking-tight {theme === 'dark' ? 'text-[#ffffff]' : 'text-[#0f172a]'}">
-            Consent & Privacy Management
+          <h2 id="cmp-title" class="font-bold text-sm tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
+            Privacy & Consent Management
           </h2>
         </div>
         {#if currentStatus !== null}
@@ -93,119 +82,131 @@
             id="cmp-close-btn"
             type="button"
             on:click={handleClose}
-            aria-label="Close CMP Preferences"
-            class="px-2.5 py-1 rounded border font-bold hover:bg-opacity-80 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 {theme === 'dark' ? 'bg-[#1f2433] border-[#2e364f] text-[#94a3b8] focus:ring-[#38bdf8] focus:ring-offset-[#12151e]' : 'bg-[#f1f5f9] border-[#cbd5e1] text-[#334155] focus:ring-[#0284c7] focus:ring-offset-white'}"
+            aria-label="Close consent preferences dialog"
+            class="px-2 py-1 rounded border focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none transition-colors {theme === 'dark' ? 'bg-[#1e293b] border-[#334155] text-[#94a3b8] hover:text-white' : 'bg-[#f1f5f9] border-[#cbd5e1] text-[#64748b] hover:text-[#0f172a]'}"
           >
             ✕
           </button>
         {/if}
       </div>
 
-      <!-- Description & Compliance Banner -->
-      <p id="cmp-description" class="leading-relaxed text-xs {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#334155]'}">
-        We respect your GDPR and ePrivacy rights. Third-party telemetry and non-essential cookies are strictly blocked until explicitly authorized. Equal prominence is provided for accepting or declining tracking.
-      </p>
-
-      <!-- Status Indicator for Returning Visitors -->
-      {#if currentStatus !== null}
-        <div
-          id="cmp-current-status-display"
-          class="text-[11px] p-2.5 rounded border font-mono flex items-center justify-between {theme === 'dark' ? 'bg-[#090a0f] border-[#1f2433] text-[#e2e8f0]' : 'bg-[#f8fafc] border-[#e2e8f0] text-[#0f172a]'}"
-        >
-          <span>Active Choice:</span>
-          <span class="font-bold uppercase tracking-wider px-2 py-0.5 rounded text-[10px] {currentStatus === 'accepted' ? (theme === 'dark' ? 'bg-[#064e3b] text-[#6ee7b7]' : 'bg-[#dcfce7] text-[#15803d]') : (theme === 'dark' ? 'bg-[#7f1d1d] text-[#fca5a5]' : 'bg-[#fee2e2] text-[#b91c1c]')}">
-            {currentStatus === 'accepted' ? 'TRACKERS_ALLOWED' : 'TRACKERS_BLOCKED'}
-          </span>
+      <!-- Compliance Badges Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-2 text-[11px]">
+        <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full font-medium {theme === 'dark' ? 'bg-[#064e3b]/40 text-[#34d399] border border-[#059669]/30' : 'bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0]'}">
+          <span>✓</span>
+          <span>IAB TCF v2.2 Compliant</span>
         </div>
-      {/if}
-
-      <!-- Granular Category Controls Toggle Accordion -->
-      <div class="space-y-2 border-t border-b py-3 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-xs uppercase tracking-wider {theme === 'dark' ? 'text-[#e2e8f0]' : 'text-[#1e293b]'}">
-            Consent Categories
-          </span>
-          <button
-            id="cmp-toggle-details-btn"
-            type="button"
-            on:click={toggleDetails}
-            aria-expanded={showDetails}
-            aria-controls="cmp-categories-container"
-            class="text-[11px] font-bold underline transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 rounded px-1 {theme === 'dark' ? 'text-[#38bdf8] focus:ring-[#38bdf8] focus:ring-offset-[#12151e]' : 'text-[#0284c7] focus:ring-[#0284c7] focus:ring-offset-white'}"
-          >
-            {showDetails ? 'Hide Details' : 'Configure Granular Preferences'}
-          </button>
-        </div>
-
-        <div id="cmp-categories-container" class="space-y-2 pt-1 {showDetails ? 'block' : 'block'}">
-          <!-- 1. Necessary (Always Active) -->
-          <div class="p-2.5 rounded border flex items-center justify-between gap-3 {theme === 'dark' ? 'bg-[#090a0f]/60 border-[#1f2433]' : 'bg-[#f8fafc] border-[#e2e8f0]'}">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Strictly Necessary</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase {theme === 'dark' ? 'bg-[#1f2433] text-[#38bdf8]' : 'bg-[#e2e8f0] text-[#0369a1]'}">Required</span>
-              </div>
-              <p class="text-[11px] mt-0.5 {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#475569]'}">
-                Security, session state, and consent preference storage.
-              </p>
-            </div>
-            <input
-              type="checkbox"
-              id="cmp-toggle-necessary"
-              aria-label="Strictly Necessary cookies and telemetry - Always Active"
-              checked
-              disabled
-              class="h-4 w-4 rounded border-gray-300 text-[#0284c7] cursor-not-allowed opacity-75"
-            />
-          </div>
-
-          <!-- 2. Analytics & Performance -->
-          <div class="p-2.5 rounded border flex items-center justify-between gap-3 {theme === 'dark' ? 'bg-[#090a0f]/60 border-[#1f2433]' : 'bg-[#f8fafc] border-[#e2e8f0]'}">
-            <label for="cmp-toggle-analytics" class="cursor-pointer flex-1">
-              <div class="flex items-center gap-2">
-                <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Analytics & Performance</span>
-              </div>
-              <p class="text-[11px] mt-0.5 {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#475569]'}">
-                Anonymized scroll depth telemetry and outbound terminal interactions.
-              </p>
-            </label>
-            <input
-              type="checkbox"
-              id="cmp-toggle-analytics"
-              bind:checked={analyticsEnabled}
-              aria-label="Enable Analytics and Performance Telemetry"
-              class="h-4 w-4 rounded border-gray-300 text-[#0284c7] focus:ring-2 focus:ring-[#38bdf8] focus:ring-offset-2 cursor-pointer"
-            />
-          </div>
-
-          <!-- 3. Functional Preferences -->
-          <div class="p-2.5 rounded border flex items-center justify-between gap-3 {theme === 'dark' ? 'bg-[#090a0f]/60 border-[#1f2433]' : 'bg-[#f8fafc] border-[#e2e8f0]'}">
-            <label for="cmp-toggle-functional" class="cursor-pointer flex-1">
-              <div class="flex items-center gap-2">
-                <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Functional Preferences</span>
-              </div>
-              <p class="text-[11px] mt-0.5 {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#475569]'}">
-                Remembers custom theme selections and layout density across sessions.
-              </p>
-            </label>
-            <input
-              type="checkbox"
-              id="cmp-toggle-functional"
-              bind:checked={functionalEnabled}
-              aria-label="Enable Functional Preferences"
-              class="h-4 w-4 rounded border-gray-300 text-[#0284c7] focus:ring-2 focus:ring-[#38bdf8] focus:ring-offset-2 cursor-pointer"
-            />
-          </div>
+        <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-mono text-[10px] {theme === 'dark' ? 'bg-[#1e293b] text-[#94a3b8]' : 'bg-[#f1f5f9] text-[#64748b]'}">
+          <span>142 Authorized Partners</span>
         </div>
       </div>
 
-      <!-- Equal Action Buttons Tray -->
-      <div id="cmp-actions" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+      <!-- Description & Primary Statement -->
+      <div class="space-y-1">
+        <p id="cmp-description" class="leading-relaxed {theme === 'dark' ? 'text-[#cbd5e1]' : 'text-[#334155]'}">
+          We value your privacy & transparency. We process device identifiers, essential session cookies, and interaction telemetry to ensure system stability, analyze audience metrics, and optimize digital performance. Equal choices are provided per GDPR and ePrivacy standards.
+        </p>
+      </div>
+
+      <!-- Current Setting Badge if returning visitor -->
+      {#if currentStatus !== null}
+        <div id="cmp-current-status-display" class="text-[11px] p-2 rounded border font-mono {theme === 'dark' ? 'bg-[#020617] border-[#1e293b] text-[#94a3b8]' : 'bg-[#f8fafc] border-[#e2e8f0] text-[#475569]'}">
+          Current Preference: <span class="font-bold underline {currentStatus === 'accepted' ? 'text-[#38bdf8]' : 'text-[#f87171]'}">{currentStatus === 'accepted' ? 'TRACKERS_ALLOWED' : 'TRACKERS_BLOCKED'}</span>
+        </div>
+      {/if}
+
+      <!-- Granular Category Permissions Accordion/List -->
+      <div class="space-y-2 pt-1">
+        <div class="flex justify-between items-center text-[10px] uppercase font-mono tracking-wider {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
+          <span>Category Permissions</span>
+          <span class="text-[#10b981]">ePrivacy Verified</span>
+        </div>
+
+        <!-- Category 1: Strictly Necessary (Mandatory) -->
+        <div class="p-3 rounded-lg border flex flex-col gap-1 {theme === 'dark' ? 'bg-[#020617]/60 border-[#1e293b]' : 'bg-[#f8fafc] border-[#e2e8f0]'}">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Strictly Necessary</span>
+              <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/30">Always Active</span>
+            </div>
+            <span class="text-[10px] font-mono {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">[LOCKED]</span>
+          </div>
+          <p class="text-[11px] leading-normal {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
+            Required for secure navigation, session integrity, and layout persistence. Cannot be disabled.
+          </p>
+        </div>
+
+        <!-- Category 2: Analytics & Performance -->
+        <div class="p-3 rounded-lg border flex flex-col gap-1 {theme === 'dark' ? 'bg-[#0f172a] border-[#1e293b]' : 'bg-white border-[#e2e8f0]'}">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Analytics & Performance</span>
+            <label for="cmp-cat-analytics" class="relative inline-flex items-center cursor-pointer">
+              <input
+                id="cmp-cat-analytics"
+                type="checkbox"
+                bind:checked={analyticsAllowed}
+                class="sr-only peer"
+              />
+              <span class="sr-only">Toggle Analytics & Performance consent</span>
+              <div class="w-9 h-5 rounded-full peer peer-focus:ring-2 peer-focus:ring-sky-500 {theme === 'dark' ? 'bg-[#334155] peer-checked:bg-[#0284c7]' : 'bg-[#cbd5e1] peer-checked:bg-[#0284c7]'} after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+            </label>
+          </div>
+          <p class="text-[11px] leading-normal {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
+            Measures scroll depth and interaction telemetry to improve user interface ergonomics.
+          </p>
+        </div>
+
+        <!-- Category 3: Functional & Preferences -->
+        <div class="p-3 rounded-lg border flex flex-col gap-1 {theme === 'dark' ? 'bg-[#0f172a] border-[#1e293b]' : 'bg-white border-[#e2e8f0]'}">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Functional & Preferences</span>
+            <label for="cmp-cat-functional" class="relative inline-flex items-center cursor-pointer">
+              <input
+                id="cmp-cat-functional"
+                type="checkbox"
+                bind:checked={functionalAllowed}
+                class="sr-only peer"
+              />
+              <span class="sr-only">Toggle Functional & Preferences consent</span>
+              <div class="w-9 h-5 rounded-full peer peer-focus:ring-2 peer-focus:ring-sky-500 {theme === 'dark' ? 'bg-[#334155] peer-checked:bg-[#0284c7]' : 'bg-[#cbd5e1] peer-checked:bg-[#0284c7]'} after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+            </label>
+          </div>
+          <p class="text-[11px] leading-normal {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
+            Remembers user UI preferences such as Dark Void vs Light Monochrome visual theme choices.
+          </p>
+        </div>
+
+        <!-- Category 4: Targeted Advertising & Profiling -->
+        <div class="p-3 rounded-lg border flex flex-col gap-1 {theme === 'dark' ? 'bg-[#0f172a] border-[#1e293b]' : 'bg-white border-[#e2e8f0]'}">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Targeted Advertising</span>
+              <span class="text-[9px] font-mono text-[#ef4444]">(Default: Off)</span>
+            </div>
+            <label for="cmp-cat-advertising" class="relative inline-flex items-center cursor-pointer">
+              <input
+                id="cmp-cat-advertising"
+                type="checkbox"
+                bind:checked={advertisingAllowed}
+                class="sr-only peer"
+              />
+              <span class="sr-only">Toggle Targeted Advertising consent</span>
+              <div class="w-9 h-5 rounded-full peer peer-focus:ring-2 peer-focus:ring-sky-500 {theme === 'dark' ? 'bg-[#334155] peer-checked:bg-[#0284c7]' : 'bg-[#cbd5e1] peer-checked:bg-[#0284c7]'} after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+            </label>
+          </div>
+          <p class="text-[11px] leading-normal {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
+            Allows third-party partners to aggregate cross-site profiling IDs for targeted material.
+          </p>
+        </div>
+      </div>
+
+      <!-- Equal Action Buttons Deck -->
+      <div id="cmp-actions" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
         <button
           id="cmp-decline-btn"
           type="button"
-          on:click={handleDeclineAll}
-          class="w-full py-2.5 px-4 rounded font-bold border transition-all text-center focus:outline-none focus:ring-2 focus:ring-offset-2 {theme === 'dark' ? 'bg-[#12151e] border-[#ef4444] text-[#fca5a5] hover:bg-[#ef4444]/10 focus:ring-red-400 focus:ring-offset-[#12151e]' : 'bg-red-50 border-red-400 text-[#991b1b] hover:bg-red-100 focus:ring-red-500 focus:ring-offset-white'}"
+          on:click={handleDecline}
+          class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none flex items-center justify-center {theme === 'dark' ? 'bg-[#1e1b2e] border-[#ef4444]/60 text-[#fca5a5] hover:bg-[#ef4444]/20' : 'bg-red-50 border-red-300 text-red-700 hover:bg-red-100'}"
         >
           [DECLINE_TRACKERS]
         </button>
@@ -213,25 +214,27 @@
         <button
           id="cmp-accept-btn"
           type="button"
-          on:click={handleAcceptAll}
-          class="w-full py-2.5 px-4 rounded font-bold border transition-all text-center focus:outline-none focus:ring-2 focus:ring-offset-2 {theme === 'dark' ? 'bg-[#1f2433] border-[#38bdf8] text-[#38bdf8] hover:bg-[#38bdf8]/10 focus:ring-[#38bdf8] focus:ring-offset-[#12151e]' : 'bg-sky-50 border-[#0284c7] text-[#0369a1] hover:bg-sky-100 focus:ring-[#0284c7] focus:ring-offset-white'}"
+          on:click={handleAccept}
+          class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center {theme === 'dark' ? 'bg-[#0284c7] border-[#38bdf8] text-white hover:bg-[#0369a1]' : 'bg-[#0284c7] border-[#0284c7] text-white hover:bg-[#0369a1]'}"
         >
           [ACCEPT_TRACKERS]
         </button>
       </div>
 
-      {#if showDetails}
-        <div class="pt-1">
-          <button
-            id="cmp-save-custom-btn"
-            type="button"
-            on:click={handleSavePreferences}
-            class="w-full py-2 px-3 rounded font-bold border text-center transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 {theme === 'dark' ? 'bg-[#1f2433] border-[#2e364f] text-[#e2e8f0] hover:bg-[#2e364f] focus:ring-[#38bdf8] focus:ring-offset-[#12151e]' : 'bg-[#f1f5f9] border-[#cbd5e1] text-[#0f172a] hover:bg-[#e2e8f0] focus:ring-[#0284c7] focus:ring-offset-white'}"
-          >
-            Save Custom Preferences
-          </button>
-        </div>
-      {/if}
+      <!-- Save Preferences Button & CMP Audit Footnote -->
+      <div class="flex flex-col items-center gap-2 pt-1 text-center">
+        <button
+          id="cmp-save-btn"
+          type="button"
+          on:click={handleSavePreferences}
+          class="text-xs font-semibold underline focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none rounded px-2 py-0.5 {theme === 'dark' ? 'text-[#38bdf8] hover:text-[#7dd3fc]' : 'text-[#0284c7] hover:text-[#0369a1]'}"
+        >
+          Save Custom Category Preferences
+        </button>
+        <span class="text-[10px] font-mono uppercase tracking-wider {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">
+          Powered by TrustGuard CMP • Privacy Architecture v4.8
+        </span>
+      </div>
     </div>
   </div>
 {/if}
