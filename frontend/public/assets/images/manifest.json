@@ -1,0 +1,191 @@
+{
+  "pipeline": "Automated Asset Encoding Pipeline",
+  "breakpoints": [
+    375,
+    768,
+    1440
+  ],
+  "formats": [
+    "WEBP",
+    "AVIF"
+  ],
+  "assets": [
+    {
+      "asset_key": "dmitry_efremov_studio",
+      "source_path": "tmp_sources/dmitry_efremov_studio.png",
+      "original_width": 1440,
+      "original_height": 1440,
+      "original_size_bytes": 115528,
+      "variants": [
+        {
+          "format": "WEBP",
+          "breakpoint_width": 375,
+          "width": 375,
+          "height": 375,
+          "file_path": "images/dmitry_efremov_studio/dmitry_efremov_studio_375w.webp",
+          "file_size_bytes": 22072
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 375,
+          "width": 375,
+          "height": 375,
+          "file_path": "images/dmitry_efremov_studio/dmitry_efremov_studio_375w.avif",
+          "file_size_bytes": 12835
+        },
+        {
+          "format": "WEBP",
+          "breakpoint_width": 768,
+          "width": 768,
+          "height": 768,
+          "file_path": "images/dmitry_efremov_studio/dmitry_efremov_studio_768w.webp",
+          "file_size_bytes": 109122
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 768,
+          "width": 768,
+          "height": 768,
+          "file_path": "images/dmitry_efremov_studio/dmitry_efremov_studio_768w.avif",
+          "file_size_bytes": 70269
+        },
+        {
+          "format": "WEBP",
+          "breakpoint_width": 1440,
+          "width": 1440,
+          "height": 1440,
+          "file_path": "images/dmitry_efremov_studio/dmitry_efremov_studio_1440w.webp",
+          "file_size_bytes": 305526
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 1440,
+          "width": 1440,
+          "height": 1440,
+          "file_path": "images/dmitry_efremov_studio/dmitry_efremov_studio_1440w.avif",
+          "file_size_bytes": 62603
+        }
+      ],
+      "total_variants_size_bytes": 582427,
+      "payload_reduction_percent": -404.14
+    },
+    {
+      "asset_key": "article_deontic_studio",
+      "source_path": "tmp_sources/article_deontic_studio.png",
+      "original_width": 1440,
+      "original_height": 810,
+      "original_size_bytes": 7240,
+      "variants": [
+        {
+          "format": "WEBP",
+          "breakpoint_width": 375,
+          "width": 375,
+          "height": 211,
+          "file_path": "images/article_deontic_studio/article_deontic_studio_375w.webp",
+          "file_size_bytes": 634
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 375,
+          "width": 375,
+          "height": 211,
+          "file_path": "images/article_deontic_studio/article_deontic_studio_375w.avif",
+          "file_size_bytes": 730
+        },
+        {
+          "format": "WEBP",
+          "breakpoint_width": 768,
+          "width": 768,
+          "height": 432,
+          "file_path": "images/article_deontic_studio/article_deontic_studio_768w.webp",
+          "file_size_bytes": 1578
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 768,
+          "width": 768,
+          "height": 432,
+          "file_path": "images/article_deontic_studio/article_deontic_studio_768w.avif",
+          "file_size_bytes": 1319
+        },
+        {
+          "format": "WEBP",
+          "breakpoint_width": 1440,
+          "width": 1440,
+          "height": 810,
+          "file_path": "images/article_deontic_studio/article_deontic_studio_1440w.webp",
+          "file_size_bytes": 3962
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 1440,
+          "width": 1440,
+          "height": 810,
+          "file_path": "images/article_deontic_studio/article_deontic_studio_1440w.avif",
+          "file_size_bytes": 2809
+        }
+      ],
+      "total_variants_size_bytes": 11032,
+      "payload_reduction_percent": -52.38
+    },
+    {
+      "asset_key": "podcast_studio_cover",
+      "source_path": "tmp_sources/podcast_studio_cover.png",
+      "original_width": 1440,
+      "original_height": 1440,
+      "original_size_bytes": 14887,
+      "variants": [
+        {
+          "format": "WEBP",
+          "breakpoint_width": 375,
+          "width": 375,
+          "height": 375,
+          "file_path": "images/podcast_studio_cover/podcast_studio_cover_375w.webp",
+          "file_size_bytes": 2948
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 375,
+          "width": 375,
+          "height": 375,
+          "file_path": "images/podcast_studio_cover/podcast_studio_cover_375w.avif",
+          "file_size_bytes": 3347
+        },
+        {
+          "format": "WEBP",
+          "breakpoint_width": 768,
+          "width": 768,
+          "height": 768,
+          "file_path": "images/podcast_studio_cover/podcast_studio_cover_768w.webp",
+          "file_size_bytes": 7702
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 768,
+          "width": 768,
+          "height": 768,
+          "file_path": "images/podcast_studio_cover/podcast_studio_cover_768w.avif",
+          "file_size_bytes": 5842
+        },
+        {
+          "format": "WEBP",
+          "breakpoint_width": 1440,
+          "width": 1440,
+          "height": 1440,
+          "file_path": "images/podcast_studio_cover/podcast_studio_cover_1440w.webp",
+          "file_size_bytes": 19004
+        },
+        {
+          "format": "AVIF",
+          "breakpoint_width": 1440,
+          "width": 1440,
+          "height": 1440,
+          "file_path": "images/podcast_studio_cover/podcast_studio_cover_1440w.avif",
+          "file_size_bytes": 7146
+        }
+      ],
+      "total_variants_size_bytes": 45989,
+      "payload_reduction_percent": -208.92
+    }
+  ]
+}

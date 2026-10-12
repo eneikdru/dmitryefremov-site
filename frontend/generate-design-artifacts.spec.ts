@@ -3,8 +3,8 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-test('generate design verification artifacts for podcast media UI', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-67c6d186-4f25-4d6b-87a6-393a9d5e67d9');
+test('generate design verification artifacts for responsive picture implementation', async () => {
+  const targetDir = path.resolve('../.eneik/records/design-check-c4dfc4a4-4d71-4c51-a883-8dcf56ef4518');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Build frontend first
@@ -42,13 +42,6 @@ test('generate design verification artifacts for podcast media UI', async () => 
     await desktopPage.click('#tab-btn-podcast');
     await desktopPage.waitForTimeout(300);
 
-    // Click on timecode button to demonstrate precise timestamp seek
-    const secondTimecodeBtn = await desktopPage.locator('[id^="timecode-btn-"]').nth(1);
-    if (await secondTimecodeBtn.isVisible()) {
-      await secondTimecodeBtn.click();
-      await desktopPage.waitForTimeout(300);
-    }
-
     await desktopPage.screenshot({ path: path.join(targetDir, 'desktop-1440.png'), fullPage: true });
 
     // Extract layout geometry bounding boxes
@@ -56,6 +49,8 @@ test('generate design verification artifacts for podcast media UI', async () => 
       const elementsToTrack = [
         'main-header',
         'hero-section',
+        'hero-avatar-container',
+        'hero-avatar-img',
         'hero-title',
         'hero-subtitle',
         'hero-manifest',
@@ -69,6 +64,8 @@ test('generate design verification artifacts for podcast media UI', async () => 
         'podcast-player-section',
         'podcast-player-card',
         'podcast-header',
+        'podcast-cover-container',
+        'podcast-cover-img',
         'podcast-title',
         'audio-controls-block',
         'play-pause-btn',
@@ -105,7 +102,6 @@ test('generate design verification artifacts for podcast media UI', async () => 
     await mobilePage.goto('http://localhost:4173');
     await mobilePage.waitForSelector('#app-root');
 
-    // Navigate to podcast media tab on mobile
     await mobilePage.click('#tab-btn-podcast');
     await mobilePage.waitForTimeout(300);
 
