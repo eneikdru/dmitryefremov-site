@@ -1,0 +1,11 @@
+{
+  "testsRun": 1,
+  "testsPassed": 1,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given a generated backup file, When the restoration script is executed on a clean container, Then the database fully recovers and passes all content integrity checks."
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified the backup and restore process against a clean container using scripts/test_backup_restore.sh on a local testing environment."
+}
