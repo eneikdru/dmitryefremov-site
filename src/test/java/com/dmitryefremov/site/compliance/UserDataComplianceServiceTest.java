@@ -83,10 +83,43 @@ class UserDataComplianceServiceTest {
     }
 
     @Test
+    @DisplayName("exportUserData should support querying by email address")
+    void testExportUserDataByEmail() {
+        String email = "user@example.com";
+        ServiceOrder order = new ServiceOrder(email, "AUDIT", "Security audit request", "PENDING", fixedClock.instant().atOffset(ZoneOffset.UTC));
+        DirectMessage message = new DirectMessage(email, "Compliance query", fixedClock.instant().atOffset(ZoneOffset.UTC));
+
+        when(serviceOrderRepository.findByUserId(email)).thenReturn(List.of(order));
+        when(directMessageRepository.findByUserId(email)).thenReturn(List.of(message));
+
+        UserDataExportDto result = complianceService.exportUserData(email);
+
+        assertThat(result.getUserId()).isEqualTo(email);
+        assertThat(result.getOrders()).hasSize(1);
+        assertThat(result.getOrders().get(0).getServiceType()).isEqualTo("AUDIT");
+        assertThat(result.getMessages()).hasSize(1);
+        assertThat(result.getMessages().get(0).getContent()).isEqualTo("Compliance query");
+    }
+
+    @Test
+    @DisplayName("eraseUserData should support erasing by email address")
+    void testEraseUserDataByEmail() {
+        String email = "erase-me@example.com";
+        when(serviceOrderRepository.deleteByUserId(email)).thenReturn(1L);
+        when(directMessageRepository.deleteByUserId(email)).thenReturn(1L);
+
+        ErasureResponseDto result = complianceService.eraseUserData(email);
+
+        assertThat(result.getUserId()).isEqualTo(email);
+        assertThat(result.getOrdersDeleted()).isEqualTo(1);
+        assertThat(result.getMessagesDeleted()).isEqualTo(1);
+    }
+
+    @Test
     @DisplayName("exportUserData should throw IllegalArgumentException when userId is blank")
     void testExportUserDataValidation() {
         assertThatThrownBy(() -> complianceService.exportUserData("  "))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("User ID cannot be null or empty");
+                .hasMessageContaining("User ID or email address cannot be null or empty");
     }
 }

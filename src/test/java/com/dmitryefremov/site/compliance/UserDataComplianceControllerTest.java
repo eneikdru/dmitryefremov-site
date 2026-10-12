@@ -137,13 +137,54 @@ class UserDataComplianceControllerTest {
     }
 
     @Test
+    @DisplayName("GET /api/v1/compliance/export with email parameter should export user data")
+    void testExportUserDataWithEmailParamApi() throws Exception {
+        String email = "compliance-user@example.com";
+        serviceOrderRepository.save(new ServiceOrder(email, "CONSULTING", "Strategy consultation", "PENDING", OffsetDateTime.now()));
+        directMessageRepository.save(new DirectMessage(email, "Message via email param", OffsetDateTime.now()));
+
+        mockMvc.perform(get("/api/v1/compliance/export")
+                        .param("email", email)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId", is(email)))
+                .andExpect(jsonPath("$.orders", hasSize(1)))
+                .andExpect(jsonPath("$.orders[0].serviceType", is("CONSULTING")))
+                .andExpect(jsonPath("$.messages", hasSize(1)))
+                .andExpect(jsonPath("$.messages[0].content", is("Message via email param")));
+    }
+
+    @Test
+    @DisplayName("DELETE /api/v1/compliance/erasure with email parameter should erase user data")
+    void testEraseUserDataWithEmailParamApi() throws Exception {
+        String email = "erasure-user@example.com";
+        serviceOrderRepository.save(new ServiceOrder(email, "MVP", "App build", "PENDING", OffsetDateTime.now()));
+        directMessageRepository.save(new DirectMessage(email, "Delete message", OffsetDateTime.now()));
+
+        mockMvc.perform(delete("/api/v1/compliance/erasure")
+                        .param("email", email)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId", is(email)))
+                .andExpect(jsonPath("$.ordersDeleted", is(1)))
+                .andExpect(jsonPath("$.messagesDeleted", is(1)));
+
+        mockMvc.perform(get("/api/v1/compliance/export")
+                        .param("email", email)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.orders", hasSize(0)))
+                .andExpect(jsonPath("$.messages", hasSize(0)));
+    }
+
+    @Test
     @DisplayName("GET /api/v1/compliance/export with empty userId should return 400 Bad Request")
     void testMissingUserIdReturnsBadRequest() throws Exception {
         mockMvc.perform(get("/api/v1/compliance/export")
                         .param("userId", "  ")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", containsString("User ID cannot be null or empty")));
+                .andExpect(jsonPath("$.message", containsString("User ID or email address cannot be null or empty")));
     }
 
     @Test
