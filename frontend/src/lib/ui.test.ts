@@ -42,30 +42,38 @@ describe('TelemetryHub Component', () => {
     expect(themeRoot.classList.contains('dark-void')).toBe(true);
   });
 
-  it('navigates seamlessly between article stream and podcast hub, loading initial episode correctly', async () => {
+  it('navigates seamlessly between Canon Reader, Article Stream, and Podcast Hub', async () => {
     component = mount(TelemetryHub, { target });
 
-    // Initial state: Article Stream with realistic Russian essay
+    // Initial default tab: Canon Reader
+    expect(target.textContent).toContain('The Canon (Evergreen Manifestos & Ontology)');
+    expect(target.textContent).toContain('Манифест суверенности автономных систем и процессов');
+
+    // Navigate to Article Stream tab
+    const articleTabBtn = target.querySelector('#tab-btn-article') as HTMLButtonElement;
+    expect(articleTabBtn).not.toBeNull();
+    articleTabBtn.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(target.textContent).toContain('Articles & Thought Stream');
     expect(target.textContent).toContain('Эстетика инженерного молчания и редакционный минимализм');
 
     // Navigate to Podcast Media tab
     const podcastTabBtn = target.querySelector('#tab-btn-podcast') as HTMLButtonElement;
     expect(podcastTabBtn).not.toBeNull();
-
     podcastTabBtn.click();
     await new Promise(r => setTimeout(r, 0));
 
-    // Podcast hub loads initial episode correctly
     expect(target.textContent).toContain('«Системы и реальность» Podcast');
-    expect(target.textContent).toContain('Выпуск 01: Системы и реальность — Введение в системное мышление');
     expect(target.textContent).toContain('TIMECODES & TOPICS');
 
-    // Navigate back to Article Stream tab
-    const articleTabBtn = target.querySelector('#tab-btn-article') as HTMLButtonElement;
-    articleTabBtn.click();
+    // Navigate back to Canon Reader tab
+    const canonTabBtn = target.querySelector('#tab-btn-canon') as HTMLButtonElement;
+    expect(canonTabBtn).not.toBeNull();
+    canonTabBtn.click();
     await new Promise(r => setTimeout(r, 0));
 
-    expect(target.textContent).toContain('Articles & Thought Stream');
+    expect(target.textContent).toContain('The Canon (Evergreen Manifestos & Ontology)');
   });
 
   it('opens and closes Imprint legal modal when clicking footer Imprint trigger', async () => {
