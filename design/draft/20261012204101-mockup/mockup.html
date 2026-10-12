@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEO &amp; AI Crawler Settings</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed": "#23005c",
+            "error": "#ffb4ab",
+            "primary": "#c0c1ff",
+            "primary-fixed": "#e1e0ff",
+            "surface-container-high": "#262a34",
+            "on-background": "#dfe2ef",
+            "tertiary-fixed-dim": "#d0bcff",
+            "primary-fixed-dim": "#c0c1ff",
+            "on-primary-container": "#0d0096",
+            "tertiary": "#d0bcff",
+            "secondary": "#4edea3",
+            "on-secondary-fixed-variant": "#005236",
+            "secondary-container": "#00a572",
+            "on-primary-fixed": "#07006c",
+            "surface-container-low": "#181b25",
+            "tertiary-container": "#a078ff",
+            "on-tertiary-fixed-variant": "#5516be",
+            "on-surface": "#dfe2ef",
+            "inverse-surface": "#dfe2ef",
+            "on-secondary-fixed": "#002113",
+            "on-surface-variant": "#c7c4d7",
+            "surface-variant": "#31353f",
+            "background": "#0f131c",
+            "inverse-primary": "#494bd6",
+            "on-error-container": "#ffdad6",
+            "surface-container": "#1c1f29",
+            "on-tertiary": "#3c0091",
+            "on-error": "#690005",
+            "surface-bright": "#353943",
+            "tertiary-fixed": "#e9ddff",
+            "primary-container": "#8083ff",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "on-secondary-container": "#00311f",
+            "error-container": "#93000a",
+            "outline-variant": "#464554",
+            "outline": "#908fa0",
+            "inverse-on-surface": "#2c303a",
+            "surface": "#0f131c",
+            "secondary-fixed": "#6ffbbe",
+            "on-primary": "#1000a9",
+            "secondary-fixed-dim": "#4edea3",
+            "surface-dim": "#0f131c",
+            "surface-container-lowest": "#0a0e17",
+            "surface-tint": "#c0c1ff",
+            "on-tertiary-container": "#340080",
+            "on-secondary": "#003824"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter": "1rem",
+            "gutter-desktop": "1.5rem",
+            "margin": "1rem",
+            "margin-desktop": "2rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1rem",
+            "space-md": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-xl": ["Geist"],
+            "label-md": ["JetBrains Mono"],
+            "body-sm": ["Geist"],
+            "headline-xl-mobile": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "label-lg": ["JetBrains Mono"],
+            "body-lg": ["Geist"],
+            "headline-lg": ["Geist"],
+            "label-sm": ["JetBrains Mono"],
+            "body-md": ["Geist"],
+            "headline-md": ["Geist"]
+          },
+          "fontSize": {
+            "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "label-md": ["11px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-xl-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-on-primary font-body-md text-body-md min-h-screen pb-32">
+<!-- Shared Component: TopAppBar -->
+<header class="bg-surface-container-low dark:bg-surface-container-low docked full-width top-0 sticky z-40 flex justify-between items-center w-full px-margin h-14">
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-all duration-150 p-1.5 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface dark:text-on-surface font-semibold tracking-tight">SEO &amp; AI Crawler Settings</h1>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 bg-surface-container-high/60 px-2 py-1 rounded-full border border-outline-variant/30">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-secondary">Live on Production</span>
+</div>
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-all duration-150 p-1.5 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="px-margin pt-space-md max-w-xl mx-auto space-y-4">
+<!-- Active URL / Target Selector Card -->
+<div class="bg-surface-container p-3 rounded-xl border border-outline-variant/20 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Crawl Target &amp; Canonical Endpoint</span>
+<span class="text-label-sm font-label-sm text-secondary bg-secondary/10 px-1.5 py-0.5 rounded border border-secondary/20">200 OK</span>
+</div>
+<div class="flex items-center justify-between gap-2 bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/30">
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="text-label-md font-label-md text-outline select-none">https://</span>
+<span class="text-label-md font-label-md text-on-surface truncate font-medium">acme.dev/epic/core-ai</span>
+</div>
+<button class="shrink-0 flex items-center gap-1 bg-surface-container-high hover:bg-surface-bright text-primary text-label-sm font-label-sm px-2.5 py-1 rounded border border-outline-variant/30 active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[14px]" data-icon="refresh">refresh</span>
+<span>Re-crawl Test</span>
+</button>
+</div>
+</div>
+<!-- AI Crawler Directives Card -->
+<div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded-md bg-tertiary-container/20 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="smart_toy">smart_toy</span>
+</span>
+<h2 class="text-headline-md font-headline-md text-on-surface font-semibold">AI Crawler Directives</h2>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary font-medium bg-tertiary/10 px-2 py-0.5 rounded-full border border-tertiary/20">Active Policy</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Manage discovery permissions and LLM model retrieval limits across automated neural indexers.</p>
+<!-- Bot Directives Grid -->
+<div class="space-y-2 pt-1">
+<!-- GPTBot Entry -->
+<div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/20 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-md bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-md text-body-md text-on-surface font-medium">GPTBot</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">(OpenAI)</span>
+</div>
+<div class="flex items-center gap-1 text-label-sm font-label-sm text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Allowed</span>
+<span class="text-outline">·</span>
+<span class="text-on-surface-variant">Cached 2h ago</span>
+</div>
+</div>
+</div>
+<!-- Mechanical Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary-container"></div>
+</label>
+</div>
+<div class="bg-surface-container-lowest px-2.5 py-1.5 rounded border border-outline-variant/20 text-label-sm font-label-sm text-on-surface-variant font-mono">
+            robots.txt: <span class="text-secondary">User-agent: GPTBot / Allow: /epic/core-ai</span>
+</div>
+</div>
+<!-- PerplexityBot Entry -->
+<div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/20 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-md bg-surface-container-high flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-md text-body-md text-on-surface font-medium">PerplexityBot</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">(Perplexity AI)</span>
+</div>
+<div class="flex items-center gap-1 text-label-sm font-label-sm text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Allowed</span>
+<span class="text-outline">·</span>
+<span class="text-on-surface-variant">Realtime Answers</span>
+</div>
+</div>
+</div>
+<!-- Mechanical Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary-container"></div>
+</label>
+</div>
+<div class="bg-surface-container-lowest px-2.5 py-1.5 rounded border border-outline-variant/20 text-label-sm font-label-sm text-on-surface-variant font-mono">
+            robots.txt: <span class="text-secondary">Allowed - User-agent: PerplexityBot, Disallow: none</span>
+</div>
+</div>
+</div>
+<!-- Extended Meta Tag Directives -->
+<div class="pt-2 border-t border-outline-variant/20">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider block mb-2">Robots Meta Directive Flags</span>
+<div class="flex flex-wrap gap-1.5">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-surface-container-high rounded text-label-sm font-label-sm text-primary border border-primary/20">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span>
+            max-snippet:-1
+          </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-surface-container-high rounded text-label-sm font-label-sm text-primary border border-primary/20">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span>
+            max-image-preview:large
+          </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-surface-container-high rounded text-label-sm font-label-sm text-on-surface-variant border border-outline-variant/30">
+<span class="material-symbols-outlined text-[12px]" data-icon="block">block</span>
+            noarchive
+          </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-surface-container-high rounded text-label-sm font-label-sm text-secondary border border-secondary/20">
+<span class="material-symbols-outlined text-[12px]" data-icon="all_inclusive">all_inclusive</span>
+            index, follow
+          </span>
+</div>
+</div>
+</div>
+<!-- Open Graph & Social Live Preview -->
+<div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded-md bg-primary-container/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="preview">preview</span>
+</span>
+<h2 class="text-headline-md font-headline-md text-on-surface font-semibold">Social Unfurl Simulator</h2>
+</div>
+<span class="text-label-sm font-label-sm text-outline font-mono">1200x630 og:image</span>
+</div>
+<!-- Simulated Rich Preview Card -->
+<div class="bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/30">
+<!-- Visual Frame with placeholder image -->
+<div class="relative w-full aspect-video bg-surface-container-lowest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic developer documentation banner showcasing a dark slate interface with glowing purple and cyan neural circuit traces. The composition depicts semantic indexing data vectors, subtle glowing typography, and abstract technical nodes in high contrast. The ambiance is dark, modern, and calibrated for an elite developer infrastructure platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYJlniFrvSyPwg5pYi0Cb0TXOr2LEFIKAKcYf6-Phg0WJZBVXtMPAaMAB2tBY0RmYzVP4Kc-UyeNfelZoB2UnKKHe9wq5rBNUE3PXJ4bIRjXddsuzbVV118x454JeDYid99uPRJURKaaeph-Nk5wNvVux_VKyvucxUvWFBID10xuD-gnizVssdQ6qAzf-ps9l1EOBhrEG-vgU8lH1zQyuZNcg93ST9LtZiW8DY_0J9i2NheplzubePkICOkPK0xuaYYUXn3IOQOJI"/>
+<div class="absolute top-2 left-2 bg-surface-container-lowest/80 backdrop-blur-md px-2 py-0.5 rounded text-label-sm font-label-sm text-on-surface border border-outline-variant/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-primary" data-icon="image">image</span>
+            og:image (active)
+          </div>
+</div>
+<!-- Preview Caption Container -->
+<div class="p-3 bg-surface-container-low space-y-1">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider block">acme.dev</span>
+<h3 class="text-headline-md font-headline-md text-on-surface leading-tight">Acme Developer Documentation | AI Semantic Search</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">Configure robots.txt, dynamic LLM sitemaps, and automated vector embeddings for instant retrieval across ChatGPT and Perplexity engines.</p>
+</div>
+</div>
+<!-- Micro Meta Pills -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<div class="bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant/30 text-label-sm font-label-sm text-on-surface-variant">
+<span class="text-outline">og:type:</span> <span class="text-on-surface">article</span>
+</div>
+<div class="bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant/30 text-label-sm font-label-sm text-on-surface-variant">
+<span class="text-outline">og:locale:</span> <span class="text-on-surface">en_US</span>
+</div>
+<div class="bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant/30 text-label-sm font-label-sm text-on-surface-variant">
+<span class="text-outline">twitter:card:</span> <span class="text-on-surface">summary_large_image</span>
+</div>
+</div>
+</div>
+<!-- Semantic Tags & Schema (JSON-LD) Inspector -->
+<div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded-md bg-secondary-container/20 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="schema">schema</span>
+</span>
+<h2 class="text-headline-md font-headline-md text-on-surface font-semibold">Structured Schema (JSON-LD)</h2>
+</div>
+<div class="flex items-center gap-1 bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20 text-secondary text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+<span>Validated (0 err)</span>
+</div>
+</div>
+<!-- Code Inspector Panel -->
+<div class="bg-surface-container-lowest rounded-lg p-3 border border-outline-variant/30 font-label-sm text-label-sm overflow-x-auto text-on-surface-variant space-y-1">
+<div class="text-outline">&lt;script type="application/ld+json"&gt;</div>
+<div class="pl-2 text-on-surface">{</div>
+<div class="pl-4"><span class="text-primary">"@context"</span>: <span class="text-secondary">"https://schema.org"</span>,</div>
+<div class="pl-4"><span class="text-primary">"@type"</span>: <span class="text-secondary">"TechArticle"</span>,</div>
+<div class="pl-4"><span class="text-primary">"headline"</span>: <span class="text-secondary">"Acme Developer Documentation | AI Semantic Search"</span>,</div>
+<div class="pl-4"><span class="text-primary">"keywords"</span>: [</div>
+<div class="pl-6"><span class="text-tertiary">"AI Search"</span>, <span class="text-tertiary">"GPTBot"</span>, <span class="text-tertiary">"PerplexityBot"</span></div>
+<div class="pl-4">],</div>
+<div class="pl-4"><span class="text-primary">"author"</span>: {</div>
+<div class="pl-6"><span class="text-primary">"@type"</span>: <span class="text-secondary">"Organization"</span>,</div>
+<div class="pl-6"><span class="text-primary">"name"</span>: <span class="text-secondary">"Acme Cloud Core"</span></div>
+<div class="pl-4">}</div>
+<div class="pl-2 text-on-surface">}</div>
+<div class="text-outline">&lt;/script&gt;</div>
+</div>
+</div>
+<!-- Verification / Execution Footer Controls -->
+<div class="pt-2 pb-6 flex items-center gap-2">
+<button class="flex-1 bg-surface-container-high hover:bg-surface-bright text-on-surface border border-outline-variant/30 py-2.5 px-3 rounded-lg text-body-sm font-body-sm font-medium flex items-center justify-center gap-1.5 active:scale-95 transition-all duration-150">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="bug_report">bug_report</span>
+        Simulate Bot Request
+      </button>
+<button class="flex-1 bg-primary text-on-primary font-semibold py-2.5 px-3 rounded-lg text-body-sm font-body-sm flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition-all duration-150 hover:bg-primary-fixed">
+<span class="material-symbols-outlined text-[16px]" data-icon="publish">publish</span>
+        Deploy Directives
+      </button>
+</div>
+</main>
+<!-- Shared Component: BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs bg-surface-container dark:bg-surface-container docked full-width bottom-0 shadow-2xl">
+<!-- Item 1: Directives (Active matching current page intent) -->
+<button class="flex flex-col items-center justify-center bg-primary-container/20 dark:bg-primary-container/20 text-primary dark:text-primary rounded-xl px-3 py-1.5 font-medium active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="smart_toy">smart_toy</span>
+<span class="text-label-sm font-label-sm mt-0.5">Directives</span>
+</button>
+<!-- Item 2: Preview -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1.5 hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="preview">preview</span>
+<span class="text-label-sm font-label-sm mt-0.5">Preview</span>
+</button>
+<!-- Item 3: Schema -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1.5 hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="schema">schema</span>
+<span class="text-label-sm font-label-sm mt-0.5">Schema</span>
+</button>
+<!-- Item 4: Logs -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1.5 hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="terminal">terminal</span>
+<span class="text-label-sm font-label-sm mt-0.5">Logs</span>
+</button>
+</nav>
+</body></html>
