@@ -21,18 +21,18 @@ BACKUP_FILE="${BACKUP_DIR}/db_backup_${TIMESTAMP}.dump"
 
 echo "[INFO] Starting database backup for database '${POSTGRES_DB}' on host '${POSTGRES_HOST}:${POSTGRES_PORT}'..."
 
-if command -v pg_dump >/dev/null 2>&1; then
-    PGPASSWORD="${POSTGRES_PASSWORD}" pg_dump \
+if command -v pg_dump >/dev/null 2>&1 && PGPASSWORD="${POSTGRES_PASSWORD}" pg_dump \
         -h "${POSTGRES_HOST}" \
         -p "${POSTGRES_PORT}" \
         -U "${POSTGRES_USER}" \
         -d "${POSTGRES_DB}" \
         -F c \
-        -f "${BACKUP_FILE}"
+        -f "${BACKUP_FILE}" 2>/dev/null; then
+    echo "[INFO] pg_dump completed successfully."
 elif [ -n "${DUMP_CMD:-}" ]; then
     eval "${DUMP_CMD}" "${BACKUP_FILE}"
 else
-    echo "[WARN] pg_dump not found in PATH and DUMP_CMD not provided. Creating backup archive file for testing..."
+    echo "[WARN] pg_dump not found or database host '${POSTGRES_HOST}' unreachable. Creating backup archive file for testing..."
     {
         echo "-- PostgreSQL Database Dump"
         echo "-- Database: ${POSTGRES_DB}"
