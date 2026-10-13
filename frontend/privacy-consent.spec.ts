@@ -53,7 +53,7 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
   test('fresh visitor without banner interaction leaks no tracking cookies or scripts', async ({ page }) => {
     // Access site as fresh visitor
     await page.goto('http://localhost:4173');
-    await page.waitForSelector('#app-root');
+    await page.waitForSelector('#app');
     await page.waitForSelector('#cmp-modal-overlay');
 
     // 1. Verify consent banner is displayed

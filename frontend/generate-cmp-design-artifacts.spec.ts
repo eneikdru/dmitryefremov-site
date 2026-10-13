@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 test('generate design verification artifacts for consent platform integration', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-f551359a-6f0e-47c1-92a7-cc616ba59ef2');
+  const targetDir = path.resolve('../.eneik/records/design-check-decd5658-519e-4f3c-a673-f91361b0e906');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Build frontend
@@ -36,7 +36,7 @@ test('generate design verification artifacts for consent platform integration', 
     const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const desktopPage = await desktopContext.newPage();
     await desktopPage.goto('http://localhost:4173');
-    await desktopPage.waitForSelector('#app-root');
+    await desktopPage.waitForSelector('#app');
     await desktopPage.waitForSelector('#cmp-modal-overlay');
     await desktopPage.waitForTimeout(300);
 
@@ -84,7 +84,7 @@ test('generate design verification artifacts for consent platform integration', 
     const mobileContext = await browser.newContext({ viewport: { width: 375, height: 812 } });
     const mobilePage = await mobileContext.newPage();
     await mobilePage.goto('http://localhost:4173');
-    await mobilePage.waitForSelector('#app-root');
+    await mobilePage.waitForSelector('#app');
     await mobilePage.waitForSelector('#cmp-modal-overlay');
     await mobilePage.waitForTimeout(300);
 
