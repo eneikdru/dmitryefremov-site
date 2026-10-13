@@ -34,38 +34,38 @@ class ApiKeySchemaIntegrationTest {
                 String.class
         );
 
-        assertThat(indexNames).contains("IDX_API_KEYS_CLIENT_ID", "IDX_API_KEYS_KEY_PREFIX");
+        assertThat(indexNames).contains("IDX_API_KEYS_IDENTITY", "IDX_API_KEYS_STATUS");
     }
 
     @Test
     void testInsertAndRetrieveApiKeyWithSecureHash() {
         int rowsInserted = jdbcTemplate.update(
-                "INSERT INTO api_keys (client_id, key_prefix, key_hash, scopes) VALUES (?, ?, ?, ?)",
-                "external-agent-001", "a2a_live_", "$2a$10$abcdefghijklmnopqrstuvwxyz123456789012345678901234567", "a2a:read,a2a:write"
+                "INSERT INTO api_keys (key_identity, key_hash, scopes, status) VALUES (?, ?, ?, ?)",
+                "external-agent-001", "$2a$10$abcdefghijklmnopqrstuvwxyz123456789012345678901234567", "SCOPE_CONTENT_READ", "ACTIVE"
         );
 
         assertThat(rowsInserted).isEqualTo(1);
 
-        String fetchedPrefix = jdbcTemplate.queryForObject(
-                "SELECT key_prefix FROM api_keys WHERE client_id = ?",
+        String fetchedIdentity = jdbcTemplate.queryForObject(
+                "SELECT key_identity FROM api_keys WHERE key_identity = ?",
                 String.class,
                 "external-agent-001"
         );
 
-        assertThat(fetchedPrefix).isEqualTo("a2a_live_");
+        assertThat(fetchedIdentity).isEqualTo("external-agent-001");
     }
 
     @Test
-    void testUniqueKeyHashConstraint() {
+    void testUniqueKeyIdentityConstraint() {
         jdbcTemplate.update(
-                "INSERT INTO api_keys (client_id, key_prefix, key_hash) VALUES (?, ?, ?)",
-                "agent-1", "a2a_live_", "hash_duplicate_test"
+                "INSERT INTO api_keys (key_identity, key_hash, scopes, status) VALUES (?, ?, ?, ?)",
+                "agent-1", "hash_duplicate_test_1", "SCOPE_CONTENT_READ", "ACTIVE"
         );
 
         assertThatThrownBy(() -> {
             jdbcTemplate.update(
-                    "INSERT INTO api_keys (client_id, key_prefix, key_hash) VALUES (?, ?, ?)",
-                    "agent-2", "a2a_live_", "hash_duplicate_test"
+                    "INSERT INTO api_keys (key_identity, key_hash, scopes, status) VALUES (?, ?, ?, ?)",
+                    "agent-1", "hash_duplicate_test_2", "SCOPE_CONTENT_READ", "ACTIVE"
             );
         }).isInstanceOf(DataIntegrityViolationException.class);
     }
