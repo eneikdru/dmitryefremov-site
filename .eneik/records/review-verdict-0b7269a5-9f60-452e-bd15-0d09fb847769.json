@@ -1,0 +1,15 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The commit message mentions adding reconciliation migration V20261013203754671, but no migration file with version V20261013203754671 is included in the PR diff.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
