@@ -1,0 +1,107 @@
+[
+  {
+    "id": "main-header",
+    "left": 176,
+    "top": 32,
+    "width": 1088,
+    "height": 121
+  },
+  {
+    "id": "scrolly-header",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 48
+  },
+  {
+    "id": "scrolly-main",
+    "left": 176,
+    "top": 274,
+    "width": 1088,
+    "height": 1886
+  },
+  {
+    "id": "act-1-hero",
+    "left": 176,
+    "top": 274,
+    "width": 1088,
+    "height": 795
+  },
+  {
+    "id": "act-2-diagram",
+    "left": 176,
+    "top": 1069,
+    "width": 1088,
+    "height": 538
+  },
+  {
+    "id": "act-3-manifesto",
+    "left": 176,
+    "top": 1607,
+    "width": 1088,
+    "height": 233
+  },
+  {
+    "id": "act-4-epilogue",
+    "left": 176,
+    "top": 1840,
+    "width": 1088,
+    "height": 320
+  },
+  {
+    "id": "scrolly-footer",
+    "left": 176,
+    "top": 2160,
+    "width": 1088,
+    "height": 73
+  },
+  {
+    "id": "scrolly-bottom-nav",
+    "left": 0,
+    "top": 844,
+    "width": 1440,
+    "height": 56
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 103,
+    "width": 949,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-scrolly",
+    "left": 183,
+    "top": 110,
+    "width": 155,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 346,
+    "top": 110,
+    "width": 185,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 539,
+    "top": 110,
+    "width": 141,
+    "height": 36
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 176,
+    "top": 34,
+    "width": 127,
+    "height": 26
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1129,
+    "top": 32,
+    "width": 135,
+    "height": 30
+  }
+]

@@ -5,12 +5,13 @@
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import GqmTelemetryView from './GqmTelemetryView.svelte';
+  import ScrollytellingView from './ScrollytellingView.svelte';
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'podcast';
+  export let initialTab: 'scrolly' | 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'scrolly';
 
-  let activeTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = initialTab;
+  let activeTab: 'scrolly' | 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -41,23 +42,23 @@
 </script>
 
 <SeoMeta
-  title="Дмитрий Ефремов — Архитектура систем, философия сознания и автономные процессы"
-  description="Суверенный интеллектуальный узел Дмитрия Ефремова. 9 выпусков подкаста «Системы и реальность», онтология автономии, A2A-экономика и эссе по деонтической логике."
+  title="Дмитрий Ефремов — High-End Scrollytelling, архитектура систем и онтология"
+  description="Суверенный интеллектуальный узел Дмитрия Ефремова. High-End scrollytelling интерфейс, подкаст «Системы и реальность», онтология автономии и A2A-инфраструктура."
   canonicalUrl="https://dmitryefremov.com"
 />
 
 <div
-  id="telemetry-hub-root"
-  class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
+  id="theme-root"
+  class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'dark-void bg-[#121316] text-[#e3e2e6]' : 'light-monochrome bg-[#f8fafc] text-[#0f172a]'}"
 >
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+  <main id="app-root" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
     <!-- Top System & Status Bar -->
-    <header class="space-y-6">
+    <header id="main-header" class="space-y-6">
       <div class="flex items-center justify-between gap-4 border-b pb-4 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
         <div class="flex items-center gap-3">
           <span
             id="sys-core-badge"
-            class="px-2.5 py-1 rounded text-xs font-mono font-medium tracking-wide {theme === 'dark' ? 'bg-[#12151e] text-[#38bdf8] border border-[#1f2433]' : 'bg-[#f1f5f9] text-[#0284c7] border border-[#cbd5e1]'}"
+            class="px-2.5 py-1 rounded text-xs font-mono font-medium tracking-wide {theme === 'dark' ? 'bg-[#12151e] text-[#d1f029] border border-[#1f2433]' : 'bg-[#f1f5f9] text-[#0284c7] border border-[#cbd5e1]'}"
           >
             DMITRY EFREMOV
           </span>
@@ -73,15 +74,70 @@
             type="button"
             on:click={toggleTheme}
             aria-label="Toggle theme"
-            class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
+            class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#d1f029]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
           >
             <span>ТЕМА:</span>
-            <span class="font-bold text-[#38bdf8]">{theme === 'dark' ? 'Dark Void' : 'Light Monochrome'}</span>
+            <span class="font-bold text-[#d1f029]">{theme === 'dark' ? 'Dark Void' : 'Light Monochrome'}</span>
           </button>
         </div>
       </div>
 
-      <!-- Hero Section with Real 4K Studio Photography -->
+      <!-- Navigation Bar -->
+      <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
+        <button
+          id="tab-btn-scrolly"
+          type="button"
+          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'scrolly' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+          on:click={() => (activeTab = 'scrolly')}
+        >
+          <span>✨ SCROLLYTELLING</span>
+        </button>
+        <button
+          id="tab-btn-podcast"
+          type="button"
+          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+          on:click={() => (activeTab = 'podcast')}
+        >
+          <span>🎙️ ПОДКАСТ</span>
+          <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? 'bg-white/20' : 'bg-black/10'}">9 выпусков</span>
+        </button>
+        <button
+          id="tab-btn-article"
+          type="button"
+          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+          on:click={() => (activeTab = 'article')}
+        >
+          <span>📖 ЭССЕ & МЫСЛИ</span>
+        </button>
+        <button
+          id="tab-btn-gallery"
+          type="button"
+          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'gallery' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+          on:click={() => (activeTab = 'gallery')}
+        >
+          <span>📸 СТУДИЯ & СЕТАП</span>
+        </button>
+        <button
+          id="tab-btn-contact"
+          type="button"
+          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+          on:click={() => (activeTab = 'contact')}
+        >
+          <span>✉️ КОНТАКТЫ & ИНТЕЙК</span>
+        </button>
+        <button
+          id="tab-btn-gqm"
+          type="button"
+          class="px-3 py-2.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer {activeTab === 'gqm' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-slate-200 text-[#0f172a] font-bold') : (theme === 'dark' ? 'text-[#64748b] hover:text-[#94a3b8]' : 'text-[#94a3b8] hover:text-[#64748b]')}"
+          on:click={() => (activeTab = 'gqm')}
+        >
+          <span class="text-[11px]">TELEMETRY</span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Hero Section with Real 4K Studio Photography (Hidden in Scrollytelling View or visible for non-scrolly tabs) -->
+    {#if activeTab !== 'scrolly'}
       <section id="hero-section" class="p-6 sm:p-8 rounded-2xl border transition-all {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433] shadow-xl' : 'bg-white border-[#e2e8f0] shadow-sm'}">
         <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
           <!-- Author Studio Portrait -->
@@ -148,56 +204,13 @@
           </div>
         </div>
       </section>
-
-      <!-- Navigation Bar -->
-      <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
-        <button
-          id="tab-btn-podcast"
-          type="button"
-          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
-          on:click={() => (activeTab = 'podcast')}
-        >
-          <span>🎙️ ПОДКАСТ</span>
-          <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? 'bg-white/20' : 'bg-black/10'}">9 выпусков</span>
-        </button>
-        <button
-          id="tab-btn-article"
-          type="button"
-          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
-          on:click={() => (activeTab = 'article')}
-        >
-          <span>📖 ЭССЕ & МЫСЛИ</span>
-        </button>
-        <button
-          id="tab-btn-gallery"
-          type="button"
-          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'gallery' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
-          on:click={() => (activeTab = 'gallery')}
-        >
-          <span>📸 СТУДИЯ & СЕТАП</span>
-        </button>
-        <button
-          id="tab-btn-contact"
-          type="button"
-          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
-          on:click={() => (activeTab = 'contact')}
-        >
-          <span>✉️ КОНТАКТЫ & ИНТЕЙК</span>
-        </button>
-        <button
-          id="tab-btn-gqm"
-          type="button"
-          class="px-3 py-2.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer {activeTab === 'gqm' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-slate-200 text-[#0f172a] font-bold') : (theme === 'dark' ? 'text-[#64748b] hover:text-[#94a3b8]' : 'text-[#94a3b8] hover:text-[#64748b]')}"
-          on:click={() => (activeTab = 'gqm')}
-        >
-          <span class="text-[11px]">TELEMETRY</span>
-        </button>
-      </nav>
-    </header>
+    {/if}
 
     <!-- Main Content Area -->
     <section id="content-view" class="space-y-8">
-      {#if activeTab === 'podcast'}
+      {#if activeTab === 'scrolly'}
+        <ScrollytellingView {theme} />
+      {:else if activeTab === 'podcast'}
         <div class="space-y-6">
           <PodcastPlayerView />
         </div>
@@ -218,7 +231,6 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Studio Card 1 -->
             <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
               <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
                 <ResponsivePicture
@@ -233,7 +245,6 @@
               </div>
             </div>
 
-            <!-- Studio Card 2 -->
             <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
               <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
                 <ResponsivePicture
@@ -248,7 +259,6 @@
               </div>
             </div>
 
-            <!-- Studio Card 3 -->
             <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
               <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
                 <ResponsivePicture
@@ -263,7 +273,6 @@
               </div>
             </div>
 
-            <!-- Studio Card 4 -->
             <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
               <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
                 <ResponsivePicture
@@ -278,7 +287,6 @@
               </div>
             </div>
 
-            <!-- Workspace Card 5 -->
             <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
               <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
                 <ResponsivePicture
@@ -293,7 +301,6 @@
               </div>
             </div>
 
-            <!-- Audio Setup Card 6 -->
             <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
               <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
                 <ResponsivePicture
@@ -323,7 +330,7 @@
     <!-- Footer -->
     <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-[#1f2433] text-[#94a3b8]' : 'border-[#e2e8f0] text-[#64748b]'}">
       <div>
-        <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Все права защищены.</span>
+        <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Site Operator: Dmitry Efremov. Все права защищены.</span>
       </div>
       <div class="flex items-center gap-6">
         <button
@@ -361,6 +368,7 @@
             </button>
           </div>
           <div id="imprint-details-content" class="space-y-2 leading-relaxed">
+            <p><strong>Site Operator:</strong> Dmitry Efremov (Дмитрий Ефремов)</p>
             <p><strong>Владелец сайта:</strong> Дмитрий Ефремов (Dmitry Efremov)</p>
             <p><strong>Домен:</strong> dmitryefremov.com</p>
             <p><strong>Email:</strong> contact@dmitryefremov.com</p>
