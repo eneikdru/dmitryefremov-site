@@ -54,15 +54,15 @@
 
   function togglePlay() {
     if (!audioElement) return;
-    if (audioElement.paused) {
-      audioElement.play().then(() => {
-        isPlaying = true;
-      }).catch((err) => {
+    if (isPlaying) {
+      isPlaying = false;
+      audioElement.pause();
+    } else {
+      isPlaying = true;
+      audioElement.play().catch((err) => {
+        isPlaying = false;
         console.warn("Audio playback interaction:", err);
       });
-    } else {
-      audioElement.pause();
-      isPlaying = false;
     }
   }
 
@@ -296,7 +296,7 @@
                 {@const barProgress = (i / waveBars.length) * 100}
                 {@const isPlayed = barProgress <= progressPercent}
                 <div
-                  class="flex-1 rounded-t transition-all duration-75 {isPlayed ? 'bg-[#34d399]' : 'bg-[#1f2433] hover:bg-[#38bdf8]'}"
+                  class="flex-1 rounded-t transition-all duration-75 {isPlayed ? 'bg-[#34d399]' : 'bg-[#1f2433]'}"
                   style="height: {barHeight}%;"
                 ></div>
               {/each}

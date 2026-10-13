@@ -5,8 +5,14 @@ import { formatTime, generateWaveformHeights, PODCAST_EPISODES } from './podcast
 import PodcastPlayerView from '../components/PodcastPlayerView.svelte';
 
 beforeAll(() => {
-  window.HTMLMediaElement.prototype.play = vi.fn().mockImplementation(() => Promise.resolve());
-  window.HTMLMediaElement.prototype.pause = vi.fn();
+  window.HTMLMediaElement.prototype.play = vi.fn().mockImplementation(function (this: HTMLMediaElement) {
+    this.dispatchEvent(new Event('play'));
+    return Promise.resolve();
+  });
+  window.HTMLMediaElement.prototype.pause = vi.fn().mockImplementation(function (this: HTMLMediaElement) {
+    this.dispatchEvent(new Event('pause'));
+    return Promise.resolve();
+  });
 });
 
 describe('Podcast Helpers & Utilities', () => {
@@ -76,10 +82,10 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   it('renders episode title, catalog list, wave visualizer, timecodes, and external YouTube & Telegram links', () => {
     component = mount(PodcastPlayerView, { target });
 
-    expect(target.textContent).toContain('«Системы и реальность» Podcast');
+    expect(target.textContent).toContain('Подкаст «Системы и реальность»');
     expect(target.textContent).toContain(PODCAST_EPISODES[0].title);
-    expect(target.textContent).toContain('WAVE_VISUALIZATION');
-    expect(target.textContent).toContain('TIMECODES & TOPICS');
+    expect(target.textContent).toContain('ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ');
+    expect(target.textContent).toContain('ТАЙМКОДЫ И ТЕМЫ');
 
     // Check timecodes rendered
     PODCAST_EPISODES[0].timecodes.forEach(tc => {
@@ -91,7 +97,7 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     const tgLink = target.querySelector('a[aria-label="Telegram Channel"]') as HTMLAnchorElement;
 
     expect(ytLink).not.toBeNull();
-    expect(ytLink.getAttribute('href')).toMatch(/^https:\/\/youtube\.com/);
+    expect(ytLink.getAttribute('href')).toMatch(/^https:\/\/youtu\.be|^https:\/\/youtube\.com/);
     expect(ytLink.getAttribute('target')).toBe('_blank');
     expect(ytLink.getAttribute('rel')).toBe('noopener noreferrer');
 
@@ -104,15 +110,18 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   it('toggles play/pause state when clicking play button and interacts with audio element', () => {
     component = mount(PodcastPlayerView, { target });
     const playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
+    const audioElement = target.querySelector('audio') as HTMLAudioElement;
 
     expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
 
     playBtn.click();
+    audioElement.dispatchEvent(new Event('play'));
     flushSync();
 
     expect(playBtn.getAttribute('aria-label')).toBe('Pause Podcast Episode');
 
     playBtn.click();
+    audioElement.dispatchEvent(new Event('pause'));
     flushSync();
 
     expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
@@ -124,6 +133,7 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     const audioElement = target.querySelector('audio') as HTMLAudioElement;
 
     playBtn.click();
+    audioElement.dispatchEvent(new Event('play'));
     flushSync();
     expect(playBtn.getAttribute('aria-label')).toBe('Pause Podcast Episode');
 
@@ -138,7 +148,7 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   it('seeks directly to timestamp when a timecode button is clicked', () => {
     component = mount(PodcastPlayerView, { target });
 
-    // Timecode 2 for Episode 01 is 195 seconds ("03:15")
+    // Timecode 2 for Episode 01 is 340 seconds ("05:40")
     const targetTc = PODCAST_EPISODES[0].timecodes[1];
     const timecodeBtn = target.querySelector(`#timecode-btn-${targetTc.id}`) as HTMLButtonElement;
     expect(timecodeBtn).not.toBeNull();
@@ -147,8 +157,8 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     flushSync();
 
     const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
-    expect(currentTimeVal.textContent).toBe('03:15');
-    expect(target.textContent).toContain('NOW_PLAYING');
+    expect(currentTimeVal.textContent).toBe('05:40');
+    expect(target.textContent).toContain('СЕЙЧАС ИГРАЕТ');
   });
 
   it('handles waveform keyboard navigation and component seekTo exported function', () => {

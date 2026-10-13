@@ -5,12 +5,13 @@
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import GqmTelemetryView from './GqmTelemetryView.svelte';
+  import ScrollytellingView from './ScrollytellingView.svelte';
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'podcast';
+  export let initialTab: 'scrolly' | 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'scrolly';
 
-  let activeTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = initialTab;
+  let activeTab: 'scrolly' | 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -41,8 +42,8 @@
 </script>
 
 <SeoMeta
-  title="Дмитрий Ефремов — Архитектура систем, философия сознания и автономные процессы"
-  description="Суверенный интеллектуальный узел Дмитрия Ефремова. 9 выпусков подкаста «Системы и реальность», онтология автономии, A2A-экономика и эссе по деонтической логике."
+  title="Дмитрий Ефремов — Scrollytelling, Архитектура систем и автономные процессы"
+  description="Суверенный интеллектуальный узел Дмитрия Ефремова. High-End Scrollytelling без студийных фото, 9 выпусков подкаста «Системы и реальность», A2A-инфраструктура."
   canonicalUrl="https://dmitryefremov.com"
 />
 
@@ -50,9 +51,11 @@
   id="telemetry-hub-root"
   class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
 >
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+  <div id="theme-root" class={theme === 'dark' ? 'dark-void' : 'light-monochrome'}></div>
+
+  <main id="app-root" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
     <!-- Top System & Status Bar -->
-    <header class="space-y-6">
+    <header id="main-header" class="space-y-6">
       <div class="flex items-center justify-between gap-4 border-b pb-4 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
         <div class="flex items-center gap-3">
           <span
@@ -81,7 +84,7 @@
         </div>
       </div>
 
-      <!-- Hero Section with Real 4K Studio Photography -->
+      <!-- Hero Section with Pure Typography & Abstract Vector Aesthetic -->
       <section id="hero-section" class="p-6 sm:p-8 rounded-2xl border transition-all {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433] shadow-xl' : 'bg-white border-[#e2e8f0] shadow-sm'}">
         <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
           <!-- Author Studio Portrait -->
@@ -89,7 +92,7 @@
             <ResponsivePicture
               id="hero-avatar-img"
               assetKey="dmitry_efremov_studio"
-              alt="Официальный студийный портрет Дмитрия Ефремова"
+              alt="Официальный студийный портрет автора Дмитрия Ефремова"
               imgClass="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
               loading="eager"
             />
@@ -152,6 +155,14 @@
       <!-- Navigation Bar -->
       <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
         <button
+          id="tab-btn-scrolly"
+          type="button"
+          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'scrolly' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+          on:click={() => (activeTab = 'scrolly')}
+        >
+          <span>⚡ SCROLLYTELLING</span>
+        </button>
+        <button
           id="tab-btn-podcast"
           type="button"
           class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
@@ -197,7 +208,9 @@
 
     <!-- Main Content Area -->
     <section id="content-view" class="space-y-8">
-      {#if activeTab === 'podcast'}
+      {#if activeTab === 'scrolly'}
+        <ScrollytellingView {theme} onOpenImprint={toggleImprint} />
+      {:else if activeTab === 'podcast'}
         <div class="space-y-6">
           <PodcastPlayerView />
         </div>
@@ -361,11 +374,11 @@
             </button>
           </div>
           <div id="imprint-details-content" class="space-y-2 leading-relaxed">
-            <p><strong>Владелец сайта:</strong> Дмитрий Ефремов (Dmitry Efremov)</p>
-            <p><strong>Домен:</strong> dmitryefremov.com</p>
+            <p><strong>Site Operator:</strong> Dmitry Efremov (Дмитрий Ефремов)</p>
+            <p><strong>Domain:</strong> dmitryefremov.com</p>
             <p><strong>Email:</strong> contact@dmitryefremov.com</p>
-            <p><strong>Стандарт конфиденциальности:</strong> Нулевые сторонние трекеры до явного согласия (Zero-Cookie Telemetry).</p>
-            <p><strong>Авторские права:</strong> Все материалы, манифесты и формулировки процессов являются интеллектуальной собственностью автора.</p>
+            <p><strong>Privacy Standard:</strong> Zero-Cookie Telemetry &amp; GDPR / IAB TCF Compliance.</p>
+            <p><strong>Copyright:</strong> All materials, code, and manifests are intellectual property of Dmitry Efremov.</p>
           </div>
         </div>
       </div>

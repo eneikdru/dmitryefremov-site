@@ -47,8 +47,16 @@ describe('TelemetryHub Component & CMP Integration', () => {
   it('navigates seamlessly between article stream and podcast hub, loading initial episode correctly', async () => {
     component = mount(TelemetryHub, { target });
 
-    // Initial state: Article Stream with realistic Russian essay
-    expect(target.textContent).toContain('Эстетика инженерного молчания и редакционный минимализм');
+    // Initial state: Scrollytelling default
+    expect(target.textContent).toContain('SCROLLYTELLING');
+
+    // Navigate to Article tab
+    const articleTabBtn = target.querySelector('#tab-btn-article') as HTMLButtonElement;
+    expect(articleTabBtn).not.toBeNull();
+    articleTabBtn.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(target.textContent).toContain('Эстетика инженерного молчания');
 
     // Navigate to Podcast Media tab
     const podcastTabBtn = target.querySelector('#tab-btn-podcast') as HTMLButtonElement;
@@ -58,16 +66,9 @@ describe('TelemetryHub Component & CMP Integration', () => {
     await new Promise(r => setTimeout(r, 0));
 
     // Podcast hub loads initial episode correctly
-    expect(target.textContent).toContain('«Системы и реальность» Podcast');
-    expect(target.textContent).toContain('Выпуск 01: Системы и реальность — Введение в системное мышление');
-    expect(target.textContent).toContain('TIMECODES & TOPICS');
-
-    // Navigate back to Article Stream tab
-    const articleTabBtn = target.querySelector('#tab-btn-article') as HTMLButtonElement;
-    articleTabBtn.click();
-    await new Promise(r => setTimeout(r, 0));
-
-    expect(target.textContent).toContain('Articles & Thought Stream');
+    expect(target.textContent).toContain('Подкаст «Системы и реальность»');
+    expect(target.textContent).toContain('Рут Баркан Маркус: Модальная логика сущностей');
+    expect(target.textContent).toContain('ТАЙМКОДЫ И ТЕМЫ');
   });
 
   it('opens and closes Imprint legal modal when clicking footer Imprint trigger', async () => {
