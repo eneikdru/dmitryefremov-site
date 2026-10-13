@@ -177,6 +177,17 @@ class TelemetryService {
   private recordEvent(event: TelemetryEvent): void {
     this.events.push(event);
     this.listeners.forEach(listener => listener(event));
+    if (typeof fetch !== 'undefined') {
+      fetch('/api/v1/telemetry/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(event)
+      }).catch(() => {
+        // Silent failure for telemetry
+      });
+    }
   }
 
   public getEvents(): TelemetryEvent[] {
