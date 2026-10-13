@@ -22,7 +22,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+import com.dmitryefremov.site.Application;
+
+@SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
 class TelemetryControllerTest {
 
