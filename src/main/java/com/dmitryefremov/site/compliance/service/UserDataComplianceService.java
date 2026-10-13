@@ -1,10 +1,15 @@
 package com.dmitryefremov.site.compliance.service;
 
+import com.dmitryefremov.site.agent.repository.AgentMessageRepository;
+import com.dmitryefremov.site.agent.repository.AgentOrderRepository;
+import com.dmitryefremov.site.ai.repository.AiDirectMessageRepository;
+import com.dmitryefremov.site.ai.repository.AiServiceOrderRepository;
 import com.dmitryefremov.site.compliance.domain.DirectMessage;
 import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.dto.*;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,19 +24,51 @@ public class UserDataComplianceService {
 
     private final ServiceOrderRepository serviceOrderRepository;
     private final DirectMessageRepository directMessageRepository;
+    private final AiServiceOrderRepository aiServiceOrderRepository;
+    private final AiDirectMessageRepository aiDirectMessageRepository;
+    private final AgentOrderRepository agentOrderRepository;
+    private final AgentMessageRepository agentMessageRepository;
+    private final ClientIntakeRepository clientIntakeRepository;
     private final Clock clock;
 
     @Autowired
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
+                                     DirectMessageRepository directMessageRepository,
+                                     @Autowired(required = false) AiServiceOrderRepository aiServiceOrderRepository,
+                                     @Autowired(required = false) AiDirectMessageRepository aiDirectMessageRepository,
+                                     @Autowired(required = false) AgentOrderRepository agentOrderRepository,
+                                     @Autowired(required = false) AgentMessageRepository agentMessageRepository,
+                                     @Autowired(required = false) ClientIntakeRepository clientIntakeRepository) {
+        this(serviceOrderRepository, directMessageRepository, aiServiceOrderRepository, aiDirectMessageRepository,
+             agentOrderRepository, agentMessageRepository, clientIntakeRepository, Clock.systemUTC());
+    }
+
+    public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
                                      DirectMessageRepository directMessageRepository) {
-        this(serviceOrderRepository, directMessageRepository, Clock.systemUTC());
+        this(serviceOrderRepository, directMessageRepository, null, null, null, null, null, Clock.systemUTC());
     }
 
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
                                      DirectMessageRepository directMessageRepository,
                                      Clock clock) {
+        this(serviceOrderRepository, directMessageRepository, null, null, null, null, null, clock);
+    }
+
+    public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
+                                     DirectMessageRepository directMessageRepository,
+                                     AiServiceOrderRepository aiServiceOrderRepository,
+                                     AiDirectMessageRepository aiDirectMessageRepository,
+                                     AgentOrderRepository agentOrderRepository,
+                                     AgentMessageRepository agentMessageRepository,
+                                     ClientIntakeRepository clientIntakeRepository,
+                                     Clock clock) {
         this.serviceOrderRepository = serviceOrderRepository;
         this.directMessageRepository = directMessageRepository;
+        this.aiServiceOrderRepository = aiServiceOrderRepository;
+        this.aiDirectMessageRepository = aiDirectMessageRepository;
+        this.agentOrderRepository = agentOrderRepository;
+        this.agentMessageRepository = agentMessageRepository;
+        this.clientIntakeRepository = clientIntakeRepository;
         this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
@@ -48,10 +85,28 @@ public class UserDataComplianceService {
                 .map(this::toOrderDto)
                 .collect(Collectors.toList());
 
+        if (aiServiceOrderRepository != null) {
+            aiServiceOrderRepository.findByUserEmail(userId)
+                    .forEach(o -> orders.add(new ServiceOrderDto(o.getId(), o.getUserEmail(), o.getServiceType(), o.getRequirements(), o.getStatus(), o.getCreatedAt())));
+        }
+        if (agentOrderRepository != null) {
+            agentOrderRepository.findByClientEmail(userId)
+                    .forEach(o -> orders.add(new ServiceOrderDto(o.getId(), o.getClientEmail(), o.getServiceType(), o.getRequirements(), o.getStatus(), o.getCreatedAt())));
+        }
+
         List<DirectMessageDto> messages = directMessageRepository.findByUserId(userId)
                 .stream()
                 .map(this::toMessageDto)
                 .collect(Collectors.toList());
+
+        if (aiDirectMessageRepository != null) {
+            aiDirectMessageRepository.findBySenderEmail(userId)
+                    .forEach(m -> messages.add(new DirectMessageDto(m.getId(), m.getSenderEmail(), m.getContent(), m.getCreatedAt())));
+        }
+        if (agentMessageRepository != null) {
+            agentMessageRepository.findBySenderEmail(userId)
+                    .forEach(m -> messages.add(new DirectMessageDto(m.getId(), m.getSenderEmail(), m.getMessage(), m.getCreatedAt())));
+        }
 
         OffsetDateTime now = OffsetDateTime.now(clock);
         return new UserDataExportDto(userId, orders, messages, now);
@@ -63,6 +118,22 @@ public class UserDataComplianceService {
 
         long ordersDeleted = serviceOrderRepository.deleteByUserId(userId);
         long messagesDeleted = directMessageRepository.deleteByUserId(userId);
+
+        if (aiServiceOrderRepository != null) {
+            ordersDeleted += aiServiceOrderRepository.deleteByUserEmail(userId);
+        }
+        if (aiDirectMessageRepository != null) {
+            messagesDeleted += aiDirectMessageRepository.deleteBySenderEmail(userId);
+        }
+        if (agentOrderRepository != null) {
+            ordersDeleted += agentOrderRepository.deleteByClientEmail(userId);
+        }
+        if (agentMessageRepository != null) {
+            messagesDeleted += agentMessageRepository.deleteBySenderEmail(userId);
+        }
+        if (clientIntakeRepository != null) {
+            clientIntakeRepository.deleteByClientEmail(userId);
+        }
 
         OffsetDateTime now = OffsetDateTime.now(clock);
         String msg = "All personal data for user '" + userId + "' has been permanently erased.";

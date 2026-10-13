@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AiDirectMessageRepository extends JpaRepository<AiDirectMessage, Long> {
+    java.util.List<AiDirectMessage> findBySenderEmail(String senderEmail);
+    long deleteBySenderEmail(String senderEmail);
 }
