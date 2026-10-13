@@ -49,6 +49,26 @@ class InitialSeedingAcceptanceTest {
                 String.class
         );
         assertThat(role).isEqualTo("CONTENT_AGENT");
+
+        // Verify seeded demo API key
+        Integer demoKeyCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM api_credentials WHERE client_id = 'demo-api-key'",
+                Integer.class
+        );
+        assertThat(demoKeyCount).isNotNull().isEqualTo(1);
+
+        String demoRole = jdbcTemplate.queryForObject(
+                "SELECT role FROM api_credentials WHERE client_id = 'demo-api-key'",
+                String.class
+        );
+        assertThat(demoRole).isEqualTo("DEMO_AGENT");
+
+        // Verify seeded demo agent token
+        Integer demoAgentCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM agent_api_tokens WHERE agent_name = 'demo-agent'",
+                Integer.class
+        );
+        assertThat(demoAgentCount).isNotNull().isEqualTo(1);
     }
 
     @Test
@@ -102,6 +122,12 @@ class InitialSeedingAcceptanceTest {
                 .andExpect(jsonPath("$.audioUrl").value("https://dmitryefremov.com/media/podcast/ep4.mp3"))
                 .andExpect(jsonPath("$.description").value(org.hamcrest.Matchers.containsString("В четвертом выпуске подкаста «Системы и реальность»")));
 
+        // Verify foundational audio podcast ep5 loading
+        mockMvc.perform(get("/api/v1/podcasts/foundational-scrollytelling-ep5"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug").value("foundational-scrollytelling-ep5"))
+                .andExpect(jsonPath("$.audioUrl").value("https://dmitryefremov.com/media/podcast/ep5.mp3"));
+
         // Verify foreign key relationship and timecodes for Episode 4
         Optional<PodcastEpisode> ep4Optional = podcastEpisodeRepository.findBySlug("systems-and-reality-ep4");
         assertThat(ep4Optional).isPresent();
@@ -114,6 +140,13 @@ class InitialSeedingAcceptanceTest {
                         "Деонтика пользовательского опыта",
                         "Архитектура медиахаба"
                 );
+
+        // Verify foreign key relationship and timecodes for foundational Episode 5
+        Optional<PodcastEpisode> ep5Optional = podcastEpisodeRepository.findBySlug("foundational-scrollytelling-ep5");
+        assertThat(ep5Optional).isPresent();
+        PodcastEpisode ep5 = ep5Optional.get();
+        assertThat(ep5.getTimecodes()).hasSize(1);
+        assertThat(ep5.getTimecodes().get(0).getTitle()).isEqualTo("Введение в High-End Scrollytelling");
 
         // Verify publication schedules count
         Integer scheduleCount = jdbcTemplate.queryForObject(
