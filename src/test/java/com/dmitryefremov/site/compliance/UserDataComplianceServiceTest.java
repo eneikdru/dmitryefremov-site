@@ -7,6 +7,7 @@ import com.dmitryefremov.site.compliance.dto.UserDataExportDto;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
 import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ class UserDataComplianceServiceTest {
     @Mock
     private DirectMessageRepository directMessageRepository;
 
+    @Mock
+    private ClientIntakeRepository clientIntakeRepository;
+
     private Clock fixedClock;
     private UserDataComplianceService complianceService;
 
@@ -40,7 +44,7 @@ class UserDataComplianceServiceTest {
     void setUp() {
         Instant fixedInstant = Instant.parse("2026-10-12T12:00:00Z");
         fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"));
-        complianceService = new UserDataComplianceService(serviceOrderRepository, directMessageRepository, fixedClock);
+        complianceService = new UserDataComplianceService(serviceOrderRepository, directMessageRepository, clientIntakeRepository, fixedClock);
     }
 
     @Test
@@ -64,22 +68,25 @@ class UserDataComplianceServiceTest {
     }
 
     @Test
-    @DisplayName("eraseUserData should call deleteByUserId on both repositories and return summary")
+    @DisplayName("eraseUserData should call deleteByUserId and deleteByClientEmail on repositories and return summary")
     void testEraseUserData() {
         String userId = "agent-user-456";
         when(serviceOrderRepository.deleteByUserId(userId)).thenReturn(2L);
         when(directMessageRepository.deleteByUserId(userId)).thenReturn(3L);
+        when(clientIntakeRepository.deleteByClientEmail(userId)).thenReturn(1L);
 
         ErasureResponseDto result = complianceService.eraseUserData(userId);
 
         assertThat(result.getUserId()).isEqualTo(userId);
         assertThat(result.getOrdersDeleted()).isEqualTo(2);
         assertThat(result.getMessagesDeleted()).isEqualTo(3);
+        assertThat(result.getIntakesDeleted()).isEqualTo(1);
         assertThat(result.getErasedAt()).isEqualTo(fixedClock.instant().atOffset(ZoneOffset.UTC));
         assertThat(result.getStatusMessage()).contains("permanently erased");
 
         verify(serviceOrderRepository, times(1)).deleteByUserId(userId);
         verify(directMessageRepository, times(1)).deleteByUserId(userId);
+        verify(clientIntakeRepository, times(1)).deleteByClientEmail(userId);
     }
 
     @Test
@@ -102,17 +109,19 @@ class UserDataComplianceServiceTest {
     }
 
     @Test
-    @DisplayName("eraseUserData should support erasing by email address")
+    @DisplayName("eraseUserData should support erasing by email address across all repositories")
     void testEraseUserDataByEmail() {
         String email = "erase-me@example.com";
         when(serviceOrderRepository.deleteByUserId(email)).thenReturn(1L);
         when(directMessageRepository.deleteByUserId(email)).thenReturn(1L);
+        when(clientIntakeRepository.deleteByClientEmail(email)).thenReturn(2L);
 
         ErasureResponseDto result = complianceService.eraseUserData(email);
 
         assertThat(result.getUserId()).isEqualTo(email);
         assertThat(result.getOrdersDeleted()).isEqualTo(1);
         assertThat(result.getMessagesDeleted()).isEqualTo(1);
+        assertThat(result.getIntakesDeleted()).isEqualTo(2);
     }
 
     @Test

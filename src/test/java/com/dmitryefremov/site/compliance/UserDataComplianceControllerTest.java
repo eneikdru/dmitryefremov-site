@@ -4,6 +4,8 @@ import com.dmitryefremov.site.compliance.domain.DirectMessage;
 import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
+import com.dmitryefremov.site.intake.domain.ClientIntake;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,10 +34,14 @@ class UserDataComplianceControllerTest {
     @Autowired
     private DirectMessageRepository directMessageRepository;
 
+    @Autowired
+    private ClientIntakeRepository clientIntakeRepository;
+
     @BeforeEach
     void setUp() {
         serviceOrderRepository.deleteAll();
         directMessageRepository.deleteAll();
+        clientIntakeRepository.deleteAll();
     }
 
     @Test
@@ -155,11 +161,12 @@ class UserDataComplianceControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /api/v1/compliance/erasure with email parameter should erase user data")
+    @DisplayName("DELETE /api/v1/compliance/erasure with email parameter should erase user data across all repositories")
     void testEraseUserDataWithEmailParamApi() throws Exception {
         String email = "erasure-user@example.com";
         serviceOrderRepository.save(new ServiceOrder(email, "MVP", "App build", "PENDING", OffsetDateTime.now()));
         directMessageRepository.save(new DirectMessage(email, "Delete message", OffsetDateTime.now()));
+        clientIntakeRepository.save(new ClientIntake("Erasure Client", email, "Company X", "{\"goals\":\"data removal\"}", OffsetDateTime.now()));
 
         mockMvc.perform(delete("/api/v1/compliance/erasure")
                         .param("email", email)
@@ -167,7 +174,8 @@ class UserDataComplianceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId", is(email)))
                 .andExpect(jsonPath("$.ordersDeleted", is(1)))
-                .andExpect(jsonPath("$.messagesDeleted", is(1)));
+                .andExpect(jsonPath("$.messagesDeleted", is(1)))
+                .andExpect(jsonPath("$.intakesDeleted", is(1)));
 
         mockMvc.perform(get("/api/v1/compliance/export")
                         .param("email", email)

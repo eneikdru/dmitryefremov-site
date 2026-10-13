@@ -5,6 +5,7 @@ import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.dto.*;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,19 +20,29 @@ public class UserDataComplianceService {
 
     private final ServiceOrderRepository serviceOrderRepository;
     private final DirectMessageRepository directMessageRepository;
+    private final ClientIntakeRepository clientIntakeRepository;
     private final Clock clock;
 
     @Autowired
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
-                                     DirectMessageRepository directMessageRepository) {
-        this(serviceOrderRepository, directMessageRepository, Clock.systemUTC());
+                                     DirectMessageRepository directMessageRepository,
+                                     @Autowired(required = false) ClientIntakeRepository clientIntakeRepository) {
+        this(serviceOrderRepository, directMessageRepository, clientIntakeRepository, Clock.systemUTC());
     }
 
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
                                      DirectMessageRepository directMessageRepository,
                                      Clock clock) {
+        this(serviceOrderRepository, directMessageRepository, null, clock);
+    }
+
+    public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
+                                     DirectMessageRepository directMessageRepository,
+                                     ClientIntakeRepository clientIntakeRepository,
+                                     Clock clock) {
         this.serviceOrderRepository = serviceOrderRepository;
         this.directMessageRepository = directMessageRepository;
+        this.clientIntakeRepository = clientIntakeRepository;
         this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
@@ -63,10 +74,11 @@ public class UserDataComplianceService {
 
         long ordersDeleted = serviceOrderRepository.deleteByUserId(userId);
         long messagesDeleted = directMessageRepository.deleteByUserId(userId);
+        long intakesDeleted = clientIntakeRepository != null ? clientIntakeRepository.deleteByClientEmail(userId) : 0L;
 
         OffsetDateTime now = OffsetDateTime.now(clock);
         String msg = "All personal data for user '" + userId + "' has been permanently erased.";
-        return new ErasureResponseDto(userId, ordersDeleted, messagesDeleted, now, msg);
+        return new ErasureResponseDto(userId, ordersDeleted, messagesDeleted, intakesDeleted, now, msg);
     }
 
     @Transactional

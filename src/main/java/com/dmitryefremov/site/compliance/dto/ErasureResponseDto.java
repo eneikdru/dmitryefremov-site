@@ -7,6 +7,7 @@ public class ErasureResponseDto {
     private String userId;
     private long ordersDeleted;
     private long messagesDeleted;
+    private long intakesDeleted;
     private OffsetDateTime erasedAt;
     private String statusMessage;
 
@@ -14,9 +15,14 @@ public class ErasureResponseDto {
     }
 
     public ErasureResponseDto(String userId, long ordersDeleted, long messagesDeleted, OffsetDateTime erasedAt, String statusMessage) {
+        this(userId, ordersDeleted, messagesDeleted, 0L, erasedAt, statusMessage);
+    }
+
+    public ErasureResponseDto(String userId, long ordersDeleted, long messagesDeleted, long intakesDeleted, OffsetDateTime erasedAt, String statusMessage) {
         this.userId = userId;
         this.ordersDeleted = ordersDeleted;
         this.messagesDeleted = messagesDeleted;
+        this.intakesDeleted = intakesDeleted;
         this.erasedAt = erasedAt;
         this.statusMessage = statusMessage;
     }
@@ -43,6 +49,14 @@ public class ErasureResponseDto {
 
     public void setMessagesDeleted(long messagesDeleted) {
         this.messagesDeleted = messagesDeleted;
+    }
+
+    public long getIntakesDeleted() {
+        return intakesDeleted;
+    }
+
+    public void setIntakesDeleted(long intakesDeleted) {
+        this.intakesDeleted = intakesDeleted;
     }
 
     public OffsetDateTime getErasedAt() {
