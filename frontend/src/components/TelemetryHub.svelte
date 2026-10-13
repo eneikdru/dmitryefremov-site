@@ -8,7 +8,7 @@
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'article';
 
   let activeTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
@@ -46,9 +46,10 @@
   canonicalUrl="https://dmitryefremov.com"
 />
 
+<div id="app-root">
 <div
-  id="telemetry-hub-root"
-  class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
+  id="theme-root"
+  class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'dark-void bg-[#090a0f] text-[#e2e8f0]' : 'light-monochrome bg-[#fafafa] text-[#0f172a]'}"
 >
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
     <!-- Top System & Status Bar -->
@@ -89,7 +90,7 @@
             <ResponsivePicture
               id="hero-avatar-img"
               assetKey="dmitry_efremov_studio"
-              alt="Официальный студийный портрет Дмитрия Ефремова"
+              alt="Официальный студийный портрет автора Дмитрия Ефремова"
               imgClass="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
               loading="eager"
             />
@@ -361,7 +362,7 @@
             </button>
           </div>
           <div id="imprint-details-content" class="space-y-2 leading-relaxed">
-            <p><strong>Владелец сайта:</strong> Дмитрий Ефремов (Dmitry Efremov)</p>
+            <p><strong>Site Operator:</strong> Дмитрий Ефремов (Dmitry Efremov)</p>
             <p><strong>Домен:</strong> dmitryefremov.com</p>
             <p><strong>Email:</strong> contact@dmitryefremov.com</p>
             <p><strong>Стандарт конфиденциальности:</strong> Нулевые сторонние трекеры до явного согласия (Zero-Cookie Telemetry).</p>
@@ -373,4 +374,5 @@
 
     <ConsentManager {theme} bind:isOpen={isCmpModalOpen} />
   </main>
+</div>
 </div>

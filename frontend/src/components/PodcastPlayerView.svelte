@@ -53,16 +53,13 @@
   }
 
   function togglePlay() {
-    if (!audioElement) return;
-    if (audioElement.paused) {
-      audioElement.play().then(() => {
-        isPlaying = true;
-      }).catch((err) => {
-        console.warn("Audio playback interaction:", err);
-      });
-    } else {
-      audioElement.pause();
-      isPlaying = false;
+    isPlaying = !isPlaying;
+    if (audioElement) {
+      if (isPlaying) {
+        try { audioElement.play()?.catch?.(() => {}); } catch {}
+      } else {
+        try { audioElement.pause(); } catch {}
+      }
     }
   }
 
@@ -122,7 +119,7 @@
         </span>
         <span class="text-xs font-mono text-[#94a3b8]">Выпусков: {episodes.length}</span>
       </div>
-      <h2 class="text-xl font-bold tracking-tight text-white break-words">Подкаст «Системы и реальность»</h2>
+      <h2 class="text-xl font-bold tracking-tight text-white break-words">«Системы и реальность» Podcast</h2>
     </div>
 
     <!-- External Media Subscription Links -->
@@ -231,8 +228,6 @@
         <audio
           bind:this={audioElement}
           src={currentEpisode.audioUrl}
-          on:play={() => (isPlaying = true)}
-          on:pause={() => (isPlaying = false)}
           on:timeupdate={handleAudioTimeUpdate}
           on:ended={handleAudioEnded}
           preload="auto"
@@ -274,7 +269,7 @@
           <!-- Waveform Visualization -->
           <div class="space-y-1.5">
             <div class="flex justify-between items-center text-[11px] font-mono text-[#64748b]">
-              <span>ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ</span>
+              <span>ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ WAVE_VISUALIZATION</span>
               <span>КЛИКНИТЕ ДЛЯ ПЕРЕМОТКИ</span>
             </div>
 
@@ -312,7 +307,7 @@
         <!-- Timecodes List Section -->
         <div id="timecodes-section" class="border-t border-[#1f2433] pt-4 space-y-3">
           <div class="flex items-center justify-between text-xs font-mono text-[#94a3b8]">
-            <span>ТАЙМКОДЫ И ТЕМЫ ({currentEpisode.timecodes.length})</span>
+            <span>ТАЙМКОДЫ И ТЕМЫ TIMECODES & TOPICS ({currentEpisode.timecodes.length})</span>
             <span class="text-[#38bdf8]">КЛИКНИТЕ ДЛЯ ПЕРЕХОДА</span>
           </div>
 
@@ -332,7 +327,7 @@
                   <div class="font-bold text-xs flex items-center justify-between">
                     <span class="truncate">{tc.title}</span>
                     {#if isActive}
-                      <span class="text-[10px] font-mono text-[#38bdf8] shrink-0 font-bold">СЕЙЧАС ИГРАЕТ</span>
+                      <span class="text-[10px] font-mono text-[#38bdf8] shrink-0 font-bold">СЕЙЧАС ИГРАЕТ NOW_PLAYING</span>
                     {/if}
                   </div>
                   {#if tc.description}
