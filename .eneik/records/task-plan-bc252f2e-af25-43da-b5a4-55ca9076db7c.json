@@ -1,0 +1,456 @@
+{
+    "epics": [
+        {
+            "existingEpicId": "b2684962-438c-471e-be5e-7360c97fa7db",
+            "title": "Core Experience and Identity",
+            "jtbd": "When a visitor lands on the site, I want to immediately understand the author's focus and have clear ways to contact them, so that I can explore their work or get in touch.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "complicated",
+            "sixSigmaMetric": "LCP < 2.5s and CLS < 0.1 across all viewports",
+            "tocConstraintRef": "Frontend rendering pipeline and asset delivery network bandwidth",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: Implement a high-end scrollytelling narrative interface presenting materials with absolute authenticity.",
+                "R2: Exclude all traditional studio photography, substituting high-fidelity typography and document presentation.",
+                "R3: Ensure the interface is fully usable and responsive on mobile viewports.",
+                "R4: Implement WCAG 2.1 level AA accessibility compliance across all scrollytelling views.",
+                "R5: Display an Imprint (Impressum) reachable from every page."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Scrollytelling UI Implementation",
+                    "roleTag": "BARCAN-TAG-11",
+                    "jtbd": "When implementing the frontend for this epic, I want to build a scrollytelling interface without studio photos, so that the Core Experience and Identity outcome is achieved.",
+                    "acceptanceCriteria": "Given a visitor navigates to the root path\nWhen they scroll down the viewport\nThen the narratives transition smoothly with typography in place of studio photos\nGiven a mobile device viewport\nWhen the scrollytelling interface loads\nThen text contrast is at least 4.5:1 and an Imprint link is visible in the footer",
+                    "leanValue": "valuable",
+                    "cynefinDomain": "complicated",
+                    "tocConstraintRef": "Browser render thread blocking during scroll events",
+                    "sixSigmaMetric": "CLS strictly < 0.1 and LCP < 2.5s",
+                    "hasUi": true,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3",
+                        "R4",
+                        "R5"
+                    ]
+                },
+                {
+                    "title": "UI Accessibility and Regression Testing",
+                    "roleTag": "BARCAN-TAG-06",
+                    "jtbd": "When implementing QA for this epic, I want to verify mobile layout and accessibility compliance, so that the Core Experience and Identity outcome is achieved.",
+                    "acceptanceCriteria": "Given the scrollytelling page is deployed\nWhen an automated accessibility scanner runs\nThen zero WCAG 2.1 AA violations are detected\nGiven the scrollytelling page is deployed\nWhen a visual regression test runs\nThen traditional studio photography is verifiably absent from the rendered DOM",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Test execution pipeline time",
+                    "sixSigmaMetric": "100% WCAG 2.1 AA check pass rate",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3",
+                        "R4",
+                        "R5"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": "c2a7643f-884f-4e0d-a5ae-840a14169074",
+            "title": "Podcast Media Hub",
+            "jtbd": "When a visitor wants to listen to the podcast, I want to browse episodes with detailed show notes and audio playback, so that I can consume the audio content directly.",
+            "kanoClass": "Performance",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "Audio stream initialization latency < 200ms",
+            "tocConstraintRef": "Database lookup time for episode metadata",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: Provide a media player optimized for clean audio playback without relying on studio imagery.",
+                "R2: Expose a podcast episode API endpoint providing metadata and audio URLs.",
+                "R3: Define the relational schema for podcast episodes."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Podcast Episode Schema",
+                    "roleTag": "BARCAN-TAG-08",
+                    "jtbd": "When implementing the database schema for this epic, I want to define tables for podcast metadata and audio URLs, so that the Podcast Media Hub outcome is achieved.",
+                    "acceptanceCriteria": "Given a pristine PostgreSQL database\nWhen the podcast Flyway migrations are executed\nThen an episode table is created with audio_url and metadata columns",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Database connection pool limits",
+                    "sixSigmaMetric": "Zero migration execution errors",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R3"
+                    ]
+                },
+                {
+                    "title": "Podcast Episode API Contract",
+                    "roleTag": "BARCAN-TAG-12",
+                    "jtbd": "When implementing the shared contract for this epic, I want to define the episode DTO, so that the Podcast Media Hub outcome is achieved.",
+                    "acceptanceCriteria": "Given a need to synchronize backend and frontend\nWhen the episode DTO is requested\nThen a TypeScript interface defining the episode metadata and audio_url is available",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Cross-team communication latency",
+                    "sixSigmaMetric": "Zero structural breaking changes post-agreement",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R2"
+                    ]
+                },
+                {
+                    "title": "Podcast Episode Backend API",
+                    "roleTag": "BARCAN-TAG-02",
+                    "jtbd": "When implementing the backend for this epic, I want to serve episode data, so that the Podcast Media Hub outcome is achieved.",
+                    "acceptanceCriteria": "Given existing podcast episodes in the database\nWhen the episode list endpoint is requested via GET\nThen a 200 OK response returns the metadata and valid audio URLs",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Query execution time",
+                    "sixSigmaMetric": "P99 API latency < 100ms",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R2"
+                    ]
+                },
+                {
+                    "title": "Podcast Audio Player UI",
+                    "roleTag": "BARCAN-TAG-11",
+                    "jtbd": "When implementing the UI for this epic, I want to provide a clean audio player, so that the Podcast Media Hub outcome is achieved.",
+                    "acceptanceCriteria": "Given the podcast episode endpoint is active\nWhen the visitor triggers the play button on an episode\nThen the audio element streams cleanly without displaying any studio imagery",
+                    "leanValue": "valuable",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Browser media engine startup",
+                    "sixSigmaMetric": "Zero media decoding failures",
+                    "hasUi": true,
+                    "requirementRefs": [
+                        "R1"
+                    ]
+                },
+                {
+                    "title": "Podcast Delivery QA",
+                    "roleTag": "BARCAN-TAG-06",
+                    "jtbd": "When implementing QA for this epic, I want to test the full audio playback lifecycle, so that the Podcast Media Hub outcome is achieved.",
+                    "acceptanceCriteria": "Given a test environment with seeded podcast episodes\nWhen a synthetic user accesses the podcast hub\nThen the audio playback control is fully keyboard operable and plays the seeded audio",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "E2E test suite duration",
+                    "sixSigmaMetric": "100% playback assertion pass rate",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": "1787ef4d-0a6a-441e-8157-f5ee8779c2f2",
+            "title": "Public API for External AI Agents",
+            "jtbd": "When an external AI agent operates on behalf of a user, I want it to securely read documentation, place service orders, and send direct messages, so that the user can seamlessly hire me or contact me through their personal assistant.",
+            "kanoClass": "Attractive",
+            "cynefinDomain": "complicated",
+            "sixSigmaMetric": "Agent parsing success rate > 99.9%",
+            "tocConstraintRef": "Authentication handshake processing time",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: Provide an autonomous A2A infrastructure allowing external agents to query the author's materials.",
+                "R2: Enforce authentication on the A2A endpoints using API keys.",
+                "R3: Return deterministic, machine-readable JSON responses designed for AI ingestion."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "A2A Security Schema",
+                    "roleTag": "BARCAN-TAG-08",
+                    "jtbd": "When implementing the database schema for this epic, I want to define storage for API keys, so that the Public API for External AI Agents outcome is achieved.",
+                    "acceptanceCriteria": "Given a pristine PostgreSQL database\nWhen the A2A API key Flyway migrations are executed\nThen an api_keys table is provisioned with secure hash columns",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Cryptographic hash generation time",
+                    "sixSigmaMetric": "Zero plaintext key exposures",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R2"
+                    ]
+                },
+                {
+                    "title": "A2A Materials Endpoint",
+                    "roleTag": "BARCAN-TAG-02",
+                    "jtbd": "When implementing the backend for this epic, I want to expose authentic materials as JSON, so that the Public API for External AI Agents outcome is achieved.",
+                    "acceptanceCriteria": "Given a valid API key provided in the Authorization header\nWhen an external AI agent queries the materials extraction endpoint\nThen a 200 OK response returns the structured authentic materials\nGiven an invalid API key\nWhen the endpoint is queried\nThen a 401 Unauthorized response is returned",
+                    "leanValue": "valuable",
+                    "cynefinDomain": "complicated",
+                    "tocConstraintRef": "JSON serialization throughput",
+                    "sixSigmaMetric": "P99 payload construction < 50ms",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                },
+                {
+                    "title": "A2A Integration Testing",
+                    "roleTag": "BARCAN-TAG-06",
+                    "jtbd": "When implementing QA for this epic, I want to test agent interactions against the A2A infrastructure, so that the Public API for External AI Agents outcome is achieved.",
+                    "acceptanceCriteria": "Given the A2A infrastructure is deployed\nWhen an integration test attempts to fetch materials with and without valid keys\nThen it strictly verifies 200 and 401 behaviors respectively",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Test container bootstrapping",
+                    "sixSigmaMetric": "100% authentication branch coverage",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": "69e36127-e778-4851-83e6-37a2d16cedf7",
+            "title": "Platform Telemetry and Measurement",
+            "jtbd": "When operating the site, I want to measure visitor engagement with my content and external links, so that I know if the site successfully drives interest in my work.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "Data drop rate < 0.1%",
+            "tocConstraintRef": "Asynchronous event queue capacity",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: Goal: Measure if the site successfully drives interest in the author's work and materials.",
+                "R2: Question: Are external AI agents actively consuming the A2A infrastructure? Metric: Weekly unique agents successfully calling the API.",
+                "R3: Question: Are human visitors completing the scrollytelling path? Metric: Scroll depth completion rate per session."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Telemetry Ingestion Backend",
+                    "roleTag": "BARCAN-TAG-02",
+                    "jtbd": "When implementing the backend for this epic, I want to process event metrics, so that the Platform Telemetry and Measurement outcome is achieved.",
+                    "acceptanceCriteria": "Given an incoming telemetry payload for an A2A consumption event\nWhen the POST ingestion endpoint is hit\nThen the metric is persisted to the timeseries datastore\nGiven an incoming payload for scrollytelling depth\nWhen it is processed\nThen the progression metric is correctly incremented",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Database write concurrency limits",
+                    "sixSigmaMetric": "P99 event ingestion < 20ms",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                },
+                {
+                    "title": "Telemetry Accuracy Verification",
+                    "roleTag": "BARCAN-TAG-06",
+                    "jtbd": "When implementing QA for this epic, I want to ensure metric precision, so that the Platform Telemetry and Measurement outcome is achieved.",
+                    "acceptanceCriteria": "Given a synthetic user traversing the scrollytelling path\nWhen the session concludes\nThen the telemetry database reflects the accurate depth completion rate",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Data synchronization assertions",
+                    "sixSigmaMetric": "Zero discrepancy in test metric counts",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": "bb19579b-628f-4eaf-900d-94e6eeea2e20",
+            "title": "Initial Content and Acceptance",
+            "jtbd": "When receiving the delivered system, I want to see it populated with realistic content, so that I can verify all paths and features work end-to-end.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "100% critical path content availability",
+            "tocConstraintRef": "Migration script execution time",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: Seed the platform with authentic scrollytelling copy and layout definitions.",
+                "R2: Seed at least one valid podcast episode with a working audio file reference.",
+                "R3: Seed initial API keys and demonstration materials for the A2A infrastructure."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Initial Content Flyway Seeding",
+                    "roleTag": "BARCAN-TAG-08",
+                    "jtbd": "When implementing the database schema for this epic, I want to inject real foundational data, so that the Initial Content and Acceptance outcome is achieved.",
+                    "acceptanceCriteria": "Given the application starting against a fresh database\nWhen the seeding migrations run\nThen the system is populated with realistic authentic materials, one audio podcast, and one demo API key",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Row insertion overhead",
+                    "sixSigmaMetric": "Zero missing required placeholder associations",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                },
+                {
+                    "title": "End-to-End Content Verification",
+                    "roleTag": "BARCAN-TAG-06",
+                    "jtbd": "When implementing QA for this epic, I want to confirm content renders on all paths, so that the Initial Content and Acceptance outcome is achieved.",
+                    "acceptanceCriteria": "Given the deployed instance loaded with seeded content\nWhen an E2E acceptance test traverses the primary paths\nThen all links resolve correctly without placeholder lorem ipsum content",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Playwright setup execution",
+                    "sixSigmaMetric": "100% path traversability",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": "c19ada93-abd4-4f81-9271-55359d5de80d",
+            "title": "Privacy Consent Management",
+            "jtbd": "When a visitor arrives on the site, I want to be asked for consent before any non-essential trackers load, so that my privacy preferences are respected and the site complies with ePrivacy regulations.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "Zero non-essential trackers loaded pre-consent",
+            "tocConstraintRef": "Consent state evaluation block on page load",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: Capture opt-in consent before any non-essential telemetry or tracker loads (GDPR/ePrivacy).",
+                "R2: Ensure refusing consent is as easy as accepting.",
+                "R3: Provide a mechanism to revoke consent later with equal friction."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Consent Banner UI Implementation",
+                    "roleTag": "BARCAN-TAG-11",
+                    "jtbd": "When implementing the frontend for this epic, I want to capture user consent choices, so that the Privacy Consent Management outcome is achieved.",
+                    "acceptanceCriteria": "Given a first-time visitor arriving at the site\nWhen the page loads\nThen a consent banner blocks non-essential trackers until explicit opt-in is granted\nGiven a visitor has granted consent\nWhen they navigate to their privacy settings\nThen they can easily revoke their consent with equal friction",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Client-side storage lookup for consent flag",
+                    "sixSigmaMetric": "Zero UI layout shifts from banner injection",
+                    "hasUi": true,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                },
+                {
+                    "title": "Consent Blocking QA Verification",
+                    "roleTag": "BARCAN-TAG-06",
+                    "jtbd": "When implementing QA for this epic, I want to verify trackers remain blocked without opt-in, so that the Privacy Consent Management outcome is achieved.",
+                    "acceptanceCriteria": "Given a fresh browser session\nWhen the user dismisses the consent banner without opting in\nThen no telemetry or external network calls are fired",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Network traffic interception in tests",
+                    "sixSigmaMetric": "100% block rate for unconsented scripts",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2",
+                        "R3"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": "25639a34-46fb-4842-9bb0-6fe95d14e089",
+            "title": "Data Subject Rights and GDPR Compliance",
+            "jtbd": "When a user whose personal data was submitted by an AI agent requests access or deletion, I want to be able to export or erase their data within the statutory deadline, so that the system complies with privacy regulations.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "100% compliance with 30-day statutory deletion window",
+            "tocConstraintRef": "Database cascading deletion locks",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: Provide a backend mechanism to export all telemetry data for a specific IP or agent identity.",
+                "R2: Provide a mechanism to permanently erase a subject's data upon request within 30 days."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "GDPR Export and Erasure Service",
+                    "roleTag": "BARCAN-TAG-02",
+                    "jtbd": "When implementing the backend for this epic, I want to orchestrate subject data removal, so that the Data Subject Rights and GDPR Compliance outcome is achieved.",
+                    "acceptanceCriteria": "Given a verified request from a data subject\nWhen the erasure service is triggered\nThen all personal identifying metrics and IP data are hard-deleted",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Transaction scope for distributed deletions",
+                    "sixSigmaMetric": "Zero lingering orphaned PI records",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2"
+                    ]
+                },
+                {
+                    "title": "Erasure Protocol Verification",
+                    "roleTag": "BARCAN-TAG-06",
+                    "jtbd": "When implementing QA for this epic, I want to guarantee total deletion, so that the Data Subject Rights and GDPR Compliance outcome is achieved.",
+                    "acceptanceCriteria": "Given a populated telemetry database\nWhen an erasure operation is performed for a specific subject\nThen a subsequent SQL assertion proves zero residual identifying rows exist",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Test setup and teardown overhead",
+                    "sixSigmaMetric": "100% assertion pass rate for data absence",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": "0b02652b-2f5d-4812-8a9f-0955154176e2",
+            "title": "Data Protection and Recovery",
+            "jtbd": "When the database experiences a failure, I want to be able to restore the system state from a backup, so that I do not lose my published content.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "RTO < 1h, RPO < 24h",
+            "tocConstraintRef": "Database dump IO bandwidth",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: Automate daily database backups to secure off-site storage.",
+                "R2: Provide a documented, scripted restoration path that has been executed and verified in staging."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Automated Backup Configuration",
+                    "roleTag": "BARCAN-TAG-05",
+                    "jtbd": "When implementing the build/deploy for this epic, I want to script daily backups, so that the Data Protection and Recovery outcome is achieved.",
+                    "acceptanceCriteria": "Given the production database service\nWhen the scheduled cron task executes\nThen a pg_dump archive is securely pushed to off-site storage",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Off-site upload bandwidth limitation",
+                    "sixSigmaMetric": "Zero missed daily backup schedules",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1"
+                    ]
+                },
+                {
+                    "title": "Restoration Path Verification",
+                    "roleTag": "BARCAN-TAG-06",
+                    "jtbd": "When implementing QA for this epic, I want to ensure backups can actually be restored, so that the Data Protection and Recovery outcome is achieved.",
+                    "acceptanceCriteria": "Given a populated backup archive\nWhen the restore script is executed against a fresh test container\nThen the database state is successfully fully recovered",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Restoration downtime window",
+                    "sixSigmaMetric": "100% success rate on test restores",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R2"
+                    ]
+                }
+            ]
+        }
+    ]
+}
