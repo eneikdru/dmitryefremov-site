@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AgentOrderRepository extends JpaRepository<AgentOrder, Long> {
+    java.util.List<AgentOrder> findByClientEmail(String clientEmail);
+    long deleteByClientEmail(String clientEmail);
 }

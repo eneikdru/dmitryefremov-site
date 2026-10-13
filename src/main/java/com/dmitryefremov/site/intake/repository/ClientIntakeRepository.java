@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ClientIntakeRepository extends JpaRepository<ClientIntake, Long> {
     List<ClientIntake> findByClientEmail(String clientEmail);
+    long deleteByClientEmail(String clientEmail);
 }

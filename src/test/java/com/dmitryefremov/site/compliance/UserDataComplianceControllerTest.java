@@ -1,9 +1,19 @@
 package com.dmitryefremov.site.compliance;
 
+import com.dmitryefremov.site.agent.domain.AgentMessage;
+import com.dmitryefremov.site.agent.domain.AgentOrder;
+import com.dmitryefremov.site.agent.repository.AgentMessageRepository;
+import com.dmitryefremov.site.agent.repository.AgentOrderRepository;
+import com.dmitryefremov.site.ai.domain.AiDirectMessage;
+import com.dmitryefremov.site.ai.domain.AiServiceOrder;
+import com.dmitryefremov.site.ai.repository.AiDirectMessageRepository;
+import com.dmitryefremov.site.ai.repository.AiServiceOrderRepository;
 import com.dmitryefremov.site.compliance.domain.DirectMessage;
 import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
+import com.dmitryefremov.site.intake.domain.ClientIntake;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.OffsetDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,10 +43,30 @@ class UserDataComplianceControllerTest {
     @Autowired
     private DirectMessageRepository directMessageRepository;
 
+    @Autowired
+    private AiServiceOrderRepository aiServiceOrderRepository;
+
+    @Autowired
+    private AiDirectMessageRepository aiDirectMessageRepository;
+
+    @Autowired
+    private AgentOrderRepository agentOrderRepository;
+
+    @Autowired
+    private AgentMessageRepository agentMessageRepository;
+
+    @Autowired
+    private ClientIntakeRepository clientIntakeRepository;
+
     @BeforeEach
     void setUp() {
         serviceOrderRepository.deleteAll();
         directMessageRepository.deleteAll();
+        aiServiceOrderRepository.deleteAll();
+        aiDirectMessageRepository.deleteAll();
+        agentOrderRepository.deleteAll();
+        agentMessageRepository.deleteAll();
+        clientIntakeRepository.deleteAll();
     }
 
     @Test
@@ -74,29 +105,34 @@ class UserDataComplianceControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /api/v1/compliance/erasure should permanently delete user data")
+    @DisplayName("DELETE /api/v1/compliance/erasure should permanently delete user data across all tables")
     void testEraseUserDataApi() throws Exception {
-        String userId = "agent-user-to-erase";
-        serviceOrderRepository.save(new ServiceOrder(userId, "AUTOMATION", "Bot automation", "PENDING", OffsetDateTime.now()));
-        directMessageRepository.save(new DirectMessage(userId, "Direct message to erase", OffsetDateTime.now()));
+        String email = "subject-to-erase@example.com";
+        serviceOrderRepository.save(new ServiceOrder(email, "AUTOMATION", "Bot automation", "PENDING", OffsetDateTime.now()));
+        directMessageRepository.save(new DirectMessage(email, "Direct message to erase", OffsetDateTime.now()));
+        aiServiceOrderRepository.save(new AiServiceOrder("User Name", email, "Agent-01", "MVP", "Specs", OffsetDateTime.now()));
+        aiDirectMessageRepository.save(new AiDirectMessage("User Name", email, "Agent-01", "AI Message", OffsetDateTime.now()));
+        agentOrderRepository.save(new AgentOrder("Client Name", email, "MVP", "Agent Specs", "NEW", OffsetDateTime.now()));
+        agentMessageRepository.save(new AgentMessage("Sender Name", email, "Agent Msg", "NEW", OffsetDateTime.now()));
+        clientIntakeRepository.save(new ClientIntake("Client Name", email, "Service", "Intake notes"));
 
         mockMvc.perform(delete("/api/v1/compliance/erasure")
-                        .param("userId", userId)
+                        .param("email", email)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId", is(userId)))
-                .andExpect(jsonPath("$.ordersDeleted", is(1)))
-                .andExpect(jsonPath("$.messagesDeleted", is(1)))
+                .andExpect(jsonPath("$.userId", is(email)))
+                .andExpect(jsonPath("$.ordersDeleted", is(3)))
+                .andExpect(jsonPath("$.messagesDeleted", is(3)))
                 .andExpect(jsonPath("$.erasedAt", notNullValue()));
 
-        // Confirm that subsequent export returns empty lists for erased user
-        mockMvc.perform(get("/api/v1/compliance/export")
-                        .param("userId", userId)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId", is(userId)))
-                .andExpect(jsonPath("$.orders", hasSize(0)))
-                .andExpect(jsonPath("$.messages", hasSize(0)));
+        // Confirm that all records for subject are hard-deleted
+        assertThat(serviceOrderRepository.findByUserId(email)).isEmpty();
+        assertThat(directMessageRepository.findByUserId(email)).isEmpty();
+        assertThat(aiServiceOrderRepository.findAll().stream().filter(o -> email.equals(o.getUserEmail()))).isEmpty();
+        assertThat(aiDirectMessageRepository.findAll().stream().filter(m -> email.equals(m.getSenderEmail()))).isEmpty();
+        assertThat(agentOrderRepository.findAll().stream().filter(o -> email.equals(o.getClientEmail()))).isEmpty();
+        assertThat(agentMessageRepository.findAll().stream().filter(m -> email.equals(m.getSenderEmail()))).isEmpty();
+        assertThat(clientIntakeRepository.findByClientEmail(email)).isEmpty();
     }
 
     @Test
