@@ -1,5 +1,9 @@
 package com.dmitryefremov.site.compliance;
 
+import com.dmitryefremov.site.agent.repository.AgentMessageRepository;
+import com.dmitryefremov.site.agent.repository.AgentOrderRepository;
+import com.dmitryefremov.site.ai.repository.AiDirectMessageRepository;
+import com.dmitryefremov.site.ai.repository.AiServiceOrderRepository;
 import com.dmitryefremov.site.compliance.domain.DirectMessage;
 import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.dto.ErasureResponseDto;
@@ -7,6 +11,7 @@ import com.dmitryefremov.site.compliance.dto.UserDataExportDto;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
 import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
+import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +38,21 @@ class UserDataComplianceServiceTest {
     @Mock
     private DirectMessageRepository directMessageRepository;
 
+    @Mock
+    private AiServiceOrderRepository aiServiceOrderRepository;
+
+    @Mock
+    private AiDirectMessageRepository aiDirectMessageRepository;
+
+    @Mock
+    private AgentOrderRepository agentOrderRepository;
+
+    @Mock
+    private AgentMessageRepository agentMessageRepository;
+
+    @Mock
+    private ClientIntakeRepository clientIntakeRepository;
+
     private Clock fixedClock;
     private UserDataComplianceService complianceService;
 
@@ -40,7 +60,16 @@ class UserDataComplianceServiceTest {
     void setUp() {
         Instant fixedInstant = Instant.parse("2026-10-12T12:00:00Z");
         fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"));
-        complianceService = new UserDataComplianceService(serviceOrderRepository, directMessageRepository, fixedClock);
+        complianceService = new UserDataComplianceService(
+                serviceOrderRepository,
+                directMessageRepository,
+                aiServiceOrderRepository,
+                aiDirectMessageRepository,
+                agentOrderRepository,
+                agentMessageRepository,
+                clientIntakeRepository,
+                fixedClock
+        );
     }
 
     @Test
@@ -64,22 +93,32 @@ class UserDataComplianceServiceTest {
     }
 
     @Test
-    @DisplayName("eraseUserData should call deleteByUserId on both repositories and return summary")
+    @DisplayName("eraseUserData should call deleteByUserId and related delete methods across all personal data repositories")
     void testEraseUserData() {
-        String userId = "agent-user-456";
+        String userId = "agent-user-456@example.com";
         when(serviceOrderRepository.deleteByUserId(userId)).thenReturn(2L);
         when(directMessageRepository.deleteByUserId(userId)).thenReturn(3L);
+        when(aiServiceOrderRepository.deleteByUserEmail(userId)).thenReturn(1L);
+        when(aiDirectMessageRepository.deleteBySenderEmail(userId)).thenReturn(2L);
+        when(agentOrderRepository.deleteByClientEmail(userId)).thenReturn(1L);
+        when(agentMessageRepository.deleteBySenderEmail(userId)).thenReturn(1L);
+        when(clientIntakeRepository.deleteByClientEmail(userId)).thenReturn(1L);
 
         ErasureResponseDto result = complianceService.eraseUserData(userId);
 
         assertThat(result.getUserId()).isEqualTo(userId);
-        assertThat(result.getOrdersDeleted()).isEqualTo(2);
-        assertThat(result.getMessagesDeleted()).isEqualTo(3);
+        assertThat(result.getOrdersDeleted()).isEqualTo(4); // 2 + 1 + 1
+        assertThat(result.getMessagesDeleted()).isEqualTo(6); // 3 + 2 + 1
         assertThat(result.getErasedAt()).isEqualTo(fixedClock.instant().atOffset(ZoneOffset.UTC));
         assertThat(result.getStatusMessage()).contains("permanently erased");
 
         verify(serviceOrderRepository, times(1)).deleteByUserId(userId);
         verify(directMessageRepository, times(1)).deleteByUserId(userId);
+        verify(aiServiceOrderRepository, times(1)).deleteByUserEmail(userId);
+        verify(aiDirectMessageRepository, times(1)).deleteBySenderEmail(userId);
+        verify(agentOrderRepository, times(1)).deleteByClientEmail(userId);
+        verify(agentMessageRepository, times(1)).deleteBySenderEmail(userId);
+        verify(clientIntakeRepository, times(1)).deleteByClientEmail(userId);
     }
 
     @Test

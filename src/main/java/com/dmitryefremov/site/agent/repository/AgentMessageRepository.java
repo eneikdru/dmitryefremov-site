@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AgentMessageRepository extends JpaRepository<AgentMessage, Long> {
+    java.util.List<AgentMessage> findBySenderEmail(String senderEmail);
+    long deleteBySenderEmail(String senderEmail);
 }
