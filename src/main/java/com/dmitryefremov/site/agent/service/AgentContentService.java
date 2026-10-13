@@ -16,7 +16,9 @@ import com.dmitryefremov.site.podcast.dto.PodcastEpisodeDto;
 import com.dmitryefremov.site.podcast.dto.PodcastQuoteDto;
 import com.dmitryefremov.site.podcast.dto.PodcastTimecodeDto;
 import com.dmitryefremov.site.podcast.repository.PodcastEpisodeRepository;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,17 +40,20 @@ public class AgentContentService {
     private final ContentAuditLogRepository auditLogRepository;
     private final ArticleRepository articleRepository;
     private final PodcastEpisodeRepository podcastEpisodeRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     public AgentContentService(
             AgentApiTokenRepository tokenRepository,
             ContentAuditLogRepository auditLogRepository,
             ArticleRepository articleRepository,
-            PodcastEpisodeRepository podcastEpisodeRepository
+            PodcastEpisodeRepository podcastEpisodeRepository,
+            JdbcTemplate jdbcTemplate
     ) {
         this.tokenRepository = tokenRepository;
         this.auditLogRepository = auditLogRepository;
         this.articleRepository = articleRepository;
         this.podcastEpisodeRepository = podcastEpisodeRepository;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Optional<AgentApiToken> authenticateToken(String token) {
@@ -62,10 +67,37 @@ public class AgentContentService {
 
         List<AgentApiToken> tokens = tokenRepository.findAll();
         for (AgentApiToken apiToken : tokens) {
-            if (cleanToken.equals(apiToken.getTokenHash())) {
+            if (cleanToken.equals(apiToken.getTokenHash()) || cleanToken.equals(apiToken.getAgentName())) {
                 return Optional.of(apiToken);
             }
         }
+
+        if (jdbcTemplate != null) {
+            try {
+                Integer credCount = jdbcTemplate.queryForObject(
+                        "SELECT COUNT(*) FROM api_credentials WHERE (client_id = ? OR api_key_hash = ?) AND enabled = true",
+                        Integer.class,
+                        cleanToken, cleanToken
+                );
+                if (credCount != null && credCount > 0) {
+                    return Optional.of(new AgentApiToken("api-credential-agent", cleanToken));
+                }
+            } catch (DataAccessException ignored) {
+            }
+
+            try {
+                Integer keyCount = jdbcTemplate.queryForObject(
+                        "SELECT COUNT(*) FROM api_keys WHERE (client_id = ? OR key_identity = ? OR key_hash = ? OR key_prefix = ?) AND (status = 'ACTIVE' OR enabled = true)",
+                        Integer.class,
+                        cleanToken, cleanToken, cleanToken, cleanToken
+                );
+                if (keyCount != null && keyCount > 0) {
+                    return Optional.of(new AgentApiToken("api-key-agent", cleanToken));
+                }
+            } catch (DataAccessException ignored) {
+            }
+        }
+
         return Optional.empty();
     }
 
