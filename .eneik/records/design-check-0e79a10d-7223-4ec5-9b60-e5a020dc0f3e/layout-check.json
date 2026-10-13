@@ -1,0 +1,72 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 1542
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 103,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 431,
+    "width": 786,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-gqm",
+    "left": 872,
+    "top": 438,
+    "width": 83,
+    "height": 36
+  },
+  {
+    "id": "gqm-telemetry-root",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 900
+  },
+  {
+    "id": "tab-gqm-overview",
+    "left": 200,
+    "top": 618,
+    "width": 133,
+    "height": 32
+  },
+  {
+    "id": "tab-canon-reader",
+    "left": 341,
+    "top": 618,
+    "width": 133,
+    "height": 32
+  },
+  {
+    "id": "tab-intake-form",
+    "left": 482,
+    "top": 618,
+    "width": 205,
+    "height": 32
+  },
+  {
+    "id": "telemetry-feed-list",
+    "left": 201,
+    "top": 1306,
+    "width": 1038,
+    "height": 48
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 1461,
+    "width": 1088,
+    "height": 49
+  }
+]
