@@ -68,7 +68,7 @@ public class PodcastEpisodeService {
                         .map(this::mapQuoteToDto)
                         .collect(Collectors.toList()) : List.of();
 
-        return new PodcastEpisodeDto(
+        PodcastEpisodeDto dto = new PodcastEpisodeDto(
                 entity.getId(),
                 entity.getSlug(),
                 entity.getTitle(),
@@ -88,6 +88,8 @@ public class PodcastEpisodeService {
                 timecodeDtos,
                 quoteDtos
         );
+        dto.setMetadata(entity.getMetadata());
+        return dto;
     }
 
     private PodcastTimecodeDto mapTimecodeToDto(PodcastTimecode entity) {

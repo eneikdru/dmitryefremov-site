@@ -46,6 +46,56 @@ class PodcastEpisodeRepositoryTest {
         assertThat(timecodeTableCount).isGreaterThan(0);
         assertThat(quoteTableCount).isGreaterThan(0);
         assertThat(episodesViewCount).isGreaterThan(0);
+
+        Integer metadataColumnInTable = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns WHERE UPPER(table_name) = 'PODCAST_EPISODES' AND UPPER(column_name) = 'METADATA'",
+                Integer.class
+        );
+        Integer metadataColumnInView = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns WHERE UPPER(table_name) = 'EPISODES' AND UPPER(column_name) = 'METADATA'",
+                Integer.class
+        );
+        assertThat(metadataColumnInTable).isEqualTo(1);
+        assertThat(metadataColumnInView).isEqualTo(1);
+    }
+
+    @Test
+    void testInsertEpisodeWithMetadataAndAudioUrl() {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 13, 15, 0, 0, 0, ZoneOffset.UTC);
+
+        PodcastEpisode episode = new PodcastEpisode(
+                "scrollytelling-metadata-ep",
+                "High-End Scrollytelling Metadata Test",
+                "Тезисы о метаданных и автономии.",
+                "Описание выпуска с метаданными.",
+                "https://cdn.dmitryefremov.com/podcast/metadata-ep.mp3",
+                "https://cdn.dmitryefremov.com/podcast/metadata-ep.mp3",
+                1800,
+                publishedAt
+        );
+        episode.setMetadata("{\"scrollytelling\": true, \"bitrate\": \"320kbps\"}");
+
+        PodcastEpisode saved = podcastEpisodeRepository.save(episode);
+        podcastEpisodeRepository.flush();
+
+        assertThat(saved.getId()).isNotNull();
+
+        Optional<PodcastEpisode> fetched = podcastEpisodeRepository.findBySlug("scrollytelling-metadata-ep");
+        assertThat(fetched).isPresent();
+        assertThat(fetched.get().getAudioUrl()).isEqualTo("https://cdn.dmitryefremov.com/podcast/metadata-ep.mp3");
+        assertThat(fetched.get().getMetadata()).isEqualTo("{\"scrollytelling\": true, \"bitrate\": \"320kbps\"}");
+
+        // Verify query from episodes view includes audio_url and metadata
+        String metadataFromView = jdbcTemplate.queryForObject(
+                "SELECT metadata FROM episodes WHERE slug = 'scrollytelling-metadata-ep'",
+                String.class
+        );
+        String audioUrlFromView = jdbcTemplate.queryForObject(
+                "SELECT audio_url FROM episodes WHERE slug = 'scrollytelling-metadata-ep'",
+                String.class
+        );
+        assertThat(metadataFromView).isEqualTo("{\"scrollytelling\": true, \"bitrate\": \"320kbps\"}");
+        assertThat(audioUrlFromView).isEqualTo("https://cdn.dmitryefremov.com/podcast/metadata-ep.mp3");
     }
 
     @Test

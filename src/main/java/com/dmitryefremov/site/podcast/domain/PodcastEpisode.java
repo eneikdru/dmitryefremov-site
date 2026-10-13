@@ -50,6 +50,9 @@ public class PodcastEpisode {
     @Column(name = "concept_links")
     private String conceptLinks;
 
+    @Column(name = "metadata")
+    private String metadata;
+
     @Column(name = "duration_seconds")
     private Integer durationSeconds;
 
@@ -217,6 +220,14 @@ public class PodcastEpisode {
 
     public void setConceptLinks(String conceptLinks) {
         this.conceptLinks = conceptLinks;
+    }
+
+    public String getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
     }
 
     public Integer getDurationSeconds() {

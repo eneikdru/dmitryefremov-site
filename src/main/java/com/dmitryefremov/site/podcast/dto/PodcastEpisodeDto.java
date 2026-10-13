@@ -18,6 +18,7 @@ public class PodcastEpisodeDto {
     private String applePodcastsUrl;
     private String platforms;
     private String conceptLinks;
+    private String metadata;
     private Integer durationSeconds;
     private OffsetDateTime publishedAt;
     private OffsetDateTime createdAt;
@@ -174,6 +175,14 @@ public class PodcastEpisodeDto {
 
     public void setConceptLinks(String conceptLinks) {
         this.conceptLinks = conceptLinks;
+    }
+
+    public String getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
     }
 
     public Integer getDurationSeconds() {
