@@ -10,13 +10,24 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 
+import com.dmitryefremov.site.telemetry.domain.TelemetryEvent;
+import com.dmitryefremov.site.telemetry.repository.TelemetryEventRepository;
+import org.springframework.http.MediaType;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class TelemetryControllerTest {
+
+    @Autowired
+    private TelemetryEventRepository repository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -27,6 +38,7 @@ class TelemetryControllerTest {
     @BeforeEach
     void setUp() {
         telemetryService.reset();
+        repository.deleteAll();
     }
 
     @Test
@@ -45,5 +57,38 @@ class TelemetryControllerTest {
                 .andExpect(jsonPath("$.totalApiRequests", is(2)))
                 .andExpect(jsonPath("$.failedApiRequests", is(1)))
                 .andExpect(jsonPath("$.totalAgentUpdates", is(0)));
+    }
+
+    @Test
+    void shouldIngestTelemetryEvents() throws Exception {
+        String a2aPayload = """
+                {
+                    "eventType": "A2A_CONSUMPTION",
+                    "metricValue": 1
+                }
+                """;
+
+        mockMvc.perform(post("/api/v1/telemetry/events")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(a2aPayload))
+                .andExpect(status().isOk());
+
+        String scrollytellingPayload = """
+                {
+                    "eventType": "SCROLLYTELLING_DEPTH",
+                    "metricValue": 5
+                }
+                """;
+
+        mockMvc.perform(post("/api/v1/telemetry/events")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(scrollytellingPayload))
+                .andExpect(status().isOk());
+
+        List<TelemetryEvent> events = repository.findAll();
+        assertThat(events).hasSize(2);
+
+        assertThat(events).anyMatch(e -> "A2A_CONSUMPTION".equals(e.getEventType()) && e.getMetricValue() == 1L);
+        assertThat(events).anyMatch(e -> "SCROLLYTELLING_DEPTH".equals(e.getEventType()) && e.getMetricValue() == 5L);
     }
 }
