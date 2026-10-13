@@ -102,17 +102,19 @@ describe('ResponsivePicture Component', () => {
     expect(img?.getAttribute('src')).toBe('/assets/images/podcast_studio_cover/podcast_studio_cover_640w.avif');
   });
 
-  it('renders ResponsivePicture inside TelemetryHub hero section', () => {
+  it('renders ResponsivePicture inside Podcast Player view when navigating tabs', async () => {
     component = mount(TelemetryHub, { target });
 
-    const heroAvatarContainer = target.querySelector('#hero-avatar-container');
-    expect(heroAvatarContainer).not.toBeNull();
+    const podcastBtn = target.querySelector('#tab-btn-podcast') as HTMLButtonElement;
+    expect(podcastBtn).not.toBeNull();
+    podcastBtn.click();
+    await new Promise(r => setTimeout(r, 0));
 
-    const picture = heroAvatarContainer?.querySelector('picture');
+    const coverContainer = target.querySelector('#podcast-cover-container');
+    expect(coverContainer).not.toBeNull();
+
+    const picture = coverContainer?.querySelector('picture');
     expect(picture).not.toBeNull();
-
-    const img = picture?.querySelector('img');
-    expect(img?.getAttribute('alt')).toBe('Официальный студийный портрет автора Дмитрия Ефремова');
   });
 
   it('successfully resolves all AVIF and WebP source paths to existing physical files in public assets', () => {

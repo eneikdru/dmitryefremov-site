@@ -1,0 +1,107 @@
+[
+  {
+    "id": "header",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 48
+  },
+  {
+    "id": "sub-header-telemetry",
+    "left": 160,
+    "top": 139,
+    "width": 1120,
+    "height": 73
+  },
+  {
+    "id": "hero-section",
+    "left": 208,
+    "top": 212,
+    "width": 1024,
+    "height": 640
+  },
+  {
+    "id": "hero-title",
+    "left": 228,
+    "top": 349,
+    "width": 984,
+    "height": 180
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 228,
+    "top": 545,
+    "width": 315,
+    "height": 26
+  },
+  {
+    "id": "hero-manifest",
+    "left": 228,
+    "top": 587,
+    "width": 672,
+    "height": 84
+  },
+  {
+    "id": "act-2-schematics",
+    "left": 208,
+    "top": 852,
+    "width": 1024,
+    "height": 782
+  },
+  {
+    "id": "vector-schematic-card",
+    "left": 228,
+    "top": 972,
+    "width": 984,
+    "height": 463
+  },
+  {
+    "id": "act-3-manifesto",
+    "left": 208,
+    "top": 1634,
+    "width": 1024,
+    "height": 514
+  },
+  {
+    "id": "pull-quote-block",
+    "left": 228,
+    "top": 1706,
+    "width": 984,
+    "height": 343
+  },
+  {
+    "id": "act-4-epilogue",
+    "left": 208,
+    "top": 2148,
+    "width": 1024,
+    "height": 464
+  },
+  {
+    "id": "engage-next-btn",
+    "left": 228,
+    "top": 2466,
+    "width": 984,
+    "height": 52
+  },
+  {
+    "id": "main-footer",
+    "left": 160,
+    "top": 2692,
+    "width": 1120,
+    "height": 121
+  },
+  {
+    "id": "imprint-toggle-btn",
+    "left": 1123,
+    "top": 2717,
+    "width": 137,
+    "height": 16
+  },
+  {
+    "id": "bottom-nav",
+    "left": 0,
+    "top": 844,
+    "width": 1440,
+    "height": 56
+  }
+]

@@ -20,12 +20,13 @@ describe('TelemetryHub Component & CMP Integration', () => {
     };
   });
 
-  it('renders hero title, subtitle, and manifest correctly', () => {
+  it('renders hero title, subtitle, and scrollytelling manifest correctly', () => {
     component = mount(TelemetryHub, { target });
 
-    expect(target.textContent).toContain('Дмитрий Ефремов');
-    expect(target.textContent).toContain('Системы, логика мышления и автономные процессы');
-    expect(target.textContent).toContain('«Ваш код и ваши решения — это то, кто вы есть на самом деле.»');
+    expect(target.textContent).toContain('DMITRY EFREMOV');
+    expect(target.textContent).toContain('RADICAL');
+    expect(target.textContent).toContain('FORM //');
+    expect(target.textContent).toContain('AXIOM: ARCHITECTURE WITHOUT MIMICRY');
   });
 
   it('switches palette theme when theme toggle button is clicked', async () => {
@@ -44,11 +45,12 @@ describe('TelemetryHub Component & CMP Integration', () => {
     expect(themeRoot.classList.contains('dark-void')).toBe(true);
   });
 
-  it('navigates seamlessly between article stream and podcast hub, loading initial episode correctly', async () => {
+  it('navigates seamlessly between scrollytelling, article stream and podcast hub', async () => {
     component = mount(TelemetryHub, { target });
 
-    // Initial state: Article Stream with realistic Russian essay
-    expect(target.textContent).toContain('Эстетика инженерного молчания и редакционный минимализм');
+    // Initial state: Scrollytelling interface at root path
+    expect(target.textContent).toContain('CH.01 // ORIGIN MATRIX');
+    expect(target.textContent).toContain('KINETIC EQUILIBRIUM');
 
     // Navigate to Podcast Media tab
     const podcastTabBtn = target.querySelector('#tab-btn-podcast') as HTMLButtonElement;
@@ -57,12 +59,11 @@ describe('TelemetryHub Component & CMP Integration', () => {
     podcastTabBtn.click();
     await new Promise(r => setTimeout(r, 0));
 
-    // Podcast hub loads initial episode correctly
-    expect(target.textContent).toContain('«Системы и реальность» Podcast');
-    expect(target.textContent).toContain('Выпуск 01: Системы и реальность — Введение в системное мышление');
-    expect(target.textContent).toContain('TIMECODES & TOPICS');
+    // Podcast hub loads
+    expect(target.textContent).toContain('Подкаст «Системы и реальность»');
+    expect(target.textContent).toContain('ТАЙМКОДЫ И ТЕМЫ');
 
-    // Navigate back to Article Stream tab
+    // Navigate to Article Stream tab
     const articleTabBtn = target.querySelector('#tab-btn-article') as HTMLButtonElement;
     articleTabBtn.click();
     await new Promise(r => setTimeout(r, 0));

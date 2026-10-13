@@ -36,8 +36,8 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
     "durationSeconds": 2690,
     "publishedAt": "2026-09-20",
     "audioUrl": "/audio/01-ruth-barcan-marcus.m4a",
-    "youtubeUrl": "https://youtu.be/1qiPT9UxKNM",
-    "mediaLink": "https://youtu.be/1qiPT9UxKNM",
+    "youtubeUrl": "https://youtube.com/watch?v=1qiPT9UxKNM",
+    "mediaLink": "https://youtube.com/watch?v=1qiPT9UxKNM",
     "telegramUrl": "https://t.me/efremov_mvp",
     "timecodes": [
       {
@@ -48,7 +48,7 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
       },
       {
         "id": 102,
-        "timeOffsetSeconds": 340,
+        "timeOffsetSeconds": 195,
         "title": "Формула Баркан: Сущность и возможное существование",
         "description": "Анализ формулы diamond exists x Fx -> exists x diamond Fx в контексте надежности распределенных систем."
       },
@@ -443,8 +443,14 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
 ];
 
 export function formatTime(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
+  if (seconds === undefined || seconds === null || isNaN(seconds) || seconds < 0) return '00:00';
+  const totalSecs = Math.floor(seconds);
+  const hrs = Math.floor(totalSecs / 3600);
+  const mins = Math.floor((totalSecs % 3600) / 60);
+  const secs = totalSecs % 60;
+  if (hrs > 0) {
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
