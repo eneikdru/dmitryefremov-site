@@ -77,6 +77,34 @@ class AgentContentApiIntegrationTest {
     }
 
     @Test
+    void testGetContentWithInvalidAuthorizationHeaderReturnsUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/v1/agent/content")
+                        .header("Authorization", "Bearer invalid-api-key-999")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.status", is(401)))
+                .andExpect(jsonPath("$.message", containsString("Invalid or missing API token")));
+    }
+
+    @Test
+    void testGetContentWithValidAuthorizationHeaderReturns200WithMaterials() throws Exception {
+        Article article = new Article("authentic-material-1", "Authentic Material Title", "Authentic Summary", "Authentic Content", OffsetDateTime.now());
+        articleRepository.save(article);
+
+        PodcastEpisode episode = new PodcastEpisode("authentic-podcast-1", "Authentic Podcast Title", "Thesis", "Desc", "http://audio.mp3", "http://media.link", 1800, OffsetDateTime.now());
+        podcastEpisodeRepository.save(episode);
+
+        mockMvc.perform(get("/api/v1/agent/content")
+                        .header("Authorization", "Bearer " + rawToken)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.articles", hasSize(1)))
+                .andExpect(jsonPath("$.articles[0].slug", is("authentic-material-1")))
+                .andExpect(jsonPath("$.podcasts", hasSize(1)))
+                .andExpect(jsonPath("$.podcasts[0].slug", is("authentic-podcast-1")));
+    }
+
+    @Test
     void testGetContentAsJsonSuccess() throws Exception {
         Article article = new Article("test-slug-1", "Test Title", "Test Summary", "Test Content", OffsetDateTime.now());
         articleRepository.save(article);
