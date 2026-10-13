@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audio Player - Nocturne Studio</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#081486",
+            "inverse-primary": "#494bd6",
+            "on-primary-fixed": "#07006c",
+            "inverse-on-surface": "#2c3039",
+            "on-tertiary": "#131e8c",
+            "secondary-fixed-dim": "#4cd7f6",
+            "on-secondary": "#003640",
+            "primary": "#c0c1ff",
+            "primary-fixed-dim": "#c0c1ff",
+            "tertiary-container": "#7c87f3",
+            "on-background": "#dfe2ee",
+            "secondary": "#4cd7f6",
+            "surface-container-highest": "#31353e",
+            "secondary-fixed": "#acedff",
+            "tertiary-fixed-dim": "#bdc2ff",
+            "outline-variant": "#464554",
+            "surface-variant": "#31353e",
+            "on-secondary-container": "#00424e",
+            "surface-container-lowest": "#0a0e16",
+            "primary-container": "#8083ff",
+            "on-secondary-fixed": "#001f26",
+            "inverse-surface": "#dfe2ee",
+            "on-surface-variant": "#c7c4d7",
+            "on-primary-container": "#0d0096",
+            "tertiary": "#bdc2ff",
+            "surface": "#0f131c",
+            "surface-tint": "#c0c1ff",
+            "error-container": "#93000a",
+            "on-primary": "#1000a9",
+            "tertiary-fixed": "#e0e0ff",
+            "surface-container-high": "#262a33",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "primary-fixed": "#e1e0ff",
+            "on-error-container": "#ffdad6",
+            "on-surface": "#dfe2ee",
+            "on-error": "#690005",
+            "error": "#ffb4ab",
+            "surface-dim": "#0f131c",
+            "on-tertiary-fixed-variant": "#2f3aa3",
+            "surface-bright": "#353942",
+            "surface-container": "#1c2028",
+            "secondary-container": "#03b5d3",
+            "surface-container-low": "#181c24",
+            "background": "#0f131c",
+            "on-tertiary-fixed": "#000767",
+            "outline": "#908fa0",
+            "on-secondary-fixed-variant": "#004e5c"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "margin": "1.25rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "margin-sm": "1rem",
+            "gutter-sm": "0.75rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Inter"],
+            "numeral-mono": ["Inter"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "headline-xl": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+            "headline-xl-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "numeral-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+            "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700"}],
+            "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+            "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+            "body-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+            "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Glow utilities for dark high-fidelity player */
+    .glow-aura {
+      box-shadow: 0 0 28px rgba(128, 131, 255, 0.45);
+    }
+    .thumb-glow {
+      box-shadow: 0 0 12px rgba(76, 215, 246, 0.8);
+    }
+    .card-glass {
+      background: rgba(28, 32, 40, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex justify-center selection:bg-primary-container selection:text-on-primary-container">
+<!-- Mobile Screen Container -->
+<main class="w-full max-w-md bg-surface min-h-screen flex flex-col justify-between relative overflow-hidden pb-4">
+<!-- Ambient Backdrop Light Glow -->
+<div class="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 bg-primary-container opacity-20 blur-[90px] pointer-events-none rounded-full"></div>
+<div class="absolute top-48 left-10 w-64 h-64 bg-secondary-container opacity-15 blur-[100px] pointer-events-none rounded-full"></div>
+<!-- 1. Top Navigation Bar (Shared Component TopAppBar Anchor) -->
+<header class="bg-surface dark:bg-surface flex justify-between items-center w-full px-margin py-space-sm z-30 relative">
+<!-- Leading Icon: Minimize -->
+<button aria-label="Minimize player" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-transform duration-150 active:scale-95 text-primary dark:text-primary">
+<span class="material-symbols-outlined text-[26px]">expand_more</span>
+</button>
+<!-- Center Title & Episode Badge -->
+<div class="flex flex-col items-center max-w-[210px] text-center">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider font-semibold">Now Playing</span>
+<h1 class="text-label-md font-label-md font-bold text-on-surface truncate w-full mt-0.5">Design Systems Today • Ep. 42</h1>
+</div>
+<!-- Trailing Icon: More Vert Options -->
+<button aria-label="More options" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-transform duration-150 active:scale-95 text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">more_vert</span>
+</button>
+</header>
+<!-- Main Content Stage -->
+<div class="px-margin flex-1 flex flex-col justify-around z-10 py-space-xs">
+<!-- 2. Centerpiece Cover Artwork -->
+<section class="relative my-auto flex flex-col items-center">
+<!-- Ambient Under-Artwork Glow Shadow -->
+<div class="absolute inset-4 rounded-lg bg-gradient-to-tr from-primary-container to-secondary-container blur-2xl opacity-40 -z-10 scale-95 transform transition-transform duration-700"></div>
+<!-- Artwork Container -->
+<div class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-lg overflow-hidden border border-white/10 shadow-2xl bg-surface-container-low group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Modern abstract 3D visual representing acoustic architectural space, with dynamic neon indigo and luminous cyan waves flowing through minimalist slate grey monolithic columns, photographed with cinematic depth of field, high-end studio lighting, and deep moody dark palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp4rzQoFpXJY_IbUV-KObcjaFkVaM3CY_P-VSe7u3pAKNVnpV4g2MNjP5zgQIeeRn_71qpLj7hOdhXKG8NL0rS5oz3933gzJlLRFTWrkzV5_4ZSgsIpfKzH60DJJOsZBoCMXh4Qzos1uKDRbBI5RZlZTRPInuYhJL4JQsn0AioC2l5gAe4WQJxvlfkpJqvEcw7lfEBQpN5_aegs0zJd3oY-aCYU5jrryIbY96S3pqnQosUAO947VEXPsYAFUcW55zaH8CWGWroZg"/>
+<!-- HQ Audio Glass Pill Badge -->
+<div class="absolute top-3 left-3 flex items-center gap-1.5 px-space-sm py-0.5 rounded-full card-glass border border-white/10 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-secondary tracking-widest font-bold">24-BIT • HQ</span>
+</div>
+<!-- Subtle Chapter Tag inside Artwork -->
+<div class="absolute bottom-3 right-3 flex items-center gap-1 px-space-sm py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md border border-white/5">
+<span class="material-symbols-outlined text-primary text-[14px]">graphic_eq</span>
+<span class="text-label-sm font-label-sm text-on-surface">Spatial Audio</span>
+</div>
+</div>
+</section>
+<!-- 3. Episode & Show Metadata -->
+<section class="mt-space-md mb-space-sm">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex-1 min-w-0">
+<h2 class="text-headline-md font-headline-md font-bold text-on-surface tracking-tight leading-snug truncate">
+              The Architecture of Modern Soundscapes
+            </h2>
+<p class="text-body-md font-body-md text-on-surface-variant flex items-center gap-1.5 mt-1">
+<span>Nocturne Studio with Elena Vance</span>
+<span class="material-symbols-outlined text-secondary text-[16px] fill-icon">verified</span>
+</p>
+</div>
+<button aria-label="Add to favorites" class="w-11 h-11 flex-shrink-0 rounded-full flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-surface-container-high transition-transform duration-150 active:scale-90" id="favorite-btn">
+<span class="material-symbols-outlined text-[26px]">favorite</span>
+</button>
+</div>
+<!-- Chapter Pill Bar -->
+<div class="mt-space-sm flex items-center gap-2">
+<div class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container border border-white/5 max-w-full">
+<span class="material-symbols-outlined text-secondary text-[14px]">bookmark</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant truncate">Chapter 3: Spatial Acoustics (18:00 - 25:30)</span>
+</div>
+</div>
+</section>
+<!-- 4. Scrubbing & Waveform Section -->
+<section aria-label="Audio scrubber" class="my-space-xs flex flex-col gap-1.5">
+<!-- Interactive Waveform Visualizer -->
+<div class="h-8 flex items-end justify-between gap-1 px-1 py-1 cursor-pointer group">
+<!-- Waveform amplitude bars (Past - played) -->
+<div class="w-1 h-3 rounded-full bg-primary-container"></div>
+<div class="w-1 h-5 rounded-full bg-primary-container"></div>
+<div class="w-1 h-4 rounded-full bg-primary-container"></div>
+<div class="w-1 h-7 rounded-full bg-secondary"></div>
+<div class="w-1 h-6 rounded-full bg-secondary"></div>
+<div class="w-1 h-3 rounded-full bg-primary-container"></div>
+<div class="w-1 h-8 rounded-full bg-secondary"></div>
+<div class="w-1 h-5 rounded-full bg-primary-container"></div>
+<div class="w-1 h-4 rounded-full bg-primary"></div>
+<div class="w-1 h-6 rounded-full bg-primary"></div>
+<div class="w-1 h-7 rounded-full bg-secondary"></div>
+<div class="w-1 h-5 rounded-full bg-primary"></div>
+<!-- Current Scrubber point -->
+<div class="w-1.5 h-8 rounded-full bg-secondary-fixed thumb-glow relative">
+<span class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-secondary ring-2 ring-surface"></span>
+</div>
+<!-- Waveform amplitude bars (Future - unplayed) -->
+<div class="w-1 h-5 rounded-full bg-surface-container-highest"></div>
+<div class="w-1 h-6 rounded-full bg-surface-container-highest"></div>
+<div class="w-1 h-4 rounded-full bg-surface-container-high"></div>
+<div class="w-1 h-7 rounded-full bg-surface-container-highest"></div>
+<div class="w-1 h-3 rounded-full bg-surface-container-high"></div>
+<div class="w-1 h-6 rounded-full bg-surface-container-highest"></div>
+<div class="w-1 h-5 rounded-full bg-surface-container-high"></div>
+<div class="w-1 h-2 rounded-full bg-surface-container-high"></div>
+<div class="w-1 h-4 rounded-full bg-surface-container-high"></div>
+<div class="w-1 h-6 rounded-full bg-surface-container-highest"></div>
+</div>
+<!-- Slider Bar -->
+<div class="relative w-full h-2 flex items-center group cursor-pointer">
+<!-- Base background track -->
+<div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+<!-- Active Fill Progress Bar -->
+<div class="h-full w-[44%] bg-gradient-to-r from-primary via-primary-container to-secondary rounded-full"></div>
+</div>
+<!-- Scrubber Pill Thumb Knob -->
+<div class="absolute left-[44%] -translate-x-1/2 w-4 h-4 rounded-full bg-on-background thumb-glow border-2 border-secondary group-hover:scale-125 transition-transform duration-150"></div>
+</div>
+<!-- Timestamp readout -->
+<div class="flex justify-between items-center text-numeral-mono font-numeral-mono text-body-sm text-on-surface-variant">
+<span class="text-primary font-medium">18:42</span>
+<span class="text-on-surface-variant">-24:18</span>
+</div>
+</section>
+<!-- 5. Primary Playback Controls -->
+<section aria-label="Transport controls" class="my-space-sm flex items-center justify-between px-space-xs">
+<!-- Speed / Chapter Skip (15s backward) -->
+<button aria-label="Skip backward 15 seconds" class="relative w-11 h-11 rounded-full flex items-center justify-center bg-white/[0.05] hover:bg-white/[0.1] text-on-surface transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[24px]">export_notes</span>
+</button>
+<!-- Previous Episode -->
+<button aria-label="Previous episode" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[28px]">skip_previous</span>
+</button>
+<!-- Primary Play/Pause Button Capsule with Glowing Ring -->
+<button aria-label="Play or pause podcast" class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-container to-secondary-container text-on-primary-container flex items-center justify-center glow-aura transition-all duration-200 active:scale-90 hover:brightness-110 shadow-lg" id="play-pause-btn">
+<span class="material-symbols-outlined text-[36px] text-on-primary-fixed fill-icon">pause</span>
+</button>
+<!-- Next Episode -->
+<button aria-label="Next episode" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[28px]">skip_next</span>
+</button>
+<!-- Skip 30s Forward -->
+<button aria-label="Skip forward 30 seconds" class="relative w-11 h-11 rounded-full flex items-center justify-center bg-white/[0.05] hover:bg-white/[0.1] text-on-surface transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[24px]">forward_30</span>
+</button>
+</section>
+<!-- 6. Secondary Utilities Grid / Pill Controls -->
+<section class="mt-space-xs mb-space-sm flex items-center justify-between gap-1.5 px-0.5">
+<!-- Playback Speed Chip -->
+<button class="h-8 px-space-sm rounded-full bg-surface-container-low hover:bg-surface-container-high border border-white/5 flex items-center gap-1 text-label-sm font-label-sm text-secondary font-semibold transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[14px]">speed</span>
+<span>1.2x</span>
+</button>
+<!-- Sleep Timer -->
+<button class="h-8 px-space-sm rounded-full bg-surface-container-low hover:bg-surface-container-high border border-white/5 flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[14px]">bedtime</span>
+<span>30m</span>
+</button>
+<!-- Transcript Quick Toggle -->
+<button class="h-8 px-space-sm rounded-full bg-surface-container-low hover:bg-surface-container-high border border-white/5 flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[14px]">subtitles</span>
+<span>Transcript</span>
+</button>
+<!-- Output / Device Target Badge -->
+<button class="h-8 px-space-sm rounded-full bg-secondary-container/20 border border-secondary/30 flex items-center gap-1 text-label-sm font-label-sm text-secondary font-medium transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[14px] text-secondary">speaker_group</span>
+<span class="max-w-[70px] truncate">Living Room</span>
+</button>
+</section>
+</div>
+<!-- 7. Up Next / Chapter Peek Drawer Card -->
+<aside class="px-margin pt-space-xs">
+<div class="card-glass border border-white/10 rounded-lg p-space-sm flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors duration-200">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-surface-container-high overflow-hidden flex-shrink-0 relative border border-white/5">
+<img class="w-full h-full object-cover opacity-80" data-alt="Monochrome blueprint style digital artwork for next podcast episode featuring complex acoustic reverberation diagrams and wave simulation lines in indigo and slate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMT1ofyWeBA17cyDPm91-kfx0KeOr9vlLvohhVDC6sGRHw96HYmzaQlvIyD75RYnsH-fX_CJeuCHwillRWNYrCIB-SQOHPYw8QAUhvNIECdnoV1iJpu85VYyDtQXYUwZmnPHf3y_uCW9whNw1kYWGt6JmGc9AeDVhaOsRpvD4-ibAGjUPckwJEfDfpRA8Aq372OYdbopJ43HAR44Buykd6PEpc5wbHEfZmg1P_QD8sCcePhlT6fryxoY0T7mE4c-aZRw8XzI0hpg"/>
+<div class="absolute inset-0 bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[16px]">queue_music</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-primary tracking-wide uppercase font-semibold">Up Next • Ep. 43</span>
+<span class="text-body-sm font-body-sm text-on-surface font-medium truncate max-w-[190px]">Synthesizing Natural Resonances</span>
+</div>
+</div>
+<div class="flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span>
+</div>
+</div>
+</aside>
+</main>
+<script>
+    // Micro-interactions
+    const favoriteBtn = document.getElementById('favorite-btn');
+    favoriteBtn.addEventListener('click', () => {
+      const icon = favoriteBtn.querySelector('.material-symbols-outlined');
+      const isFilled = icon.classList.contains('fill-icon');
+      if (isFilled) {
+        icon.classList.remove('fill-icon', 'text-error');
+        icon.classList.add('text-on-surface-variant');
+      } else {
+        icon.classList.add('fill-icon', 'text-error');
+        icon.classList.remove('text-on-surface-variant');
+      }
+    });
+
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    playPauseBtn.addEventListener('click', () => {
+      const icon = playPauseBtn.querySelector('.material-symbols-outlined');
+      if (icon.textContent === 'pause') {
+        icon.textContent = 'play_arrow';
+        playPauseBtn.classList.remove('glow-aura');
+      } else {
+        icon.textContent = 'pause';
+        playPauseBtn.classList.add('glow-aura');
+      }
+    });
+  </script>
+</body></html>
