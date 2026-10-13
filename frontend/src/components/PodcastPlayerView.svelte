@@ -14,6 +14,7 @@
 
   let audioElement: HTMLAudioElement | null = null;
   let isPlaying: boolean = false;
+  let isAudioPaused: boolean = true;
   let currentTime: number = 0;
   let volume: number = 1.0;
   let isMuted: boolean = false;
@@ -54,15 +55,15 @@
 
   function togglePlay() {
     if (!audioElement) return;
-    if (audioElement.paused) {
-      audioElement.play().then(() => {
-        isPlaying = true;
-      }).catch((err) => {
+    if (!isPlaying) {
+      isPlaying = true;
+      audioElement.play().catch((err) => {
+        isPlaying = false;
         console.warn("Audio playback interaction:", err);
       });
     } else {
-      audioElement.pause();
       isPlaying = false;
+      audioElement.pause();
     }
   }
 
@@ -230,6 +231,7 @@
         <!-- Hidden Native HTML5 Audio Element for Playback State -->
         <audio
           bind:this={audioElement}
+          bind:paused={isAudioPaused}
           src={currentEpisode.audioUrl}
           on:play={() => (isPlaying = true)}
           on:pause={() => (isPlaying = false)}

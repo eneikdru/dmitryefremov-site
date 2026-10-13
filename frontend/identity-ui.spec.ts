@@ -13,8 +13,11 @@ test.describe('Core Identity and Essay Reader Verification', () => {
 
     await page.goto('/');
 
+    // Switch to article tab
+    await page.click('#tab-btn-article');
+
     // Click on the third article
-    await page.locator('text=Deterministic State Determinism').first().click();
+    await page.locator('text=Deterministic State Determinism in Autonomous Loops').first().click();
 
     // Verify Essay reader fetches and renders content (based on trace)
     await expect(page.locator('text=Deterministic State Determinism in Autonomous Loops').first()).toBeVisible();
