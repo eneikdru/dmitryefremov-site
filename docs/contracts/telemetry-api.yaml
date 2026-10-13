@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  title: Platform Telemetry API Contract
+  description: Shared API specification for Dmitry Efremov's Platform Telemetry Ingestion Backend. Defines endpoints for ingesting event metrics to support A2A consumption tracking and High-End Scrollytelling depth progression.
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/telemetry/events:
+    post:
+      summary: Ingest Telemetry Event
+      description: Ingests an incoming telemetry payload (e.g. A2A consumption event or scrollytelling depth). Persists the metric to the timeseries datastore and increments progression metrics.
+      operationId: ingestTelemetryEvent
+      requestBody:
+        description: Telemetry ingestion request payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelemetryIngestionRequest'
+      responses:
+        '202':
+          description: Event successfully ingested and queued for asynchronous persistence.
+        '400':
+          description: Bad request (validation failure).
+        '500':
+          description: Internal server error.
+
+components:
+  schemas:
+    TelemetryIngestionRequest:
+      type: object
+      required:
+        - eventType
+        - value
+      properties:
+        eventType:
+          type: string
+          description: Standardized type of the telemetry event. Must strictly adhere to the glossary (e.g. A2A_CONSUMPTION, SCROLLYTELLING_DEPTH).
+        value:
+          type: number
+          format: float
+          description: Quantitative measurement associated with the event.
+        metadata:
+          type: string
+          description: Optional JSON string or key-value payload for additional context.
