@@ -36,7 +36,7 @@ test('generate design verification artifacts for consent platform integration', 
     const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const desktopPage = await desktopContext.newPage();
     await desktopPage.goto('http://localhost:4173');
-    await desktopPage.waitForSelector('#app-root');
+    await desktopPage.waitForSelector('#telemetry-hub-root');
     await desktopPage.waitForSelector('#cmp-modal-overlay');
     await desktopPage.waitForTimeout(300);
 
@@ -84,7 +84,7 @@ test('generate design verification artifacts for consent platform integration', 
     const mobileContext = await browser.newContext({ viewport: { width: 375, height: 812 } });
     const mobilePage = await mobileContext.newPage();
     await mobilePage.goto('http://localhost:4173');
-    await mobilePage.waitForSelector('#app-root');
+    await mobilePage.waitForSelector('#telemetry-hub-root');
     await mobilePage.waitForSelector('#cmp-modal-overlay');
     await mobilePage.waitForTimeout(300);
 

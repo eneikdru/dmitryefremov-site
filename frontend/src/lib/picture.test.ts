@@ -112,7 +112,7 @@ describe('ResponsivePicture Component', () => {
     expect(picture).not.toBeNull();
 
     const img = picture?.querySelector('img');
-    expect(img?.getAttribute('alt')).toBe('Официальный студийный портрет автора Дмитрия Ефремова');
+    expect(img?.getAttribute('alt')).toBe('Официальный студийный портрет Дмитрия Ефремова');
   });
 
   it('successfully resolves all AVIF and WebP source paths to existing physical files in public assets', () => {

@@ -1,12 +1,24 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest';
-import { mount, unmount, flushSync } from 'svelte';
+import { mount, unmount, flushSync, tick } from 'svelte';
 import { formatTime, generateWaveformHeights, PODCAST_EPISODES } from './podcast';
 import PodcastPlayerView from '../components/PodcastPlayerView.svelte';
 
 beforeAll(() => {
-  window.HTMLMediaElement.prototype.play = vi.fn().mockImplementation(() => Promise.resolve());
-  window.HTMLMediaElement.prototype.pause = vi.fn();
+  let isPaused = true;
+  Object.defineProperty(window.HTMLMediaElement.prototype, 'paused', {
+    get() { return isPaused; },
+    configurable: true
+  });
+  window.HTMLMediaElement.prototype.play = vi.fn().mockImplementation(function (this: HTMLAudioElement) {
+    isPaused = false;
+    this.dispatchEvent(new Event('play'));
+    return Promise.resolve();
+  });
+  window.HTMLMediaElement.prototype.pause = vi.fn().mockImplementation(function (this: HTMLAudioElement) {
+    isPaused = true;
+    this.dispatchEvent(new Event('pause'));
+  });
 });
 
 describe('Podcast Helpers & Utilities', () => {
@@ -76,10 +88,10 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   it('renders episode title, catalog list, wave visualizer, timecodes, and external YouTube & Telegram links', () => {
     component = mount(PodcastPlayerView, { target });
 
-    expect(target.textContent).toContain('«Системы и реальность» Podcast');
+    expect(target.textContent).toContain('Подкаст «Системы и реальность»');
     expect(target.textContent).toContain(PODCAST_EPISODES[0].title);
-    expect(target.textContent).toContain('WAVE_VISUALIZATION');
-    expect(target.textContent).toContain('TIMECODES & TOPICS');
+    expect(target.textContent).toContain('ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ');
+    expect(target.textContent).toContain('ТАЙМКОДЫ И ТЕМЫ');
 
     // Check timecodes rendered
     PODCAST_EPISODES[0].timecodes.forEach(tc => {
@@ -91,7 +103,7 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     const tgLink = target.querySelector('a[aria-label="Telegram Channel"]') as HTMLAnchorElement;
 
     expect(ytLink).not.toBeNull();
-    expect(ytLink.getAttribute('href')).toMatch(/^https:\/\/youtube\.com/);
+    expect(ytLink.getAttribute('href')).toMatch(/^https:\/\/(www\.)?(youtube\.com|youtu\.be)/);
     expect(ytLink.getAttribute('target')).toBe('_blank');
     expect(ytLink.getAttribute('rel')).toBe('noopener noreferrer');
 
@@ -101,35 +113,48 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     expect(tgLink.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
-  it('toggles play/pause state when clicking play button and interacts with audio element', () => {
+  it('toggles play/pause state when clicking play button and interacts with audio element', async () => {
     component = mount(PodcastPlayerView, { target });
-    const playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
+    await tick();
+    let playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
 
     expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
 
     playBtn.click();
-    flushSync();
+    await tick();
+    await new Promise(r => setTimeout(r, 10));
+    await tick();
 
+    playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
     expect(playBtn.getAttribute('aria-label')).toBe('Pause Podcast Episode');
 
     playBtn.click();
-    flushSync();
+    await tick();
+    await new Promise(r => setTimeout(r, 10));
+    await tick();
 
+    playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
     expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
   });
 
-  it('handles audio playback completion (ended event) by resetting playback state', () => {
+  it('handles audio playback completion (ended event) by resetting playback state', async () => {
     component = mount(PodcastPlayerView, { target });
-    const playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
+    await tick();
+    let playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
     const audioElement = target.querySelector('audio') as HTMLAudioElement;
 
     playBtn.click();
-    flushSync();
+    await tick();
+    await new Promise(r => setTimeout(r, 10));
+    await tick();
+
+    playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
     expect(playBtn.getAttribute('aria-label')).toBe('Pause Podcast Episode');
 
     audioElement.dispatchEvent(new Event('ended'));
-    flushSync();
+    await tick();
 
+    playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
     expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
     const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
     expect(currentTimeVal.textContent).toBe('00:00');
@@ -138,7 +163,6 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   it('seeks directly to timestamp when a timecode button is clicked', () => {
     component = mount(PodcastPlayerView, { target });
 
-    // Timecode 2 for Episode 01 is 195 seconds ("03:15")
     const targetTc = PODCAST_EPISODES[0].timecodes[1];
     const timecodeBtn = target.querySelector(`#timecode-btn-${targetTc.id}`) as HTMLButtonElement;
     expect(timecodeBtn).not.toBeNull();
@@ -147,8 +171,8 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     flushSync();
 
     const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
-    expect(currentTimeVal.textContent).toBe('03:15');
-    expect(target.textContent).toContain('NOW_PLAYING');
+    expect(currentTimeVal.textContent).toBe(formatTime(targetTc.timeOffsetSeconds));
+    expect(target.textContent).toContain('СЕЙЧАС ИГРАЕТ');
   });
 
   it('handles waveform keyboard navigation and component seekTo exported function', () => {

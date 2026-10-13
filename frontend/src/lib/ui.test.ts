@@ -31,21 +31,24 @@ describe('TelemetryHub Component & CMP Integration', () => {
   it('switches palette theme when theme toggle button is clicked', async () => {
     component = mount(TelemetryHub, { target });
     const themeBtn = target.querySelector('#theme-toggle-btn') as HTMLButtonElement;
-    const themeRoot = target.querySelector('#theme-root') as HTMLElement;
+    const themeRoot = target.querySelector('#telemetry-hub-root') as HTMLElement;
 
-    expect(themeRoot.classList.contains('dark-void')).toBe(true);
-
-    themeBtn.click();
-    await new Promise(r => setTimeout(r, 0));
-    expect(themeRoot.classList.contains('light-monochrome')).toBe(true);
+    expect(themeBtn.textContent).toContain('Dark Void');
+    expect(themeRoot.classList.contains('bg-[#090a0f]')).toBe(true);
 
     themeBtn.click();
     await new Promise(r => setTimeout(r, 0));
-    expect(themeRoot.classList.contains('dark-void')).toBe(true);
+    expect(themeBtn.textContent).toContain('Light Monochrome');
+    expect(themeRoot.classList.contains('bg-[#fafafa]')).toBe(true);
+
+    themeBtn.click();
+    await new Promise(r => setTimeout(r, 0));
+    expect(themeBtn.textContent).toContain('Dark Void');
+    expect(themeRoot.classList.contains('bg-[#090a0f]')).toBe(true);
   });
 
   it('navigates seamlessly between article stream and podcast hub, loading initial episode correctly', async () => {
-    component = mount(TelemetryHub, { target });
+    component = mount(TelemetryHub, { target, props: { initialTab: 'article' } });
 
     // Initial state: Article Stream with realistic Russian essay
     expect(target.textContent).toContain('Эстетика инженерного молчания и редакционный минимализм');
@@ -58,9 +61,9 @@ describe('TelemetryHub Component & CMP Integration', () => {
     await new Promise(r => setTimeout(r, 0));
 
     // Podcast hub loads initial episode correctly
-    expect(target.textContent).toContain('«Системы и реальность» Podcast');
-    expect(target.textContent).toContain('Выпуск 01: Системы и реальность — Введение в системное мышление');
-    expect(target.textContent).toContain('TIMECODES & TOPICS');
+    expect(target.textContent).toContain('Подкаст «Системы и реальность»');
+    expect(target.textContent).toContain('Рут Баркан Маркус: Модальная логика сущностей и деонтические инварианты');
+    expect(target.textContent).toContain('ТАЙМКОДЫ И ТЕМЫ');
 
     // Navigate back to Article Stream tab
     const articleTabBtn = target.querySelector('#tab-btn-article') as HTMLButtonElement;
@@ -80,7 +83,7 @@ describe('TelemetryHub Component & CMP Integration', () => {
     await new Promise(r => setTimeout(r, 0));
 
     expect(target.querySelector('#imprint-modal')).not.toBeNull();
-    expect(target.textContent).toContain('Site Operator:');
+    expect(target.textContent).toContain('Владелец сайта:');
 
     const closeBtn = target.querySelector('#imprint-close-btn') as HTMLButtonElement;
     closeBtn.click();

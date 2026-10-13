@@ -13,7 +13,16 @@ test.describe('Core Identity and Essay Reader Verification', () => {
 
     await page.goto('/');
 
-    // Click on the third article
+    // Dismiss CMP banner if visible
+    const cmpAccept = page.locator('#cmp-accept-btn');
+    if (await cmpAccept.isVisible()) {
+      await cmpAccept.click();
+    }
+
+    // Switch to article tab to view longreads
+    await page.click('#tab-btn-article');
+
+    // Click on the article
     await page.locator('text=Deterministic State Determinism').first().click();
 
     // Verify Essay reader fetches and renders content (based on trace)

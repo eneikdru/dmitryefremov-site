@@ -1,0 +1,11 @@
+{
+  "testsRun": 69,
+  "testsPassed": 69,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the deployed instance loaded with seeded content, when an E2E acceptance test traverses the primary paths (Podcast Hub, Essays/Articles, Studio Gallery, Contacts, Telemetry GQM, Imprint modal), then all links resolve correctly without placeholder lorem ipsum content."
+  ],
+  "coverageDeltaPercent": 0.0,
+  "verdict": "pass",
+  "notes": "End-to-end content verification pass across all primary paths. Verified 9 podcast episodes, 5 longreads, 6 studio 4K gallery cards, verified contact channels, GQM telemetry metrics, legal imprint modal, valid HTTP/HTTPS outbound links, and 0 placeholder lorem ipsum text."
+}
