@@ -66,7 +66,7 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     it('dispatches multiple contact link events in sequence', () => {
       const contactLinks = [
         { url: 'https://t.me/efremov_mvp', label: 'Telegram Channel', platform: 'Telegram' },
-        { url: 'https://youtube.com/@efremov_dmitriy', label: 'YouTube Channel', platform: 'YouTube' },
+        { url: 'https://youtube.com/@dmitrii.efremov', label: 'YouTube Channel', platform: 'YouTube' },
         { url: 'mailto:contact@dmitryefremov.com', label: 'Direct Email', platform: 'Email' }
       ];
 
