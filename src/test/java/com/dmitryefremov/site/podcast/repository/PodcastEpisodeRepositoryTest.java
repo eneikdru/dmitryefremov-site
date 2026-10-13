@@ -46,6 +46,18 @@ class PodcastEpisodeRepositoryTest {
         assertThat(timecodeTableCount).isGreaterThan(0);
         assertThat(quoteTableCount).isGreaterThan(0);
         assertThat(episodesViewCount).isGreaterThan(0);
+
+        Integer audioUrlColumn = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns WHERE UPPER(table_name) = 'PODCAST_EPISODES' AND UPPER(column_name) = 'AUDIO_URL'",
+                Integer.class
+        );
+        Integer metadataColumn = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns WHERE UPPER(table_name) = 'PODCAST_EPISODES' AND UPPER(column_name) = 'METADATA'",
+                Integer.class
+        );
+
+        assertThat(audioUrlColumn).isEqualTo(1);
+        assertThat(metadataColumn).isEqualTo(1);
     }
 
     @Test
@@ -148,6 +160,8 @@ class PodcastEpisodeRepositoryTest {
         );
         episode.addQuote(quote);
 
+        episode.setMetadata("{\"bitrate\": \"320kbps\", \"format\": \"mp3\"}");
+
         PodcastEpisode saved = podcastEpisodeRepository.save(episode);
         podcastEpisodeRepository.flush();
 
@@ -155,9 +169,17 @@ class PodcastEpisodeRepositoryTest {
 
         Optional<PodcastEpisode> fetched = podcastEpisodeRepository.findBySlug("ruth-barcan-marcus-ep1");
         assertThat(fetched).isPresent();
+        assertThat(fetched.get().getAudioUrl()).isEqualTo("https://cdn.dmitryefremov.com/podcast/marcus.mp3");
+        assertThat(fetched.get().getMetadata()).isEqualTo("{\"bitrate\": \"320kbps\", \"format\": \"mp3\"}");
         assertThat(fetched.get().getConceptLinks()).contains("modal-logic");
         assertThat(fetched.get().getQuotes()).hasSize(1);
         assertThat(fetched.get().getQuotes().get(0).getQuoteText()).contains("Идентичность есть необходимое отношение");
         assertThat(fetched.get().getQuotes().get(0).getSpeaker()).isEqualTo("Рут Баркан Маркус");
+
+        String viewMetadata = jdbcTemplate.queryForObject(
+                "SELECT metadata FROM episodes WHERE slug = 'ruth-barcan-marcus-ep1'",
+                String.class
+        );
+        assertThat(viewMetadata).isEqualTo("{\"bitrate\": \"320kbps\", \"format\": \"mp3\"}");
     }
 }
