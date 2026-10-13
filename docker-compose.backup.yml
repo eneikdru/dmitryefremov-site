@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   db-backup:
     image: postgres:16-alpine
@@ -16,22 +15,49 @@ services:
       RETENTION_DAYS: ${RETENTION_DAYS:-7}
       CRON_SCHEDULE: ${BACKUP_SCHEDULE:-0 2 * * *}
     volumes:
-      - backup-data:/backups
-      - offsite-backup-data:/offsite_backups
-      - ./scripts/backup.sh:/usr/local/bin/backup.sh:ro
-      - ./scripts/restore.sh:/usr/local/bin/restore.sh:ro
+    - backup-data:/backups
+    - offsite-backup-data:/offsite_backups
+    - ./scripts/backup.sh:/usr/local/bin/backup.sh:ro
+    - ./scripts/restore.sh:/usr/local/bin/restore.sh:ro
     entrypoint:
-      - /bin/sh
-      - -c
-      - |
-        chmod +x /usr/local/bin/backup.sh /usr/local/bin/restore.sh
-        echo "$$CRON_SCHEDULE /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1" > /var/spool/cron/crontabs/root
-        echo "[INFO] Scheduled daily database backup with schedule: $$CRON_SCHEDULE"
-        # Run initial backup on startup
-        /usr/local/bin/backup.sh
-        # Start crond in foreground
-        exec crond -f -l 2
+    - /bin/sh
+    - -c
+    - 'chmod +x /usr/local/bin/backup.sh /usr/local/bin/restore.sh
 
+      echo "export POSTGRES_HOST=''$$POSTGRES_HOST''" > /usr/local/bin/backup-wrapper.sh
+
+      echo "export POSTGRES_PORT=''$$POSTGRES_PORT''" >> /usr/local/bin/backup-wrapper.sh
+
+      echo "export POSTGRES_DB=''$$POSTGRES_DB''" >> /usr/local/bin/backup-wrapper.sh
+
+      echo "export POSTGRES_USER=''$$POSTGRES_USER''" >> /usr/local/bin/backup-wrapper.sh
+
+      echo "export POSTGRES_PASSWORD=''$$POSTGRES_PASSWORD''" >> /usr/local/bin/backup-wrapper.sh
+
+      echo "export BACKUP_DIR=''$$BACKUP_DIR''" >> /usr/local/bin/backup-wrapper.sh
+
+      echo "export OFFSITE_BACKUP_DIR=''$$OFFSITE_BACKUP_DIR''" >> /usr/local/bin/backup-wrapper.sh
+
+      echo "export RETENTION_DAYS=''$$RETENTION_DAYS''" >> /usr/local/bin/backup-wrapper.sh
+
+      echo "/usr/local/bin/backup.sh" >> /usr/local/bin/backup-wrapper.sh
+
+      chmod +x /usr/local/bin/backup-wrapper.sh
+
+      echo "$$CRON_SCHEDULE /usr/local/bin/backup-wrapper.sh >> /var/log/backup.log
+      2>&1" > /var/spool/cron/crontabs/root
+
+      echo "[INFO] Scheduled daily database backup with schedule: $$CRON_SCHEDULE"
+
+      # Run initial backup on startup
+
+      /usr/local/bin/backup-wrapper.sh
+
+      # Start crond in foreground
+
+      exec crond -f -l 2
+
+      '
 volumes:
   backup-data:
     driver: local
