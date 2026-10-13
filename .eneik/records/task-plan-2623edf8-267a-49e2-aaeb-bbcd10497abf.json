@@ -1,0 +1,104 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c19ada93-abd4-4f81-9271-55359d5de80d",
+      "title": "Privacy Consent Management",
+      "jtbd": "When a visitor arrives on the site, I want to be asked for consent before any non-essential trackers load, so that my privacy preferences are respected and the site complies with ePrivacy regulations.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Consent recorded for 100% of unique visitor sessions before non-essential script execution",
+      "tocConstraintRef": "Frontend script loading sequence blocking",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Opt-in consent captured before any non-essential cookie or tracker loads",
+        "R2: Refusing must be as easy as accepting",
+        "R3: The choice is recorded and revocable",
+        "R4: Use an established consent platform rather than a hand-rolled banner"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Implement Consent Banner UI Integration",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the consent banner for this epic, I want to integrate an established consent platform into the frontend, so that visitor consent is legally captured and recorded before any tracking occurs.",
+          "acceptanceCriteria": "Given a new visitor lands on the site\nWhen the initial page load completes\nThen a consent banner from an established platform must be visible immediately\nGiven the consent banner is visible\nWhen the user interacts with it via keyboard or mouse\nThen the 'Reject All' option must be as prominent as the 'Accept All' option, all interactive elements must have visible focus, and text must maintain a 4.5:1 contrast ratio (WCAG 2.1 AA)\nGiven the user makes a choice\nThen that choice is recorded, non-essential trackers are only loaded if explicit consent was given, and realistic domain content is present to verify this path end-to-end.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Frontend script initialization blocking",
+          "sixSigmaMetric": "100% of tracked events are preceded by a valid explicit consent state",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "QA Verification for Consent Banner",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to verify that the consent banner blocks non-essential trackers and accurately records visitor choices, so that the site is legally compliant.",
+          "acceptanceCriteria": "Given a suite of automated E2E tests covering the full test pyramid\nWhen the tests simulate a new visitor session\nThen they must verify no tracking scripts load prior to explicit consent being granted\nGiven the automated test suite\nWhen the tests interact with the consent banner\nThen they must assert that rejecting is as easy as accepting, and that choices are properly recorded and revocable.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "E2E testing of third-party script loading",
+          "sixSigmaMetric": "100% pass rate for consent state transitions in E2E tests",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "69e36127-e778-4851-83e6-37a2d16cedf7",
+      "title": "Platform Telemetry and Measurement",
+      "jtbd": "When operating the site, I want to measure visitor engagement with my content and external links, so that I know if the site successfully drives interest in my work.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "100% of key engagement events are reliably captured without data loss",
+      "tocConstraintRef": "Analytics event batching and delivery",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Measure how many visitors actually read the long-form articles (Goal-Question-Metric: Does the site drive interest? -> Are people reading the articles? -> Scroll depth and time on page metrics)",
+        "R2: Measure how many visitors click external links to the podcast or Telegram (Goal-Question-Metric: Does the site drive interest? -> Are people proceeding to other platforms? -> Outbound click metrics)"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Implement Telemetry Measurement System",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing telemetry for this epic, I want to instrument engagement events, so that the site's success can be measured according to the defined goals.",
+          "acceptanceCriteria": "Given a visitor reading an article\nWhen they scroll deeply or spend significant time\nThen an engagement metric is captured\nGiven a visitor exploring the site\nWhen they click an outbound link to Telegram or YouTube\nThen an outbound click event is recorded securely.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Frontend event tracking reliability",
+          "sixSigmaMetric": "No more than 0.1% event dropping under high traffic",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        },
+        {
+          "title": "QA Verification for Telemetry System",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to verify that telemetry events are correctly fired, so that the measurement data is accurate.",
+          "acceptanceCriteria": "Given the automated test suite across unit and E2E layers\nWhen simulated user actions occur\nThen the correct metric events must be intercepted in the network layer\nGiven the telemetry system\nWhen testing event delivery\nThen assert no PII is leaked in the payload.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "E2E verification of network events",
+          "sixSigmaMetric": "100% pass rate for telemetry E2E tests",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
