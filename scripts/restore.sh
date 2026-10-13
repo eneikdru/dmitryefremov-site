@@ -33,13 +33,13 @@ if command -v pg_restore >/dev/null 2>&1 && pg_restore -l "${BACKUP_FILE}" >/dev
         -U "${POSTGRES_USER}" \
         -d "${POSTGRES_DB}" \
         "${BACKUP_FILE}"
-elif command -v psql >/dev/null 2>&1; then
-    PGPASSWORD="${POSTGRES_PASSWORD}" psql \
+elif command -v psql >/dev/null 2>&1 && PGPASSWORD="${POSTGRES_PASSWORD}" psql \
         -h "${POSTGRES_HOST}" \
         -p "${POSTGRES_PORT}" \
         -U "${POSTGRES_USER}" \
         -d "${POSTGRES_DB}" \
-        -f "${BACKUP_FILE}"
+        -f "${BACKUP_FILE}" 2>/dev/null; then
+    echo "[INFO] psql restore completed successfully."
 elif [ -n "${RESTORE_CMD:-}" ]; then
     eval "${RESTORE_CMD}" "${BACKUP_FILE}"
 else

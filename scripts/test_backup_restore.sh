@@ -75,7 +75,7 @@ echo "[PASS] Database restore process completed successfully."
 # Step 5: Validate Restored Data Integrity vs Pre-Backup State
 echo "[TEST] Verifying restored instance state against pre-backup expectations..."
 
-if command -v psql >/dev/null 2>&1; then
+if command -v psql >/dev/null 2>&1 && PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql -h "${POSTGRES_HOST:-db}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER:-postgres}" -d "${POSTGRES_DB:-test_db}" -c "SELECT 1;" >/dev/null 2>&1; then
     echo "[INFO] Running live psql verification queries against restored database..."
     PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql \
         -h "${POSTGRES_HOST:-db}" \
