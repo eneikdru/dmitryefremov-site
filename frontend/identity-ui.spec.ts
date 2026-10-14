@@ -13,6 +13,9 @@ test.describe('Core Identity and Essay Reader Verification', () => {
 
     await page.goto('/');
 
+    // Switch to Article Stream tab
+    await page.click('#tab-btn-article');
+
     // Click on the third article
     await page.locator('text=Deterministic State Determinism').first().click();
 
