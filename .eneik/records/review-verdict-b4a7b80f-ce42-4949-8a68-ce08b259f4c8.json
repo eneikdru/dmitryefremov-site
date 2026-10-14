@@ -1,0 +1,15 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "PR branch tip is identical to main with no net diff, but backup configuration and test suite are present and verified.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
