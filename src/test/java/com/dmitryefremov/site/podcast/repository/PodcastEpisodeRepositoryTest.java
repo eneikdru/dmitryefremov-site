@@ -49,6 +49,64 @@ class PodcastEpisodeRepositoryTest {
     }
 
     @Test
+    void testPodcastEpisodesTableAndEpisodesViewContainAudioUrlAndMetadataColumns() {
+        Integer audioUrlColCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns WHERE UPPER(table_name) = 'PODCAST_EPISODES' AND UPPER(column_name) = 'AUDIO_URL'",
+                Integer.class
+        );
+        Integer metadataColCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns WHERE UPPER(table_name) = 'PODCAST_EPISODES' AND UPPER(column_name) = 'METADATA'",
+                Integer.class
+        );
+        Integer viewAudioUrlColCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns WHERE UPPER(table_name) = 'EPISODES' AND UPPER(column_name) = 'AUDIO_URL'",
+                Integer.class
+        );
+        Integer viewMetadataColCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns WHERE UPPER(table_name) = 'EPISODES' AND UPPER(column_name) = 'METADATA'",
+                Integer.class
+        );
+
+        assertThat(audioUrlColCount).isEqualTo(1);
+        assertThat(metadataColCount).isEqualTo(1);
+        assertThat(viewAudioUrlColCount).isEqualTo(1);
+        assertThat(viewMetadataColCount).isEqualTo(1);
+    }
+
+    @Test
+    void testInsertEpisodeWithAudioUrlAndMetadata() {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 13, 14, 0, 0, 0, ZoneOffset.UTC);
+
+        PodcastEpisode episode = new PodcastEpisode(
+                "metadata-test-ep",
+                "Метаданные подкаста",
+                "Тезис о структурированных метаданных",
+                "Подробное описание метаданных",
+                "https://cdn.dmitryefremov.com/podcast/metadata-test.mp3",
+                "https://dmitryefremov.com/podcasts/metadata-test",
+                1800,
+                publishedAt
+        );
+        episode.setMetadata("{\"bitrate\":\"320kbps\",\"format\":\"mp3\",\"file_size_bytes\":4321000}");
+
+        PodcastEpisode saved = podcastEpisodeRepository.save(episode);
+        podcastEpisodeRepository.flush();
+
+        assertThat(saved.getId()).isNotNull();
+
+        Optional<PodcastEpisode> fetched = podcastEpisodeRepository.findBySlug("metadata-test-ep");
+        assertThat(fetched).isPresent();
+        assertThat(fetched.get().getAudioUrl()).isEqualTo("https://cdn.dmitryefremov.com/podcast/metadata-test.mp3");
+        assertThat(fetched.get().getMetadata()).isEqualTo("{\"bitrate\":\"320kbps\",\"format\":\"mp3\",\"file_size_bytes\":4321000}");
+
+        String viewMetadata = jdbcTemplate.queryForObject(
+                "SELECT metadata FROM episodes WHERE slug = 'metadata-test-ep'",
+                String.class
+        );
+        assertThat(viewMetadata).isEqualTo("{\"bitrate\":\"320kbps\",\"format\":\"mp3\",\"file_size_bytes\":4321000}");
+    }
+
+    @Test
     void testSeededPodcastEpisodesArePresentInRepository() {
         Optional<PodcastEpisode> ep1 = podcastEpisodeRepository.findBySlug("systems-and-reality-ep1");
         assertThat(ep1).isPresent();
