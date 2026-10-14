@@ -82,6 +82,7 @@ public class PodcastEpisodeService {
                 entity.getApplePodcastsUrl(),
                 entity.getPlatforms(),
                 entity.getConceptLinks(),
+                entity.getMetadata(),
                 entity.getDurationSeconds(),
                 entity.getPublishedAt(),
                 entity.getCreatedAt(),

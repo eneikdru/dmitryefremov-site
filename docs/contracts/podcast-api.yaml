@@ -152,6 +152,12 @@ components:
           format: uri
           description: Direct audio media stream URL for listening
           example: "https://media.dmitryefremov.site/podcasts/ep-42.mp3"
+        audio_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Alias property for direct audio media stream URL
+          example: "https://media.dmitryefremov.site/podcasts/ep-42.mp3"
         mediaLink:
           type: string
           format: uri

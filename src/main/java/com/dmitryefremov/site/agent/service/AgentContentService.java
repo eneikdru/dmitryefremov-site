@@ -316,6 +316,9 @@ public class AgentContentService {
         if (dto.conceptLinks() != null) {
             episode.setConceptLinks(dto.conceptLinks());
         }
+        if (dto.metadata() != null) {
+            episode.setMetadata(dto.metadata());
+        }
         if (dto.durationSeconds() != null) {
             episode.setDurationSeconds(dto.durationSeconds());
         }
@@ -428,6 +431,7 @@ public class AgentContentService {
                 applePodcastsUrl,
                 platforms,
                 conceptLinks,
+                null,
                 durationSeconds,
                 publishedAt,
                 null,
@@ -470,6 +474,7 @@ public class AgentContentService {
                 entity.getApplePodcastsUrl(),
                 entity.getPlatforms(),
                 entity.getConceptLinks(),
+                entity.getMetadata(),
                 entity.getDurationSeconds(),
                 entity.getPublishedAt(),
                 entity.getCreatedAt(),

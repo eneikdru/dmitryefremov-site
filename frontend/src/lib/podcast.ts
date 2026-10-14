@@ -17,6 +17,7 @@ export interface PodcastEpisode {
   thesis: string;
   description: string;
   audioUrl: string;
+  audio_url?: string;
   mediaLink?: string;
   youtubeUrl?: string;
   telegramUrl?: string;

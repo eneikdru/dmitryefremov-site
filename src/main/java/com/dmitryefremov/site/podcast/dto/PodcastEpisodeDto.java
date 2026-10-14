@@ -18,6 +18,7 @@ public class PodcastEpisodeDto {
     private String applePodcastsUrl;
     private String platforms;
     private String conceptLinks;
+    private String metadata;
     private Integer durationSeconds;
     private OffsetDateTime publishedAt;
     private OffsetDateTime createdAt;
@@ -48,6 +49,15 @@ public class PodcastEpisodeDto {
                              String conceptLinks, Integer durationSeconds, OffsetDateTime publishedAt,
                              OffsetDateTime createdAt, List<PodcastTimecodeDto> timecodes,
                              List<PodcastQuoteDto> quotes) {
+        this(id, slug, title, thesis, description, audioUrl, mediaLink, youtubeUrl, telegramUrl, spotifyUrl, applePodcastsUrl, platforms, conceptLinks, null, durationSeconds, publishedAt, createdAt, timecodes, quotes);
+    }
+
+    public PodcastEpisodeDto(Long id, String slug, String title, String thesis, String description,
+                             String audioUrl, String mediaLink, String youtubeUrl, String telegramUrl,
+                             String spotifyUrl, String applePodcastsUrl, String platforms,
+                             String conceptLinks, String metadata, Integer durationSeconds, OffsetDateTime publishedAt,
+                             OffsetDateTime createdAt, List<PodcastTimecodeDto> timecodes,
+                             List<PodcastQuoteDto> quotes) {
         this.id = id;
         this.slug = slug;
         this.title = title;
@@ -61,6 +71,7 @@ public class PodcastEpisodeDto {
         this.applePodcastsUrl = applePodcastsUrl;
         this.platforms = platforms;
         this.conceptLinks = conceptLinks;
+        this.metadata = metadata;
         this.durationSeconds = durationSeconds;
         this.publishedAt = publishedAt;
         this.createdAt = createdAt;
@@ -174,6 +185,14 @@ public class PodcastEpisodeDto {
 
     public void setConceptLinks(String conceptLinks) {
         this.conceptLinks = conceptLinks;
+    }
+
+    public String getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
     }
 
     public Integer getDurationSeconds() {
