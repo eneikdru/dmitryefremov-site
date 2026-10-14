@@ -1,0 +1,21 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "PR #0 diff contains unrelated deletions of podcast episode metadata migration (V20261013203112369__add_podcast_episode_metadata.sql) and domain/dto/service/repository code, violating acceptance criteria that PR diff must contain only source/config/test needed for this slice.",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "In frontend/src/lib/podcast.ts, audio_url is marked as optional ('audio_url?: string'), whereas in scripts/test_podcast_api_contract.py and docs/contracts/podcast-api.yaml, audio_url is listed as a required schema property on PodcastEpisode DTO.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
