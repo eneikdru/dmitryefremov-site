@@ -7,7 +7,6 @@
     type PodcastEpisode,
     type PodcastTimecode
   } from '../lib/podcast';
-  import ResponsivePicture from './ResponsivePicture.svelte';
 
   export let episodes: PodcastEpisode[] = PODCAST_EPISODES;
   export let selectedEpisodeId: number | string = PODCAST_EPISODES[0]?.id;
@@ -203,15 +202,6 @@
         <!-- Episode Header -->
         <header id="podcast-header" class="border-b border-[#1f2433] pb-4 space-y-3">
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div id="podcast-cover-container" class="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-xl overflow-hidden border border-[#34d399]/40 shadow-lg">
-              <ResponsivePicture
-                id="podcast-cover-img"
-                assetKey="podcast_studio_cover"
-                alt="Обложка подкаста Системы и реальность — Студийное оформление"
-                imgClass="w-full h-full object-cover"
-                loading="eager"
-              />
-            </div>
             <div class="flex-1 space-y-1">
               <div class="flex items-center justify-between gap-2 mb-1">
                 <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono font-medium">
