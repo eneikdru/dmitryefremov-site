@@ -18,12 +18,13 @@ public record PodcastUpdateRequestDto(
     String applePodcastsUrl,
     String platforms,
     String conceptLinks,
+    String metadata,
     Integer durationSeconds,
     OffsetDateTime publishedAt,
     List<PodcastTimecodeDto> timecodes,
     List<PodcastQuoteDto> quotes
 ) {
     public PodcastUpdateRequestDto(String title, String thesis, String description, String audioUrl, String mediaLink, Integer durationSeconds, OffsetDateTime publishedAt) {
-        this(title, thesis, description, audioUrl, mediaLink, null, null, null, null, null, null, durationSeconds, publishedAt, null, null);
+        this(title, thesis, description, audioUrl, mediaLink, null, null, null, null, null, null, null, durationSeconds, publishedAt, null, null);
     }
 }
