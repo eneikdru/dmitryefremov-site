@@ -1,0 +1,13 @@
+{
+  "testsRun": 163,
+  "testsPassed": 163,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the A2A infrastructure is deployed, When an integration test attempts to fetch materials with and without valid keys, Then it strictly verifies 200 and 401 behaviors respectively",
+    "Given this role completes the Atomic Goal, When the relevant verification command runs, Then the change passes without unrelated scope.",
+    "Given the change is reviewed, When the PR diff is inspected, Then it contains only source, config, test, or documentation files needed for this slice."
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified A2A materials integration fetching with valid keys (Authorization header, X-API-Token header, api_credentials table, api_keys table) returning 200 OK and missing/invalid keys returning 401 Unauthorized across primary and secondary endpoint paths."
+}
