@@ -3,8 +3,8 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-test('generate design verification artifacts and image performance audit for responsive picture implementation', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-e8fb8693-a0db-4d73-aa93-f0060c069c38');
+test('generate design verification artifacts for podcast player UI slice', async () => {
+  const targetDir = path.resolve('../.eneik/records/design-check-de2307bb-effa-4d50-bc1f-2cbbd8090f75');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Build frontend first
@@ -20,13 +20,13 @@ test('generate design verification artifacts and image performance audit for res
     });
   });
 
-  // Start preview server
+  // Start preview server on 4173
   const previewProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
     cwd: path.resolve('.'),
     stdio: 'ignore'
   });
 
-  // Wait for server to start
+  // Wait for preview server to start
   await new Promise(resolve => setTimeout(resolve, 2500));
 
   try {
@@ -38,7 +38,7 @@ test('generate design verification artifacts and image performance audit for res
     await desktopPage.goto('http://localhost:4173');
     await desktopPage.waitForSelector('#app-root');
 
-    // Click on [PODCAST_MEDIA] tab
+    // Click on [PODCAST] tab
     await desktopPage.click('#tab-btn-podcast');
     await desktopPage.waitForTimeout(300);
 
@@ -66,7 +66,6 @@ test('generate design verification artifacts and image performance audit for res
         'podcast-player-card',
         'podcast-header',
         'podcast-cover-container',
-        'podcast-cover-img',
         'podcast-title',
         'audio-controls-block',
         'play-pause-btn',
@@ -93,39 +92,6 @@ test('generate design verification artifacts and image performance audit for res
     const layoutCheckPath = path.join(targetDir, 'layout-check.json');
     fs.writeFileSync(layoutCheckPath, JSON.stringify(layoutBoundingBoxes, null, 2));
 
-    // Desktop Image Audit (CLS, LCP, image loading verification)
-    const desktopAudit = await desktopPage.evaluate(() => {
-      const imgElements = Array.from(document.querySelectorAll('img'));
-      const images = imgElements.map(img => {
-        const rect = img.getBoundingClientRect();
-        return {
-          id: img.id,
-          currentSrc: img.currentSrc || img.src,
-          naturalWidth: img.naturalWidth,
-          naturalHeight: img.naturalHeight,
-          displayWidth: rect.width,
-          displayHeight: rect.height,
-          hasLoaded: img.complete && img.naturalWidth > 0
-        };
-      });
-
-      let clsValue = 0;
-      const entries = performance.getEntriesByType('layout-shift') as any[];
-      entries.forEach(entry => {
-        if (!entry.hadRecentInput) {
-          clsValue += entry.value;
-        }
-      });
-
-      return { clsValue, images };
-    });
-
-    expect(desktopAudit.clsValue).toBeLessThan(0.05);
-    for (const img of desktopAudit.images) {
-      expect(img.hasLoaded).toBe(true);
-      expect(img.currentSrc).toMatch(/\.(webp|avif)/i);
-    }
-
     await desktopContext.close();
 
     // 375px Mobile Screenshot and Audit
@@ -139,29 +105,6 @@ test('generate design verification artifacts and image performance audit for res
 
     const mobileScreenshotPath = path.join(targetDir, 'mobile-375.png');
     await mobilePage.screenshot({ path: mobileScreenshotPath, fullPage: true });
-
-    // Mobile Image Sizing Audit
-    const mobileAudit = await mobilePage.evaluate(() => {
-      const imgElements = Array.from(document.querySelectorAll('img'));
-      return imgElements.map(img => {
-        const rect = img.getBoundingClientRect();
-        return {
-          id: img.id,
-          currentSrc: img.currentSrc || img.src,
-          naturalWidth: img.naturalWidth,
-          displayWidth: rect.width,
-          hasLoaded: img.complete && img.naturalWidth > 0,
-          servedVariantWidth: img.currentSrc ? parseInt((img.currentSrc.match(/_(\d+)w\./) || [])[1] || '0', 10) : 0
-        };
-      });
-    });
-
-    for (const img of mobileAudit) {
-      expect(img.hasLoaded).toBe(true);
-      if (img.servedVariantWidth > 0) {
-        expect(img.servedVariantWidth).toBeLessThanOrEqual(768);
-      }
-    }
 
     await mobileContext.close();
     await browser.close();

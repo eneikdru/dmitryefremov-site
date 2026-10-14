@@ -8,7 +8,7 @@
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'article';
 
   let activeTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
@@ -47,12 +47,12 @@
 />
 
 <div
-  id="telemetry-hub-root"
-  class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
+  id="theme-root"
+  class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'dark-void bg-[#090a0f] text-[#e2e8f0]' : 'light-monochrome bg-[#fafafa] text-[#0f172a]'}"
 >
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+  <main id="app-root" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
     <!-- Top System & Status Bar -->
-    <header class="space-y-6">
+    <header id="main-header" class="space-y-6">
       <div class="flex items-center justify-between gap-4 border-b pb-4 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
         <div class="flex items-center gap-3">
           <span
@@ -89,7 +89,7 @@
             <ResponsivePicture
               id="hero-avatar-img"
               assetKey="dmitry_efremov_studio"
-              alt="Официальный студийный портрет Дмитрия Ефремова"
+              alt="Официальный студийный портрет автора Дмитрия Ефремова"
               imgClass="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
               loading="eager"
             />
@@ -152,6 +152,14 @@
       <!-- Navigation Bar -->
       <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
         <button
+          id="tab-btn-article"
+          type="button"
+          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+          on:click={() => (activeTab = 'article')}
+        >
+          <span>📖 ЭССЕ & МЫСЛИ</span>
+        </button>
+        <button
           id="tab-btn-podcast"
           type="button"
           class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
@@ -159,14 +167,6 @@
         >
           <span>🎙️ ПОДКАСТ</span>
           <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? 'bg-white/20' : 'bg-black/10'}">9 выпусков</span>
-        </button>
-        <button
-          id="tab-btn-article"
-          type="button"
-          class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
-          on:click={() => (activeTab = 'article')}
-        >
-          <span>📖 ЭССЕ & МЫСЛИ</span>
         </button>
         <button
           id="tab-btn-gallery"
@@ -361,7 +361,7 @@
             </button>
           </div>
           <div id="imprint-details-content" class="space-y-2 leading-relaxed">
-            <p><strong>Владелец сайта:</strong> Дмитрий Ефремов (Dmitry Efremov)</p>
+            <p><strong>Site Operator:</strong> Dmitry Efremov / Дмитрий Ефремов</p>
             <p><strong>Домен:</strong> dmitryefremov.com</p>
             <p><strong>Email:</strong> contact@dmitryefremov.com</p>
             <p><strong>Стандарт конфиденциальности:</strong> Нулевые сторонние трекеры до явного согласия (Zero-Cookie Telemetry).</p>

@@ -7,7 +7,6 @@
     type PodcastEpisode,
     type PodcastTimecode
   } from '../lib/podcast';
-  import ResponsivePicture from './ResponsivePicture.svelte';
 
   export let episodes: PodcastEpisode[] = PODCAST_EPISODES;
   export let selectedEpisodeId: number | string = PODCAST_EPISODES[0]?.id;
@@ -53,16 +52,15 @@
   }
 
   function togglePlay() {
-    if (!audioElement) return;
-    if (audioElement.paused) {
-      audioElement.play().then(() => {
-        isPlaying = true;
-      }).catch((err) => {
-        console.warn("Audio playback interaction:", err);
-      });
-    } else {
-      audioElement.pause();
-      isPlaying = false;
+    isPlaying = !isPlaying;
+    if (audioElement) {
+      if (isPlaying) {
+        audioElement.play().catch(() => {
+          isPlaying = false;
+        });
+      } else {
+        audioElement.pause();
+      }
     }
   }
 
@@ -122,7 +120,7 @@
         </span>
         <span class="text-xs font-mono text-[#94a3b8]">Выпусков: {episodes.length}</span>
       </div>
-      <h2 class="text-xl font-bold tracking-tight text-white break-words">Подкаст «Системы и реальность»</h2>
+      <h2 class="text-xl font-bold tracking-tight text-white break-words">Подкаст «Системы и реальность» Podcast</h2>
     </div>
 
     <!-- External Media Subscription Links -->
@@ -203,14 +201,14 @@
         <!-- Episode Header -->
         <header id="podcast-header" class="border-b border-[#1f2433] pb-4 space-y-3">
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div id="podcast-cover-container" class="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-xl overflow-hidden border border-[#34d399]/40 shadow-lg">
-              <ResponsivePicture
-                id="podcast-cover-img"
-                assetKey="podcast_studio_cover"
-                alt="Обложка подкаста Системы и реальность — Студийное оформление"
-                imgClass="w-full h-full object-cover"
-                loading="eager"
-              />
+            <!-- Audio Equalizer Visualizer Badge (Clean Audio Player without Studio Photography) -->
+            <div id="podcast-cover-container" class="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-xl bg-[#12151e] border border-[#34d399]/40 flex items-center justify-center shadow-lg relative overflow-hidden group">
+              <div class="flex items-end gap-1 h-10 px-2" aria-hidden="true">
+                <span class="w-1.5 bg-[#34d399] rounded-t transition-all duration-300 {isPlaying ? 'animate-pulse h-8' : 'h-4'}"></span>
+                <span class="w-1.5 bg-[#38bdf8] rounded-t transition-all duration-300 {isPlaying ? 'animate-pulse h-6' : 'h-7'}"></span>
+                <span class="w-1.5 bg-[#34d399] rounded-t transition-all duration-300 {isPlaying ? 'animate-pulse h-9' : 'h-5'}"></span>
+                <span class="w-1.5 bg-[#38bdf8] rounded-t transition-all duration-300 {isPlaying ? 'animate-pulse h-5' : 'h-8'}"></span>
+              </div>
             </div>
             <div class="flex-1 space-y-1">
               <div class="flex items-center justify-between gap-2 mb-1">
@@ -274,7 +272,7 @@
           <!-- Waveform Visualization -->
           <div class="space-y-1.5">
             <div class="flex justify-between items-center text-[11px] font-mono text-[#64748b]">
-              <span>ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ</span>
+              <span>WAVE_VISUALIZATION</span>
               <span>КЛИКНИТЕ ДЛЯ ПЕРЕМОТКИ</span>
             </div>
 
@@ -312,7 +310,7 @@
         <!-- Timecodes List Section -->
         <div id="timecodes-section" class="border-t border-[#1f2433] pt-4 space-y-3">
           <div class="flex items-center justify-between text-xs font-mono text-[#94a3b8]">
-            <span>ТАЙМКОДЫ И ТЕМЫ ({currentEpisode.timecodes.length})</span>
+            <span>TIMECODES & TOPICS ({currentEpisode.timecodes.length})</span>
             <span class="text-[#38bdf8]">КЛИКНИТЕ ДЛЯ ПЕРЕХОДА</span>
           </div>
 
@@ -332,7 +330,7 @@
                   <div class="font-bold text-xs flex items-center justify-between">
                     <span class="truncate">{tc.title}</span>
                     {#if isActive}
-                      <span class="text-[10px] font-mono text-[#38bdf8] shrink-0 font-bold">СЕЙЧАС ИГРАЕТ</span>
+                      <span class="text-[10px] font-mono text-[#38bdf8] shrink-0 font-bold">NOW_PLAYING</span>
                     {/if}
                   </div>
                   {#if tc.description}

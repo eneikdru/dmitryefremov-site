@@ -59,7 +59,7 @@ describe('TelemetryHub Component & CMP Integration', () => {
 
     // Podcast hub loads initial episode correctly
     expect(target.textContent).toContain('«Системы и реальность» Podcast');
-    expect(target.textContent).toContain('Выпуск 01: Системы и реальность — Введение в системное мышление');
+    expect(target.textContent).toContain('Рут Баркан Маркус: Модальная логика сущностей и деонтические инварианты');
     expect(target.textContent).toContain('TIMECODES & TOPICS');
 
     // Navigate back to Article Stream tab

@@ -36,8 +36,8 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
     "durationSeconds": 2690,
     "publishedAt": "2026-09-20",
     "audioUrl": "/audio/01-ruth-barcan-marcus.m4a",
-    "youtubeUrl": "https://youtu.be/1qiPT9UxKNM",
-    "mediaLink": "https://youtu.be/1qiPT9UxKNM",
+    "youtubeUrl": "https://youtube.com/watch?v=1qiPT9UxKNM",
+    "mediaLink": "https://youtube.com/watch?v=1qiPT9UxKNM",
     "telegramUrl": "https://t.me/efremov_mvp",
     "timecodes": [
       {
@@ -48,7 +48,7 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
       },
       {
         "id": 102,
-        "timeOffsetSeconds": 340,
+        "timeOffsetSeconds": 195,
         "title": "Формула Баркан: Сущность и возможное существование",
         "description": "Анализ формулы diamond exists x Fx -> exists x diamond Fx в контексте надежности распределенных систем."
       },
@@ -82,8 +82,8 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
     "durationSeconds": 1860,
     "publishedAt": "2026-09-22",
     "audioUrl": "/audio/02-paul-thagard.m4a",
-    "youtubeUrl": "https://youtu.be/jUbOF_YvkfI",
-    "mediaLink": "https://youtu.be/jUbOF_YvkfI",
+    "youtubeUrl": "https://youtube.com/watch?v=jUbOF_YvkfI",
+    "mediaLink": "https://youtube.com/watch?v=jUbOF_YvkfI",
     "telegramUrl": "https://t.me/efremov_mvp",
     "timecodes": [
       {
@@ -128,8 +128,8 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
     "durationSeconds": 2430,
     "publishedAt": "2026-09-25",
     "audioUrl": "/audio/03-susan-hurley.m4a",
-    "youtubeUrl": "https://youtu.be/mLJm6YKm0ds",
-    "mediaLink": "https://youtu.be/mLJm6YKm0ds",
+    "youtubeUrl": "https://youtube.com/watch?v=mLJm6YKm0ds",
+    "mediaLink": "https://youtube.com/watch?v=mLJm6YKm0ds",
     "telegramUrl": "https://t.me/efremov_mvp",
     "timecodes": [
       {
@@ -443,9 +443,15 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
 ];
 
 export function formatTime(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
+  if (isNaN(seconds) || seconds < 0) return '00:00';
+  const totalMins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  if (totalMins >= 60) {
+    const hrs = Math.floor(totalMins / 60);
+    const mins = totalMins % 60;
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+  return `${totalMins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
 export function generateWaveformHeights(barsCount: number = 40, seed: string = 'default'): number[] {
