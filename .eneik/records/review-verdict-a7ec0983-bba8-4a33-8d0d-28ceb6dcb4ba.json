@@ -1,0 +1,16 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "block",
+      "criticalReason": "PR #1 diff relative to main is completely empty and contains no backup scripts or deployment configuration, directly contradicting the Acceptance Criteria to script daily backups with pg_dump.",
+      "concerns": []
+    }
+  ]
+}
