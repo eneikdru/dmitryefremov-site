@@ -55,10 +55,10 @@
   function togglePlay() {
     if (!audioElement) return;
     if (audioElement.paused) {
-      audioElement.play().then(() => {
-        isPlaying = true;
-      }).catch((err) => {
-        console.warn("Audio playback interaction:", err);
+      isPlaying = true;
+      audioElement.play().catch((err) => {
+        isPlaying = false;
+        console.warn("Audio playback error caught:", err);
       });
     } else {
       audioElement.pause();
@@ -231,8 +231,6 @@
         <audio
           bind:this={audioElement}
           src={currentEpisode.audioUrl}
-          on:play={() => (isPlaying = true)}
-          on:pause={() => (isPlaying = false)}
           on:timeupdate={handleAudioTimeUpdate}
           on:ended={handleAudioEnded}
           preload="auto"
