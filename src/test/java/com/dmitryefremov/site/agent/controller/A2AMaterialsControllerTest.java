@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,12 @@ class A2AMaterialsControllerTest {
     @Autowired
     private PodcastEpisodeRepository podcastEpisodeRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     private final String validApiKey = "valid-a2a-key-123456";
+    private final String credentialsTableApiKey = "cred-a2a-key-7890";
+    private final String apiKeysTableApiKey = "apikeys-a2a-key-4567";
 
     @BeforeEach
     void setUp() {
@@ -46,8 +52,21 @@ class A2AMaterialsControllerTest {
         articleRepository.deleteAll();
         podcastEpisodeRepository.deleteAll();
 
+        jdbcTemplate.execute("DELETE FROM api_credentials WHERE client_id = 'a2a-cred-client'");
+        jdbcTemplate.execute("DELETE FROM api_keys WHERE key_identity = 'a2a-key-identity'");
+
         AgentApiToken token = new AgentApiToken("a2a-test-agent", validApiKey);
         tokenRepository.save(token);
+
+        jdbcTemplate.update(
+                "INSERT INTO api_credentials (client_id, api_key_hash, role, enabled, created_at) VALUES (?, ?, ?, true, CURRENT_TIMESTAMP)",
+                "a2a-cred-client", credentialsTableApiKey, "AGENT_ROLE"
+        );
+
+        jdbcTemplate.update(
+                "INSERT INTO api_keys (key_identity, key_hash, status, enabled, created_at) VALUES (?, ?, 'ACTIVE', true, CURRENT_TIMESTAMP)",
+                "a2a-key-identity", apiKeysTableApiKey
+        );
 
         Article article = new Article(
                 "scrollytelling-a2a-materials",
@@ -98,6 +117,26 @@ class A2AMaterialsControllerTest {
     }
 
     @Test
+    void testGetMaterialsWithValidKeyInApiCredentialsTableReturns200() throws Exception {
+        mockMvc.perform(get("/api/v1/a2a/materials")
+                        .header("X-API-Token", credentialsTableApiKey)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("AUTHENTIC")))
+                .andExpect(jsonPath("$.articles", hasSize(1)));
+    }
+
+    @Test
+    void testGetMaterialsWithValidKeyInApiKeysTableReturns200() throws Exception {
+        mockMvc.perform(get("/api/v1/a2a/materials")
+                        .header("Authorization", "Bearer " + apiKeysTableApiKey)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("AUTHENTIC")))
+                .andExpect(jsonPath("$.podcasts", hasSize(1)));
+    }
+
+    @Test
     void testGetMaterialsWithInvalidApiKeyReturns401Unauthorized() throws Exception {
         mockMvc.perform(get("/api/v1/a2a/materials")
                         .header("Authorization", "Bearer invalid-key-xyz999")
@@ -116,11 +155,38 @@ class A2AMaterialsControllerTest {
     }
 
     @Test
-    void testGetMaterialsSecondaryEndpointPath() throws Exception {
+    void testGetMaterialsWithEmptyAuthorizationHeaderReturns401Unauthorized() throws Exception {
+        mockMvc.perform(get("/api/v1/a2a/materials")
+                        .header("Authorization", "Bearer ")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.status", is(401)));
+    }
+
+    @Test
+    void testGetMaterialsWithBlankXApiTokenHeaderReturns401Unauthorized() throws Exception {
+        mockMvc.perform(get("/api/v1/a2a/materials")
+                        .header("X-API-Token", "   ")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.status", is(401)));
+    }
+
+    @Test
+    void testGetMaterialsSecondaryEndpointPathWithValidKey() throws Exception {
         mockMvc.perform(get("/api/v1/materials")
                         .header("Authorization", "Bearer " + validApiKey)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("AUTHENTIC")));
+    }
+
+    @Test
+    void testGetMaterialsSecondaryEndpointPathWithoutValidKeyReturns401() throws Exception {
+        mockMvc.perform(get("/api/v1/materials")
+                        .header("Authorization", "Bearer bad-key-000")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.status", is(401)));
     }
 }
