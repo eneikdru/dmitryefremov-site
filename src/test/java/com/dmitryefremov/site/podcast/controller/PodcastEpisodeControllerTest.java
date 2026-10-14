@@ -44,10 +44,18 @@ class PodcastEpisodeControllerTest {
                 "Description",
                 "https://dmitryefremov.com/podcast/ep1.mp3",
                 "https://youtube.com/watch?v=ep1",
+                "https://youtube.com/watch?v=ep1",
+                "https://t.me/channel",
+                "https://spotify.com",
+                "https://apple.com",
+                "YOUTUBE,TELEGRAM",
+                "https://dmitryefremov.com/concept",
+                "{\"bitrate\":\"320kbps\",\"format\":\"mp3\"}",
                 3600,
                 publishedAt,
                 publishedAt,
-                List.of(timecode)
+                List.of(timecode),
+                List.of()
         );
 
         PodcastEpisodePageDto pageDto = new PodcastEpisodePageDto(List.of(episode), 0, 20, 1L, 1);
@@ -66,7 +74,9 @@ class PodcastEpisodeControllerTest {
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].slug", is("systems-ep1")))
                 .andExpect(jsonPath("$.content[0].title", is("Systems and Reality Ep 1")))
-                .andExpect(jsonPath("$.content[0].thesis", is("Core thesis")));
+                .andExpect(jsonPath("$.content[0].thesis", is("Core thesis")))
+                .andExpect(jsonPath("$.content[0].audioUrl", is("https://dmitryefremov.com/podcast/ep1.mp3")))
+                .andExpect(jsonPath("$.content[0].metadata", is("{\"bitrate\":\"320kbps\",\"format\":\"mp3\"}")));
     }
 
     @Test
