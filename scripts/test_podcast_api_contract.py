@@ -45,7 +45,7 @@ def main():
     episode_schema = schemas["PodcastEpisode"]
     props = episode_schema.get("properties", {})
     required_props = [
-        "id", "slug", "title", "thesis", "description", "audioUrl", "mediaLink",
+        "id", "slug", "title", "thesis", "description", "audioUrl", "audio_url", "mediaLink",
         "youtubeUrl", "telegramUrl", "spotifyUrl", "applePodcastsUrl", "platforms",
         "durationSeconds", "publishedAt", "createdAt", "timecodes"
     ]
