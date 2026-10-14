@@ -1,0 +1,37 @@
+[
+  {
+    "id": "header",
+    "left": 16,
+    "top": 32,
+    "width": 343,
+    "height": 830.5
+  },
+  {
+    "id": "main",
+    "left": 0,
+    "top": 0,
+    "width": 375,
+    "height": 4078
+  },
+  {
+    "id": "footer",
+    "left": 16,
+    "top": 3949,
+    "width": 343,
+    "height": 97
+  },
+  {
+    "id": "#podcast-player-card",
+    "left": 16,
+    "top": 2858.5,
+    "width": 343,
+    "height": 1050.5
+  },
+  {
+    "id": "#audio-controls-block",
+    "left": 41,
+    "top": 3170,
+    "width": 293,
+    "height": 217
+  }
+]
