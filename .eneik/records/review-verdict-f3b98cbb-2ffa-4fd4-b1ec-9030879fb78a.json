@@ -1,0 +1,15 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "In A2AMaterialsControllerTest test setup, domain entities use OffsetDateTime.now() instead of an explicit fixed timestamp or injected clock.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
