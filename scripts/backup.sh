@@ -46,6 +46,11 @@ else
     } > "${BACKUP_FILE}"
 fi
 
+if [ ! -s "${BACKUP_FILE}" ]; then
+    echo "[ERROR] Created backup file '${BACKUP_FILE}' is empty or missing!"
+    exit 1
+fi
+
 chmod 600 "${BACKUP_FILE}"
 echo "[INFO] Database backup created successfully: ${BACKUP_FILE}"
 
@@ -56,7 +61,14 @@ if [ -n "${OFFSITE_BACKUP_DIR}" ]; then
     OFFSITE_FILE="${OFFSITE_BACKUP_DIR}/$(basename "${BACKUP_FILE}")"
     cp "${BACKUP_FILE}" "${OFFSITE_FILE}"
     chmod 600 "${OFFSITE_FILE}"
+
+    if [ ! -s "${OFFSITE_FILE}" ]; then
+        echo "[ERROR] Offsite backup copy '${OFFSITE_FILE}' failed or is empty!"
+        exit 1
+    fi
+
     echo "[INFO] Database backup persisted to external offsite storage: ${OFFSITE_FILE}"
+    echo "[METRIC] backup_offsite_status{database=\"${POSTGRES_DB}\"} 1"
 
     if [ "${RETENTION_DAYS}" -gt 0 ]; then
         find "${OFFSITE_BACKUP_DIR}" -name "db_backup_*" -type f -mtime +"${RETENTION_DAYS}" -delete || true

@@ -19,12 +19,18 @@ echo "[TEST] Executing database backup via scripts/backup.sh..."
 BACKUP_LOGS=$(./scripts/backup.sh)
 echo "${BACKUP_LOGS}"
 
-# Assert success metric and log emission
+# Assert success metrics and log emission
 if ! echo "${BACKUP_LOGS}" | grep -q "\[METRIC\] backup_status{database=\"test_db\"} 1"; then
     echo "[FAIL] Success metric 'backup_status{database=\"test_db\"} 1' was not emitted"
     exit 1
 fi
 echo "[PASS] Verified emission of success metric: backup_status"
+
+if ! echo "${BACKUP_LOGS}" | grep -q "\[METRIC\] backup_offsite_status{database=\"test_db\"} 1"; then
+    echo "[FAIL] Offsite metric 'backup_offsite_status{database=\"test_db\"} 1' was not emitted"
+    exit 1
+fi
+echo "[PASS] Verified emission of offsite metric: backup_offsite_status"
 
 if ! echo "${BACKUP_LOGS}" | grep -q "\[SUCCESS\] Backup process completed successfully."; then
     echo "[FAIL] Success log '[SUCCESS] Backup process completed successfully.' was not emitted"
@@ -38,7 +44,11 @@ if [ ! -f "${DUMP_FILES[0]}" ]; then
     echo "[FAIL] Backup file was not created in ${BACKUP_DIR}"
     exit 1
 fi
-echo "[PASS] Backup file created: ${DUMP_FILES[0]}"
+if [ ! -s "${DUMP_FILES[0]}" ]; then
+    echo "[FAIL] Backup file is empty in ${BACKUP_DIR}"
+    exit 1
+fi
+echo "[PASS] Backup file created and non-empty: ${DUMP_FILES[0]}"
 
 # Step 3: Assert file permissions (600 or rw-------)
 FILE_PERMS=$(stat -c "%a" "${DUMP_FILES[0]}" 2>/dev/null || stat -f "%Lp" "${DUMP_FILES[0]}")
@@ -54,12 +64,16 @@ if [ ! -f "${OFFSITE_DUMP_FILES[0]}" ]; then
     echo "[FAIL] Offsite backup file was not created in ${OFFSITE_BACKUP_DIR}"
     exit 1
 fi
+if [ ! -s "${OFFSITE_DUMP_FILES[0]}" ]; then
+    echo "[FAIL] Offsite backup file is empty in ${OFFSITE_BACKUP_DIR}"
+    exit 1
+fi
 OFFSITE_FILE_PERMS=$(stat -c "%a" "${OFFSITE_DUMP_FILES[0]}" 2>/dev/null || stat -f "%Lp" "${OFFSITE_DUMP_FILES[0]}")
 if [ "${OFFSITE_FILE_PERMS}" != "600" ]; then
     echo "[FAIL] Offsite backup file permission is ${OFFSITE_FILE_PERMS}, expected 600"
     exit 1
 fi
-echo "[PASS] Offsite backup file created and permissions verified: ${OFFSITE_FILE_PERMS}"
+echo "[PASS] Offsite backup file created, non-empty, and permissions verified: ${OFFSITE_FILE_PERMS}"
 
 # Step 4: Execute Restore on blank/target instance
 echo "[TEST] Initiating database restore from ${DUMP_FILES[0]}..."
