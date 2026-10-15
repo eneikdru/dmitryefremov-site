@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { consentStore, setConsentStatus, type ConsentStatus } from '../lib/consent';
 
   export let theme: 'dark' | 'light' = 'dark';
@@ -9,18 +9,27 @@
   let analyticsAllowed: boolean = true;
   let functionalAllowed: boolean = true;
   let advertisingAllowed: boolean = false;
+  let declineBtnRef: HTMLButtonElement | null = null;
 
   const unsubscribe = consentStore.subscribe((value) => {
     currentStatus = value;
   });
 
-  onMount(() => {
+  onMount(async () => {
     function handleKeydown(e: KeyboardEvent) {
       if (e.key === 'Escape' && showBannerOrModal && currentStatus !== null) {
         handleClose();
       }
     }
     window.addEventListener('keydown', handleKeydown);
+
+    if (currentStatus === null) {
+      await tick();
+      if (declineBtnRef) {
+        declineBtnRef.focus();
+      }
+    }
+
     return () => {
       unsubscribe();
       window.removeEventListener('keydown', handleKeydown);
@@ -29,6 +38,14 @@
 
   // Show banner if status is null (new visitor) or if isOpen is true (reopened via persistent link)
   $: showBannerOrModal = isOpen || currentStatus === null;
+
+  $: if (showBannerOrModal && currentStatus === null) {
+    tick().then(() => {
+      if (declineBtnRef) {
+        declineBtnRef.focus();
+      }
+    });
+  }
 
   function handleAccept() {
     setConsentStatus('accepted');
@@ -65,7 +82,8 @@
   >
     <div
       id="cmp-container"
-      class="rounded-xl border shadow-2xl p-5 sm:p-6 font-sans text-xs space-y-4 backdrop-blur-md max-h-[85vh] overflow-y-auto custom-scrollbar {theme === 'dark' ? 'bg-[#0f172a]/95 border-[#1e293b] text-[#f8fafc]' : 'bg-white/95 border-[#cbd5e1] text-[#0f172a]'}"
+      tabindex="-1"
+      class="rounded-xl border shadow-2xl p-5 sm:p-6 font-sans text-xs space-y-4 backdrop-blur-md max-h-[85vh] overflow-y-auto custom-scrollbar focus:outline-none focus:ring-2 focus:ring-sky-500 {theme === 'dark' ? 'bg-[#0f172a]/95 border-[#1e293b] text-[#f8fafc]' : 'bg-white/95 border-[#cbd5e1] text-[#0f172a]'}"
     >
       <!-- Header / Top Bar -->
       <div class="flex items-center justify-between border-b pb-3 {theme === 'dark' ? 'border-[#1e293b]' : 'border-[#e2e8f0]'}">
@@ -205,8 +223,9 @@
         <button
           id="cmp-decline-btn"
           type="button"
+          bind:this={declineBtnRef}
           on:click={handleDecline}
-          class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none flex items-center justify-center {theme === 'dark' ? 'bg-[#1e1b2e] border-[#ef4444]/60 text-[#fca5a5] hover:bg-[#ef4444]/20' : 'bg-red-50 border-red-300 text-red-700 hover:bg-red-100'}"
+          class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#1e1b2e] border-[#ef4444]/60 text-[#fca5a5] hover:bg-[#ef4444]/20' : 'bg-red-50 border-red-300 text-red-700 hover:bg-red-100'}"
         >
           [DECLINE_TRACKERS]
         </button>
@@ -215,7 +234,7 @@
           id="cmp-accept-btn"
           type="button"
           on:click={handleAccept}
-          class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center {theme === 'dark' ? 'bg-[#0284c7] border-[#38bdf8] text-white hover:bg-[#0369a1]' : 'bg-[#0284c7] border-[#0284c7] text-white hover:bg-[#0369a1]'}"
+          class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#0284c7] border-[#38bdf8] text-white hover:bg-[#0369a1]' : 'bg-[#0284c7] border-[#0284c7] text-white hover:bg-[#0369a1]'}"
         >
           [ACCEPT_TRACKERS]
         </button>
@@ -227,7 +246,7 @@
           id="cmp-save-btn"
           type="button"
           on:click={handleSavePreferences}
-          class="text-xs font-semibold underline focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none rounded px-2 py-0.5 {theme === 'dark' ? 'text-[#38bdf8] hover:text-[#7dd3fc]' : 'text-[#0284c7] hover:text-[#0369a1]'}"
+          class="text-xs font-semibold underline focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none rounded px-2 py-0.5 cursor-pointer {theme === 'dark' ? 'text-[#38bdf8] hover:text-[#7dd3fc]' : 'text-[#0284c7] hover:text-[#0369a1]'}"
         >
           Save Custom Category Preferences
         </button>
