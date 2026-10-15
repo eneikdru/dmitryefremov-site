@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ENCLAVE://SEC-0</title>
+<!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-container": "#00ff66",
+            "on-tertiary": "#412d00",
+            "surface-container-lowest": "#0c0e11",
+            "surface-container-high": "#282a2d",
+            "surface-container": "#1e2023",
+            "on-surface-variant": "#b9ccb5",
+            "secondary-container": "#00e3fd",
+            "on-tertiary-container": "#805b00",
+            "tertiary-fixed": "#ffdea8",
+            "error": "#ffb4ab",
+            "surface-tint": "#00e55b",
+            "on-tertiary-fixed": "#271900",
+            "primary-fixed-dim": "#00e55b",
+            "background": "#111316",
+            "inverse-on-surface": "#2f3034",
+            "surface-bright": "#37393d",
+            "tertiary": "#fff9f5",
+            "secondary-fixed-dim": "#00daf3",
+            "on-surface": "#e2e2e6",
+            "tertiary-fixed-dim": "#ffba20",
+            "on-primary-fixed": "#002107",
+            "error-container": "#93000a",
+            "on-secondary-fixed": "#001f24",
+            "surface-variant": "#333538",
+            "secondary-fixed": "#9cf0ff",
+            "on-error": "#690005",
+            "surface-container-highest": "#333538",
+            "on-primary-fixed-variant": "#00531b",
+            "primary": "#edffe8",
+            "on-primary": "#003911",
+            "primary-fixed": "#6bff83",
+            "on-secondary": "#00363d",
+            "on-tertiary-fixed-variant": "#5e4200",
+            "inverse-surface": "#e2e2e6",
+            "secondary": "#bdf4ff",
+            "on-secondary-container": "#00616d",
+            "surface-dim": "#111316",
+            "surface": "#111316",
+            "outline": "#849581",
+            "surface-container-low": "#1a1c1f",
+            "outline-variant": "#3b4b3a",
+            "on-error-container": "#ffdad6",
+            "inverse-primary": "#006e27",
+            "on-secondary-fixed-variant": "#004f58",
+            "tertiary-container": "#ffd895",
+            "on-primary-container": "#007128"
+          },
+          "borderRadius": {
+            "DEFAULT": "0px",
+            "lg": "0px",
+            "xl": "0px",
+            "full": "0px"
+          },
+          "spacing": {
+            "gutter": "0.75rem",
+            "space-xl": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "margin": "0.75rem",
+            "space-lg": "1rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "label-md": ["JetBrains Mono", "monospace"],
+            "body-sm": ["JetBrains Mono", "monospace"],
+            "body-lg": ["JetBrains Mono", "monospace"],
+            "headline-lg": ["Space Grotesk", "sans-serif"],
+            "headline-xl-mobile": ["Space Grotesk", "sans-serif"],
+            "headline-md": ["Space Grotesk", "sans-serif"],
+            "headline-sm": ["Space Grotesk", "sans-serif"],
+            "body-md": ["JetBrains Mono", "monospace"],
+            "label-sm": ["JetBrains Mono", "monospace"],
+            "headline-xl": ["Space Grotesk", "sans-serif"],
+            "label-lg": ["JetBrains Mono", "monospace"]
+          },
+          "fontSize": {
+            "label-md": ["10px", { "lineHeight": "12px", "letterSpacing": "0.1em", "fontWeight": "500" }],
+            "body-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-lg": ["14px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-sm": ["15px", { "lineHeight": "20px", "letterSpacing": "0.0em", "fontWeight": "600" }],
+            "body-md": ["12px", { "lineHeight": "18px", "letterSpacing": "0.0em", "fontWeight": "400" }],
+            "label-sm": ["9px", { "lineHeight": "11px", "letterSpacing": "0.12em", "fontWeight": "500" }],
+            "headline-xl": ["36px", { "lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "label-lg": ["12px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 3px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #3b4b3a;
+    }
+    .crt-grid {
+      background-image: linear-gradient(rgba(0, 255, 102, 0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 255, 102, 0.02) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen pb-24 crt-grid selection:bg-primary-container selection:text-background">
+<!-- TOP APP BAR (Shared Component Anchor) -->
+<header class="flex justify-between items-center w-full px-3 py-2 border-b border-outline-variant bg-surface sticky top-0 z-40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="terminal">terminal</span>
+<span class="text-headline-sm font-headline-sm font-bold tracking-widest text-primary">ENCLAVE://SEC-0</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-block w-2 h-2 bg-primary-container animate-pulse"></span>
+<button class="bg-error-container text-on-error border border-error px-2 py-1 text-label-md font-label-md hover:bg-error hover:text-on-error-container transition-none active:bg-surface-container-high" id="killBtn" onclick="killBeacon()">
+        KILL_BEACON
+      </button>
+</div>
+</header>
+<!-- AIR-GAPPED SYSTEM TELEMETRY STRIP -->
+<section class="w-full bg-surface-container-lowest border-b border-outline-variant px-3 py-2">
+<div class="grid grid-cols-1 gap-1 text-label-sm font-label-sm">
+<div class="flex justify-between items-center text-outline">
+<span>INTERFACE_BUS:</span>
+<span class="text-primary-container font-semibold tracking-wider">NETWORK: SEVERED [AIR-GAP: ACTIVE]</span>
+</div>
+<div class="flex justify-between items-center text-outline">
+<span>EGRESS_RATE:</span>
+<span class="text-secondary-container font-semibold">TELEMETRY EGRESS: 0.00 B/s (BLOCKED)</span>
+</div>
+<div class="flex justify-between items-center text-outline">
+<span>SILICON_STATE:</span>
+<span class="text-on-surface-variant font-semibold">HARDWARE INVARIANT: ENFORCED</span>
+</div>
+</div>
+</section>
+<!-- MAIN VIEWPORT CONTAINER -->
+<main class="px-3 pt-3 space-y-3">
+<!-- HERO BENTO: BLACK-BOX INVARIANT STATUS CARD -->
+<div class="bg-surface-container-low border border-outline-variant p-3 relative">
+<!-- Crosshair Instrumentation Markers -->
+<div class="absolute -top-[1px] -left-[1px] w-1.5 h-1.5 bg-primary-container"></div>
+<div class="absolute -top-[1px] -right-[1px] w-1.5 h-1.5 bg-primary-container"></div>
+<div class="absolute -bottom-[1px] -left-[1px] w-1.5 h-1.5 bg-primary-container"></div>
+<div class="absolute -bottom-[1px] -right-[1px] w-1.5 h-1.5 bg-primary-container"></div>
+<!-- Card Top Header Ribbon -->
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-label-md font-label-md text-primary font-bold">BLACK-BOX INVARIANT STATUS: VERIFIED</span>
+</div>
+<span class="bg-surface-container text-primary-container text-label-sm font-label-sm px-1.5 py-0.5 border border-outline-variant">ISOLATED</span>
+</div>
+<!-- Attestation & System Invariant Block -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 mb-3 space-y-1.5">
+<div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm text-outline">CRYPTO_ATTESTATION:</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-semibold">SYS_TIME: UTC-NULL</span>
+</div>
+<!-- Cryptographic Checksum Banner (Chunked) -->
+<div class="p-1.5 bg-background border border-outline-variant flex flex-wrap items-center gap-1 font-mono text-label-md">
+<span class="text-primary-container font-semibold">SHA-512:</span>
+<span class="bg-surface-container-high px-1 text-on-surface">8f4e</span>
+<span class="bg-surface-container-high px-1 text-secondary-container">2a91</span>
+<span class="bg-surface-container-high px-1 text-on-surface">d0c8</span>
+<span class="bg-surface-container-high px-1 text-secondary-container">71ef</span>
+<span class="bg-surface-container-high px-1 text-on-surface">...</span>
+<span class="bg-surface-container-high px-1 text-secondary-container">e901a</span>
+<span class="text-primary-container ml-auto text-label-sm">[VALID]</span>
+</div>
+<div class="flex justify-between text-label-sm font-label-sm pt-0.5 text-outline">
+<span>ROOT_OF_TRUST: <span class="text-on-surface">TPM_2.0_SEC_ENG</span></span>
+<span>ENTROPY: <span class="text-primary-container">4096-BIT TRNG</span></span>
+</div>
+</div>
+<!-- Live Telemetry Sensor Lockdown Matrix -->
+<div class="space-y-1.5">
+<div class="text-label-sm font-label-sm text-outline flex items-center justify-between pb-1">
+<span>LOCKDOWN MATRIX: SENSORS &amp; DAEMONS</span>
+<span>ALL ZEROIZED</span>
+</div>
+<div class="grid grid-cols-1 gap-1 text-label-md font-label-md">
+<!-- Row 1 -->
+<div class="flex items-center justify-between p-1.5 bg-surface-container-lowest border border-outline-variant">
+<span class="text-on-surface flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-primary-container"></span>
+              Network Beacons
+            </span>
+<span class="text-label-sm font-label-sm bg-surface-container px-2 py-0.5 text-primary-container border border-outline-variant">
+              [OFFLINE / SINKHOLED]
+            </span>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center justify-between p-1.5 bg-surface-container-lowest border border-outline-variant">
+<span class="text-on-surface flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-primary-container"></span>
+              Analytics Daemons
+            </span>
+<span class="text-label-sm font-label-sm bg-surface-container px-2 py-0.5 text-primary-container border border-outline-variant">
+              [ZERO_PRESENCE]
+            </span>
+</div>
+<!-- Row 3 -->
+<div class="flex items-center justify-between p-1.5 bg-surface-container-lowest border border-outline-variant">
+<span class="text-on-surface flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-primary-container"></span>
+              Memory Egress
+            </span>
+<span class="text-label-sm font-label-sm bg-surface-container px-2 py-0.5 text-secondary-container border border-outline-variant">
+              [ENCLAVE ISOLATED]
+            </span>
+</div>
+<!-- Row 4 -->
+<div class="flex items-center justify-between p-1.5 bg-surface-container-lowest border border-outline-variant">
+<span class="text-on-surface flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-primary-container"></span>
+              Crash Reporter
+            </span>
+<span class="text-label-sm font-label-sm bg-surface-container px-2 py-0.5 text-primary-container border border-outline-variant">
+              [HARD-DISABLED]
+            </span>
+</div>
+</div>
+</div>
+</div>
+<!-- HARDWARE QUARANTINE MONITOR (Asymmetric Readout) -->
+<div class="bg-surface-container-low border border-outline-variant p-3 space-y-2">
+<div class="flex items-center justify-between border-b border-outline-variant pb-1.5">
+<span class="text-label-md font-label-md text-primary font-bold">TELEMETRY QUARANTINE MONITOR</span>
+<span class="text-label-sm font-label-sm text-outline">POLL_INT: 0ms (HARDWARE)</span>
+</div>
+<div class="grid grid-cols-3 gap-2 text-center">
+<div class="p-2 bg-surface-container-lowest border border-outline-variant">
+<span class="block text-label-sm font-label-sm text-outline">OUTBOUND</span>
+<span class="block text-headline-sm font-headline-sm font-bold text-primary-container mt-1" id="bytesCounter">0 B</span>
+<span class="block text-label-sm font-label-sm text-outline-variant mt-0.5">PERMANENT_0</span>
+</div>
+<div class="p-2 bg-surface-container-lowest border border-outline-variant">
+<span class="block text-label-sm font-label-sm text-outline">SYN/ICMP PINGS</span>
+<span class="block text-headline-sm font-headline-sm font-bold text-secondary-container mt-1">0 PINGS</span>
+<span class="block text-label-sm font-label-sm text-outline-variant mt-0.5">DROP_POLICY</span>
+</div>
+<div class="p-2 bg-surface-container-lowest border border-outline-variant">
+<span class="block text-label-sm font-label-sm text-outline">SOCKET REJECTS</span>
+<span class="block text-headline-sm font-headline-sm font-bold text-primary mt-1" id="rejectCounter">14,208</span>
+<span class="block text-label-sm font-label-sm text-outline-variant mt-0.5">HARD_GATE</span>
+</div>
+</div>
+<!-- Segmented Hardware Channel Switches -->
+<div class="pt-1">
+<div class="text-label-sm font-label-sm text-outline mb-1">DATA BUS GATING MODE:</div>
+<div class="grid grid-cols-2 gap-1 text-label-md font-label-md">
+<button class="bg-secondary-container text-background py-1.5 px-2 font-bold flex items-center justify-center gap-1 border border-secondary-container transition-none">
+<span class="material-symbols-outlined text-background text-sm" data-icon="lock">lock</span>
+            [ 0 | ISOLATE ]
+          </button>
+<button class="bg-surface-container-high text-outline py-1.5 px-2 font-semibold flex items-center justify-center gap-1 border border-outline-variant opacity-60 cursor-not-allowed">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="alt_route">alt_route</span>
+            [ 1 | ROUTE ]
+          </button>
+</div>
+</div>
+</div>
+<!-- TELEMETRY NULLIFICATION CONTROLS -->
+<div class="bg-surface-container-low border border-outline-variant p-3 space-y-2.5">
+<div class="flex items-center justify-between border-b border-outline-variant pb-1.5">
+<span class="text-label-md font-label-md text-primary font-bold">TACTICAL CONTROLS // DESTRUCTIVE &amp; ROTATION</span>
+<span class="text-label-sm font-label-sm text-error">LEVEL_0_AUTH</span>
+</div>
+<div class="space-y-2">
+<!-- Action 1: Purge Buffer -->
+<button class="w-full bg-surface-container-lowest hover:bg-surface-container border border-outline-variant p-2 flex items-center justify-between text-left group transition-none active:bg-surface-container-high" onclick="purgeBuffer()">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-surface-container-high border border-outline flex items-center justify-center text-primary-container text-xs">■</span>
+<div>
+<span class="text-label-md font-label-md font-bold text-on-surface block group-hover:text-primary-container">PURGE LOCAL BUFFER</span>
+<span class="text-label-sm font-label-sm text-outline block">ZEROIZE RAM CACHE &amp; VOLATILE RUNTIME LOGS</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-primary-container border border-outline-variant px-1.5 py-0.5 bg-surface-container">EXEC_NULL</span>
+</button>
+<!-- Action 2: Rotate Attestation Key -->
+<button class="w-full bg-surface-container-lowest hover:bg-surface-container border border-outline-variant p-2 flex items-center justify-between text-left group transition-none active:bg-surface-container-high" onclick="rotateKey()">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-surface-container-high border border-outline flex items-center justify-center text-secondary-container text-xs">◆</span>
+<div>
+<span class="text-label-md font-label-md font-bold text-on-surface block group-hover:text-secondary-container">ROTATE ATTESTATION KEY</span>
+<span class="text-label-sm font-label-sm text-outline block">RE-DERIVE EPID KEYCHAIN VIA HARDWARE TRNG</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-secondary-container border border-outline-variant px-1.5 py-0.5 bg-surface-container">RE_KEY</span>
+</button>
+<!-- Action 3: Scramble Enclave ID -->
+<button class="w-full bg-surface-container-lowest hover:bg-surface-container border border-error p-2 flex items-center justify-between text-left group transition-none active:bg-surface-container-high" onclick="scrambleId()">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-error-container border border-error flex items-center justify-center text-error text-xs">▲</span>
+<div>
+<span class="text-label-md font-label-md font-bold text-error block group-hover:text-on-error">SCRAMBLE ENCLAVE ID</span>
+<span class="text-label-sm font-label-sm text-outline block">GENERATE RANDOMIZED HARDWARE FINGERPRINT MASK</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-error border border-error px-1.5 py-0.5 bg-surface-container">ANONYMIZE</span>
+</button>
+</div>
+</div>
+<!-- CONSOLE AUDIT LOG TERMINAL -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2.5 font-mono text-label-sm font-label-sm">
+<div class="flex items-center justify-between border-b border-outline-variant pb-1 mb-2 text-outline">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary-container" data-icon="terminal">terminal</span>
+          ENCLAVE_KERNEL_AUDIT_LOG
+        </span>
+<span class="text-primary-container">LIVE_STREAM</span>
+</div>
+<div class="space-y-1 text-body-sm text-outline custom-scroll max-h-24 overflow-y-auto" id="logStream">
+<div class="text-primary-container">[00:00:00.000] SEC_KERNEL: Memory rings initialized. No external I/O bound.</div>
+<div>[00:00:00.042] KERNEL: Gating IP sockets. Egress rejection filter active.</div>
+<div>[00:00:00.108] INVARIANT_CHECK: Hash match verified against hardware fuse.</div>
+<div class="text-secondary-container">[00:00:00.312] ZERO_TELEMETRY: Background workers silenced. Beacon nullified.</div>
+</div>
+</div>
+</main>
+<!-- BOTTOM NAVBAR (Shared Component Blueprint & Semantic Shell) -->
+<!-- Active Tab semantic mapping: 'ENCLAVE' is active for this black-box security console -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-1 py-1 border-t border-outline-variant bg-surface-container-lowest">
+<!-- Tab 1: ENCLAVE (Active) -->
+<a class="flex flex-col items-center justify-center bg-surface-container text-primary-container border-t-2 border-primary-container px-3 py-1" href="#enclave">
+<span class="material-symbols-outlined text-base" data-icon="shield">shield</span>
+<span class="text-label-sm font-label-sm mt-0.5">ENCLAVE</span>
+</a>
+<!-- Tab 2: MEMORY (Inactive) -->
+<a class="flex flex-col items-center justify-center text-outline px-3 py-1 opacity-70 hover:bg-surface-container-low hover:text-primary-container transition-none active:bg-surface-container" href="#memory">
+<span class="material-symbols-outlined text-base" data-icon="memory">memory</span>
+<span class="text-label-sm font-label-sm mt-0.5">MEMORY</span>
+</a>
+<!-- Tab 3: KEYS (Inactive) -->
+<a class="flex flex-col items-center justify-center text-outline px-3 py-1 opacity-70 hover:bg-surface-container-low hover:text-primary-container transition-none active:bg-surface-container" href="#keys">
+<span class="material-symbols-outlined text-base" data-icon="key">key</span>
+<span class="text-label-sm font-label-sm mt-0.5">KEYS</span>
+</a>
+<!-- Tab 4: ATTEST (Inactive) -->
+<a class="flex flex-col items-center justify-center text-outline px-3 py-1 opacity-70 hover:bg-surface-container-low hover:text-primary-container transition-none active:bg-surface-container" href="#attest">
+<span class="material-symbols-outlined text-base" data-icon="verified_user">verified_user</span>
+<span class="text-label-sm font-label-sm mt-0.5">ATTEST</span>
+</a>
+</nav>
+<!-- TACTICAL SCRIPT INTERACTIONS -->
+<script>
+    let rejectCount = 14208;
+    const logBox = document.getElementById('logStream');
+
+    function addLog(msg, colorClass = 'text-primary-container') {
+      const now = new Date();
+      const timeStr = `[${String(now.getUTCHours()).padStart(2, '0')}:${String(now.getUTCMinutes()).padStart(2, '0')}:${String(now.getUTCSeconds()).padStart(2, '0')}.${String(now.getUTCMilliseconds()).padStart(3, '0')}]`;
+      const div = document.createElement('div');
+      div.className = colorClass;
+      div.textContent = `${timeStr} ${msg}`;
+      logBox.appendChild(div);
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function killBeacon() {
+      const btn = document.getElementById('killBtn');
+      btn.innerText = 'BEACON_DEAD';
+      btn.classList.remove('bg-error-container', 'text-on-error');
+      btn.classList.add('bg-surface-container-high', 'text-outline');
+      addLog('CMD_RECEIVED: KILL_BEACON. All RF carrier signals truncated to ground.', 'text-error');
+    }
+
+    function purgeBuffer() {
+      addLog('SYS_ACTION: Local volatility ring cleared. 0x0000 written over 128MB heap cache.', 'text-primary-container');
+    }
+
+    function rotateKey() {
+      addLog('TRNG_REKEY: Hardware entropy drawn. New Ephemeral Ed25519 root committed.', 'text-secondary-container');
+    }
+
+    function scrambleId() {
+      addLog('MASK_GEN: Enclave public measurement rotated. Anti-fingerprint shield enforced.', 'text-error');
+    }
+
+    // Hardware socket rejection increment simulator
+    setInterval(() => {
+      rejectCount += Math.floor(Math.random() * 3) + 1;
+      document.getElementById('rejectCounter').innerText = rejectCount.toLocaleString();
+    }, 2800);
+  </script>
+</body></html>
