@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Essay Reader API Contract
-  description: Shared API specification for Dmitry Efremov's Editorial Essay Reader. Defines endpoints for retrieving essays, paginated essay lists, and individual essay content in raw Markdown.
+  description: Shared API specification for Dmitry Efremov's Editorial Essay Reader. Defines endpoints for retrieving curated published essays, paginated essay lists, and individual essay content in raw Markdown. Excludes internal teleprompter drafts, raw recording scripts, and telemetry properties.
   version: 1.0.0
 servers:
   - url: /
@@ -11,7 +11,7 @@ paths:
   /api/v1/essays:
     get:
       summary: List essays
-      description: Retrieves a paginated list of published essays in the Essay Reader, ordered by publication date descending.
+      description: Retrieves a paginated list of published curated essays in the Essay Reader, ordered by publication date descending.
       operationId: listEssays
       parameters:
         - name: page
@@ -54,7 +54,7 @@ paths:
   /api/v1/essays/{slug}:
     get:
       summary: Get essay by slug
-      description: Retrieves a single essay including its raw Markdown body content, summary, and publication date.
+      description: Retrieves a single curated essay including its raw Markdown body content, summary, curator metadata, and publication date.
       operationId: getEssayBySlug
       parameters:
         - name: slug
@@ -115,6 +115,11 @@ components:
           type: string
           description: Raw Markdown body of the essay
           example: "# Deontic Logic\n\nYour code and your decisions are who you truly are."
+        curatedBy:
+          type: string
+          nullable: true
+          description: Curator attribution for polished essay content
+          example: "Dmitry Efremov"
         publishedAt:
           type: string
           format: date-time
