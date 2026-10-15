@@ -38,16 +38,23 @@ def main():
     components = spec.get("components", {})
     schemas = components.get("schemas", {})
 
-    for required_schema in ["PodcastEpisode", "PodcastEpisodePage", "PodcastTimecode", "ErrorResponse"]:
+    for required_schema in ["PodcastEpisode", "PodcastEpisodePage", "PodcastTimecode", "PodcastTopic", "ErrorResponse"]:
         assert required_schema in schemas, f"Missing schema definition for {required_schema}"
 
-    # 4. Check PodcastEpisode schema properties
+    # 4. Check PodcastTopic schema properties
+    topic_schema = schemas["PodcastTopic"]
+    topic_props = topic_schema.get("properties", {})
+    required_topic_props = ["id", "topicName", "startTimeSeconds", "endTimeSeconds", "description", "displayOrder"]
+    for prop in required_topic_props:
+        assert prop in topic_props, f"PodcastTopic schema missing '{prop}' property"
+
+    # 5. Check PodcastEpisode schema properties
     episode_schema = schemas["PodcastEpisode"]
     props = episode_schema.get("properties", {})
     required_props = [
         "id", "slug", "title", "thesis", "description", "audioUrl", "audio_url", "mediaLink",
         "youtubeUrl", "telegramUrl", "spotifyUrl", "applePodcastsUrl", "platforms",
-        "durationSeconds", "publishedAt", "createdAt", "timecodes"
+        "durationSeconds", "publishedAt", "createdAt", "timecodes", "topics"
     ]
     for prop in required_props:
         assert prop in props, f"PodcastEpisode schema missing '{prop}' property"
