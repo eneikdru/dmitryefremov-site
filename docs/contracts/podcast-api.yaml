@@ -85,6 +85,41 @@ paths:
 
 components:
   schemas:
+    PodcastTopic:
+      type: object
+      required:
+        - id
+        - topicName
+        - startTimeSeconds
+        - displayOrder
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        topicName:
+          type: string
+          description: Title or label of the topic navigation segment
+          example: "Модальная логика и философия языка"
+        startTimeSeconds:
+          type: integer
+          description: Topic start offset in seconds
+          example: 0
+        endTimeSeconds:
+          type: integer
+          nullable: true
+          description: Topic end offset in seconds
+          example: 900
+        description:
+          type: string
+          nullable: true
+          description: Detailed description of the topic segment
+          example: "Введение в философские работы Рут Баркан Маркус и формулу Баркан."
+        displayOrder:
+          type: integer
+          description: Sequence order of the topic segment
+          example: 1
+
     PodcastTimecode:
       type: object
       required:
@@ -214,6 +249,11 @@ components:
           description: Array of timecodes associated with this episode
           items:
             $ref: '#/components/schemas/PodcastTimecode'
+        topics:
+          type: array
+          description: Array of topic breakdown navigation segments associated with this episode
+          items:
+            $ref: '#/components/schemas/PodcastTopic'
 
     PodcastEpisodePage:
       type: object
