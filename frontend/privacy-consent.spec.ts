@@ -1,58 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { spawn, ChildProcess } from 'child_process';
-import * as path from 'path';
 
 test.describe('Fresh Visitor Privacy Consent Verification', () => {
-  let previewProcess: ChildProcess;
-
-  test.beforeAll(async () => {
-    // Build frontend
-    const buildProcess = spawn('npx', ['vite', 'build'], {
-      cwd: path.resolve('.'),
-      stdio: 'ignore'
-    });
-
-    await new Promise<void>((resolve, reject) => {
-      buildProcess.on('exit', (code) => {
-        if (code === 0) resolve();
-        else reject(new Error(`vite build failed with code ${code}`));
-      });
-    });
-
-    // Start preview server on 4173
-    previewProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
-      cwd: path.resolve('.'),
-      stdio: 'ignore'
-    });
-
-    // Active polling to ensure preview server is listening
-    let serverReady = false;
-    for (let i = 0; i < 30; i++) {
-      try {
-        const response = await fetch('http://localhost:4173');
-        if (response.ok || response.status === 200) {
-          serverReady = true;
-          break;
-        }
-      } catch {
-        // Server still starting
-      }
-      await new Promise(res => setTimeout(res, 200));
-    }
-    if (!serverReady) {
-      throw new Error('Preview server failed to start on port 4173');
-    }
-  });
-
-  test.afterAll(() => {
-    if (previewProcess) {
-      previewProcess.kill();
-    }
-  });
-
   test('fresh visitor without banner interaction leaks no tracking cookies or scripts', async ({ page }) => {
     // Access site as fresh visitor
-    await page.goto('http://localhost:4173');
+    await page.goto('/');
     await page.waitForSelector('#telemetry-hub-root');
     await page.waitForSelector('#cmp-modal-overlay');
 
@@ -86,7 +37,7 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
     const declineContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     try {
       const declinePage = await declineContext.newPage();
-      await declinePage.goto('http://localhost:4173');
+      await declinePage.goto('/');
       await declinePage.waitForSelector('#cmp-decline-btn');
       await declinePage.click('#cmp-decline-btn');
 
@@ -102,7 +53,7 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
     const acceptContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     try {
       const acceptPage = await acceptContext.newPage();
-      await acceptPage.goto('http://localhost:4173');
+      await acceptPage.goto('/');
       await acceptPage.waitForSelector('#cmp-accept-btn');
       await acceptPage.click('#cmp-accept-btn');
 

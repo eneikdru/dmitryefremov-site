@@ -1,0 +1,58 @@
+[
+  {
+    "id": "admin-header",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 56
+  },
+  {
+    "id": "admin-status-banner",
+    "left": 400,
+    "top": 72,
+    "width": 640,
+    "height": 115
+  },
+  {
+    "id": "admin-metrics-section",
+    "left": 400,
+    "top": 211,
+    "width": 640,
+    "height": 264
+  },
+  {
+    "id": "dsar-queue-section",
+    "left": 400,
+    "top": 499,
+    "width": 640,
+    "height": 472
+  },
+  {
+    "id": "dsar-item-8821",
+    "left": 400,
+    "top": 535,
+    "width": 640,
+    "height": 178
+  },
+  {
+    "id": "execute-deletion-btn",
+    "left": 726,
+    "top": 660,
+    "width": 297,
+    "height": 36
+  },
+  {
+    "id": "system-isolation-section",
+    "left": 400,
+    "top": 995,
+    "width": 640,
+    "height": 359
+  },
+  {
+    "id": "admin-bottom-nav",
+    "left": 0,
+    "top": 836,
+    "width": 1440,
+    "height": 64
+  }
+]
