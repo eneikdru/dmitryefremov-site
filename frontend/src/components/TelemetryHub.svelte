@@ -5,12 +5,13 @@
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import GqmTelemetryView from './GqmTelemetryView.svelte';
+  import SwissEditorialView from './SwissEditorialView.svelte';
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' | 'enclave' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'gallery' | 'contact' | 'gqm' | 'enclave' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -192,12 +193,24 @@
         >
           <span class="text-[11px]">TELEMETRY</span>
         </button>
+        <button
+          id="tab-btn-enclave"
+          type="button"
+          class="px-3 py-2.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer {activeTab === 'enclave' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-slate-200 text-[#0f172a] font-bold') : (theme === 'dark' ? 'text-[#64748b] hover:text-[#94a3b8]' : 'text-[#94a3b8] hover:text-[#64748b]')}"
+          on:click={() => (activeTab = 'enclave')}
+        >
+          <span class="text-[11px]">ENCLAVE</span>
+        </button>
       </nav>
     </header>
 
     <!-- Main Content Area -->
     <section id="content-view" class="space-y-8">
-      {#if activeTab === 'podcast'}
+      {#if activeTab === 'enclave'}
+        <div class="space-y-6">
+          <SwissEditorialView />
+        </div>
+      {:else if activeTab === 'podcast'}
         <div class="space-y-6">
           <PodcastPlayerView />
         </div>

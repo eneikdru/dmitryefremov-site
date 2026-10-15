@@ -1,0 +1,72 @@
+[
+  {
+    "id": "main-header",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 45
+  },
+  {
+    "id": "telemetry-strip",
+    "left": 176,
+    "top": 566,
+    "width": 1088,
+    "height": 70
+  },
+  {
+    "id": "main-content",
+    "left": 272,
+    "top": 636,
+    "width": 896,
+    "height": 903
+  },
+  {
+    "id": "hero-status-card",
+    "left": 284,
+    "top": 648,
+    "width": 872,
+    "height": 332
+  },
+  {
+    "id": "attestation-block",
+    "left": 297,
+    "top": 698,
+    "width": 846,
+    "height": 88
+  },
+  {
+    "id": "lockdown-matrix",
+    "left": 297,
+    "top": 798,
+    "width": 846,
+    "height": 170
+  },
+  {
+    "id": "quarantine-monitor",
+    "left": 284,
+    "top": 992,
+    "width": 872,
+    "height": 187
+  },
+  {
+    "id": "tactical-controls",
+    "left": 284,
+    "top": 1191,
+    "width": 872,
+    "height": 215
+  },
+  {
+    "id": "audit-log-terminal",
+    "left": 284,
+    "top": 1417,
+    "width": 872,
+    "height": 122
+  },
+  {
+    "id": "bottom-nav",
+    "left": 0,
+    "top": 850,
+    "width": 1440,
+    "height": 51
+  }
+]
