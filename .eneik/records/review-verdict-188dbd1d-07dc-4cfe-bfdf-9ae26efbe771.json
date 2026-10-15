@@ -1,0 +1,15 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "TeleprompterIsolationFilter hardcodes specific uri string matches instead of configurable pattern matching.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
