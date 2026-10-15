@@ -1,0 +1,13 @@
+{
+  "testsRun": 74,
+  "testsPassed": 74,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the E2E/integration suite, When verifying the UI, Then tests confirm zero telemetry leakage and no internal factory mechanics are exposed.",
+    "Given an integration test, When explicitly attempting to load raw teleprompter scripts via the public API, Then the system returns an isolated 404 or refuses connection.",
+    "Given this role completes the Atomic Goal, When the relevant verification command runs, Then the change passes without unrelated scope."
+  ],
+  "coverageDeltaPercent": 0.0,
+  "verdict": "pass",
+  "notes": "Verified core experience QA coverage including teleprompter script isolation (404 refusal on raw scripts) and black-box invariant / zero telemetry leakage on public endpoints."
+}
