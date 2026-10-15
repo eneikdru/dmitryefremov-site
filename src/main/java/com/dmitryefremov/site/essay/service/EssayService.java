@@ -1,9 +1,9 @@
 package com.dmitryefremov.site.essay.service;
 
-import com.dmitryefremov.site.essay.domain.Essay;
+import com.dmitryefremov.site.essay.domain.PublishedEssay;
 import com.dmitryefremov.site.essay.dto.EssayDto;
 import com.dmitryefremov.site.essay.dto.EssayPageDto;
-import com.dmitryefremov.site.essay.repository.EssayRepository;
+import com.dmitryefremov.site.essay.repository.PublishedEssayRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class EssayService {
 
-    private final EssayRepository essayRepository;
+    private final PublishedEssayRepository publishedEssayRepository;
 
-    public EssayService(EssayRepository essayRepository) {
-        this.essayRepository = essayRepository;
+    public EssayService(PublishedEssayRepository publishedEssayRepository) {
+        this.publishedEssayRepository = publishedEssayRepository;
     }
 
     public EssayPageDto getEssays(int page, int size) {
@@ -33,7 +33,7 @@ public class EssayService {
         }
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Essay> essayPage = essayRepository.findAllByOrderByPublishedAtDesc(pageable);
+        Page<PublishedEssay> essayPage = publishedEssayRepository.findAllByOrderByPublishedAtDesc(pageable);
 
         List<EssayDto> dtos = essayPage.getContent().stream()
                 .map(this::mapToDto)
@@ -49,11 +49,11 @@ public class EssayService {
     }
 
     public Optional<EssayDto> getEssayBySlug(String slug) {
-        return essayRepository.findBySlug(slug)
+        return publishedEssayRepository.findBySlug(slug)
                 .map(this::mapToDto);
     }
 
-    public EssayDto mapToDto(Essay entity) {
+    public EssayDto mapToDto(PublishedEssay entity) {
         return new EssayDto(
                 entity.getId(),
                 entity.getSlug(),
