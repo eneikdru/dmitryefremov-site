@@ -1,0 +1,507 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "b2684962-438c-471e-be5e-7360c97fa7db",
+      "title": "Core Experience and Identity",
+      "jtbd": "When a visitor lands on the site, I want to immediately understand the author's focus and have clear ways to contact them, so that I can explore their work or get in touch.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Visitor immediate bounce rate",
+      "tocConstraintRef": "Frontend rendering time",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Strict Black Box invariant: Zero internal factory mechanics exposed to visitors.",
+        "R2: The site publishes a Thoughts & Essays section with standalone, curated reading materials derived from distribution queue.",
+        "R3: Strict Content Guardrail: Raw teleprompter scripts (/mnt/HC_Volume_106932004/podcast/episodes/*) are structurally isolated and never exposed to the public.",
+        "R4: High-End Swiss Editorial / Technical Brutalism aesthetic (clean typography, no AI-generated cognitive noise, no intrusive popups)."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Core Content Data Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the schema for this epic, I want to structure the curated essays distinct from draft tables, so that teleprompter isolation is guaranteed.",
+          "acceptanceCriteria": "Given a new schema migration, When applied, Then tables for published_essays are created completely separately from internal scripts.\nGiven the schema, When queried, Then it enforces strict isolation of curated content.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Database setup",
+          "sixSigmaMetric": "Migration failure rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Core Content API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the API contract for this epic, I want to define the schema for curated essays, so that the frontend correctly renders polished articles without exposing internal fields.",
+          "acceptanceCriteria": "Given the API contract, When reviewed, Then it exclusively describes curated essays and excludes draft/telemetry properties.\nGiven the frontend integration, When types are bound, Then no teleprompter script fields exist in the contract.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Contract specification",
+          "sixSigmaMetric": "Contract synchronization errors",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Core Content Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the backend for this epic, I want to serve the Thoughts & Essays securely, so that only explicitly polished articles are exposed.",
+          "acceptanceCriteria": "Given a request for essays, When processed, Then the API returns only curated published content.\nGiven a request for raw scripts, When attempted, Then the backend routing outright rejects or drops the request, maintaining isolation.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "API routing logic",
+          "sixSigmaMetric": "Content leakage incidents",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Swiss Editorial Frontend UI",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the frontend for this epic, I want to construct the Technical Brutalism aesthetic with zero telemetry exposure, so that the identity is premium and the black-box invariant is maintained.",
+          "acceptanceCriteria": "Given the site layout, When loaded on mobile or desktop, Then the typography matches the Swiss Editorial aesthetic, has no intrusive popups, and meets WCAG 2.1 AA 4.5:1 contrast requirements.\nGiven any page on the site, When inspected, Then no internal factory mechanics are exposed.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "CSS rendering payload",
+          "sixSigmaMetric": "Visual regression failure rate",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R4"
+          ]
+        },
+        {
+          "title": "Core Experience QA Verification",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the QA coverage for this epic, I want to verify the aesthetic, the strict content guardrail, and the black-box invariant, so that the core experience is proven safe.",
+          "acceptanceCriteria": "Given the E2E suite, When verifying the UI, Then tests confirm zero telemetry leakage and no internal factory mechanics are exposed.\nGiven an integration test, When explicitly attempting to load raw teleprompter scripts via the public API, Then the system returns an isolated 404 or refuses connection.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Test execution duration",
+          "sixSigmaMetric": "Test pass rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "69e36127-e778-4851-83e6-37a2d16cedf7",
+      "title": "Platform Telemetry and Measurement",
+      "jtbd": "When operating the site, I want to measure visitor engagement with my content and external links, so that I know if the site successfully drives interest in my work.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Telemetry isolation gap (incidents of data leakage)",
+      "tocConstraintRef": "Admin dashboard access latency",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Move all telemetry, dwell time tracking metrics, and recording pipeline data into a secure private admin route (/admin) accessible only to Dmitry Efremov.",
+        "R2: The product must measure whether it is actually achieving what it exists for via Goal-Question-Metric (goal: showcase work, question: do visitors explore work or get in touch, metric: engagement with content and contact links).",
+        "R3: The system captures opt-in consent via an established consent platform before any non-essential tracker or telemetry tool loads.",
+        "R4: Refusing consent is as easy as accepting it, and the choice is recorded and revocable.",
+        "R5: Export of a data subject's own data on request, and erasure on request, within the statutory deadline."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Admin Dashboard Data Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the database schema for this epic, I want to store telemetry, user credentials, and consent securely, so that the admin dashboard can isolate private data and GDPR compliance is supported.",
+          "acceptanceCriteria": "Given a clean database, When the migrations run, Then the tables for telemetry logs, consent records, and admin users are created.\nGiven the tables exist, When an admin user is inserted, Then credentials are securely stored.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Schema migration execution",
+          "sixSigmaMetric": "Migration failure rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Admin Dashboard API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the API contract for this epic, I want to define the shared interface for telemetry ingestion, admin authentication, and GDPR data subject rights, so that the frontend and backend can integrate seamlessly.",
+          "acceptanceCriteria": "Given the API contract, When reviewed by the team, Then it covers telemetry ingestion, admin authentication, data export, and data erasure.\nGiven the contract is defined, When implemented, Then both frontend and backend teams have a unified schema.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Contract alignment delay",
+          "sixSigmaMetric": "API schema validation errors",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Admin Dashboard Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the backend for this epic, I want to expose secure endpoints for telemetry and GDPR compliance, so that the frontend can authenticate, fetch the data, and execute data rights.",
+          "acceptanceCriteria": "Given an unauthorized request to /api/admin, When submitted, Then a 401 Unauthorized response is returned.\nGiven an authorized request with valid credentials, When submitted, Then the telemetry GQM data is returned.\nGiven a valid GDPR export or erasure request, When executed, Then the system aggregates or hard-deletes all associated records.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Endpoint response time",
+          "sixSigmaMetric": "Unauthorized access rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Admin Dashboard Frontend Implementation",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the frontend for this epic, I want to build the admin dashboard, consent banner, and GDPR self-service compliance dashboard, so that internal mechanics are strictly isolated and legal compliance is achieved.",
+          "acceptanceCriteria": "Given the private /admin route, When accessed by an authenticated user via keyboard, Then all controls are focusable and meet WCAG 2.1 AA 4.5:1 text contrast.\nGiven the site loads for the first time, When navigated via keyboard, Then the consent banner is focused, operable, and rejecting is one click.\nGiven the GDPR compliance dashboard, When the user attempts deletion, Then a destructive action confirmation is presented before proceeding.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "UI render cycle",
+          "sixSigmaMetric": "Public UI data leakage rate",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Telemetry and Isolation QA Verification",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the QA coverage for this epic, I want to verify the complete isolation of telemetry and GDPR compliance, so that the public UI is proven clean and legal liabilities are mitigated.",
+          "acceptanceCriteria": "Given a fresh browser session, When the site loads, Then network assertions confirm no telemetry scripts have fired before consent.\nGiven the E2E test suite, When executed against the admin dashboard, Then authenticated GQM metrics are successfully retrieved and displayed.\nGiven a deletion test, When the erasure endpoint fires, Then subsequent queries for that identity's data return exactly zero rows.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Test execution duration",
+          "sixSigmaMetric": "Test coverage percentage",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "c2a7643f-884f-4e0d-a5ae-840a14169074",
+      "title": "Podcast Media Hub",
+      "jtbd": "When a visitor wants to listen to the podcast, I want to browse episodes with detailed show notes and audio playback, so that I can consume the audio content directly.",
+      "kanoClass": "Performance",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Audio playback failure rate",
+      "tocConstraintRef": "Media streaming bandwidth",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Visitors can browse and play only released canonical podcast episodes (Episode 01 Ruth Barcan Marcus, Episode 02 Paul Thagard, Episode 03 Susan Hurley).",
+        "R2: The podcast player provides high-fidelity audio playback.",
+        "R3: The podcast player includes topic navigation to jump to specific sections within an episode."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Podcast Media Data Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the database schema for this epic, I want to define tables for podcast episodes and topics, so that media metadata is persisted.",
+          "acceptanceCriteria": "Given a schema migration, When applied, Then podcast_episodes and episode_topics tables are created.\nGiven the tables exist, When an episode is queried, Then its topic timestamps are returned.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Database read throughput",
+          "sixSigmaMetric": "Schema migration errors",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Podcast Media API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the API contract for this epic, I want to establish the payload shape for podcast episodes, so that the frontend can confidently integrate.",
+          "acceptanceCriteria": "Given the API specification, When published, Then it details the episodic audio URL and topic breakdown.\nGiven the frontend client, When generating types from the contract, Then no compilation errors occur.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Contract negotiation",
+          "sixSigmaMetric": "API payload validation",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Podcast Media Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the backend for this epic, I want to serve the podcast metadata and audio links, so that the media player can stream the content.",
+          "acceptanceCriteria": "Given a request for episodes, When handled by the backend, Then canonical released episodes are returned.\nGiven an episode with topics, When requested, Then the topic timestamps are correctly serialized.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Endpoint latency",
+          "sixSigmaMetric": "API error response rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Podcast Media Frontend Player",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the frontend for this epic, I want to build an accessible media player with topic navigation, so that visitors can listen seamlessly.",
+          "acceptanceCriteria": "Given the public site, When navigating to the podcast via keyboard, Then all audio controls and topic links are fully operable and WCAG 2.1 AA compliant.\nGiven the audio player, When a user clicks a topic link, Then the audio jumps to the corresponding timestamp with visible focus.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Client rendering performance",
+          "sixSigmaMetric": "Media playback errors",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Podcast Media QA Verification",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the QA coverage for this epic, I want to ensure the audio player and topic navigation function flawlessly, so that listeners have an uninterrupted experience.",
+          "acceptanceCriteria": "Given the E2E test suite, When testing the podcast feature, Then audio playback commands dispatch correctly.\nGiven the topic navigation, When tested, Then clicking a topic asserts the internal player time changes accordingly.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Test execution duration",
+          "sixSigmaMetric": "Test pass rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "bc554192-aa4c-45cd-9f32-77f139aa52a5",
+      "title": "Confidential Client Intake",
+      "jtbd": "When a prospective client submits an idea, I want a secure, black-box intake flow, so that commercial confidentiality is guaranteed and internal factory mechanics are hidden.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complex",
+      "sixSigmaMetric": "Intake drop-off rate",
+      "tocConstraintRef": "Lead ingestion processing",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The site provides a secure, confidential intake form for prospective clients to request a high-end systems audit.",
+        "R2: An A2A (Agent-to-Agent) gateway allows external AI agents to submit intake requests and agentic architecture requests securely.",
+        "R3: The intake process entirely hides its internal mechanics and routing from the submitter (Zero leakage of internal mechanics).",
+        "R4: The submitter receives an automatic acknowledgement immediately upon submitting an enquiry."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Client Intake Data Schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the database schema for this epic, I want to store secure audit requests, so that the internal pipeline can process them confidentially.",
+          "acceptanceCriteria": "Given the database, When migrations run, Then the intake_requests table is created with proper encryption at rest.\nGiven an intake request, When saved, Then no public identifiers leak.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Database write latency",
+          "sixSigmaMetric": "Schema deployment failures",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Client Intake API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the API contract for this epic, I want to define the unified intake schema for both humans and A2A agents, so that all clients use a secure interface.",
+          "acceptanceCriteria": "Given the OpenAPI spec, When published, Then the /api/intake route clearly defines the payload for both human and agentic requests.\nGiven the payload definition, When generated, Then validation rules are explicitly enforced.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Contract validation",
+          "sixSigmaMetric": "Payload validation errors",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        },
+        {
+          "title": "Client Intake Backend Integration",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the backend for this epic, I want to securely ingest audit requests and dispatch acknowledgements, so that confidentiality is maintained.",
+          "acceptanceCriteria": "Given a valid intake request, When submitted via the API, Then the payload is saved confidentially and an automatic acknowledgement is dispatched to the sender.\nGiven an A2A request, When submitted, Then it bypasses human-only UI checks but undergoes the same validation and acknowledgement.",
+          "leanValue": "essential",
+          "cynefinDomain": "complex",
+          "tocConstraintRef": "Email dispatch latency",
+          "sixSigmaMetric": "Acknowledgement delivery failure rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Client Intake Frontend UI",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the frontend for this epic, I want to build the secure intake form with clear feedback, so that the submitter trusts the black-box process.",
+          "acceptanceCriteria": "Given the intake form, When rendered, Then all inputs are accessible via keyboard with associated labels (WCAG 2.1 AA).\nGiven a form submission, When a validation error occurs or connection drops, Then what the user typed survives and is not discarded.\nGiven a successful submission, When completed, Then visible success feedback is shown indicating an email acknowledgement was sent.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Form validation cycle",
+          "sixSigmaMetric": "Form abandonment rate",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Client Intake QA Verification",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the QA coverage for this epic, I want to test the entire intake flow including the A2A gateway, so that no requests are lost and acknowledgements always fire.",
+          "acceptanceCriteria": "Given the E2E suite, When a human intake request is simulated, Then the database records it and the acknowledgement mock intercepts the dispatch.\nGiven an A2A simulated payload, When sent directly to the API, Then it is successfully processed and acknowledged identically.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "E2E execution reliability",
+          "sixSigmaMetric": "End-to-end test pass rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "0b02652b-2f5d-4812-8a9f-0955154176e2",
+      "title": "Data Protection and Recovery",
+      "jtbd": "When the database experiences a failure, I want to be able to restore the system state from a backup, so that I do not lose my published content.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Recovery point objective (RPO) latency",
+      "tocConstraintRef": "Database restoration time",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The system performs regular, automated backups of all persistent data, including published essays, intake requests, and telemetry.",
+        "R2: A complete system restore from a backup is successfully performed and verified in a non-production environment."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Automated Backup Configuration",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the DevOps tasks for this epic, I want to configure scheduled backups, so that disaster recovery points are continuously generated.",
+          "acceptanceCriteria": "Given the infrastructure configuration, When applied, Then automated daily database dumps are securely stored.\nGiven the backup retention policy, When observed, Then stale backups are rotated cleanly.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Storage orchestration",
+          "sixSigmaMetric": "Backup failure rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Disaster Recovery QA Verification",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the QA coverage for this epic, I want to execute a real restore from backup, so that we definitively prove recovery works.",
+          "acceptanceCriteria": "Given a generated backup file, When the restore script is executed in an empty test database, Then the process completes without errors.\nGiven the restored database, When queried, Then all expected data integrity checks pass.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Restore simulation fidelity",
+          "sixSigmaMetric": "Recovery verification success rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "bb19579b-628f-4eaf-900d-94e6eeea2e20",
+      "title": "Initial Content and Acceptance",
+      "jtbd": "When receiving the delivered system, I want to see it populated with realistic content, so that I can verify all paths and features work end-to-end.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Initial content defect rate",
+      "tocConstraintRef": "Data seeding execution",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The deployed system is populated with the initial canonical podcast episodes (01, 02, 03) and corresponding audio metadata.",
+        "R2: The system is populated with a sample set of curated, polished essays to verify the Thoughts & Essays section.",
+        "R3: The initial content enables full traversal of the public site, including playback, reading, and intake flows."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Seed Data Generation",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the database seeding for this epic, I want to insert canonical podcasts and curated essays, so that the acceptance environment reflects the real product.",
+          "acceptanceCriteria": "Given the flyway migrations, When executed in the acceptance environment, Then episodes 01, 02, and 03 are correctly seeded.\nGiven the essays tables, When seeded, Then realistic curated content is inserted.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Seed data complexity",
+          "sixSigmaMetric": "Seeding error rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Acceptance Flow QA Verification",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the QA coverage for this epic, I want to traverse the entire application using the initial content, so that buyer acceptance is guaranteed.",
+          "acceptanceCriteria": "Given the seeded acceptance environment, When traversing the public site, Then the podcast player loads the seeded episodes perfectly.\nGiven the seeded essays, When viewed, Then they render according to the Swiss Editorial aesthetic perfectly.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "End-to-end verification",
+          "sixSigmaMetric": "Acceptance criteria pass rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        }
+      ]
+    }
+  ]
+}
