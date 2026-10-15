@@ -65,7 +65,23 @@ it is the referent every later artifact is checked against.
 
 7. Безусловная реализация финального облика сайта Дмитрия Ефремова: High-End Scrollytelling, абсолютная достоверность материалов, чистый звук подкаста без студийных фото и автономная A2A-инфраструктура
 
+8. # Black Box Invariant & Dual-Contour Architecture
+   
+   ## 1. Strict Separation: Public Client Portal vs Private Admin Dashboard
+   - Complete removal of internal mechanics from the public user interface (Zero leakage of internal telemetry, GQM metrics, [SYS_CORE] tags, debug frames, and production recording schedules).
+   - Move all telemetry, dwell time tracking metrics, and recording pipeline data into a secure private admin route (/admin) accessible only to Dmitry Efremov.
+   
+   ## 2. Public Client Portal (dmitryefremov.com) - Purpose-Built for Readers & Thinkers
+   - High-End Swiss Editorial / Technical Brutalism aesthetic (clean typography, no AI-generated cognitive noise, no intrusive popups).
+   - Podcast: showcase only released canonical episodes (Episode 01 Ruth Barcan Marcus, Episode 02 Paul Thagard, Episode 03 Susan Hurley) with high-fidelity audio playback and topic navigation.
+   - Thoughts & Essays: publish clean, standalone, edited articles and key conceptual takeaways derived from the distribution queue (not raw teleprompter drafts).
+   - Confidential Client Intake & A2A Gateway: secure entrypoint for high-end systems audit and agentic architecture requests.
+   
+   ## 3. Strict Content Guardrail: Raw Teleprompter Isolation
+   - Teleprompter scripts (/mnt/HC_Volume_106932004/podcast/episodes/*) are internal recording instruments and must never be exposed directly as live site articles.
+   - Public reading materials must be curated, polished executive summaries and essays.
+
 ---
 
-Entries: 7. Anything this product claims - a page
+Entries: 8. Anything this product claims - a page
 heading, a filter, a capability - must trace to one of them or to a declared route.
