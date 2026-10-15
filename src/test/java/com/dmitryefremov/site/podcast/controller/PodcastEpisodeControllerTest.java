@@ -89,6 +89,7 @@ class PodcastEpisodeControllerTest {
         OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 9, 12, 0, 0, 0, ZoneOffset.UTC);
         PodcastTimecodeDto tc1 = new PodcastTimecodeDto(101L, 0, "Introduction", "Intro description", 1);
         PodcastTimecodeDto tc2 = new PodcastTimecodeDto(102L, 600, "Deep Dive into Deontic Logic", "Deontic logic explanation", 2);
+        EpisodeTopicDto topic = new EpisodeTopicDto(1L, "Ruth Barcan Marcus", 0, 900, "Modal Logic", 1);
 
         PodcastEpisodeDto episode = new PodcastEpisodeDto(
                 1L,
@@ -98,10 +99,19 @@ class PodcastEpisodeControllerTest {
                 "Full episode description",
                 "https://dmitryefremov.com/podcast/ep2.mp3",
                 "https://youtube.com/watch?v=ep2",
+                "https://youtube.com/watch?v=ep2",
+                "https://t.me/channel",
+                "https://spotify.com",
+                "https://apple.com",
+                "YOUTUBE,TELEGRAM",
+                "https://dmitryefremov.com/concept",
+                "{\"bitrate\":\"320kbps\"}",
                 2400,
                 publishedAt,
                 publishedAt,
-                List.of(tc1, tc2)
+                List.of(tc1, tc2),
+                List.of(),
+                List.of(topic)
         );
 
         when(podcastEpisodeService.getEpisodeBySlug("deontic-logic-and-systems"))
@@ -119,7 +129,12 @@ class PodcastEpisodeControllerTest {
                 .andExpect(jsonPath("$.audioUrl", is("https://dmitryefremov.com/podcast/ep2.mp3")))
                 .andExpect(jsonPath("$.timecodes", hasSize(2)))
                 .andExpect(jsonPath("$.timecodes[0].title", is("Introduction")))
-                .andExpect(jsonPath("$.timecodes[1].title", is("Deep Dive into Deontic Logic")));
+                .andExpect(jsonPath("$.timecodes[1].title", is("Deep Dive into Deontic Logic")))
+                .andExpect(jsonPath("$.topics", hasSize(1)))
+                .andExpect(jsonPath("$.topics[0].topicName", is("Ruth Barcan Marcus")))
+                .andExpect(jsonPath("$.topics[0].startTimeSeconds", is(0)))
+                .andExpect(jsonPath("$.topics[0].endTimeSeconds", is(900)))
+                .andExpect(jsonPath("$.topics[0].displayOrder", is(1)));
     }
 
     @Test
