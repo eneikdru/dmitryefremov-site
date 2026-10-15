@@ -1,5 +1,6 @@
 package com.dmitryefremov.site.podcast.controller;
 
+import com.dmitryefremov.site.podcast.dto.EpisodeTopicDto;
 import com.dmitryefremov.site.podcast.dto.PodcastEpisodeDto;
 import com.dmitryefremov.site.podcast.dto.PodcastEpisodePageDto;
 import com.dmitryefremov.site.podcast.dto.PodcastTimecodeDto;
@@ -36,6 +37,7 @@ class PodcastEpisodeControllerTest {
     void testListPodcastEpisodesReturns200() throws Exception {
         OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 9, 12, 0, 0, 0, ZoneOffset.UTC);
         PodcastTimecodeDto timecode = new PodcastTimecodeDto(1L, 0, "Intro", "Intro section", 1);
+        EpisodeTopicDto topic = new EpisodeTopicDto(1L, "Modal Logic", 0, 600, "Topic description", 1);
         PodcastEpisodeDto episode = new PodcastEpisodeDto(
                 10L,
                 "systems-ep1",
@@ -55,7 +57,8 @@ class PodcastEpisodeControllerTest {
                 publishedAt,
                 publishedAt,
                 List.of(timecode),
-                List.of()
+                List.of(),
+                List.of(topic)
         );
 
         PodcastEpisodePageDto pageDto = new PodcastEpisodePageDto(List.of(episode), 0, 20, 1L, 1);
@@ -76,7 +79,9 @@ class PodcastEpisodeControllerTest {
                 .andExpect(jsonPath("$.content[0].title", is("Systems and Reality Ep 1")))
                 .andExpect(jsonPath("$.content[0].thesis", is("Core thesis")))
                 .andExpect(jsonPath("$.content[0].audioUrl", is("https://dmitryefremov.com/podcast/ep1.mp3")))
-                .andExpect(jsonPath("$.content[0].metadata", is("{\"bitrate\":\"320kbps\",\"format\":\"mp3\"}")));
+                .andExpect(jsonPath("$.content[0].metadata", is("{\"bitrate\":\"320kbps\",\"format\":\"mp3\"}")))
+                .andExpect(jsonPath("$.content[0].topics", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].topics[0].topicName", is("Modal Logic")));
     }
 
     @Test

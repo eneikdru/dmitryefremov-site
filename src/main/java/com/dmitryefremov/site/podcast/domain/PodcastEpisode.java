@@ -70,6 +70,10 @@ public class PodcastEpisode {
     @OrderBy("displayOrder ASC, id ASC")
     private List<PodcastQuote> quotes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("displayOrder ASC, startTimeSeconds ASC")
+    private List<EpisodeTopic> topics = new ArrayList<>();
+
     public PodcastEpisode() {
     }
 
@@ -120,6 +124,16 @@ public class PodcastEpisode {
     public void removeQuote(PodcastQuote quote) {
         quotes.remove(quote);
         quote.setEpisode(null);
+    }
+
+    public void addTopic(EpisodeTopic topic) {
+        topics.add(topic);
+        topic.setEpisode(this);
+    }
+
+    public void removeTopic(EpisodeTopic topic) {
+        topics.remove(topic);
+        topic.setEpisode(null);
     }
 
     public Long getId() {
@@ -256,6 +270,10 @@ public class PodcastEpisode {
 
     public List<PodcastQuote> getQuotes() {
         return quotes;
+    }
+
+    public List<EpisodeTopic> getTopics() {
+        return topics;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.dmitryefremov.site.podcast.repository;
 
+import com.dmitryefremov.site.podcast.domain.EpisodeTopic;
 import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
 import com.dmitryefremov.site.podcast.domain.PodcastQuote;
 import com.dmitryefremov.site.podcast.domain.PodcastTimecode;
@@ -37,6 +38,10 @@ class PodcastEpisodeRepositoryTest {
                 "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'PODCAST_QUOTES'",
                 Integer.class
         );
+        Integer topicsTableCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'EPISODE_TOPICS'",
+                Integer.class
+        );
         Integer episodesViewCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'EPISODES'",
                 Integer.class
@@ -45,6 +50,7 @@ class PodcastEpisodeRepositoryTest {
         assertThat(episodeTableCount).isGreaterThan(0);
         assertThat(timecodeTableCount).isGreaterThan(0);
         assertThat(quoteTableCount).isGreaterThan(0);
+        assertThat(topicsTableCount).isGreaterThan(0);
         assertThat(episodesViewCount).isGreaterThan(0);
     }
 
@@ -112,10 +118,55 @@ class PodcastEpisodeRepositoryTest {
         assertThat(ep1).isPresent();
         assertThat(ep1.get().getTitle()).contains("Системы и реальность #1");
         assertThat(ep1.get().getTimecodes()).hasSize(3);
+        assertThat(ep1.get().getTopics()).hasSize(3);
+
+        EpisodeTopic topic1 = ep1.get().getTopics().get(0);
+        assertThat(topic1.getTopicName()).isEqualTo("Модальная логика и философия языка");
+        assertThat(topic1.getStartTimeSeconds()).isEqualTo(0);
+        assertThat(topic1.getEndTimeSeconds()).isEqualTo(900);
 
         Optional<PodcastEpisode> ep2 = podcastEpisodeRepository.findBySlug("systems-and-reality-ep2");
         assertThat(ep2).isPresent();
         assertThat(ep2.get().getTitle()).contains("Системы и реальность #2");
+    }
+
+    @Test
+    void testInsertEpisodeWithTopicsReturnsTopicTimestamps() {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 15, 10, 0, 0, 0, ZoneOffset.UTC);
+
+        PodcastEpisode episode = new PodcastEpisode(
+                "topics-test-ep",
+                "Эпизод с темированием",
+                "Тезис о навигации по темам",
+                "Описание эпизода с темами",
+                "https://cdn.dmitryefremov.com/podcast/topics-test.mp3",
+                "https://dmitryefremov.com/podcasts/topics-test",
+                3600,
+                publishedAt
+        );
+
+        EpisodeTopic topic1 = new EpisodeTopic("Рут Баркан Маркус: Модальности", 0, 1200, "Формула Баркан и модальная логика", 1);
+        EpisodeTopic topic2 = new EpisodeTopic("Пол Тагард: Когнитивистика", 1200, 2400, "Вычислительные модели и сопоставление гипотез", 2);
+        EpisodeTopic topic3 = new EpisodeTopic("Сюзан Херли: Расширенное сознание", 2400, 3600, "Внешние когнитивные интерфейсы", 3);
+
+        episode.addTopic(topic1);
+        episode.addTopic(topic2);
+        episode.addTopic(topic3);
+
+        PodcastEpisode saved = podcastEpisodeRepository.save(episode);
+        podcastEpisodeRepository.flush();
+
+        assertThat(saved.getId()).isNotNull();
+
+        Optional<PodcastEpisode> fetched = podcastEpisodeRepository.findBySlug("topics-test-ep");
+        assertThat(fetched).isPresent();
+        assertThat(fetched.get().getTopics()).hasSize(3);
+
+        EpisodeTopic fetchedTopic2 = fetched.get().getTopics().get(1);
+        assertThat(fetchedTopic2.getTopicName()).isEqualTo("Пол Тагард: Когнитивистика");
+        assertThat(fetchedTopic2.getStartTimeSeconds()).isEqualTo(1200);
+        assertThat(fetchedTopic2.getEndTimeSeconds()).isEqualTo(2400);
+        assertThat(fetchedTopic2.getDescription()).contains("Вычислительные модели");
     }
 
     @Test
