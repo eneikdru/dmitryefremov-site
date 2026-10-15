@@ -1,0 +1,166 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c2a7643f-884f-4e0d-a5ae-840a14169074",
+      "title": "Podcast Media Hub",
+      "jtbd": "When a visitor wants to listen to the podcast, I want to browse episodes with detailed show notes and audio playback, so that I can consume the audio content directly.",
+      "kanoClass": "Performance",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "podcast listen completion rate",
+      "tocConstraintRef": "media player component",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Visitor can see a list of available podcast episodes.",
+        "R2: Visitor can click an episode to view detailed show notes.",
+        "R3: Visitor can play the audio of the selected episode directly in the browser.",
+        "R4: Visitor receives visible feedback on audio playback progress, with the ability to pause and scrub.",
+        "R5: Visitor can navigate and use the player seamlessly on a mobile device.",
+        "R6: Visitor sees a clear error message and recovery option if the audio stream fails to load.",
+        "R7: The creation and publishing of podcast episodes is handled by an external system or manual database insert; this epic covers only read and playback functionality."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Shared API Contract for Podcast Media",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the podcast media backend and frontend, I want a shared API contract, so that both components can be developed in parallel against a consistent interface.",
+          "acceptanceCriteria": "Given a podcast player requirement,\nWhen defining the API contract,\nThen the REST endpoints for listing and fetching episodes must be documented.\nGiven the API specification,\nWhen building the UI and backend,\nThen both must adhere to the defined DTOs for episodes, including media URLs and show notes.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "API documentation",
+          "sixSigmaMetric": "contract adherence rate",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "Database Schema and Persistence for Podcasts",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing podcast data storage, I want a structured schema for episodes, so that the podcast data is persisted reliably.",
+          "acceptanceCriteria": "Given a new podcast episode,\nWhen saving it to the database,\nThen it must store the title, show notes, media URL, and publication date.\nGiven existing podcast data,\nWhen querying for episodes,\nThen the data must be retrieved efficiently by publication date.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "database schema",
+          "sixSigmaMetric": "schema migration success rate",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3", "R7"]
+        },
+        {
+          "title": "Podcast Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the podcast backend, I want an API to serve episodes, so that the frontend can fetch the catalog and media links.",
+          "acceptanceCriteria": "Given an API request for episodes,\nWhen the client requests the podcast list,\nThen a paginated JSON response with episode details must be returned.\nGiven an API request for a specific episode,\nWhen fetching by ID,\nThen the full show notes and media link must be provided.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "backend API throughput",
+          "sixSigmaMetric": "API response latency",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "Podcast UI Player",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the podcast UI, I want a functional media player and episode list, so that visitors can browse, play, and read show notes.",
+          "acceptanceCriteria": "Given the podcast page on a desktop or mobile device,\nWhen a visitor clicks play on an episode,\nThen the audio must begin playing with a visible scrub bar and pause control.\nGiven WCAG 2.1 level AA standards,\nWhen rendering the player controls,\nThen all buttons must be keyboard operable, clearly labeled, and have a 4.5:1 text contrast.\nGiven a failed media stream,\nWhen the audio cannot load,\nThen an error message is shown, offering a retry option without breaking the layout.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "frontend rendering",
+          "sixSigmaMetric": "playback initialization rate",
+          "hasUi": true,
+          "requirementRefs": ["R1", "R2", "R3", "R4", "R5", "R6", "R7"]
+        },
+        {
+          "title": "QA Verification for Podcast Hub",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When verifying the podcast hub, I want full test coverage across the stack, so that audio playback and browsing are proven to work end-to-end.",
+          "acceptanceCriteria": "Given a running application instance,\nWhen executing E2E tests,\nThen the frontend must successfully render the episode list, load an audio stream, and handle playback controls.\nGiven the backend test suite,\nWhen running integration tests,\nThen the API must serve correct DTOs mapped from the database.\nGiven a missing audio file scenario,\nWhen executing tests,\nThen the frontend must visibly render the error state.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "test execution pipeline",
+          "sixSigmaMetric": "test pass rate",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3", "R4", "R5", "R6", "R7"]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "69e36127-e778-4851-83e6-37a2d16cedf7",
+      "title": "Platform Telemetry and Measurement",
+      "jtbd": "When operating the site, I want to measure visitor engagement with my content and external links, so that I know if the site successfully drives interest in my work.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "telemetry data completeness",
+      "tocConstraintRef": "telemetry ingestion",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Goal: Measure visitor engagement with podcast content to evaluate interest. Questions: How many times do visitors start playing episodes? Which episodes have the most playback sessions? Metric: Podcast playback initiation count by episode."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Telemetry Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the telemetry backend, I want an endpoint to receive engagement events, so that frontend playback actions are persisted.",
+          "acceptanceCriteria": "Given an incoming telemetry event payload,\nWhen the endpoint receives it,\nThen the event is saved to the database without blocking the request.\nGiven a high volume of events,\nWhen multiple clients send events,\nThen the backend successfully queues or saves them with low latency.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "telemetry ingestion API",
+          "sixSigmaMetric": "API event save latency",
+          "hasUi": false,
+          "requirementRefs": ["R1"]
+        },
+        {
+          "title": "Telemetry Tracking Implementation",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the frontend telemetry, I want to fire an event upon podcast playback, so that the engagement metric is accurately recorded.",
+          "acceptanceCriteria": "Given the podcast player,\nWhen a user clicks play,\nThen a telemetry event containing the episode ID must be dispatched.\nGiven the tracking system,\nWhen the event fires,\nThen it must not block or delay audio playback.",
+          "leanValue": "valuable",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "frontend event bus",
+          "sixSigmaMetric": "tracking event reliability",
+          "hasUi": false,
+          "requirementRefs": ["R1"]
+        },
+        {
+          "title": "QA Verification for Telemetry",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When verifying telemetry, I want to ensure engagement events are captured properly, so that the engagement metric is reliable.",
+          "acceptanceCriteria": "Given a mock telemetry endpoint,\nWhen triggering frontend playback,\nThen an assertion must verify that exactly one 'play' event is dispatched with the correct episode ID.\nGiven a bulk batch of events,\nWhen processing telemetry,\nThen the events must map to the corresponding podcast IDs accurately.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "telemetry verification pipeline",
+          "sixSigmaMetric": "test coverage completeness",
+          "hasUi": false,
+          "requirementRefs": ["R1"]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "bb19579b-628f-4eaf-900d-94e6eeea2e20",
+      "title": "Initial Content and Acceptance",
+      "jtbd": "When receiving the delivered system, I want to see it populated with realistic content, so that I can verify all paths and features work end-to-end.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "content seed completion",
+      "tocConstraintRef": "database initialization",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: System is seeded with at least three realistic podcast episodes containing real audio file URLs and actual show notes, enabling full path verification."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Initial Podcast Content Seed",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When initializing the database, I want realistic podcast episode seeds, so that acceptance testing can exercise the real UI.",
+          "acceptanceCriteria": "Given a clean database deployment,\nWhen running data migrations,\nThen three full podcast episodes must be inserted, each with valid title, show notes, and test audio URLs.\nGiven the acceptance environment,\nWhen loading the podcast player,\nThen the content is immediately visible and playable without manual entry.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "flyway migration",
+          "sixSigmaMetric": "seed success rate",
+          "hasUi": false,
+          "requirementRefs": ["R1"]
+        }
+      ]
+    }
+  ]
+}
