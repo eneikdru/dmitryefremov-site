@@ -10,6 +10,7 @@ import com.dmitryefremov.site.compliance.dto.*;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
 import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
+import com.dmitryefremov.site.intake.repository.IntakeRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ public class UserDataComplianceService {
     private final AgentOrderRepository agentOrderRepository;
     private final AgentMessageRepository agentMessageRepository;
     private final ClientIntakeRepository clientIntakeRepository;
+    private final IntakeRequestRepository intakeRequestRepository;
     private final Clock clock;
 
     @Autowired
@@ -38,20 +40,21 @@ public class UserDataComplianceService {
                                      @Autowired(required = false) AiDirectMessageRepository aiDirectMessageRepository,
                                      @Autowired(required = false) AgentOrderRepository agentOrderRepository,
                                      @Autowired(required = false) AgentMessageRepository agentMessageRepository,
-                                     @Autowired(required = false) ClientIntakeRepository clientIntakeRepository) {
+                                     @Autowired(required = false) ClientIntakeRepository clientIntakeRepository,
+                                     @Autowired(required = false) IntakeRequestRepository intakeRequestRepository) {
         this(serviceOrderRepository, directMessageRepository, aiServiceOrderRepository, aiDirectMessageRepository,
-             agentOrderRepository, agentMessageRepository, clientIntakeRepository, Clock.systemUTC());
+             agentOrderRepository, agentMessageRepository, clientIntakeRepository, intakeRequestRepository, Clock.systemUTC());
     }
 
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
                                      DirectMessageRepository directMessageRepository) {
-        this(serviceOrderRepository, directMessageRepository, null, null, null, null, null, Clock.systemUTC());
+        this(serviceOrderRepository, directMessageRepository, null, null, null, null, null, null, Clock.systemUTC());
     }
 
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
                                      DirectMessageRepository directMessageRepository,
                                      Clock clock) {
-        this(serviceOrderRepository, directMessageRepository, null, null, null, null, null, clock);
+        this(serviceOrderRepository, directMessageRepository, null, null, null, null, null, null, clock);
     }
 
     public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
@@ -62,6 +65,19 @@ public class UserDataComplianceService {
                                      AgentMessageRepository agentMessageRepository,
                                      ClientIntakeRepository clientIntakeRepository,
                                      Clock clock) {
+        this(serviceOrderRepository, directMessageRepository, aiServiceOrderRepository, aiDirectMessageRepository,
+             agentOrderRepository, agentMessageRepository, clientIntakeRepository, null, clock);
+    }
+
+    public UserDataComplianceService(ServiceOrderRepository serviceOrderRepository,
+                                     DirectMessageRepository directMessageRepository,
+                                     AiServiceOrderRepository aiServiceOrderRepository,
+                                     AiDirectMessageRepository aiDirectMessageRepository,
+                                     AgentOrderRepository agentOrderRepository,
+                                     AgentMessageRepository agentMessageRepository,
+                                     ClientIntakeRepository clientIntakeRepository,
+                                     IntakeRequestRepository intakeRequestRepository,
+                                     Clock clock) {
         this.serviceOrderRepository = serviceOrderRepository;
         this.directMessageRepository = directMessageRepository;
         this.aiServiceOrderRepository = aiServiceOrderRepository;
@@ -69,6 +85,7 @@ public class UserDataComplianceService {
         this.agentOrderRepository = agentOrderRepository;
         this.agentMessageRepository = agentMessageRepository;
         this.clientIntakeRepository = clientIntakeRepository;
+        this.intakeRequestRepository = intakeRequestRepository;
         this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
@@ -133,6 +150,9 @@ public class UserDataComplianceService {
         }
         if (clientIntakeRepository != null) {
             clientIntakeRepository.deleteByClientEmail(userId);
+        }
+        if (intakeRequestRepository != null) {
+            intakeRequestRepository.deleteByClientEmail(userId);
         }
 
         OffsetDateTime now = OffsetDateTime.now(clock);
