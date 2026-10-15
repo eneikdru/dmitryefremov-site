@@ -74,8 +74,11 @@
     }
   }
 
-  function handleTimecodeClick(tc: PodcastTimecode) {
+  function handleTimecodeClick(tc: PodcastTimecode, event?: MouseEvent | KeyboardEvent) {
     seekTo(tc.timeOffsetSeconds);
+    if (event && event.currentTarget) {
+      (event.currentTarget as HTMLElement).focus();
+    }
   }
 
   function handleWaveformClick(e: MouseEvent) {
@@ -89,10 +92,24 @@
 
   function handleWaveformKeyDown(e: KeyboardEvent) {
     if (!currentEpisode) return;
-    if (e.key === 'ArrowRight') {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
       seekTo(currentTime + 5);
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
       seekTo(currentTime - 5);
+    } else if (e.key === 'PageUp') {
+      e.preventDefault();
+      seekTo(currentTime + 30);
+    } else if (e.key === 'PageDown') {
+      e.preventDefault();
+      seekTo(currentTime - 30);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      seekTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      seekTo(currentEpisode.durationSeconds);
     } else if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       togglePlay();
@@ -304,32 +321,34 @@
             <span class="text-[#38bdf8]">КЛИКНИТЕ ДЛЯ ПЕРЕХОДА</span>
           </div>
 
-          <div id="timecodes-list" class="space-y-2" role="list" aria-label="Episode Timecodes">
+          <ul id="timecodes-list" class="space-y-2" aria-label="Episode Timecodes">
             {#each currentEpisode.timecodes as tc}
               {@const isActive = activeTimecodeId === tc.id}
-              <button
-                type="button"
-                id="timecode-btn-{tc.id}"
-                on:click={() => handleTimecodeClick(tc)}
-                class="timecode-item w-full p-2.5 rounded-lg border transition-all text-left flex items-start gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#38bdf8] {isActive ? 'bg-[#12151e] border-[#38bdf8] text-white shadow-sm' : 'bg-[#090a0f] border-[#1f2433] text-[#94a3b8] hover:border-[#38bdf8]/50 hover:text-white hover:bg-[#12151e]/60'}"
-              >
-                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded shrink-0 {isActive ? 'bg-[#38bdf8] text-[#090a0f]' : 'bg-[#1f2433] text-[#34d399]'}">
-                  [{formatTime(tc.timeOffsetSeconds)}]
-                </span>
-                <div class="min-w-0 flex-1">
-                  <div class="font-bold text-xs flex items-center justify-between">
-                    <span class="truncate">{tc.title}</span>
-                    {#if isActive}
-                      <span class="text-[10px] font-mono text-[#38bdf8] shrink-0 font-bold">СЕЙЧАС ИГРАЕТ</span>
+              <li role="listitem">
+                <button
+                  type="button"
+                  id="timecode-btn-{tc.id}"
+                  on:click={(e) => handleTimecodeClick(tc, e)}
+                  class="timecode-item w-full p-2.5 rounded-lg border transition-all text-left flex items-start gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#38bdf8] focus:ring-offset-2 focus:ring-offset-[#090a0f] {isActive ? 'bg-[#12151e] border-[#38bdf8] text-white shadow-sm' : 'bg-[#090a0f] border-[#1f2433] text-[#94a3b8] hover:border-[#38bdf8]/50 hover:text-white hover:bg-[#12151e]/60'}"
+                >
+                  <span class="font-mono text-xs font-bold px-2 py-0.5 rounded shrink-0 {isActive ? 'bg-[#38bdf8] text-[#090a0f]' : 'bg-[#1f2433] text-[#34d399]'}">
+                    [{formatTime(tc.timeOffsetSeconds)}]
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <div class="font-bold text-xs flex items-center justify-between">
+                      <span class="truncate">{tc.title}</span>
+                      {#if isActive}
+                        <span class="text-[10px] font-mono text-[#38bdf8] shrink-0 font-bold">СЕЙЧАС ИГРАЕТ</span>
+                      {/if}
+                    </div>
+                    {#if tc.description}
+                      <p class="text-[11px] text-[#64748b] mt-0.5 line-clamp-1">{tc.description}</p>
                     {/if}
                   </div>
-                  {#if tc.description}
-                    <p class="text-[11px] text-[#64748b] mt-0.5 line-clamp-1">{tc.description}</p>
-                  {/if}
-                </div>
-              </button>
+                </button>
+              </li>
             {/each}
-          </div>
+          </ul>
         </div>
       </div>
     </div>
