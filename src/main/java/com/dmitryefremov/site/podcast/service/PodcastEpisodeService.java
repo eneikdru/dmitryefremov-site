@@ -1,8 +1,10 @@
 package com.dmitryefremov.site.podcast.service;
 
+import com.dmitryefremov.site.podcast.domain.EpisodeTopic;
 import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
 import com.dmitryefremov.site.podcast.domain.PodcastQuote;
 import com.dmitryefremov.site.podcast.domain.PodcastTimecode;
+import com.dmitryefremov.site.podcast.dto.EpisodeTopicDto;
 import com.dmitryefremov.site.podcast.dto.PodcastEpisodeDto;
 import com.dmitryefremov.site.podcast.dto.PodcastEpisodePageDto;
 import com.dmitryefremov.site.podcast.dto.PodcastQuoteDto;
@@ -68,6 +70,11 @@ public class PodcastEpisodeService {
                         .map(this::mapQuoteToDto)
                         .collect(Collectors.toList()) : List.of();
 
+        List<EpisodeTopicDto> topicDtos = entity.getTopics() != null ?
+                entity.getTopics().stream()
+                        .map(this::mapTopicToDto)
+                        .collect(Collectors.toList()) : List.of();
+
         return new PodcastEpisodeDto(
                 entity.getId(),
                 entity.getSlug(),
@@ -87,7 +94,8 @@ public class PodcastEpisodeService {
                 entity.getPublishedAt(),
                 entity.getCreatedAt(),
                 timecodeDtos,
-                quoteDtos
+                quoteDtos,
+                topicDtos
         );
     }
 
@@ -108,6 +116,17 @@ public class PodcastEpisodeService {
                 entity.getSpeaker(),
                 entity.getTimeOffsetSeconds(),
                 entity.getConceptLinks(),
+                entity.getDisplayOrder()
+        );
+    }
+
+    private EpisodeTopicDto mapTopicToDto(EpisodeTopic entity) {
+        return new EpisodeTopicDto(
+                entity.getId(),
+                entity.getTopicName(),
+                entity.getStartTimeSeconds(),
+                entity.getEndTimeSeconds(),
+                entity.getDescription(),
                 entity.getDisplayOrder()
         );
     }

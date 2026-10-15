@@ -24,6 +24,7 @@ public class PodcastEpisodeDto {
     private OffsetDateTime createdAt;
     private List<PodcastTimecodeDto> timecodes = new ArrayList<>();
     private List<PodcastQuoteDto> quotes = new ArrayList<>();
+    private List<EpisodeTopicDto> topics = new ArrayList<>();
 
     public PodcastEpisodeDto() {
     }
@@ -49,7 +50,7 @@ public class PodcastEpisodeDto {
                              String conceptLinks, Integer durationSeconds, OffsetDateTime publishedAt,
                              OffsetDateTime createdAt, List<PodcastTimecodeDto> timecodes,
                              List<PodcastQuoteDto> quotes) {
-        this(id, slug, title, thesis, description, audioUrl, mediaLink, youtubeUrl, telegramUrl, spotifyUrl, applePodcastsUrl, platforms, conceptLinks, null, durationSeconds, publishedAt, createdAt, timecodes, quotes);
+        this(id, slug, title, thesis, description, audioUrl, mediaLink, youtubeUrl, telegramUrl, spotifyUrl, applePodcastsUrl, platforms, conceptLinks, null, durationSeconds, publishedAt, createdAt, timecodes, quotes, null);
     }
 
     public PodcastEpisodeDto(Long id, String slug, String title, String thesis, String description,
@@ -58,6 +59,15 @@ public class PodcastEpisodeDto {
                              String conceptLinks, String metadata, Integer durationSeconds, OffsetDateTime publishedAt,
                              OffsetDateTime createdAt, List<PodcastTimecodeDto> timecodes,
                              List<PodcastQuoteDto> quotes) {
+        this(id, slug, title, thesis, description, audioUrl, mediaLink, youtubeUrl, telegramUrl, spotifyUrl, applePodcastsUrl, platforms, conceptLinks, metadata, durationSeconds, publishedAt, createdAt, timecodes, quotes, null);
+    }
+
+    public PodcastEpisodeDto(Long id, String slug, String title, String thesis, String description,
+                             String audioUrl, String mediaLink, String youtubeUrl, String telegramUrl,
+                             String spotifyUrl, String applePodcastsUrl, String platforms,
+                             String conceptLinks, String metadata, Integer durationSeconds, OffsetDateTime publishedAt,
+                             OffsetDateTime createdAt, List<PodcastTimecodeDto> timecodes,
+                             List<PodcastQuoteDto> quotes, List<EpisodeTopicDto> topics) {
         this.id = id;
         this.slug = slug;
         this.title = title;
@@ -80,6 +90,9 @@ public class PodcastEpisodeDto {
         }
         if (quotes != null) {
             this.quotes = quotes;
+        }
+        if (topics != null) {
+            this.topics = topics;
         }
     }
 
@@ -233,5 +246,13 @@ public class PodcastEpisodeDto {
 
     public void setQuotes(List<PodcastQuoteDto> quotes) {
         this.quotes = quotes;
+    }
+
+    public List<EpisodeTopicDto> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<EpisodeTopicDto> topics) {
+        this.topics = topics;
     }
 }
