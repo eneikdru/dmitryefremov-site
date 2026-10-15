@@ -26,16 +26,22 @@ test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability
     await page.waitForSelector('#podcast-player-container');
     await expect(page.locator('#podcast-title').first()).toContainText('Рут Баркан Маркус');
 
-    // 2. Test Play / Pause button via keyboard Focus & Enter / Space key press
+    // 2. Test Play / Pause button via mouse click and keyboard Focus & Space
     const playBtn = page.locator('#play-pause-btn');
     await expect(playBtn).toBeVisible();
     await expect(playBtn).toHaveAttribute('aria-label', 'Play Podcast Episode');
 
-    // Focus play button and press Space
+    // Click play button to start playback
+    await playBtn.click();
+    await expect(playBtn).toHaveAttribute('aria-label', 'Pause Podcast Episode');
+
+    // Click play button again to pause playback
+    await playBtn.click();
+    await expect(playBtn).toHaveAttribute('aria-label', 'Play Podcast Episode');
+
+    // Focus play button and press Space to toggle
     await playBtn.focus();
     await page.keyboard.press('Space');
-
-    // Verify aria-label updates to Pause state
     await expect(playBtn).toHaveAttribute('aria-label', 'Pause Podcast Episode');
 
     // Press Space again to Pause
@@ -59,16 +65,27 @@ test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability
     await page.keyboard.press('ArrowLeft');
     await expect(page.locator('#current-time-val')).toHaveText('00:05');
 
-    // 4. Test Timecode selection via keyboard focus & Enter key
+    // 4. Test Timecode / topic navigation selection via mouse click and keyboard
     const secondTimecode = page.locator('#timecode-btn-102');
     await expect(secondTimecode).toBeVisible();
 
-    await secondTimecode.focus();
-    await page.keyboard.press('Enter');
+    // Click topic timecode button directly
+    await secondTimecode.click();
 
     // Timecode 102 offset is 340 seconds = 05:40
     await expect(page.locator('#current-time-val')).toHaveText('05:40');
     await expect(secondTimecode).toContainText('СЕЙЧАС ИГРАЕТ');
+
+    // Click third topic timecode button
+    const thirdTimecode = page.locator('#timecode-btn-103');
+    await expect(thirdTimecode).toBeVisible();
+
+    await thirdTimecode.focus();
+    await page.keyboard.press('Enter');
+
+    // Timecode 103 offset is 920 seconds = 15:20
+    await expect(page.locator('#current-time-val')).toHaveText('15:20');
+    await expect(thirdTimecode).toContainText('СЕЙЧАС ИГРАЕТ');
 
     // 5. Test switching episodes in catalog via keyboard focus & Space
     const ep2Card = page.locator('#episode-card-2');

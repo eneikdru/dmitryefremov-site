@@ -126,11 +126,13 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     flushSync();
 
     expect(playBtn.getAttribute('aria-label')).toBe('Pause Podcast Episode');
+    expect(window.HTMLMediaElement.prototype.play).toHaveBeenCalled();
 
     playBtn.click();
     flushSync();
 
     expect(playBtn.getAttribute('aria-label')).toBe('Play Podcast Episode');
+    expect(window.HTMLMediaElement.prototype.pause).toHaveBeenCalled();
   });
 
   it('handles audio playback completion (ended event) by resetting playback state', async () => {
