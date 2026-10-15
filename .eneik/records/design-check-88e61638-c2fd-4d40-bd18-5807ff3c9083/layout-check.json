@@ -1,0 +1,149 @@
+[
+  {
+    "id": "sys-core-badge",
+    "left": 176,
+    "top": 34,
+    "width": 127,
+    "height": 26
+  },
+  {
+    "id": "sys-domain",
+    "left": 315,
+    "top": 39,
+    "width": 122,
+    "height": 16
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1129,
+    "top": 32,
+    "width": 135,
+    "height": 30
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 103,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-title",
+    "left": 449,
+    "top": 162,
+    "width": 782,
+    "height": 48
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 449,
+    "top": 216,
+    "width": 782,
+    "height": 28
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 431,
+    "width": 786,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 183,
+    "top": 438,
+    "width": 185,
+    "height": 36
+  },
+  {
+    "id": "podcast-player-container",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 1785
+  },
+  {
+    "id": "podcast-episodes-section",
+    "left": 176,
+    "top": 616,
+    "width": 439,
+    "height": 1690
+  },
+  {
+    "id": "podcast-player-section",
+    "left": 639,
+    "top": 616,
+    "width": 625,
+    "height": 1690
+  },
+  {
+    "id": "podcast-player-card",
+    "left": 639,
+    "top": 616,
+    "width": 625,
+    "height": 922
+  },
+  {
+    "id": "podcast-header",
+    "left": 664,
+    "top": 641,
+    "width": 575,
+    "height": 194
+  },
+  {
+    "id": "podcast-title",
+    "left": 664,
+    "top": 667,
+    "width": 575,
+    "height": 56
+  },
+  {
+    "id": "audio-controls-block",
+    "left": 664,
+    "top": 855,
+    "width": 575,
+    "height": 201
+  },
+  {
+    "id": "play-pause-btn",
+    "left": 685,
+    "top": 876,
+    "width": 56,
+    "height": 56
+  },
+  {
+    "id": "time-display",
+    "left": 905,
+    "top": 892,
+    "width": 114,
+    "height": 24
+  },
+  {
+    "id": "waveform-container",
+    "left": 685,
+    "top": 970,
+    "width": 533,
+    "height": 64
+  },
+  {
+    "id": "timecodes-section",
+    "left": 664,
+    "top": 1154,
+    "width": 575,
+    "height": 360
+  },
+  {
+    "id": "timecodes-list",
+    "left": 664,
+    "top": 1199,
+    "width": 575,
+    "height": 315
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 2346,
+    "width": 1088,
+    "height": 49
+  }
+]
