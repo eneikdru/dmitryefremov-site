@@ -33,4 +33,17 @@ class PodcastEpisodeControllerIntegrationTest {
                 .andExpect(jsonPath("$.content[0].audioUrl", notNullValue()))
                 .andExpect(jsonPath("$.content[0].audioUrl", startsWith("http")));
     }
+
+    @Test
+    void testGetPodcastEpisodeBySlugReturnsCanonicalTopicsAndMedia() throws Exception {
+        mockMvc.perform(get("/api/v1/podcasts/systems-and-reality-ep1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.slug", is("systems-and-reality-ep1")))
+                .andExpect(jsonPath("$.audioUrl", notNullValue()))
+                .andExpect(jsonPath("$.topics", not(empty())))
+                .andExpect(jsonPath("$.topics[0].startTimeSeconds", notNullValue()))
+                .andExpect(jsonPath("$.topics[0].topicName", notNullValue()));
+    }
 }
