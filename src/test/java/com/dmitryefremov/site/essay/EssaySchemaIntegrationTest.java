@@ -77,6 +77,8 @@ class EssaySchemaIntegrationTest {
 
     @Test
     void testFindAllByOrderByPublishedAtDesc() {
+        essayRepository.deleteAll();
+
         OffsetDateTime baseTime = OffsetDateTime.of(2026, 10, 12, 12, 0, 0, 0, ZoneOffset.UTC);
 
         Essay essay1 = new Essay("essay-1", "Essay 1", "Summary 1", "Content 1", baseTime.minusDays(2));
