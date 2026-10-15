@@ -51,6 +51,12 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
   });
 
   test('fresh visitor without banner interaction leaks no tracking cookies or scripts', async ({ page }) => {
+    // Listen for network requests to assert zero telemetry network calls fire before consent
+    const outgoingRequests: string[] = [];
+    page.on('request', (request) => {
+      outgoingRequests.push(request.url());
+    });
+
     // Access site as fresh visitor
     await page.goto('http://localhost:4173');
     await page.waitForSelector('#telemetry-hub-root');
@@ -79,6 +85,12 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
     expect(postActionCookies).toBe('');
     const postActionConsentStatus = await page.evaluate(() => localStorage.getItem('cmp_consent_status'));
     expect(postActionConsentStatus).toBeNull();
+
+    // Verify network assertions: no telemetry or tracking endpoints were requested
+    const telemetryRequests = outgoingRequests.filter(url =>
+      url.includes('/telemetry') || url.includes('/analytics') || url.includes('/tracking')
+    );
+    expect(telemetryRequests).toHaveLength(0);
   });
 
   test('accepting consent enables telemetry, while declining consent keeps tracking blocked', async ({ browser }) => {
