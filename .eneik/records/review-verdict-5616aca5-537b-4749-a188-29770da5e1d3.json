@@ -1,0 +1,15 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "Branch needs to be rebased onto main to resolve diff regressions deleting files introduced in PR #290 (TeleprompterIsolationFilter and essay migration).",
+          "severity": "medium"
+        }
+      ]
+    }
+  ]
+}
