@@ -1,9 +1,9 @@
 package com.dmitryefremov.site.essay.service;
 
-import com.dmitryefremov.site.essay.domain.Essay;
+import com.dmitryefremov.site.essay.domain.PublishedEssay;
 import com.dmitryefremov.site.essay.dto.EssayDto;
 import com.dmitryefremov.site.essay.dto.EssayPageDto;
-import com.dmitryefremov.site.essay.repository.EssayRepository;
+import com.dmitryefremov.site.essay.repository.PublishedEssayRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,22 +27,22 @@ import static org.mockito.Mockito.when;
 class EssayServiceTest {
 
     @Mock
-    private EssayRepository essayRepository;
+    private PublishedEssayRepository publishedEssayRepository;
 
     private EssayService essayService;
 
     @BeforeEach
     void setUp() {
-        essayService = new EssayService(essayRepository);
+        essayService = new EssayService(publishedEssayRepository);
     }
 
     @Test
     void testGetEssaysPaginationSuccess() {
         OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 12, 10, 0, 0, 0, ZoneOffset.UTC);
-        Essay essay = new Essay("test-essay", "Test Essay Title", "Summary text", "Full essay content", publishedAt);
+        PublishedEssay essay = new PublishedEssay("test-essay", "Test Essay Title", "Summary text", "Full essay content", "Dmitry Efremov", publishedAt);
 
-        PageImpl<Essay> page = new PageImpl<>(List.of(essay), PageRequest.of(0, 20), 1);
-        when(essayRepository.findAllByOrderByPublishedAtDesc(any(Pageable.class))).thenReturn(page);
+        PageImpl<PublishedEssay> page = new PageImpl<>(List.of(essay), PageRequest.of(0, 20), 1);
+        when(publishedEssayRepository.findAllByOrderByPublishedAtDesc(any(Pageable.class))).thenReturn(page);
 
         EssayPageDto result = essayService.getEssays(0, 20);
 
@@ -81,9 +81,9 @@ class EssayServiceTest {
     @Test
     void testGetEssayBySlugFound() {
         OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 12, 10, 0, 0, 0, ZoneOffset.UTC);
-        Essay essay = new Essay("deontic-systems", "Deontic Systems", "Deontic logic essay summary", "Content of deontic systems", publishedAt);
+        PublishedEssay essay = new PublishedEssay("deontic-systems", "Deontic Systems", "Deontic logic essay summary", "Content of deontic systems", "Dmitry Efremov", publishedAt);
 
-        when(essayRepository.findBySlug("deontic-systems")).thenReturn(Optional.of(essay));
+        when(publishedEssayRepository.findBySlug("deontic-systems")).thenReturn(Optional.of(essay));
 
         Optional<EssayDto> result = essayService.getEssayBySlug("deontic-systems");
 
@@ -96,7 +96,7 @@ class EssayServiceTest {
 
     @Test
     void testGetEssayBySlugNotFound() {
-        when(essayRepository.findBySlug("non-existent")).thenReturn(Optional.empty());
+        when(publishedEssayRepository.findBySlug("non-existent")).thenReturn(Optional.empty());
 
         Optional<EssayDto> result = essayService.getEssayBySlug("non-existent");
 

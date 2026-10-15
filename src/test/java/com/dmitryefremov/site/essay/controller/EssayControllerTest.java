@@ -117,4 +117,12 @@ class EssayControllerTest {
                 .andExpect(jsonPath("$.status", is(400)))
                 .andExpect(jsonPath("$.message", is("Page size must be between 1 and 100")));
     }
+
+    @Test
+    void testTeleprompterRawScriptRequestRejectedWith403() throws Exception {
+        mockMvc.perform(get("/mnt/HC_Volume_106932004/podcast/episodes/raw-script.txt"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.status", is(403)))
+                .andExpect(jsonPath("$.message", is("Access to raw teleprompter scripts and internal recording instruments is forbidden.")));
+    }
 }
