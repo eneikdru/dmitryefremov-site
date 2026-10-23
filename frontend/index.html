@@ -4,13 +4,105 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dmitry Efremov - Trust & Compliance</title>
-    <!-- Material Symbols Outlined -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <!-- Typography: Inter & JetBrains Mono -->
+
+    <!-- Google Fonts: Syne, Newsreader, Space Mono, Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400..800&display=swap" rel="stylesheet" />
+
+    <!-- Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "on-tertiary-container": "#5157cb",
+              "secondary": "#ffb68b",
+              "on-secondary-fixed-variant": "#753400",
+              "surface-container-lowest": "#0d0e11",
+              "primary-container": "#d1f029",
+              "on-tertiary-fixed-variant": "#3136ab",
+              "on-secondary-container": "#602a00",
+              "primary": "#ffffff",
+              "outline": "#90937a",
+              "tertiary": "#ffffff",
+              "surface-dim": "#121316",
+              "surface-tint": "#b6d300",
+              "primary-fixed": "#d1f029",
+              "surface-bright": "#38393c",
+              "surface-container-high": "#292a2d",
+              "primary-fixed-dim": "#b6d300",
+              "error-container": "#93000a",
+              "error": "#ffb4ab",
+              "on-primary-container": "#5b6b00",
+              "secondary-container": "#ff7f1c",
+              "on-secondary-fixed": "#321200",
+              "on-error": "#690005",
+              "on-surface-variant": "#c6c9ad",
+              "surface-container-highest": "#343538",
+              "on-tertiary-fixed": "#02006d",
+              "on-surface": "#e3e2e6",
+              "on-primary": "#2b3400",
+              "secondary-fixed-dim": "#ffb68b",
+              "on-background": "#e3e2e6",
+              "background": "#121316",
+              "surface": "#121316",
+              "inverse-primary": "#566500",
+              "surface-container-low": "#1b1b1f",
+              "secondary-fixed": "#ffdbc8",
+              "tertiary-fixed-dim": "#bfc2ff",
+              "on-error-container": "#ffdad6",
+              "surface-variant": "#343538",
+              "on-primary-fixed-variant": "#404c00",
+              "tertiary-container": "#e0e0ff",
+              "inverse-surface": "#e3e2e6",
+              "on-tertiary": "#151796",
+              "inverse-on-surface": "#303034",
+              "on-primary-fixed": "#181e00",
+              "on-secondary": "#522300",
+              "surface-container": "#1f1f23",
+              "tertiary-fixed": "#e0e0ff",
+              "outline-variant": "#454934"
+            },
+            "fontFamily": {
+              "body-md": ["Newsreader", "serif"],
+              "body-sm": ["Newsreader", "serif"],
+              "display-xl-mobile": ["Syne", "sans-serif"],
+              "label-meta": ["Space Mono", "monospace"],
+              "headline-md": ["Syne", "sans-serif"],
+              "caption": ["Space Mono", "monospace"],
+              "body-lead": ["Newsreader", "serif"],
+              "label-code": ["Space Mono", "monospace"],
+              "headline-lg-mobile": ["Syne", "sans-serif"],
+              "headline-lg": ["Syne", "sans-serif"],
+              "display-xl": ["Syne", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 1;
+      }
+      .blueprint-grid {
+        background-size: 24px 24px;
+        background-image:
+          linear-gradient(to right, rgba(209, 240, 41, 0.04) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(209, 240, 41, 0.04) 1px, transparent 1px);
+      }
+      .accent-glow {
+        box-shadow: 0 0 32px rgba(209, 240, 41, 0.15);
+      }
+    </style>
   </head>
   <body class="bg-[#090a0f] text-[#e2e8f0]">
     <div id="app"></div>

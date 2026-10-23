@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import ResponsivePicture from './ResponsivePicture.svelte';
+  import ScrollytellingHero from './ScrollytellingHero.svelte';
   import ArticleStreamView from './ArticleStreamView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
@@ -99,73 +100,8 @@
           </div>
         </div>
 
-        <!-- Hero Section with Real 4K Studio Photography -->
-        <section id="hero-section" class="p-6 sm:p-8 rounded-2xl border transition-all {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433] shadow-xl' : 'bg-white border-[#e2e8f0] shadow-sm'}">
-          <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
-            <!-- Author Studio Portrait -->
-            <div id="hero-avatar-container" class="w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 shrink-0 rounded-2xl overflow-hidden border-2 {theme === 'dark' ? 'border-[#38bdf8]/40 shadow-2xl shadow-[#38bdf8]/10' : 'border-[#0284c7]/40 shadow-lg'}">
-              <ResponsivePicture
-                id="hero-avatar-img"
-                assetKey="dmitry_efremov_studio"
-                alt="Официальный студийный портрет Дмитрия Ефремова"
-                imgClass="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
-                loading="eager"
-              />
-            </div>
-
-            <!-- Bio & Manifest -->
-            <div class="space-y-4 flex-1 text-center md:text-left">
-              <div class="space-y-1.5">
-                <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-mono">
-                  <span class="px-2 py-0.5 rounded bg-[#38bdf8]/10 text-[#38bdf8] font-medium">Архитектор автономных систем</span>
-                  <span class="{theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">•</span>
-                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">A2A Экономика</span>
-                  <span class="{theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">•</span>
-                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">Философия действия</span>
-                </div>
-                <h1 id="hero-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
-                  Дмитрий Ефремов
-                </h1>
-                <p id="hero-subtitle" class="text-base sm:text-lg font-mono font-medium {theme === 'dark' ? 'text-[#38bdf8]' : 'text-[#0284c7]'}">
-                  Системы, логика мышления и автономные процессы
-                </p>
-              </div>
-
-              <blockquote id="hero-manifest" class="p-4 rounded-xl border-l-4 italic text-sm sm:text-base leading-relaxed {theme === 'dark' ? 'bg-[#141824] border-[#38bdf8] text-[#cbd5e1]' : 'bg-[#f8fafc] border-[#0284c7] text-[#334155]'}">
-                «Ваш код и ваши решения — это то, кто вы есть на самом деле.»
-              </blockquote>
-
-              <!-- Quick Action Links -->
-              <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2 text-xs font-mono">
-                <a
-                  href="https://t.me/efremov_mvp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 bg-[#38bdf8] text-[#090a0f] hover:bg-[#7dd3fc]"
-                >
-                  <span>Telegram @efremov_mvp</span>
-                  <span>↗</span>
-                </a>
-                <a
-                  href="https://youtube.com/@dmitrii.efremov"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 border {theme === 'dark' ? 'bg-[#141824] text-white border-[#1f2433] hover:border-[#ef4444]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#ef4444]'}"
-                >
-                  <span class="text-[#ef4444]">YouTube</span>
-                  <span>↗</span>
-                </a>
-                <button
-                  type="button"
-                  on:click={() => (activeTab = 'contact')}
-                  class="px-3.5 py-2 rounded-lg transition-colors border {theme === 'dark' ? 'bg-[#141824] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7]'}"
-                >
-                  Прямая связь & Заявки
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+        <!-- Hero Section with Scrollytelling Typography (replaces studio photo) -->
+        <ScrollytellingHero {theme} on:click={() => (activeTab = 'contact')} />
 
         <!-- Navigation Bar for Public Portal -->
         <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
@@ -328,10 +264,10 @@
 
       <!-- Footer -->
       <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-[#1f2433] text-[#94a3b8]' : 'border-[#e2e8f0] text-[#64748b]'}">
-        <div>
+        <div class="text-center sm:text-left">
           <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Все права защищены.</span>
         </div>
-        <div class="flex items-center gap-6">
+        <div class="flex flex-wrap justify-center sm:justify-end items-center gap-x-6 gap-y-2">
           <a
             id="admin-portal-link"
             href="/admin"
@@ -351,7 +287,7 @@
             id="imprint-toggle-btn"
             type="button"
             on:click={toggleImprint}
-            class="underline hover:text-current transition-colors cursor-pointer"
+            class="underline hover:text-current transition-colors cursor-pointer inline-flex whitespace-nowrap"
           >
             Реквизиты / Imprint
           </button>

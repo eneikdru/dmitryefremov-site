@@ -102,19 +102,6 @@ describe('ResponsivePicture Component', () => {
     expect(img?.getAttribute('src')).toBe('/assets/images/podcast_studio_cover/podcast_studio_cover_640w.avif');
   });
 
-  it('renders ResponsivePicture inside TelemetryHub hero section', () => {
-    component = mount(TelemetryHub, { target });
-
-    const heroAvatarContainer = target.querySelector('#hero-avatar-container');
-    expect(heroAvatarContainer).not.toBeNull();
-
-    const picture = heroAvatarContainer?.querySelector('picture');
-    expect(picture).not.toBeNull();
-
-    const img = picture?.querySelector('img');
-    expect(img?.getAttribute('alt')).toBe('Официальный студийный портрет Дмитрия Ефремова');
-  });
-
   it('successfully resolves all AVIF and WebP source paths to existing physical files in public assets', () => {
     const assets = ['dmitry_efremov_studio', 'podcast_studio_cover', 'article_deontic_studio'];
     const bps = [375, 768, 1440];
