@@ -13,7 +13,9 @@ import com.dmitryefremov.site.compliance.domain.ServiceOrder;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
 import com.dmitryefremov.site.intake.domain.ClientIntake;
+import com.dmitryefremov.site.intake.domain.IntakeRequest;
 import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
+import com.dmitryefremov.site.intake.repository.IntakeRequestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,6 +60,9 @@ class UserDataComplianceControllerTest {
     @Autowired
     private ClientIntakeRepository clientIntakeRepository;
 
+    @Autowired
+    private IntakeRequestRepository intakeRequestRepository;
+
     @BeforeEach
     void setUp() {
         serviceOrderRepository.deleteAll();
@@ -67,6 +72,7 @@ class UserDataComplianceControllerTest {
         agentOrderRepository.deleteAll();
         agentMessageRepository.deleteAll();
         clientIntakeRepository.deleteAll();
+        intakeRequestRepository.deleteAll();
     }
 
     @Test
@@ -115,6 +121,7 @@ class UserDataComplianceControllerTest {
         agentOrderRepository.save(new AgentOrder("Client Name", email, "MVP", "Agent Specs", "NEW", OffsetDateTime.now()));
         agentMessageRepository.save(new AgentMessage("Sender Name", email, "Agent Msg", "NEW", OffsetDateTime.now()));
         clientIntakeRepository.save(new ClientIntake("Client Name", email, "Service", "Intake notes"));
+        intakeRequestRepository.save(new IntakeRequest("Client Name", email, "Service", "Audit payload notes"));
 
         mockMvc.perform(delete("/api/v1/compliance/erasure")
                         .param("email", email)
@@ -125,7 +132,7 @@ class UserDataComplianceControllerTest {
                 .andExpect(jsonPath("$.messagesDeleted", is(3)))
                 .andExpect(jsonPath("$.erasedAt", notNullValue()));
 
-        // Confirm that all records for subject are hard-deleted
+        // Confirm that all records for subject are hard-deleted from all tables
         assertThat(serviceOrderRepository.findByUserId(email)).isEmpty();
         assertThat(directMessageRepository.findByUserId(email)).isEmpty();
         assertThat(aiServiceOrderRepository.findAll().stream().filter(o -> email.equals(o.getUserEmail()))).isEmpty();
@@ -133,6 +140,7 @@ class UserDataComplianceControllerTest {
         assertThat(agentOrderRepository.findAll().stream().filter(o -> email.equals(o.getClientEmail()))).isEmpty();
         assertThat(agentMessageRepository.findAll().stream().filter(m -> email.equals(m.getSenderEmail()))).isEmpty();
         assertThat(clientIntakeRepository.findByClientEmail(email)).isEmpty();
+        assertThat(intakeRequestRepository.findByClientEmail(email)).isEmpty();
     }
 
     @Test

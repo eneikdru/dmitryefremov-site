@@ -12,6 +12,7 @@ import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
 import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
 import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
+import com.dmitryefremov.site.intake.repository.IntakeRequestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,9 @@ class UserDataComplianceServiceTest {
     @Mock
     private ClientIntakeRepository clientIntakeRepository;
 
+    @Mock
+    private IntakeRequestRepository intakeRequestRepository;
+
     private Clock fixedClock;
     private UserDataComplianceService complianceService;
 
@@ -68,6 +72,7 @@ class UserDataComplianceServiceTest {
                 agentOrderRepository,
                 agentMessageRepository,
                 clientIntakeRepository,
+                intakeRequestRepository,
                 fixedClock
         );
     }
@@ -103,6 +108,7 @@ class UserDataComplianceServiceTest {
         when(agentOrderRepository.deleteByClientEmail(userId)).thenReturn(1L);
         when(agentMessageRepository.deleteBySenderEmail(userId)).thenReturn(1L);
         when(clientIntakeRepository.deleteByClientEmail(userId)).thenReturn(1L);
+        when(intakeRequestRepository.deleteByClientEmail(userId)).thenReturn(1L);
 
         ErasureResponseDto result = complianceService.eraseUserData(userId);
 
@@ -119,6 +125,7 @@ class UserDataComplianceServiceTest {
         verify(agentOrderRepository, times(1)).deleteByClientEmail(userId);
         verify(agentMessageRepository, times(1)).deleteBySenderEmail(userId);
         verify(clientIntakeRepository, times(1)).deleteByClientEmail(userId);
+        verify(intakeRequestRepository, times(1)).deleteByClientEmail(userId);
     }
 
     @Test
