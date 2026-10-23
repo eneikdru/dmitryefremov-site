@@ -37,6 +37,10 @@
   }
 
   onMount(() => {
+    const essayEvt = telemetry.trackEssayView(articleId, title);
+    if (essayEvt) {
+      loggedEvents = [...loggedEvents, essayEvt];
+    }
     if (scrollContainer) {
       handleScroll();
     }
@@ -108,7 +112,11 @@
       {:else}
         {#each loggedEvents as evt}
           <div class="flex justify-between border-b border-[#1f2433] pb-1">
-            <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
+            {#if evt.type === 'essay_view'}
+              <span>[VIEW] {evt.payload.articleId}</span>
+            {:else}
+              <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
+            {/if}
             <span class="text-[#64748b]">{evt.timestamp.slice(11, 19)}</span>
           </div>
         {/each}

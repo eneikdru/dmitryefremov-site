@@ -2,6 +2,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { parseMarkdown } from './markdown';
 import ArticleStreamView from '../components/ArticleStreamView.svelte';
+import { telemetry } from './telemetry';
+import { setConsentStatus, resetConsentStatus } from './consent';
 import { mount, unmount } from 'svelte';
 
 describe('Markdown & Formula Parser (parseMarkdown)', () => {
@@ -88,6 +90,9 @@ describe('ArticleStreamView Component', () => {
   let component: any;
 
   beforeEach(() => {
+    resetConsentStatus();
+    setConsentStatus('accepted');
+    telemetry.clearEvents();
     target = document.createElement('div');
     document.body.appendChild(target);
     return () => {
@@ -96,6 +101,26 @@ describe('ArticleStreamView Component', () => {
       }
       document.body.removeChild(target);
     };
+  });
+
+  it('dispatches essay_view telemetry event on load and on article selection', async () => {
+    component = mount(ArticleStreamView, { target });
+    await new Promise(r => setTimeout(r, 0));
+
+    const initialEvents = telemetry.getEvents().filter(e => e.type === 'essay_view');
+    expect(initialEvents).toHaveLength(1);
+    expect(initialEvents[0].payload.articleId).toBe('high-end-editorial-minimalism');
+
+    const buttons = target.querySelectorAll('button.article-card');
+    const secondCard = Array.from(buttons).find(b =>
+      b.textContent?.includes('Деонтическая логика и нормативные инварианты')
+    );
+    secondCard?.click();
+    await new Promise(r => setTimeout(r, 0));
+
+    const updatedEvents = telemetry.getEvents().filter(e => e.type === 'essay_view');
+    expect(updatedEvents).toHaveLength(2);
+    expect(updatedEvents[1].payload.articleId).toBe('deontic-operators-in-distributed-systems');
   });
 
   it('renders list of available longreads and active article reader with initial realistic Russian essay', () => {

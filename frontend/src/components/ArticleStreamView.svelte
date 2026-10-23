@@ -193,12 +193,21 @@ All non-deterministic sources (timestamps, random number generators, network res
     ? ARTICLES
     : ARTICLES.filter(a => a.topic === filterTopic);
 
+  function getArticle(id: string): Article {
+    return ARTICLES.find(a => a.id === id) || ARTICLES[0];
+  }
+
   function handleArticleSelect(id: string) {
     selectedArticleId = id;
     trackedThresholds = new Set();
     currentPercentage = 0;
     if (scrollContainer) {
       scrollContainer.scrollTop = 0;
+    }
+    const article = getArticle(id);
+    const evt = telemetry.trackEssayView(article.id, article.title);
+    if (evt) {
+      loggedEvents = [...loggedEvents, evt];
     }
   }
 
@@ -220,6 +229,11 @@ All non-deterministic sources (timestamps, random number generators, network res
   }
 
   onMount(() => {
+    const article = getArticle(selectedArticleId);
+    const evt = telemetry.trackEssayView(article.id, article.title);
+    if (evt) {
+      loggedEvents = [...loggedEvents, evt];
+    }
     if (scrollContainer) {
       handleScroll();
     }
@@ -413,7 +427,11 @@ All non-deterministic sources (timestamps, random number generators, network res
             {:else}
               {#each loggedEvents as evt}
                 <div class="flex justify-between border-b border-[#1f2433] pb-1">
-                  <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
+                  {#if evt.type === 'essay_view'}
+                    <span>[VIEW] {evt.payload.articleId}</span>
+                  {:else}
+                    <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
+                  {/if}
                   <span class="text-[#64748b]">{evt.timestamp.slice(11, 19)}</span>
                 </div>
               {/each}
