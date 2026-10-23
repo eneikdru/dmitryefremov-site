@@ -3,15 +3,15 @@
   import ResponsivePicture from './ResponsivePicture.svelte';
   import ArticleStreamView from './ArticleStreamView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
-  import EpisodePlayerView from './EpisodePlayerView.svelte';
+  import SparksView from './SparksView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
 
-  export let initialTab: 'podcast' | 'stream' | 'article' | 'gallery' | 'contact' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = 'podcast';
 
-  let activeTab: 'podcast' | 'stream' | 'article' | 'gallery' | 'contact' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -180,20 +180,20 @@
             <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? 'bg-white/20' : 'bg-black/10'}">9 выпусков</span>
           </button>
           <button
-            id="tab-btn-stream"
-            type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'stream' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
-            on:click={() => (activeTab = 'stream')}
-          >
-            <span>📻 STREAM PLAYER</span>
-          </button>
-          <button
             id="tab-btn-article"
             type="button"
             class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'article')}
           >
             <span>📖 ЭССЕ & МЫСЛИ</span>
+          </button>
+          <button
+            id="tab-btn-sparks"
+            type="button"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            on:click={() => (activeTab = 'sparks')}
+          >
+            <span>⚡ SPARKS (TIER 3)</span>
           </button>
           <button
             id="tab-btn-gallery"
@@ -220,13 +220,13 @@
           <div class="space-y-6">
             <PodcastPlayerView />
           </div>
-        {:else if activeTab === 'stream'}
-          <div class="space-y-6">
-            <EpisodePlayerView />
-          </div>
         {:else if activeTab === 'article'}
           <div class="space-y-6">
             <ArticleStreamView />
+          </div>
+        {:else if activeTab === 'sparks'}
+          <div class="space-y-6">
+            <SparksView {theme} />
           </div>
         {:else if activeTab === 'gallery'}
           <!-- Studio & Workspace Gallery -->
