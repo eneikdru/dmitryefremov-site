@@ -1,0 +1,12 @@
+{
+  "testsRun": 191,
+  "testsPassed": 191,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given a populated telemetry database, When an erasure operation is performed for a specific subject, Then a subsequent SQL assertion proves zero residual identifying rows exist",
+    "Given this role completes the Atomic Goal, When the relevant verification command runs, Then the change passes without unrelated scope"
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Automated verification test UserDataErasureVerificationTest verified that performing erasure for a specific subject purges all residual identifying rows across all compliance, agent, AI, and intake tables via direct SQL assertions while leaving control subject data intact."
+}
