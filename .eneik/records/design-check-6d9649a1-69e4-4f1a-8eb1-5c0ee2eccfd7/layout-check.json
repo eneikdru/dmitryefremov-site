@@ -1,0 +1,100 @@
+[
+  {
+    "id": "vault-intake-root",
+    "left": 464,
+    "top": 590,
+    "width": 512,
+    "height": 1391
+  },
+  {
+    "id": "intake-header",
+    "left": 489,
+    "top": 615,
+    "width": 462,
+    "height": 72
+  },
+  {
+    "id": "confidentiality-banner",
+    "left": 489,
+    "top": 711,
+    "width": 462,
+    "height": 137
+  },
+  {
+    "id": "section-mandate",
+    "left": 489,
+    "top": 872,
+    "width": 462,
+    "height": 638
+  },
+  {
+    "id": "codename",
+    "left": 489,
+    "top": 932,
+    "width": 462,
+    "height": 38
+  },
+  {
+    "id": "tier-selector",
+    "left": 489,
+    "top": 986,
+    "width": 462,
+    "height": 69
+  },
+  {
+    "id": "scope-selector",
+    "left": 489,
+    "top": 1070,
+    "width": 462,
+    "height": 263
+  },
+  {
+    "id": "execution-window",
+    "left": 489,
+    "top": 1371,
+    "width": 462,
+    "height": 38
+  },
+  {
+    "id": "client-email-input",
+    "left": 489,
+    "top": 1451,
+    "width": 462,
+    "height": 38
+  },
+  {
+    "id": "section-ip-repository",
+    "left": 489,
+    "top": 1534,
+    "width": 462,
+    "height": 255
+  },
+  {
+    "id": "upload-zone",
+    "left": 489,
+    "top": 1575,
+    "width": 462,
+    "height": 163
+  },
+  {
+    "id": "section-ratification",
+    "left": 489,
+    "top": 1812,
+    "width": 462,
+    "height": 144
+  },
+  {
+    "id": "nda-agree",
+    "left": 489,
+    "top": 1860,
+    "width": 16,
+    "height": 16
+  },
+  {
+    "id": "submit-intake-btn",
+    "left": 489,
+    "top": 1892,
+    "width": 462,
+    "height": 44
+  }
+]
