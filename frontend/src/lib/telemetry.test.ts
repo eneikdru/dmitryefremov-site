@@ -123,6 +123,45 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
         value: ''
       });
     });
+
+    it('verifies no PII is included in critical interaction telemetry payloads', () => {
+      // 1. Read essay
+      const essayEvt = telemetry.trackEssayView('high-end-editorial-minimalism', 'Эстетика инженерного молчания');
+      // 2. Scroll depth
+      const scrollEvt = telemetry.trackScrollDepth('high-end-editorial-minimalism', 75);
+      // 3. Click outbound
+      const outboundEvt = telemetry.trackOutboundClick('https://t.me/efremov_mvp', 'Telegram Channel', 'Telegram');
+
+      const allEvents = telemetry.getEvents();
+      expect(allEvents).toHaveLength(3);
+
+      const piiPatterns = [
+        /@/, // email address pattern
+        /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/, // US phone number pattern
+        /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/, // IPv4 address pattern
+        /password/i,
+        /ssn/i,
+        /token/i
+      ];
+
+      allEvents.forEach((evt) => {
+        const payloadJson = JSON.stringify(evt.payload);
+
+        // Assert no standard PII keys exist in payload
+        const keys = Object.keys(evt.payload);
+        expect(keys).not.toContain('email');
+        expect(keys).not.toContain('user_email');
+        expect(keys).not.toContain('client_email');
+        expect(keys).not.toContain('phone');
+        expect(keys).not.toContain('ip');
+        expect(keys).not.toContain('ip_address');
+
+        // Assert no PII values match regex patterns in stringified payload
+        piiPatterns.forEach((pattern) => {
+          expect(payloadJson).not.toMatch(pattern);
+        });
+      });
+    });
   });
 
   describe('GQM Telemetry Instrumentation (Dwell Time & Form Conversions)', () => {
