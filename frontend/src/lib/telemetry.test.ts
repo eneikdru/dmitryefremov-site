@@ -164,4 +164,48 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
       expect(events).toContainEqual(evt);
     });
   });
+
+  describe('GQM Event Firing Exact-Once Measurement Verification', () => {
+    it('fires correct GQM metric event exactly once per simulated user engagement action', () => {
+      const dispatchedEvents: TelemetryEvent[] = [];
+      const unsubscribe = telemetry.subscribe((evt) => {
+        dispatchedEvents.push(evt);
+      });
+
+      // Action 1: User scrolls to 50%
+      const scrollEvt = telemetry.trackScrollDepth('art-202', 50);
+      expect(dispatchedEvents).toHaveLength(1);
+      expect(dispatchedEvents[0]).toEqual(scrollEvt);
+
+      // Action 2: User triggers dwell heartbeat
+      const dwellEvt = telemetry.trackCanonDwellHeartbeat(30000, 'canon_reader', 50, true);
+      expect(dispatchedEvents).toHaveLength(2);
+      expect(dispatchedEvents[1]).toEqual(dwellEvt);
+
+      // Action 3: User focuses form field
+      const focusEvt = telemetry.trackFormFieldFocused('client_email', 500, 3);
+      expect(dispatchedEvents).toHaveLength(3);
+      expect(dispatchedEvents[2]).toEqual(focusEvt);
+
+      // Action 4: Form field validation passes
+      const valEvt = telemetry.trackFormValidationPassed('email_check', 10, 1);
+      expect(dispatchedEvents).toHaveLength(4);
+      expect(dispatchedEvents[3]).toEqual(valEvt);
+
+      // Action 5: User submits conversion
+      const convertEvt = telemetry.trackCanonSubmitConverted('sess_gqm_01', 30500);
+      expect(dispatchedEvents).toHaveLength(5);
+      expect(dispatchedEvents[4]).toEqual(convertEvt);
+
+      // Action 6: User clicks outbound link
+      const outboundEvt = telemetry.trackOutboundClick('https://t.me/efremov_mvp');
+      expect(dispatchedEvents).toHaveLength(6);
+      expect(dispatchedEvents[5]).toEqual(outboundEvt);
+
+      // Verify total recorded store events matches exactly 6 events
+      expect(telemetry.getEvents()).toHaveLength(6);
+
+      unsubscribe();
+    });
+  });
 });
