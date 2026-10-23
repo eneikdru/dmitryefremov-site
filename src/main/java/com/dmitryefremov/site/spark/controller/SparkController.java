@@ -17,7 +17,7 @@ public class SparkController {
         this.sparkService = sparkService;
     }
 
-    @PostMapping(value = {"/telegram/webhook", "/sparks/webhook"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE, MediaType.ALL_VALUE})
+    @PostMapping(value = "/sparks/webhook", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE, MediaType.ALL_VALUE})
     public ResponseEntity<SparkDto> handleTelegramWebhook(@RequestBody String rawJsonPayload) {
         SparkDto savedSpark = sparkService.processTelegramWebhook(rawJsonPayload);
         return ResponseEntity.ok(savedSpark);
