@@ -1,0 +1,12 @@
+{
+  "testsRun": 95,
+  "testsPassed": 95,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the deployed site, When an automated accessibility scan runs, Then zero WCAG 2.1 AA violations are reported.",
+    "Given a browser with a predefined theme preference, When the site loads, Then the correct theme is applied automatically."
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Automated accessibility scans using AxeBuilder confirm zero WCAG 2.1 AA violations across the site. System prefers-color-scheme (light/dark) and localStorage theme preferences are automatically detected and applied upon page load."
+}

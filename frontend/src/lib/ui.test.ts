@@ -38,10 +38,23 @@ describe('TelemetryHub Component & CMP Integration', () => {
     themeBtn.click();
     await new Promise(r => setTimeout(r, 0));
     expect(themeRoot.classList.contains('bg-[#fafafa]')).toBe(true);
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
 
     themeBtn.click();
     await new Promise(r => setTimeout(r, 0));
     expect(themeRoot.classList.contains('bg-[#090a0f]')).toBe(true);
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  });
+
+  it('respects predefined theme preference from localStorage or system prefers-color-scheme', async () => {
+    localStorage.setItem('theme-preference', 'light');
+    component = mount(TelemetryHub, { target });
+    await new Promise(r => setTimeout(r, 0));
+    const themeRoot = target.querySelector('#telemetry-hub-root') as HTMLElement;
+
+    expect(themeRoot.classList.contains('bg-[#fafafa]')).toBe(true);
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    localStorage.removeItem('theme-preference');
   });
 
   it('navigates seamlessly between article stream and podcast hub, loading initial episode correctly', async () => {

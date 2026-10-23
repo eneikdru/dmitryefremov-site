@@ -10,6 +10,7 @@
 
   export let episodes: PodcastEpisode[] = PODCAST_EPISODES;
   export let selectedEpisodeId: number | string = PODCAST_EPISODES[0]?.id;
+  export let theme: 'dark' | 'light' = 'dark';
 
   let audioElement: HTMLAudioElement | null = null;
   let isPlaying: boolean = false;
@@ -130,15 +131,15 @@
 
 <div id="podcast-player-container" class="space-y-6">
   <!-- Header & Domain Indicator -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2433] pb-4">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
     <div>
       <div class="flex items-center gap-2 mb-1 flex-wrap">
-        <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
+        <span class="px-2 py-0.5 rounded text-xs font-mono border {theme === 'dark' ? 'bg-[#12151e] text-[#34d399] border-[#1f2433]' : 'bg-[#f0fdf4] text-[#15803d] border-[#bbf7d0]'}">
           [PODCAST_CATALOG]
         </span>
-        <span class="text-xs font-mono text-[#94a3b8]">Выпусков: {episodes.length}</span>
+        <span class="text-xs font-mono {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#475569]'}">Выпусков: {episodes.length}</span>
       </div>
-      <h2 class="text-xl font-bold tracking-tight text-white break-words">Подкаст «Системы и реальность»</h2>
+      <h2 class="text-xl font-bold tracking-tight break-words {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Подкаст «Системы и реальность»</h2>
     </div>
 
     <!-- External Media Subscription Links -->
@@ -179,12 +180,12 @@
   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
     <!-- Episode List Section -->
     <div id="podcast-episodes-section" class="md:col-span-5 space-y-3">
-      <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
+      <div class="text-xs font-mono flex justify-between items-center mb-2 {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#475569]'}">
         <span>КАТАЛОГ ВЫПУСКОВ ({episodes.length})</span>
         <span>ВЫБЕРИТЕ ВЫПУСК</span>
       </div>
 
-      <div class="space-y-3" role="list" aria-label="Podcast Episodes Catalog">
+      <div class="space-y-3" aria-label="Podcast Episodes Catalog">
         {#each episodes as ep}
           <button
             type="button"
@@ -196,7 +197,7 @@
               <span class="px-2 py-0.5 rounded bg-[#1f2433] text-[#34d399] uppercase font-bold text-[11px]">
                 {ep.philosopher}
               </span>
-              <span class="text-[#64748b]">{formatTime(ep.durationSeconds)}</span>
+              <span class="text-[#94a3b8]">{formatTime(ep.durationSeconds)}</span>
             </div>
             <h3 class="font-bold text-white text-sm mb-1.5 hover:text-[#34d399] transition-colors leading-snug">
               {ep.title}
@@ -204,7 +205,7 @@
             <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
               {ep.thesis}
             </p>
-            <div class="mt-3 text-[11px] font-mono text-[#64748b] flex justify-between items-center">
+            <div class="mt-3 text-[11px] font-mono text-[#94a3b8] flex justify-between items-center">
               <span>{ep.timecodes.length} таймкодов</span>
               <span class="text-[#34d399] font-medium">{selectedEpisodeId === ep.id ? '● АКТИВЕН' : 'СЛУШАТЬ →'}</span>
             </div>
@@ -264,7 +265,7 @@
             <!-- Time Display -->
             <div id="time-display" class="font-mono text-sm flex items-center gap-2 text-[#cbd5e1]">
               <span id="current-time-val" class="text-[#34d399] font-bold text-base">{formatTime(currentTime)}</span>
-              <span class="text-[#64748b]">/</span>
+              <span class="text-[#94a3b8]">/</span>
               <span id="duration-val" class="text-[#94a3b8]">{formatTime(currentEpisode.durationSeconds)}</span>
             </div>
 
@@ -278,7 +279,7 @@
 
           <!-- Waveform Visualization -->
           <div class="space-y-1.5">
-            <div class="flex justify-between items-center text-[11px] font-mono text-[#64748b]">
+            <div class="flex justify-between items-center text-[11px] font-mono text-[#94a3b8]">
               <span>ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ</span>
               <span>КЛИКНИТЕ ДЛЯ ПЕРЕМОТКИ</span>
             </div>
@@ -342,7 +343,7 @@
                       {/if}
                     </div>
                     {#if tc.description}
-                      <p class="text-[11px] text-[#64748b] mt-0.5 line-clamp-1">{tc.description}</p>
+                      <p class="text-[11px] text-[#94a3b8] mt-0.5 line-clamp-1">{tc.description}</p>
                     {/if}
                   </div>
                 </button>

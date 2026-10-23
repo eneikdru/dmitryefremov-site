@@ -27,9 +27,23 @@
     const handlePopState = () => updateRoute();
     window.addEventListener('popstate', handlePopState);
 
-    const savedTheme = localStorage.getItem('theme-preference') as 'dark' | 'light' | null;
-    if (savedTheme) {
-      theme = savedTheme;
+    try {
+      const savedTheme = localStorage.getItem('theme-preference') as 'dark' | 'light' | null;
+      if (savedTheme === 'dark' || savedTheme === 'light') {
+        theme = savedTheme;
+      } else if (typeof window !== 'undefined' && window.matchMedia) {
+        if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+          theme = 'light';
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark';
+        }
+      }
+    } catch {
+      // Storage restricted environments
+    }
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
     }
 
     return () => {
@@ -43,6 +57,9 @@
       localStorage.setItem('theme-preference', theme);
     } catch {
       // Storage restricted environments
+    }
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
     }
   }
 
@@ -75,11 +92,11 @@
           <div class="flex items-center gap-3">
             <span
               id="sys-core-badge"
-              class="px-2.5 py-1 rounded text-xs font-mono font-medium tracking-wide {theme === 'dark' ? 'bg-[#12151e] text-[#38bdf8] border border-[#1f2433]' : 'bg-[#f1f5f9] text-[#0284c7] border border-[#cbd5e1]'}"
+              class="px-2.5 py-1 rounded text-xs font-mono font-medium tracking-wide {theme === 'dark' ? 'bg-[#12151e] text-[#38bdf8] border border-[#1f2433]' : 'bg-[#f1f5f9] text-[#0369a1] border border-[#cbd5e1]'}"
             >
               DMITRY EFREMOV
             </span>
-            <span id="sys-domain" class="text-xs font-mono hidden sm:inline {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">
+            <span id="sys-domain" class="text-xs font-mono hidden sm:inline {theme === 'dark' ? 'text-[#64748b]' : 'text-[#475569]'}">
               dmitryefremov.com
             </span>
           </div>
@@ -90,11 +107,10 @@
               id="theme-toggle-btn"
               type="button"
               on:click={toggleTheme}
-              aria-label="Toggle theme"
               class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
             >
               <span>ТЕМА:</span>
-              <span class="font-bold text-[#38bdf8]">{theme === 'dark' ? 'Dark Void' : 'Light Monochrome'}</span>
+              <span class="font-bold {theme === 'dark' ? 'text-[#38bdf8]' : 'text-[#0369a1]'}">{theme === 'dark' ? 'Dark Void' : 'Light Monochrome'}</span>
             </button>
           </div>
         </div>
@@ -117,16 +133,16 @@
             <div class="space-y-4 flex-1 text-center md:text-left">
               <div class="space-y-1.5">
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-mono">
-                  <span class="px-2 py-0.5 rounded bg-[#38bdf8]/10 text-[#38bdf8] font-medium">Архитектор автономных систем</span>
+                  <span class="px-2 py-0.5 rounded font-medium {theme === 'dark' ? 'bg-[#38bdf8]/10 text-[#38bdf8]' : 'bg-[#0284c7]/10 text-[#0369a1]'}">Архитектор автономных систем</span>
                   <span class="{theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">•</span>
-                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">A2A Экономика</span>
+                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#475569]'}">A2A Экономика</span>
                   <span class="{theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">•</span>
-                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">Философия действия</span>
+                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#475569]'}">Философия действия</span>
                 </div>
                 <h1 id="hero-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
                   Дмитрий Ефремов
                 </h1>
-                <p id="hero-subtitle" class="text-base sm:text-lg font-mono font-medium {theme === 'dark' ? 'text-[#38bdf8]' : 'text-[#0284c7]'}">
+                <p id="hero-subtitle" class="text-base sm:text-lg font-mono font-medium {theme === 'dark' ? 'text-[#38bdf8]' : 'text-[#0369a1]'}">
                   Системы, логика мышления и автономные процессы
                 </p>
               </div>
@@ -152,7 +168,7 @@
                   rel="noopener noreferrer"
                   class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 border {theme === 'dark' ? 'bg-[#141824] text-white border-[#1f2433] hover:border-[#ef4444]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#ef4444]'}"
                 >
-                  <span class="text-[#ef4444]">YouTube</span>
+                  <span class="{theme === 'dark' ? 'text-[#ef4444]' : 'text-[#dc2626]'}">YouTube</span>
                   <span>↗</span>
                 </a>
                 <button
@@ -172,16 +188,16 @@
           <button
             id="tab-btn-podcast"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0369a1] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'podcast')}
           >
             <span>🎙️ ПОДКАСТ</span>
-            <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? 'bg-white/20' : 'bg-black/10'}">9 выпусков</span>
+            <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-white/20 text-white' : 'bg-[#075985] text-white') : 'bg-black/10'}">9 выпусков</span>
           </button>
           <button
             id="tab-btn-article"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0369a1] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'article')}
           >
             <span>📖 ЭССЕ & МЫСЛИ</span>
@@ -189,7 +205,7 @@
           <button
             id="tab-btn-gallery"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'gallery' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'gallery' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0369a1] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'gallery')}
           >
             <span>📸 СТУДИЯ & СЕТАП</span>
@@ -197,7 +213,7 @@
           <button
             id="tab-btn-contact"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0369a1] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'contact')}
           >
             <span>✉️ КОНТАКТЫ & ИНТЕЙК</span>
@@ -209,7 +225,7 @@
       <section id="content-view" class="space-y-8">
         {#if activeTab === 'podcast'}
           <div class="space-y-6">
-            <PodcastPlayerView />
+            <PodcastPlayerView {theme} />
           </div>
         {:else if activeTab === 'article'}
           <div class="space-y-6">
