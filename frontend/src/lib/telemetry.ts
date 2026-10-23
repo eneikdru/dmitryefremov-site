@@ -7,6 +7,7 @@ import { isTelemetryAllowed } from './consent';
 
 export interface TelemetryEvent {
   type:
+    | 'essay_view'
     | 'scroll_depth'
     | 'outbound_click'
     | 'canon_dwell_heartbeat'
@@ -15,6 +16,11 @@ export interface TelemetryEvent {
     | 'canon_submit_converted';
   timestamp: string;
   payload: Record<string, unknown>;
+}
+
+export interface EssayViewPayload {
+  articleId: string;
+  title?: string;
 }
 
 export interface ScrollDepthPayload {
@@ -59,6 +65,23 @@ class TelemetryService {
       return cookies === '' || !cookies.includes('telemetry_id');
     }
     return true;
+  }
+
+  public trackEssayView(articleId: string, title?: string): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'essay_view',
+      timestamp: new Date().toISOString(),
+      payload: {
+        articleId,
+        title: title ?? articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
   }
 
   public trackScrollDepth(articleId: string, depth: number): TelemetryEvent | null {

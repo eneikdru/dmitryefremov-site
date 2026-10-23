@@ -3,6 +3,8 @@ import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest';
 import { mount, unmount, flushSync } from 'svelte';
 import { formatTime, generateWaveformHeights, PODCAST_EPISODES } from './podcast';
 import PodcastPlayerView from '../components/PodcastPlayerView.svelte';
+import { telemetry } from './telemetry';
+import { setConsentStatus, resetConsentStatus } from './consent';
 
 beforeAll(() => {
   Object.defineProperty(window.HTMLMediaElement.prototype, 'paused', {
@@ -76,6 +78,9 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   let component: any;
 
   beforeEach(() => {
+    resetConsentStatus();
+    setConsentStatus('accepted');
+    telemetry.clearEvents();
     target = document.createElement('div');
     document.body.appendChild(target);
     return () => {
@@ -84,6 +89,21 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
       }
       document.body.removeChild(target);
     };
+  });
+
+  it('dispatches outbound_click telemetry events when YouTube and Telegram links are clicked', () => {
+    component = mount(PodcastPlayerView, { target });
+
+    const ytLink = target.querySelector('a[aria-label="YouTube Channel"]') as HTMLAnchorElement;
+    const tgLink = target.querySelector('a[aria-label="Telegram Channel"]') as HTMLAnchorElement;
+
+    ytLink.click();
+    tgLink.click();
+
+    const events = telemetry.getEvents().filter(e => e.type === 'outbound_click');
+    expect(events).toHaveLength(2);
+    expect(events[0].payload.platform).toBe('YouTube');
+    expect(events[1].payload.platform).toBe('Telegram');
   });
 
   it('renders episode title, catalog list, wave visualizer, timecodes, and external YouTube & Telegram links', () => {

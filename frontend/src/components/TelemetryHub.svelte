@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { telemetry } from '../lib/telemetry';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import ArticleStreamView from './ArticleStreamView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
@@ -52,6 +53,10 @@
 
   function toggleCmpModal() {
     isCmpModalOpen = !isCmpModalOpen;
+  }
+
+  function handleOutboundClick(destination: string, label: string, platform: string) {
+    telemetry.trackOutboundClick(destination, label, platform);
   }
 </script>
 
@@ -141,6 +146,7 @@
                   href="https://t.me/efremov_mvp"
                   target="_blank"
                   rel="noopener noreferrer"
+                  on:click={() => handleOutboundClick('https://t.me/efremov_mvp', 'Telegram @efremov_mvp', 'Telegram')}
                   class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 bg-[#38bdf8] text-[#090a0f] hover:bg-[#7dd3fc]"
                 >
                   <span>Telegram @efremov_mvp</span>
@@ -150,6 +156,7 @@
                   href="https://youtube.com/@dmitrii.efremov"
                   target="_blank"
                   rel="noopener noreferrer"
+                  on:click={() => handleOutboundClick('https://youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
                   class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 border {theme === 'dark' ? 'bg-[#141824] text-white border-[#1f2433] hover:border-[#ef4444]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#ef4444]'}"
                 >
                   <span class="text-[#ef4444]">YouTube</span>

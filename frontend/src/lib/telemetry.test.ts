@@ -16,6 +16,18 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     expect(calculateScrollPercentage(600, 1000, 500)).toBe(100);
   });
 
+  it('dispatches essay view telemetry event when an essay is viewed', () => {
+    const evt = telemetry.trackEssayView('high-end-editorial-minimalism', 'Эстетика инженерного молчания');
+    expect(evt).not.toBeNull();
+    expect(evt?.type).toBe('essay_view');
+    expect(evt?.payload.articleId).toBe('high-end-editorial-minimalism');
+    expect(evt?.payload.title).toBe('Эстетика инженерного молчания');
+
+    const events = telemetry.getEvents();
+    expect(events).toHaveLength(1);
+    expect(events[0]).toEqual(evt);
+  });
+
   it('records scroll depth telemetry events', () => {
     const evt25 = telemetry.trackScrollDepth('art-101', 25);
     expect(evt25.type).toBe('scroll_depth');

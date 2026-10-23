@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { telemetry } from '../lib/telemetry';
   import {
     PODCAST_EPISODES,
     formatTime,
@@ -126,6 +127,10 @@
     isPlaying = false;
     currentTime = 0;
   }
+
+  function handleOutboundClick(destination: string, label: string, platform: string) {
+    telemetry.trackOutboundClick(destination, label, platform);
+  }
 </script>
 
 <div id="podcast-player-container" class="space-y-6">
@@ -148,6 +153,7 @@
         target="_blank"
         rel="noopener noreferrer"
         aria-label="YouTube Channel"
+        on:click={() => handleOutboundClick(currentEpisode?.youtubeUrl || 'https://youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
         class="px-2.5 py-1 rounded bg-[#12151e] text-[#ef4444] border border-[#1f2433] hover:border-[#ef4444] transition-colors flex items-center gap-1"
       >
         <span>YouTube</span>
@@ -158,6 +164,7 @@
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Telegram Channel"
+        on:click={() => handleOutboundClick(currentEpisode?.telegramUrl || 'https://t.me/efremov_mvp', 'Telegram Channel', 'Telegram')}
         class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] transition-colors flex items-center gap-1"
       >
         <span>Telegram</span>
