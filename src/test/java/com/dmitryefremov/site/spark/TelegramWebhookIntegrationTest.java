@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = "telegram.webhook.secret-token=test-secret-token")
 @AutoConfigureMockMvc
 @Transactional
 class TelegramWebhookIntegrationTest {
@@ -61,6 +61,7 @@ class TelegramWebhookIntegrationTest {
                 """;
 
         mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(channelPostPayload))
                 .andExpect(status().isOk())
@@ -111,6 +112,7 @@ class TelegramWebhookIntegrationTest {
                 """;
 
         mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(messagePayload))
                 .andExpect(status().isOk())
@@ -154,11 +156,13 @@ class TelegramWebhookIntegrationTest {
                 """;
 
         mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(initialPayload))
                 .andExpect(status().isOk());
 
         mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedPayload))
                 .andExpect(status().isOk());
@@ -168,5 +172,34 @@ class TelegramWebhookIntegrationTest {
         assertThat(sparkOpt).isPresent();
         assertThat(sparkOpt.get().getContent()).contains("Final updated autonomous engineering insight");
         assertThat(sparkOpt.get().getTags()).isEqualTo("engineering,architecture");
+    }
+
+    @Test
+    void testTelegramWebhookRejectsInvalidOrMissingSecretToken() throws Exception {
+        String channelPostPayload = """
+                {
+                  "update_id": 9999,
+                  "channel_post": {
+                    "message_id": 8888,
+                    "date": 1760304000,
+                    "text": "Unauthorized insight payload"
+                  }
+                }
+                """;
+
+        // Without secret header -> 401 Unauthorized
+        mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(channelPostPayload))
+                .andExpect(status().isUnauthorized());
+
+        // With invalid secret header -> 401 Unauthorized
+        mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "invalid-token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(channelPostPayload))
+                .andExpect(status().isUnauthorized());
+
+        assertThat(sparkRepository.findByTelegramMessageId(8888L)).isEmpty();
     }
 }

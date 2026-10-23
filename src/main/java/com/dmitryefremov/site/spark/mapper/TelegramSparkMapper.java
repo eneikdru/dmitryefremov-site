@@ -3,8 +3,10 @@ package com.dmitryefremov.site.spark.mapper;
 import com.dmitryefremov.site.spark.domain.Spark;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -13,9 +15,16 @@ import java.time.ZoneOffset;
 public class TelegramSparkMapper {
 
     private final ObjectMapper objectMapper;
+    private final Clock clock;
 
     public TelegramSparkMapper(ObjectMapper objectMapper) {
+        this(objectMapper, Clock.systemUTC());
+    }
+
+    @Autowired
+    public TelegramSparkMapper(ObjectMapper objectMapper, @Autowired(required = false) Clock clock) {
         this.objectMapper = objectMapper;
+        this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
     public Spark mapTelegramPayload(String rawJsonPayload) {
@@ -38,7 +47,7 @@ public class TelegramSparkMapper {
                 content = message.get("caption").asText();
             }
 
-            OffsetDateTime publishedAt = OffsetDateTime.now(ZoneOffset.UTC);
+            OffsetDateTime publishedAt = OffsetDateTime.now(clock);
             if (message.has("date")) {
                 long epochSecond = message.get("date").asLong();
                 publishedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochSecond), ZoneOffset.UTC);

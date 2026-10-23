@@ -6,15 +6,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TelegramSparkMapperTest {
 
     private TelegramSparkMapper mapper;
+    private Clock fixedClock;
 
     @BeforeEach
     void setUp() {
-        mapper = new TelegramSparkMapper(new ObjectMapper());
+        fixedClock = Clock.fixed(Instant.ofEpochSecond(1760300000L), ZoneId.of("UTC"));
+        mapper = new TelegramSparkMapper(new ObjectMapper(), fixedClock);
     }
 
     @Test
@@ -84,5 +90,23 @@ class TelegramSparkMapperTest {
         assertThat(spark.getDomain()).isEqualTo("Philosophy of Mind");
         assertThat(spark.getTags()).isEqualTo("philosophy,mind");
         assertThat(spark.getAuthor()).isEqualTo("@efremov_mvp");
+    }
+
+    @Test
+    void testMapPayloadWithoutDateUsesFixedClock() {
+        String jsonPayload = """
+                {
+                  "update_id": 555,
+                  "message": {
+                    "message_id": 999,
+                    "text": "Real-time thought without explicit date field #mind"
+                  }
+                }
+                """;
+
+        Spark spark = mapper.mapTelegramPayload(jsonPayload);
+
+        assertThat(spark.getTelegramMessageId()).isEqualTo(999L);
+        assertThat(spark.getPublishedAt().toEpochSecond()).isEqualTo(1760300000L);
     }
 }
