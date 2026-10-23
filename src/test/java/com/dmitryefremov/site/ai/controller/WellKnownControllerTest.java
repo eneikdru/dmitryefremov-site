@@ -59,13 +59,19 @@ class WellKnownControllerTest {
 
     @Test
     void testGetLlmsTxt() throws Exception {
+        String expectedContent = "# Dmitry Efremov Canon Index\n\n" +
+                "> Dynamic index of articles, essays, and podcasts.\n\n" +
+                "## Articles\n" +
+                "- [Article Title](/api/v1/articles/article-slug): Article Summary\n\n" +
+                "## Essays\n" +
+                "- [Essay Title](/api/v1/essays/essay-slug): Essay Summary\n\n" +
+                "## Podcasts\n" +
+                "- [Podcast Title](/api/v1/podcasts/podcast-slug): Podcast Thesis\n\n";
+
         mockMvc.perform(get("/.well-known/llms.txt"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-                .andExpect(content().string(containsString("# Dmitry Efremov Canon Index")))
-                .andExpect(content().string(containsString("- [Article Title](/api/v1/articles/article-slug): Article Summary")))
-                .andExpect(content().string(containsString("- [Essay Title](/api/v1/essays/essay-slug): Essay Summary")))
-                .andExpect(content().string(containsString("- [Podcast Title](/api/v1/podcasts/podcast-slug): Podcast Thesis")));
+                .andExpect(content().string(expectedContent));
     }
 
     @Test
