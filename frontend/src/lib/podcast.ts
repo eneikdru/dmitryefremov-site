@@ -9,6 +9,15 @@ export interface PodcastTimecode {
   displayOrder?: number;
 }
 
+export interface CoreThesis {
+  id: number | string;
+  categoryTag: string;
+  timeOffsetSeconds: number;
+  quote: string;
+  explanation: string;
+  sectionLabel?: string;
+}
+
 export interface PodcastEpisode {
   id: number | string;
   slug: string;
@@ -24,6 +33,8 @@ export interface PodcastEpisode {
   durationSeconds: number;
   publishedAt: string;
   timecodes: PodcastTimecode[];
+  theses?: CoreThesis[];
+  transcriptExcerpt?: string;
 }
 
 export const PODCAST_EPISODES: PodcastEpisode[] = [
@@ -40,6 +51,33 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
     "youtubeUrl": "https://youtu.be/1qiPT9UxKNM",
     "mediaLink": "https://youtu.be/1qiPT9UxKNM",
     "telegramUrl": "https://t.me/efremov_mvp",
+    "transcriptExcerpt": "«...we do not simply read slower for the sake of endurance; friction is the neurological tax required to convert external data into internal dialectic structure. Without the resistance of the sentence...»",
+    "theses": [
+      {
+        "id": "t1-1",
+        "categoryTag": "CENTRAL THESIS",
+        "timeOffsetSeconds": 765, // 12:45
+        "quote": "“Frictionless consumption suppresses associative memory formation.”",
+        "explanation": "When generative summarizers eliminate the cognitive labour of parsing, neural retention rates plummet by 37% across repeated trials.",
+        "sectionLabel": "Part II: The Atrophy of Friction"
+      },
+      {
+        "id": "t1-2",
+        "categoryTag": "CORE PREMISE II",
+        "timeOffsetSeconds": 1450, // 24:10
+        "quote": "“Synthetic fluency creates an illusion of cognitive mastery without conceptual scaffolding.”",
+        "explanation": "Polished syntax is mistaken for verified truth, leaving the reader disarmed against structural logical omissions.",
+        "sectionLabel": "Part III: Epistemic Debt"
+      },
+      {
+        "id": "t1-3",
+        "categoryTag": "SYNTHESIS CONCLUSION",
+        "timeOffsetSeconds": 2150, // 35:50
+        "quote": "“Slow retrieval is not latency; it is the biological mechanism of original synthesis.”",
+        "explanation": "Delay produces combinatorial collisions that real-time predictive feeds intentionally suppress for speed.",
+        "sectionLabel": "Conclusion: Deliberation"
+      }
+    ],
     "timecodes": [
       {
         "id": 101,
@@ -86,6 +124,24 @@ export const PODCAST_EPISODES: PodcastEpisode[] = [
     "youtubeUrl": "https://youtu.be/jUbOF_YvkfI",
     "mediaLink": "https://youtu.be/jUbOF_YvkfI",
     "telegramUrl": "https://t.me/efremov_mvp",
+    "theses": [
+      {
+        "id": "t2-1",
+        "categoryTag": "CENTRAL THESIS",
+        "timeOffsetSeconds": 280,
+        "quote": "“Coherence is calculated globally across competing network hypotheses.”",
+        "explanation": "Local optimization produces fragmented truths; only full-graph coherence prevents systemic hallucinations.",
+        "sectionLabel": "Part I: Network Coherence"
+      },
+      {
+        "id": "t2-2",
+        "categoryTag": "CORE PREMISE II",
+        "timeOffsetSeconds": 750,
+        "quote": "“Simplicity penalties constrain arbitrary hypothesis growth.”",
+        "explanation": "Ad-hoc assumptions compound error rates exponentially in multi-agent pipelines.",
+        "sectionLabel": "Part II: Falsification Principles"
+      }
+    ],
     "timecodes": [
       {
         "id": 201,

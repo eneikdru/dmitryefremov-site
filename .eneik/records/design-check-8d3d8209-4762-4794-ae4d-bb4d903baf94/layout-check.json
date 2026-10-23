@@ -1,0 +1,100 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -6,
+    "width": 1440,
+    "height": 2727
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 97,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 425,
+    "width": 695,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 183,
+    "top": 432,
+    "width": 185,
+    "height": 36
+  },
+  {
+    "id": "podcast-player-container",
+    "left": 176,
+    "top": 515,
+    "width": 1088,
+    "height": 2085
+  },
+  {
+    "id": "podcast-episodes-section",
+    "left": 192,
+    "top": 653,
+    "width": 1056,
+    "height": 97
+  },
+  {
+    "id": "podcast-hero-player",
+    "left": 192,
+    "top": 774,
+    "width": 1056,
+    "height": 629
+  },
+  {
+    "id": "podcast-title",
+    "left": 217,
+    "top": 857,
+    "width": 1006,
+    "height": 32
+  },
+  {
+    "id": "waveform-container",
+    "left": 234,
+    "top": 1092,
+    "width": 972,
+    "height": 56
+  },
+  {
+    "id": "play-pause-btn",
+    "left": 688,
+    "top": 1231,
+    "width": 64,
+    "height": 64
+  },
+  {
+    "id": "core-theses-section",
+    "left": 192,
+    "top": 1482,
+    "width": 1056,
+    "height": 645
+  },
+  {
+    "id": "timecodes-section",
+    "left": 192,
+    "top": 2151,
+    "width": 1056,
+    "height": 433
+  },
+  {
+    "id": "timecodes-list",
+    "left": 192,
+    "top": 2200,
+    "width": 1056,
+    "height": 384
+  },
+  {
+    "id": "mini-player-bar",
+    "left": 0,
+    "top": 831,
+    "width": 1440,
+    "height": 69
+  }
+]

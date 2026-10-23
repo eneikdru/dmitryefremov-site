@@ -170,6 +170,56 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     expect(target.textContent).toContain('СЕЙЧАС ИГРАЕТ');
   });
 
+  it('seeks directly when a Core Thesis seek button is clicked', () => {
+    component = mount(PodcastPlayerView, { target });
+
+    const ep = PODCAST_EPISODES[0];
+    const thesis = ep.theses![0]; // timestamp 765 seconds = 12:45
+    const seekBtn = target.querySelector(`#seek-thesis-btn-${thesis.id}`) as HTMLButtonElement;
+    expect(seekBtn).not.toBeNull();
+
+    seekBtn.click();
+    flushSync();
+
+    const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
+    expect(currentTimeVal.textContent).toBe('12:45');
+  });
+
+  it('navigates through segmented tabs (Core Theses, Chapters, Full Transcript, Cited Works)', () => {
+    component = mount(PodcastPlayerView, { target });
+
+    const tabTranscript = target.querySelector('#tab-transcript') as HTMLButtonElement;
+    const tabCited = target.querySelector('#tab-cited') as HTMLButtonElement;
+
+    expect(tabTranscript).not.toBeNull();
+    tabTranscript.click();
+    flushSync();
+
+    expect(target.textContent).toContain('SYNCHRONIZED TRANSCRIPT EXCERPT');
+
+    tabCited.click();
+    flushSync();
+
+    expect(target.textContent).toContain('Cited Works & Primary Sources');
+  });
+
+  it('handles persistent mini-player playback and seek controls', () => {
+    component = mount(PodcastPlayerView, { target });
+
+    const miniPlayerBar = target.querySelector('#mini-player-bar') as HTMLElement;
+    expect(miniPlayerBar).not.toBeNull();
+
+    // Fast forward button in mini-player
+    const fwdBtn = miniPlayerBar.querySelector('button[aria-label="Mini-player forward 30 seconds"]') as HTMLButtonElement;
+    expect(fwdBtn).not.toBeNull();
+
+    fwdBtn.click();
+    flushSync();
+
+    const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
+    expect(currentTimeVal.textContent).toBe('00:30');
+  });
+
   it('handles waveform keyboard navigation and component seekTo exported function', () => {
     component = mount(PodcastPlayerView, { target });
     const waveform = target.querySelector('#waveform-container') as HTMLElement;
