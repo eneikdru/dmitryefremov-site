@@ -39,6 +39,29 @@ describe('VaultIntakeView Component', () => {
     expect(emailLabel).not.toBeNull();
   });
 
+  it('renders NDA status card, covenant drawer toggle, and contains zero internal factory mechanic leaks', async () => {
+    component = mount(VaultIntakeView, { target });
+
+    const ndaCard = target.querySelector('#nda-status-card');
+    expect(ndaCard).not.toBeNull();
+    expect(ndaCard?.textContent).toContain('Mutual NDA Status: Active & Sealed');
+    expect(ndaCard?.textContent).toContain('CLEARANCE IV');
+    expect(ndaCard?.textContent).toContain('#AT-9842-NDA');
+
+    const drawerBtn = target.querySelector('#toggle-covenant-drawer-btn') as HTMLButtonElement;
+    expect(drawerBtn).not.toBeNull();
+    drawerBtn.click();
+    await new Promise(r => setTimeout(r, 10));
+
+    const drawerContent = target.querySelector('#covenant-drawer-content');
+    expect(drawerContent).not.toBeNull();
+    expect(drawerContent?.textContent).toContain('Bilateral Confidentiality Guarantee');
+
+    // Strict zero internal factory mechanics leak check
+    const pageText = target.innerHTML;
+    expect(pageText).not.toMatch(/jules|poka-yoke|automergeservice|sixsigmaaudit|taskplan/i);
+  });
+
   it('retains user typed content in localStorage draft on input so data survives disconnects or errors', async () => {
     component = mount(VaultIntakeView, { target });
 

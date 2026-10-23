@@ -1,0 +1,121 @@
+[
+  {
+    "id": "vault-intake-root",
+    "left": 432,
+    "top": 158,
+    "width": 576,
+    "height": 2168
+  },
+  {
+    "id": "intake-hero-header",
+    "left": 457,
+    "top": 183,
+    "width": 526,
+    "height": 134
+  },
+  {
+    "id": "intake-main-title",
+    "left": 457,
+    "top": 217,
+    "width": 526,
+    "height": 36
+  },
+  {
+    "id": "nda-status-card",
+    "left": 457,
+    "top": 341,
+    "width": 526,
+    "height": 172
+  },
+  {
+    "id": "toggle-covenant-drawer-btn",
+    "left": 474,
+    "top": 461,
+    "width": 492,
+    "height": 34
+  },
+  {
+    "id": "section-moniker",
+    "left": 457,
+    "top": 536,
+    "width": 526,
+    "height": 121
+  },
+  {
+    "id": "submission-title-input",
+    "left": 474,
+    "top": 575,
+    "width": 492,
+    "height": 44
+  },
+  {
+    "id": "section-archetype",
+    "left": 457,
+    "top": 677,
+    "width": 526,
+    "height": 317
+  },
+  {
+    "id": "section-materiality",
+    "left": 457,
+    "top": 1014,
+    "width": 526,
+    "height": 281
+  },
+  {
+    "id": "section-narrative",
+    "left": 457,
+    "top": 1315,
+    "width": 526,
+    "height": 200
+  },
+  {
+    "id": "narrative-textarea",
+    "left": 474,
+    "top": 1360,
+    "width": 492,
+    "height": 104
+  },
+  {
+    "id": "section-email",
+    "left": 457,
+    "top": 1535,
+    "width": 526,
+    "height": 129
+  },
+  {
+    "id": "client-email-input",
+    "left": 474,
+    "top": 1582,
+    "width": 492,
+    "height": 44
+  },
+  {
+    "id": "section-confidentiality",
+    "left": 457,
+    "top": 1684,
+    "width": 526,
+    "height": 230
+  },
+  {
+    "id": "section-safeguards",
+    "left": 457,
+    "top": 1933,
+    "width": 526,
+    "height": 156
+  },
+  {
+    "id": "section-liaison",
+    "left": 457,
+    "top": 2109,
+    "width": 526,
+    "height": 102
+  },
+  {
+    "id": "submit-intake-btn",
+    "left": 457,
+    "top": 2239,
+    "width": 526,
+    "height": 62
+  }
+]
