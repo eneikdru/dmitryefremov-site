@@ -78,5 +78,19 @@ describe('Acceptance Flow QA Verification - Unit & Integration Guards', () => {
         expect(ep.title).not.toMatch(teleprompterRegex);
       });
     });
+
+    it('verifies absence of placeholder lorem ipsum text across rendered content components', () => {
+      component = mount(ArticleStreamView, { target });
+
+      const contentText = (target.textContent || '').toLowerCase();
+      expect(contentText).not.toContain('lorem');
+      expect(contentText).not.toContain('ipsum');
+
+      PODCAST_EPISODES.forEach(ep => {
+        const epText = `${ep.title} ${ep.description} ${ep.thesis}`.toLowerCase();
+        expect(epText).not.toContain('lorem');
+        expect(epText).not.toContain('ipsum');
+      });
+    });
   });
 });

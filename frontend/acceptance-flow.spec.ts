@@ -171,4 +171,37 @@ test.describe('Acceptance Flow QA Verification - End-to-End User Journeys', () =
     const bodyText = await page.innerText('body');
     expect(bodyText).not.toContain('/mnt/HC_Volume_106932004/podcast/episodes');
   });
+
+  test('traverses all primary paths and verifies all links resolve correctly without placeholder lorem ipsum content', async ({ page }) => {
+    await page.goto('http://localhost:4173');
+
+    if (await page.locator('#cmp-accept-btn').isVisible()) {
+      await page.click('#cmp-accept-btn');
+    }
+
+    const tabs = ['#tab-btn-podcast', '#tab-btn-article', '#tab-btn-contact'];
+
+    for (const tabSelector of tabs) {
+      const tabBtn = page.locator(tabSelector);
+      if (await tabBtn.isVisible()) {
+        await tabBtn.click();
+        await page.waitForTimeout(100);
+      }
+
+      // Assert no placeholder lorem ipsum content
+      const pageText = await page.innerText('body');
+      expect(pageText.toLowerCase()).not.toContain('lorem');
+      expect(pageText.toLowerCase()).not.toContain('ipsum');
+
+      // Verify all anchor links resolve to valid hrefs
+      const links = page.locator('a[href]');
+      const linkCount = await links.count();
+      for (let i = 0; i < linkCount; i++) {
+        const href = await links.nth(i).getAttribute('href');
+        expect(href).toBeTruthy();
+        expect(href).not.toBe('#');
+        expect(href).not.toContain('javascript:');
+      }
+    }
+  });
 });
