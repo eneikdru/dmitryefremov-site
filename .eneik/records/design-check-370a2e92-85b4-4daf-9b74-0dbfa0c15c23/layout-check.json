@@ -1,0 +1,170 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 2360
+  },
+  {
+    "id": "canon-reader-root",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 1718
+  },
+  {
+    "id": "canon-header",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 141
+  },
+  {
+    "id": "canon-domain-nav",
+    "left": 176,
+    "top": 686,
+    "width": 1088,
+    "height": 54
+  },
+  {
+    "id": "domain-tab-all",
+    "left": 176,
+    "top": 710,
+    "width": 105,
+    "height": 30
+  },
+  {
+    "id": "domain-tab-autonomous_engineering",
+    "left": 289,
+    "top": 710,
+    "width": 184,
+    "height": 30
+  },
+  {
+    "id": "domain-tab-agentic_economy",
+    "left": 482,
+    "top": 710,
+    "width": 177,
+    "height": 30
+  },
+  {
+    "id": "domain-tab-pragmatic_business_strategy",
+    "left": 667,
+    "top": 710,
+    "width": 220,
+    "height": 30
+  },
+  {
+    "id": "domain-tab-philosophy_of_mind",
+    "left": 895,
+    "top": 710,
+    "width": 156,
+    "height": 30
+  },
+  {
+    "id": "canon-filters-section",
+    "left": 176,
+    "top": 764,
+    "width": 1088,
+    "height": 56
+  },
+  {
+    "id": "type-filter-all",
+    "left": 233,
+    "top": 779,
+    "width": 87,
+    "height": 26
+  },
+  {
+    "id": "canon-search-input",
+    "left": 995,
+    "top": 777,
+    "width": 256,
+    "height": 30
+  },
+  {
+    "id": "canon-catalog-aside",
+    "left": 176,
+    "top": 844,
+    "width": 347,
+    "height": 1396
+  },
+  {
+    "id": "canon-item-list",
+    "left": 176,
+    "top": 872,
+    "width": 347,
+    "height": 600
+  },
+  {
+    "id": "canon-reader-article-container",
+    "left": 547,
+    "top": 844,
+    "width": 717,
+    "height": 1396
+  },
+  {
+    "id": "canon-reader-article",
+    "left": 547,
+    "top": 844,
+    "width": 717,
+    "height": 1396
+  },
+  {
+    "id": "canon-article-header",
+    "left": 580,
+    "top": 877,
+    "width": 651,
+    "height": 227
+  },
+  {
+    "id": "canon-article-title",
+    "left": 580,
+    "top": 915,
+    "width": 651,
+    "height": 72
+  },
+  {
+    "id": "canon-article-summary",
+    "left": 580,
+    "top": 999,
+    "width": 651,
+    "height": 52
+  },
+  {
+    "id": "canon-article-content",
+    "left": 580,
+    "top": 1128,
+    "width": 651,
+    "height": 772
+  },
+  {
+    "id": "canon-references-footer",
+    "left": 580,
+    "top": 1924,
+    "width": 651,
+    "height": 283
+  },
+  {
+    "id": "outgoing-references-block",
+    "left": 580,
+    "top": 1981,
+    "width": 318,
+    "height": 226
+  },
+  {
+    "id": "incoming-references-block",
+    "left": 913,
+    "top": 1981,
+    "width": 318,
+    "height": 226
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 2279,
+    "width": 1088,
+    "height": 49
+  }
+]
