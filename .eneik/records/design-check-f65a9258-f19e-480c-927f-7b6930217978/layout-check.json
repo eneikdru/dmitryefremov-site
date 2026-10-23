@@ -1,0 +1,37 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -6,
+    "width": 1440,
+    "height": 2495
+  },
+  {
+    "id": "tab-btn-canon",
+    "left": 376,
+    "top": 432,
+    "width": 148,
+    "height": 36
+  },
+  {
+    "id": "canon-reader-root",
+    "left": 176,
+    "top": 515,
+    "width": 1088,
+    "height": 1853
+  },
+  {
+    "id": "canon-domain-nav",
+    "left": 176,
+    "top": 515,
+    "width": 1088,
+    "height": 95
+  },
+  {
+    "id": "canon-epigraph",
+    "left": 528,
+    "top": 859,
+    "width": 384,
+    "height": 110
+  }
+]
