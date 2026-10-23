@@ -78,6 +78,8 @@ class SparkSchemaIntegrationTest {
 
     @Test
     void testFindAllByOrderByPublishedAtDescAndDomainFilter() {
+        sparkRepository.deleteAll();
+
         OffsetDateTime baseTime = OffsetDateTime.of(2026, 10, 12, 12, 0, 0, 0, ZoneOffset.UTC);
 
         Spark spark1 = new Spark(101L, 1L, "Content 1 #a2a", "Agentic Economy (A2A)", "a2a", "@author", baseTime.minusDays(2));
