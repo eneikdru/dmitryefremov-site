@@ -8,14 +8,10 @@ decisions taken in one artifact.
 ## Declared services
 
 ```yaml
-datastore: UNDECLARED
+datastore: postgresql:16
 ```
 
-`UNDECLARED` is not a placeholder to be ignored. It is the open question, written down so
-that it is an actual object: readable, refutable, and owned. Its owner is ARCHITECTURE
-(BARCAN-TAG-01, stage 20), which decides the datastore from the client's brief and replaces
-this line with the engine and version - for example `postgresql:15`, `mysql:8`, or `none`
-for a product that genuinely stores nothing.
+Decided by ARCHITECTURE (BARCAN-TAG-01): The single source of truth for the product datastore is PostgreSQL 16. Next implementation owner: BARCAN-TAG-09 (DevOps / Infrastructure Integration) for environment orchestration and runtime verification.
 
 The bootstrap does not choose. A datastore is a contingent fact about ONE brief; the
 scaffold may only contain what is true of every product this factory could build.
