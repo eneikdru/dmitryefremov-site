@@ -10,29 +10,32 @@
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
-  import CorpusSearchModal from './CorpusSearchModal.svelte';
-  import ContentCrossLinks from './ContentCrossLinks.svelte';
+  import CanonGatewayView from './CanonGatewayView.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
-  let isSearchOpen: boolean = false;
   let currentPath: string = typeof window !== 'undefined' ? window.location.pathname : '/';
   let podcastCount: number = 0;
 
   function updateRoute() {
     if (typeof window !== 'undefined') {
       currentPath = window.location.pathname;
-    }
-  }
-
-  function handleGlobalKeydown(e: KeyboardEvent) {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      isSearchOpen = !isSearchOpen;
+      const hash = window.location.hash.toLowerCase();
+      if (
+        currentPath === '/canon-gateway' ||
+        currentPath === '/canon' ||
+        currentPath === '/llms.txt' ||
+        currentPath === '/.well-known/llms.txt' ||
+        hash === '#/canon-gateway' ||
+        hash === '#canon-gateway' ||
+        hash === '#canon'
+      ) {
+        activeTab = 'canon';
+      }
     }
   }
 
@@ -40,7 +43,6 @@
     updateRoute();
     const handlePopState = () => updateRoute();
     window.addEventListener('popstate', handlePopState);
-    window.addEventListener('keydown', handleGlobalKeydown);
 
     const savedTheme = localStorage.getItem('theme-preference') as 'dark' | 'light' | null;
     if (savedTheme) {
@@ -53,7 +55,6 @@
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
-      window.removeEventListener('keydown', handleGlobalKeydown);
     };
   });
 
@@ -109,19 +110,6 @@
           </div>
 
           <div class="flex items-center gap-3">
-            <!-- Cmd+K Search Modal Trigger -->
-            <button
-              id="cmd-k-search-trigger"
-              type="button"
-              on:click={() => (isSearchOpen = true)}
-              aria-label="Open corpus search modal"
-              class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#c0c1ff] border-[#1f2433] hover:border-[#c0c1ff]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
-            >
-              <span>🔍</span>
-              <span class="font-bold">ПОИСК</span>
-              <span class="px-1.5 py-0.5 rounded text-[10px] bg-[#c0c1ff]/20 text-[#c0c1ff] font-mono">⌘K</span>
-            </button>
-
             <!-- Theme Toggle -->
             <button
               id="theme-toggle-btn"
@@ -241,6 +229,14 @@
           >
             <span>✉️ КОНТАКТЫ & ИНТЕЙК</span>
           </button>
+          <button
+            id="tab-btn-canon"
+            type="button"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            on:click={() => (activeTab = 'canon')}
+          >
+            <span>🤖 КАНОН & AI API</span>
+          </button>
         </nav>
       </header>
 
@@ -249,36 +245,22 @@
         {#if activeTab === 'podcast'}
           <div class="space-y-6">
             <PodcastPlayerView />
-            <ContentCrossLinks
-              nodeTitle="Выпуск 1: Алгоритмы консенсуса Raft"
-              nodeType="podcast"
-              domain="AUTONOMOUS_ENGINEERING"
-              {theme}
-            />
           </div>
         {:else if activeTab === 'article'}
           <div class="space-y-6">
             <ArticleStreamView />
-            <ContentCrossLinks
-              nodeTitle="A2A-Экономика и автономия агентов"
-              nodeType="essay"
-              domain="AGENTIC_ECONOMY"
-              {theme}
-            />
           </div>
         {:else if activeTab === 'sparks'}
           <div class="space-y-6">
             <SparksView {theme} />
-            <ContentCrossLinks
-              nodeTitle="Telegram Spark Insights"
-              nodeType="spark"
-              domain="PRAGMATIC_BUSINESS_STRATEGY"
-              {theme}
-            />
           </div>
         {:else if activeTab === 'contact'}
           <div class="space-y-6">
             <TelemetryContactTerminalView />
+          </div>
+        {:else if activeTab === 'canon'}
+          <div class="space-y-6">
+            <CanonGatewayView {theme} />
           </div>
         {/if}
       </section>
@@ -335,7 +317,6 @@
       {/if}
 
       <ConsentManager {theme} bind:isOpen={isCmpModalOpen} />
-      <CorpusSearchModal bind:isOpen={isSearchOpen} {theme} onClose={() => (isSearchOpen = false)} />
     </main>
   </div>
 {/if}
