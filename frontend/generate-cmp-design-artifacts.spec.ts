@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 test('generate design verification artifacts for consent platform integration', async () => {
-  const targetDir = path.resolve('../.eneik/records/design-check-f551359a-6f0e-47c1-92a7-cc616ba59ef2');
+  const targetDir = path.resolve('../.eneik/records/design-check-b3eed981-d3f4-4f33-bdf6-fa44dac36c7b');
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Build frontend

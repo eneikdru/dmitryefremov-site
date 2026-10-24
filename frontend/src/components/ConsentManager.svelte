@@ -1,6 +1,12 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
-  import { consentStore, setConsentStatus, type ConsentStatus } from '../lib/consent';
+  import {
+    consentStore,
+    setConsentStatus,
+    getCategoryPreferences,
+    setCategoryPreferences,
+    type ConsentStatus
+  } from '../lib/consent';
 
   export let theme: 'dark' | 'light' = 'dark';
   export let isOpen: boolean = false;
@@ -22,6 +28,11 @@
       }
     }
     window.addEventListener('keydown', handleKeydown);
+
+    const prefs = getCategoryPreferences();
+    analyticsAllowed = prefs.analytics;
+    functionalAllowed = prefs.functional;
+    advertisingAllowed = prefs.advertising;
 
     if (currentStatus === null) {
       await tick();
@@ -48,21 +59,32 @@
   }
 
   function handleAccept() {
-    setConsentStatus('accepted');
+    setCategoryPreferences({
+      strictlyNecessary: true,
+      analytics: true,
+      functional: true,
+      advertising: true
+    });
     isOpen = false;
   }
 
   function handleDecline() {
-    setConsentStatus('declined');
+    setCategoryPreferences({
+      strictlyNecessary: true,
+      analytics: false,
+      functional: false,
+      advertising: false
+    });
     isOpen = false;
   }
 
   function handleSavePreferences() {
-    if (analyticsAllowed) {
-      setConsentStatus('accepted');
-    } else {
-      setConsentStatus('declined');
-    }
+    setCategoryPreferences({
+      strictlyNecessary: true,
+      analytics: analyticsAllowed,
+      functional: functionalAllowed,
+      advertising: advertisingAllowed
+    });
     isOpen = false;
   }
 

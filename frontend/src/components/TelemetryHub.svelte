@@ -76,7 +76,7 @@
   >
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       <!-- Top System & Status Bar -->
-      <header class="space-y-6">
+      <header id="main-header" class="space-y-6">
         <div class="flex items-center justify-between gap-4 border-b pb-4 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
           <div class="flex items-center gap-3">
             <span
