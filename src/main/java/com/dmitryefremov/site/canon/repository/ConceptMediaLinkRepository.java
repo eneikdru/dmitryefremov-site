@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("siteConceptMediaLinkRepository")
 public interface ConceptMediaLinkRepository extends JpaRepository<ConceptMediaLink, Long> {
 
     List<ConceptMediaLink> findByCanonItemId(Long canonItemId);

@@ -4,10 +4,9 @@ import com.dmitryefremov.site.canon.controller.CanonController;
 import com.dmitryefremov.site.canon.domain.CanonDomain;
 import com.dmitryefremov.site.canon.domain.CanonRelationshipType;
 import com.dmitryefremov.site.canon.domain.CanonType;
-import com.dmitryefremov.site.canon.dto.CanonCrossReferenceDto;
-import com.dmitryefremov.site.canon.dto.CanonItemDto;
-import com.dmitryefremov.site.canon.dto.CanonPageDto;
+import com.dmitryefremov.site.canon.dto.*;
 import com.dmitryefremov.site.canon.service.CanonService;
+import com.dmitryefremov.site.canon.service.CorpusSearchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,6 +37,9 @@ class CanonControllerTest {
 
     @MockBean(name = "siteCanonService")
     private CanonService canonService;
+
+    @MockBean(name = "siteCorpusSearchService")
+    private CorpusSearchService corpusSearchService;
 
     @Test
     void testListCanonItemsFilteredByDomainReturns200() throws Exception {
@@ -119,6 +121,55 @@ class CanonControllerTest {
                 .andExpect(jsonPath("$.outgoingReferences", hasSize(1)))
                 .andExpect(jsonPath("$.outgoingReferences[0].targetSlug", is("extended-mind-infrastructure")))
                 .andExpect(jsonPath("$.outgoingReferences[0].relationshipType", is("REFERENCES")));
+    }
+
+    @Test
+    void testGetCanonItemMediaLinksReturns200() throws Exception {
+        OffsetDateTime createdAt = OffsetDateTime.of(2026, 10, 24, 12, 0, 0, 0, ZoneOffset.UTC);
+
+        ConceptMediaLinkDto link = new ConceptMediaLinkDto(
+                1L, 10L, "canon-slug", "Canon Title", "PODCAST",
+                100L, "podcast-slug", "Podcast Episode Title",
+                null, null, null,
+                null, null,
+                null, null, null,
+                "EXPLAINS", "Link description", createdAt
+        );
+
+        when(canonService.getMediaLinksForCanonItem("canon-slug")).thenReturn(List.of(link));
+
+        mockMvc.perform(get("/api/v1/canon/canon-slug/links")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].canonItemSlug", is("canon-slug")))
+                .andExpect(jsonPath("$[0].mediaType", is("PODCAST")))
+                .andExpect(jsonPath("$[0].podcastEpisodeSlug", is("podcast-slug")));
+    }
+
+    @Test
+    void testSearchCorpusEndpointReturns200() throws Exception {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 24, 12, 0, 0, 0, ZoneOffset.UTC);
+
+        SearchResultItemDto item = new SearchResultItemDto(
+                "canon-modal-logic", "Modal Logic", "modal-logic", "CANON",
+                "Summary", "Snippet text", "/canon/modal-logic", 10.0, publishedAt
+        );
+
+        CorpusSearchDto searchDto = new CorpusSearchDto("modal", 1, List.of(item));
+
+        when(corpusSearchService.searchCorpus("modal")).thenReturn(searchDto);
+
+        mockMvc.perform(get("/api/v1/canon/search")
+                        .param("q", "modal")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.query", is("modal")))
+                .andExpect(jsonPath("$.totalResults", is(1)))
+                .andExpect(jsonPath("$.results[0].slug", is("modal-logic")))
+                .andExpect(jsonPath("$.results[0].kind", is("CANON")));
     }
 
     @Test

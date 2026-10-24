@@ -21,11 +21,16 @@ public class CanonItemDto {
     private OffsetDateTime updatedAt;
     private List<CanonCrossReferenceDto> outgoingReferences = new ArrayList<>();
     private List<CanonCrossReferenceDto> incomingReferences = new ArrayList<>();
+    private List<ConceptMediaLinkDto> mediaLinks = new ArrayList<>();
 
     public CanonItemDto() {
     }
 
     public CanonItemDto(Long id, String slug, String title, CanonType type, CanonDomain domain, String summary, String content, OffsetDateTime publishedAt, OffsetDateTime createdAt, OffsetDateTime updatedAt, List<CanonCrossReferenceDto> outgoingReferences, List<CanonCrossReferenceDto> incomingReferences) {
+        this(id, slug, title, type, domain, summary, content, publishedAt, createdAt, updatedAt, outgoingReferences, incomingReferences, new ArrayList<>());
+    }
+
+    public CanonItemDto(Long id, String slug, String title, CanonType type, CanonDomain domain, String summary, String content, OffsetDateTime publishedAt, OffsetDateTime createdAt, OffsetDateTime updatedAt, List<CanonCrossReferenceDto> outgoingReferences, List<CanonCrossReferenceDto> incomingReferences, List<ConceptMediaLinkDto> mediaLinks) {
         this.id = id;
         this.slug = slug;
         this.title = title;
@@ -38,6 +43,7 @@ public class CanonItemDto {
         this.updatedAt = updatedAt;
         this.outgoingReferences = outgoingReferences != null ? outgoingReferences : new ArrayList<>();
         this.incomingReferences = incomingReferences != null ? incomingReferences : new ArrayList<>();
+        this.mediaLinks = mediaLinks != null ? mediaLinks : new ArrayList<>();
     }
 
     public Long getId() {
@@ -134,5 +140,13 @@ public class CanonItemDto {
 
     public void setIncomingReferences(List<CanonCrossReferenceDto> incomingReferences) {
         this.incomingReferences = incomingReferences;
+    }
+
+    public List<ConceptMediaLinkDto> getMediaLinks() {
+        return mediaLinks;
+    }
+
+    public void setMediaLinks(List<ConceptMediaLinkDto> mediaLinks) {
+        this.mediaLinks = mediaLinks;
     }
 }

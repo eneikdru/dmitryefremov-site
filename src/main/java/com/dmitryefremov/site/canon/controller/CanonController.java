@@ -3,10 +3,9 @@ package com.dmitryefremov.site.canon.controller;
 import com.dmitryefremov.site.canon.domain.CanonDomain;
 import com.dmitryefremov.site.canon.domain.CanonRelationshipType;
 import com.dmitryefremov.site.canon.domain.CanonType;
-import com.dmitryefremov.site.canon.dto.CanonCrossReferenceDto;
-import com.dmitryefremov.site.canon.dto.CanonItemDto;
-import com.dmitryefremov.site.canon.dto.CanonPageDto;
+import com.dmitryefremov.site.canon.dto.*;
 import com.dmitryefremov.site.canon.service.CanonService;
+import com.dmitryefremov.site.canon.service.CorpusSearchService;
 import com.dmitryefremov.site.podcast.dto.ErrorResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,17 +15,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Clock;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @RestController("siteCanonController")
 @RequestMapping("/api/v1/canon")
 public class CanonController {
 
     private final CanonService canonService;
+    private final CorpusSearchService corpusSearchService;
     private final Clock clock;
 
     public CanonController(@Qualifier("siteCanonService") CanonService canonService,
+                           @Qualifier("siteCorpusSearchService") CorpusSearchService corpusSearchService,
                            @Autowired(required = false) Clock clock) {
         this.canonService = canonService;
+        this.corpusSearchService = corpusSearchService;
         this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
@@ -44,6 +47,12 @@ public class CanonController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<CorpusSearchDto> searchCorpus(@RequestParam String q) {
+        CorpusSearchDto searchResult = corpusSearchService.searchCorpus(q);
+        return ResponseEntity.ok(searchResult);
+    }
+
     @GetMapping("/{slug}")
     public ResponseEntity<?> getCanonItemBySlug(@PathVariable String slug) {
         return canonService.getCanonItemBySlug(slug)
@@ -56,6 +65,12 @@ public class CanonController {
                     );
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
                 });
+    }
+
+    @GetMapping("/{slug}/links")
+    public ResponseEntity<List<ConceptMediaLinkDto>> getCanonItemMediaLinks(@PathVariable String slug) {
+        List<ConceptMediaLinkDto> links = canonService.getMediaLinksForCanonItem(slug);
+        return ResponseEntity.ok(links);
     }
 
     @PostMapping

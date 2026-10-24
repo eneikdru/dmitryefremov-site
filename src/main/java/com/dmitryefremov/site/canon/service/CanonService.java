@@ -4,8 +4,10 @@ import com.dmitryefremov.site.canon.domain.*;
 import com.dmitryefremov.site.canon.dto.CanonCrossReferenceDto;
 import com.dmitryefremov.site.canon.dto.CanonItemDto;
 import com.dmitryefremov.site.canon.dto.CanonPageDto;
+import com.dmitryefremov.site.canon.dto.ConceptMediaLinkDto;
 import com.dmitryefremov.site.canon.repository.CanonCrossReferenceRepository;
 import com.dmitryefremov.site.canon.repository.CanonItemRepository;
+import com.dmitryefremov.site.canon.repository.ConceptMediaLinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -27,13 +29,16 @@ public class CanonService {
 
     private final CanonItemRepository canonItemRepository;
     private final CanonCrossReferenceRepository canonCrossReferenceRepository;
+    private final ConceptMediaLinkRepository conceptMediaLinkRepository;
     private final Clock clock;
 
     public CanonService(@Qualifier("siteCanonItemRepository") CanonItemRepository canonItemRepository,
                         @Qualifier("siteCanonCrossReferenceRepository") CanonCrossReferenceRepository canonCrossReferenceRepository,
+                        @Qualifier("siteConceptMediaLinkRepository") ConceptMediaLinkRepository conceptMediaLinkRepository,
                         @Autowired(required = false) Clock clock) {
         this.canonItemRepository = canonItemRepository;
         this.canonCrossReferenceRepository = canonCrossReferenceRepository;
+        this.conceptMediaLinkRepository = conceptMediaLinkRepository;
         this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
@@ -74,6 +79,12 @@ public class CanonService {
     public Optional<CanonItemDto> getCanonItemBySlug(String slug) {
         return canonItemRepository.findBySlug(slug)
                 .map(this::mapToDtoWithReferences);
+    }
+
+    public List<ConceptMediaLinkDto> getMediaLinksForCanonItem(String slug) {
+        return conceptMediaLinkRepository.findByCanonItemSlug(slug).stream()
+                .map(this::mapToMediaLinkDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -151,6 +162,7 @@ public class CanonService {
     }
 
     public CanonItemDto mapToDto(CanonItem entity) {
+        List<ConceptMediaLinkDto> links = getMediaLinksForCanonItem(entity.getSlug());
         return new CanonItemDto(
                 entity.getId(),
                 entity.getSlug(),
@@ -163,7 +175,8 @@ public class CanonService {
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
                 List.of(),
-                List.of()
+                List.of(),
+                links
         );
     }
 
@@ -175,6 +188,8 @@ public class CanonService {
         List<CanonCrossReferenceDto> incoming = entity.getIncomingReferences().stream()
                 .map(this::mapToRefDto)
                 .collect(Collectors.toList());
+
+        List<ConceptMediaLinkDto> links = getMediaLinksForCanonItem(entity.getSlug());
 
         return new CanonItemDto(
                 entity.getId(),
@@ -188,7 +203,8 @@ public class CanonService {
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
                 outgoing,
-                incoming
+                incoming,
+                links
         );
     }
 
@@ -202,6 +218,30 @@ public class CanonService {
                 ref.getRelationshipType(),
                 ref.getDescription(),
                 ref.getCreatedAt()
+        );
+    }
+
+    public ConceptMediaLinkDto mapToMediaLinkDto(ConceptMediaLink link) {
+        return new ConceptMediaLinkDto(
+                link.getId(),
+                link.getCanonItem() != null ? link.getCanonItem().getId() : null,
+                link.getCanonItem() != null ? link.getCanonItem().getSlug() : null,
+                link.getCanonItem() != null ? link.getCanonItem().getTitle() : null,
+                link.getMediaType(),
+                link.getPodcastEpisode() != null ? link.getPodcastEpisode().getId() : null,
+                link.getPodcastEpisode() != null ? link.getPodcastEpisode().getSlug() : null,
+                link.getPodcastEpisode() != null ? link.getPodcastEpisode().getTitle() : null,
+                link.getEssay() != null ? link.getEssay().getId() : null,
+                link.getEssay() != null ? link.getEssay().getSlug() : null,
+                link.getEssay() != null ? link.getEssay().getTitle() : null,
+                link.getSpark() != null ? link.getSpark().getId() : null,
+                link.getSpark() != null ? link.getSpark().getContent() : null,
+                link.getArticle() != null ? link.getArticle().getId() : null,
+                link.getArticle() != null ? link.getArticle().getSlug() : null,
+                link.getArticle() != null ? link.getArticle().getTitle() : null,
+                link.getRelationshipType(),
+                link.getDescription(),
+                link.getCreatedAt()
         );
     }
 }

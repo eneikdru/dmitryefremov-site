@@ -6,6 +6,7 @@ import com.dmitryefremov.site.canon.dto.CanonItemDto;
 import com.dmitryefremov.site.canon.dto.CanonPageDto;
 import com.dmitryefremov.site.canon.repository.CanonCrossReferenceRepository;
 import com.dmitryefremov.site.canon.repository.CanonItemRepository;
+import com.dmitryefremov.site.canon.repository.ConceptMediaLinkRepository;
 import com.dmitryefremov.site.canon.service.CanonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,13 +41,16 @@ class CanonServiceTest {
     @Mock
     private CanonCrossReferenceRepository canonCrossReferenceRepository;
 
+    @Mock
+    private ConceptMediaLinkRepository conceptMediaLinkRepository;
+
     private Clock clock;
     private CanonService canonService;
 
     @BeforeEach
     void setUp() {
         clock = Clock.fixed(Instant.parse("2026-10-12T20:00:00Z"), ZoneId.of("UTC"));
-        canonService = new CanonService(canonItemRepository, canonCrossReferenceRepository, clock);
+        canonService = new CanonService(canonItemRepository, canonCrossReferenceRepository, conceptMediaLinkRepository, clock);
     }
 
     @Test
