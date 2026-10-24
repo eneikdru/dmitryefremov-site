@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { telemetry } from '../lib/telemetry';
+  import { fetchPodcastsFromApi } from '../lib/podcast';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import ArticleStreamView from './ArticleStreamView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
@@ -17,6 +18,7 @@
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
   let currentPath: string = typeof window !== 'undefined' ? window.location.pathname : '/';
+  let podcastCount: number = 0;
 
   function updateRoute() {
     if (typeof window !== 'undefined') {
@@ -33,6 +35,10 @@
     if (savedTheme) {
       theme = savedTheme;
     }
+
+    fetchPodcastsFromApi().then(eps => {
+      podcastCount = eps.length;
+    });
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
@@ -184,7 +190,7 @@
             on:click={() => (activeTab = 'podcast')}
           >
             <span>🎙️ ПОДКАСТ</span>
-            <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? 'bg-white/20' : 'bg-black/10'}">9 выпусков</span>
+            <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? 'bg-white/20' : 'bg-black/10'}">{podcastCount} {podcastCount === 1 ? 'выпуск' : (podcastCount > 1 && podcastCount < 5 ? 'выпуска' : 'выпусков')}</span>
           </button>
           <button
             id="tab-btn-article"
