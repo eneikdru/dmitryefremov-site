@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Canon Gateway</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Geist & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-low": "#181c24",
+            "surface-container": "#1c2028",
+            "on-surface-variant": "#b9cacb",
+            "background": "#0f131c",
+            "on-secondary": "#1000a9",
+            "secondary-fixed": "#e1e0ff",
+            "secondary-fixed-dim": "#c0c1ff",
+            "inverse-on-surface": "#2c3039",
+            "secondary": "#c0c1ff",
+            "surface-container-high": "#262a33",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-error": "#690005",
+            "on-tertiary-container": "#006e4b",
+            "on-background": "#dfe2ee",
+            "on-secondary-container": "#b0b2ff",
+            "on-secondary-fixed-variant": "#2f2ebe",
+            "error-container": "#93000a",
+            "primary-fixed": "#6ff6ff",
+            "surface-bright": "#353942",
+            "surface-container-highest": "#31353e",
+            "on-tertiary": "#003824",
+            "outline-variant": "#3a494b",
+            "primary-container": "#00f2fe",
+            "inverse-surface": "#dfe2ee",
+            "tertiary-fixed": "#6ffbbe",
+            "on-primary": "#00373a",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-tint": "#00dce6",
+            "primary-fixed-dim": "#00dce6",
+            "primary": "#e0fdff",
+            "on-primary-container": "#006a70",
+            "outline": "#849495",
+            "error": "#ffb4ab",
+            "tertiary-container": "#67f4b7",
+            "surface-container-lowest": "#0a0e16",
+            "surface-variant": "#31353e",
+            "on-primary-fixed-variant": "#004f53",
+            "surface-dim": "#0f131c",
+            "on-tertiary-fixed": "#002113",
+            "secondary-container": "#3131c0",
+            "on-surface": "#dfe2ee",
+            "on-error-container": "#ffdad6",
+            "inverse-primary": "#00696f",
+            "on-primary-fixed": "#002022",
+            "on-secondary-fixed": "#07006c",
+            "surface": "#0f131c",
+            "tertiary": "#e1ffec"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "margin-lg": "2.5rem",
+            "space-md": "0.75rem",
+            "margin-md": "1.5rem",
+            "space-lg": "1.25rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2rem",
+            "gutter-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "label-md": ["JetBrains Mono"],
+            "body-lg": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "headline-xl": ["Geist"],
+            "headline-sm": ["Geist"],
+            "headline-xl-mobile": ["Geist"],
+            "label-lg": ["JetBrains Mono"],
+            "headline-lg": ["Geist"],
+            "body-sm": ["Geist"],
+            "label-sm": ["JetBrains Mono"],
+            "headline-md": ["Geist"],
+            "body-md": ["Geist"]
+          },
+          "fontSize": {
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.025em", "fontWeight": "500"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400"}],
+            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+            "headline-sm": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+            "headline-xl-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "label-lg": ["13px", {"lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+            "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "600"}],
+            "body-sm": ["12px", {"lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+            "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "500"}],
+            "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-md antialiased pb-24 selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar Anchor Component -->
+<header class="sticky top-0 z-40 bg-surface-container-low shadow-sm w-full">
+<div class="flex justify-between items-center w-full px-margin h-14 max-w-md mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="hub">hub</span>
+<span class="font-headline-sm text-headline-sm font-semibold text-primary tracking-tight">Canon Gateway</span>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="Route settings" class="text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface p-1.5 rounded-lg transition-colors duration-150 active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Mobile Shell Container -->
+<main class="max-w-md mx-auto px-margin pt-3 space-y-4">
+<!-- Live Telemetry Subheader / Quick Switch -->
+<div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant/30 rounded-xl px-3 py-2">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary-container"></span>
+</span>
+<span class="font-label-sm text-label-sm text-tertiary tracking-wider font-semibold">PUBLIC ROUTING ACTIVE</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Live Sync</span>
+<button aria-label="Toggle Live Sync" class="w-8 h-4 bg-primary-container/20 border border-primary-container/40 rounded-full relative p-0.5 flex items-center transition-colors" type="button">
+<span class="w-3 h-3 rounded-full bg-primary-container translate-x-3.5 transition-transform"></span>
+</button>
+</div>
+</div>
+<!-- Gateway Overview Card -->
+<section class="bg-surface-container border border-outline-variant/30 rounded-xl p-4 space-y-3.5 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.7)]">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-primary-container tracking-wider block">INGRESS GATEWAY</span>
+<h1 class="font-headline-sm text-headline-sm font-semibold text-on-surface">External Agent Canon Access</h1>
+</div>
+<!-- Master Switch -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<!-- Base URL preview & copy -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-2.5 flex items-center justify-between gap-2">
+<div class="truncate">
+<p class="font-label-sm text-label-sm text-on-surface-variant">BASE ROUTING ENDPOINT</p>
+<code class="font-label-md text-label-md text-primary tracking-tight truncate block">https://canon.mesh.io/api/v1/canon/*</code>
+</div>
+<button aria-label="Copy Base URL" class="p-1.5 bg-surface-container hover:bg-surface-container-high text-primary-container rounded transition-colors active:scale-95 flex-shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+<!-- Connected Agents Avatar Group -->
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+<div class="flex items-center gap-2">
+<div class="flex -space-x-1.5 overflow-hidden">
+<span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-surface-container-high border border-outline-variant/40 text-[10px] font-label-sm text-primary">CL</span>
+<span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-secondary-container border border-outline-variant/40 text-[10px] font-label-sm text-secondary-fixed">AG</span>
+<span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-surface-bright border border-outline-variant/40 text-[10px] font-label-sm text-primary-container">LC</span>
+<span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-surface-container-highest border border-outline-variant/40 text-[10px] font-label-sm text-tertiary">CB</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">4 External Agents Connected</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+          Zero Drops
+        </span>
+</div>
+</section>
+<!-- Core Content - Filter Pills -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+<button class="px-3 py-1 bg-surface-container-high border border-primary-container/40 rounded-full font-label-sm text-label-sm text-primary-container whitespace-nowrap" type="button">
+        All Routes (5)
+      </button>
+<button class="px-3 py-1 bg-surface-container-low border border-outline-variant/30 rounded-full font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface whitespace-nowrap" type="button">
+        Read-Only (3)
+      </button>
+<button class="px-3 py-1 bg-surface-container-low border border-outline-variant/30 rounded-full font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface whitespace-nowrap" type="button">
+        Query (2)
+      </button>
+<button class="px-3 py-1 bg-surface-container-low border border-outline-variant/30 rounded-full font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface whitespace-nowrap" type="button">
+        Webhooks
+      </button>
+</div>
+<!-- Endpoints Routing List -->
+<section class="space-y-3">
+<!-- Route Card 1 -->
+<article class="bg-surface-container-low border-l-2 border-l-primary-container border-y border-r border-outline-variant/30 rounded-xl p-3.5 space-y-2.5">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-semibold tracking-wider">GET</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant border border-outline-variant/40">read:canon</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-primary-container/10 text-primary-container border border-primary-container/30">Active</span>
+</div>
+<!-- Circuit Breaker Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-container-highest rounded-full peer peer-checked:bg-primary-container after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-4"></div>
+</label>
+</div>
+<div>
+<code class="font-label-md text-label-md font-semibold text-primary block">/canon/lore/summary</code>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Provides summarized core world canon, factions, and timeline epochs for LLM system prompts.</p>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-1 border-t border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="speed">speed</span>
+            60 req/min · 0ms auth cache
+          </span>
+<div class="flex items-center gap-2">
+<button class="font-label-sm text-label-sm px-2 py-0.5 bg-surface-container-high hover:bg-surface-bright text-on-surface rounded border border-outline-variant/30 transition-colors" type="button">
+              Schema (JSON)
+            </button>
+<button class="font-label-sm text-label-sm px-2 py-0.5 bg-primary-container text-on-primary font-semibold rounded hover:brightness-110 transition-all" type="button">
+              Test Route
+            </button>
+</div>
+</div>
+</article>
+<!-- Route Card 2 (With Open JSON Schema snippet) -->
+<article class="bg-surface-container-low border-l-2 border-l-primary-container border-y border-r border-outline-variant/30 rounded-xl p-3.5 space-y-2.5">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary-container/20 text-tertiary font-semibold tracking-wider">GET</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant border border-outline-variant/40">read:entities</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-primary-container/10 text-primary-container border border-primary-container/30">Active</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-container-highest rounded-full peer peer-checked:bg-primary-container after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-4"></div>
+</label>
+</div>
+<div>
+<code class="font-label-md text-label-md font-semibold text-primary block">/canon/entities/graph</code>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Recursive entity relationship graph exported in JSON-LD format for knowledge-graph retrieval.</p>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="data_object">data_object</span>
+            30 req/min · Context: Full
+          </span>
+<span class="font-label-sm text-label-sm text-primary-container flex items-center gap-0.5">
+            Schema Expanded
+            <span class="material-symbols-outlined text-[14px]" data-icon="expand_less">expand_less</span>
+</span>
+</div>
+<!-- Toggled Open Schema Preview Box -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-2.5 overflow-x-auto">
+<div class="flex items-center justify-between pb-1 mb-1 border-b border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant">RESPONSE_PAYLOAD_SCHEMA</span>
+<span class="font-label-sm text-label-sm text-secondary">JSON-LD</span>
+</div>
+<pre class="font-label-sm text-label-sm leading-relaxed text-on-surface"><code>{
+  <span class="text-primary-container">"entities"</span>: [
+    { <span class="text-secondary-fixed">"id"</span>: <span class="text-tertiary">"entity_77a"</span>, <span class="text-secondary-fixed">"type"</span>: <span class="text-tertiary">"faction"</span> }
+  ],
+  <span class="text-primary-container">"edges"</span>: [
+    { <span class="text-secondary-fixed">"source"</span>: <span class="text-tertiary">"entity_77a"</span>, <span class="text-secondary-fixed">"relation"</span>: <span class="text-tertiary">"ally_of"</span> }
+  ]
+}</code></pre>
+</div>
+</article>
+<!-- Route Card 3 -->
+<article class="bg-surface-container-low border-l-2 border-l-primary-container border-y border-r border-outline-variant/30 rounded-xl p-3.5 space-y-2.5">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-primary-container/20 text-primary-container font-semibold tracking-wider">POST</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant border border-outline-variant/40">query:vector</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-primary-container/10 text-primary-container border border-primary-container/30">Active</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-container-highest rounded-full peer peer-checked:bg-primary-container after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-4"></div>
+</label>
+</div>
+<div>
+<code class="font-label-md text-label-md font-semibold text-primary block">/canon/semantic-query</code>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Vector similarity search over canon lore vectors with cosine similarity threshold.</p>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-1 border-t border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="tune">tune</span>
+            120 req/min · Embeddings v3
+          </span>
+<button class="font-label-sm text-label-sm px-2 py-0.5 bg-surface-container-high hover:bg-surface-bright text-on-surface rounded border border-outline-variant/30 transition-colors" type="button">
+            Test Vector
+          </button>
+</div>
+</article>
+<!-- Route Card 4 (Paused) -->
+<article class="bg-surface-container-low border-l-2 border-l-secondary-container border-y border-r border-outline-variant/30 rounded-xl p-3.5 space-y-2.5 opacity-80">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-secondary-container/40 text-secondary-fixed font-semibold tracking-wider">SSE</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant border border-outline-variant/40">stream:events</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant border border-outline-variant/30">Paused</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-container-highest rounded-full peer peer-checked:bg-primary-container after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-4"></div>
+</label>
+</div>
+<div>
+<code class="font-label-md text-label-md font-semibold text-primary block">/canon/events/stream</code>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Server-Sent Events for real-time canon updates and world-state modifications.</p>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-1 border-t border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="sensors">sensors</span>
+            Event-Driven Channel
+          </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant italic">Standby Mode</span>
+</div>
+</article>
+</section>
+<!-- Security & External Agent Authentication Card -->
+<section class="bg-surface-container border border-outline-variant/30 rounded-xl p-4 space-y-3">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-container text-[18px]" data-icon="shield">shield</span>
+          Agent Scopes &amp; Headers
+        </h2>
+<span class="font-label-sm text-label-sm text-tertiary">Strict Mode</span>
+</div>
+<div class="space-y-2 text-on-surface">
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded p-2 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Auth Header:</span>
+<code class="font-label-sm text-label-sm text-primary-container">X-Canon-Agent-Key</code>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded p-2 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">CORS Origins:</span>
+<code class="font-label-sm text-label-sm text-primary truncate max-w-[200px]">agents.mesh.network, localhost:*</code>
+</div>
+</div>
+<!-- Recent Agent Invocations Feed -->
+<div class="pt-2 border-t border-outline-variant/20">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Recent Agent Invocations</span>
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+            Live
+          </span>
+</div>
+<div class="space-y-1.5 font-label-sm text-label-sm">
+<div class="bg-surface-container-lowest border border-outline-variant/20 rounded p-2 flex items-center justify-between gap-1">
+<div class="truncate">
+<span class="text-primary font-medium">LangChain_Agent_04</span>
+<span class="text-on-surface-variant block text-[10px]">GET /canon/lore/summary</span>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="text-tertiary font-medium">200 OK</span>
+<span class="text-on-surface-variant block text-[10px]">18ms</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/20 rounded p-2 flex items-center justify-between gap-1">
+<div class="truncate">
+<span class="text-secondary-fixed font-medium">Claude_Codex_Sync</span>
+<span class="text-on-surface-variant block text-[10px]">POST /canon/semantic-query</span>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="text-tertiary font-medium">200 OK</span>
+<span class="text-on-surface-variant block text-[10px]">42ms</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Anchor Component -->
+<!-- Strict Shell Border Ban: No border-t, tonal shift and shadow only -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-1.5 bg-surface-container-lowest shadow-[0_-4px_16px_rgba(0,0,0,0.5)]">
+<!-- Endpoints (Active) -->
+<a class="flex flex-col items-center justify-center text-primary-container dark:text-primary-container font-medium py-1 px-3 bg-surface-container-high/60 rounded-xl active:scale-[0.96] transition-transform duration-100" href="#endpoints">
+<span class="material-symbols-outlined text-[20px]" data-icon="alt_route">alt_route</span>
+<span class="font-label-sm text-label-sm mt-0.5">Endpoints</span>
+</a>
+<!-- Scopes (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant py-1 px-3 hover:text-primary dark:hover:text-primary hover:bg-surface-container-low/50 transition-colors duration-150 active:scale-[0.96]" href="#scopes">
+<span class="material-symbols-outlined text-[20px]" data-icon="key">key</span>
+<span class="font-label-sm text-label-sm mt-0.5">Scopes</span>
+</a>
+<!-- Agents (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant py-1 px-3 hover:text-primary dark:hover:text-primary hover:bg-surface-container-low/50 transition-colors duration-150 active:scale-[0.96]" href="#agents">
+<span class="material-symbols-outlined text-[20px]" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-sm text-label-sm mt-0.5">Agents</span>
+</a>
+<!-- Logs (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant py-1 px-3 hover:text-primary dark:hover:text-primary hover:bg-surface-container-low/50 transition-colors duration-150 active:scale-[0.96]" href="#logs">
+<span class="material-symbols-outlined text-[20px]" data-icon="terminal">terminal</span>
+<span class="font-label-sm text-label-sm mt-0.5">Logs</span>
+</a>
+</nav>
+</body></html>
