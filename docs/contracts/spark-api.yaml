@@ -1,0 +1,601 @@
+openapi: 3.0.3
+info:
+  title: Production Data Binding API Contract (Podcasts, Essays, Sparks, Canon)
+  description: Shared API specification for Dmitry Efremov's public portal data binding. Defines endpoints, request/response shapes, exact DTOs, and honest empty state payloads for podcasts, essays, sparks, and Telegram webhook ingestion.
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/podcasts:
+    get:
+      summary: List podcast episodes
+      description: Retrieves a paginated list of published podcast episodes (with valid YouTube links) ordered by publication date descending. Returns empty payload when no episodes exist.
+      operationId: listPodcastEpisodes
+      parameters:
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successfully retrieved episode list or empty state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastEpisodePage'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/podcasts/{slug}:
+    get:
+      summary: Get podcast episode by slug
+      description: Retrieves detail of a single published podcast episode including timecodes, topics, and YouTube media links.
+      operationId: getPodcastEpisodeBySlug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Unique URL identifier slug of the podcast episode
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Podcast episode found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastEpisode'
+        '404':
+          description: Podcast episode not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/essays:
+    get:
+      summary: List curated essays
+      description: Retrieves a paginated list of published curated essays, excluding raw teleprompter drafts. Returns empty payload when no essays exist.
+      operationId: listEssays
+      parameters:
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successfully retrieved essay list or empty state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EssayPage'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/essays/{slug}:
+    get:
+      summary: Get essay by slug
+      description: Retrieves a single curated essay including raw Markdown content, summary, curator metadata, and publication timestamp.
+      operationId: getEssayBySlug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Unique URL identifier slug of the essay
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Essay found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Essay'
+        '404':
+          description: Essay not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/sparks:
+    get:
+      summary: List published sparks
+      description: Retrieves a paginated list of published Telegram Sparks, ordered by publication date descending. Returns an empty payload when no sparks match the query.
+      operationId: listSparks
+      parameters:
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: domain
+          in: query
+          description: Filter sparks by knowledge domain tag
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved sparks page or empty state payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SparkPage'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/telegram/webhook:
+    post:
+      summary: Process Telegram webhook update
+      description: Ingests raw update payloads from Telegram channel @efremov_mvp via TelegramSparkMapper into structured Spark records.
+      operationId: handleTelegramWebhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelegramWebhookPayload'
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: Successfully mapped and persisted Telegram spark
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spark'
+        '400':
+          description: Invalid payload or unparseable webhook JSON
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/sparks/webhook:
+    post:
+      summary: Process Sparks webhook update (Alias endpoint)
+      description: Alias endpoint for Telegram webhook payload processing.
+      operationId: handleSparksWebhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelegramWebhookPayload'
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: Successfully mapped and persisted Telegram spark
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spark'
+        '400':
+          description: Invalid payload or unparseable webhook JSON
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    PodcastTopic:
+      type: object
+      required:
+        - id
+        - topicName
+        - startTimeSeconds
+        - displayOrder
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        topicName:
+          type: string
+          example: "Модальная логика и философия языка"
+        startTimeSeconds:
+          type: integer
+          example: 0
+        endTimeSeconds:
+          type: integer
+          nullable: true
+          example: 900
+        description:
+          type: string
+          nullable: true
+          example: "Введение в философские работы Рут Баркан Маркус."
+        displayOrder:
+          type: integer
+          example: 1
+
+    PodcastTimecode:
+      type: object
+      required:
+        - id
+        - timeOffsetSeconds
+        - title
+        - displayOrder
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        timeOffsetSeconds:
+          type: integer
+          example: 125
+        title:
+          type: string
+          example: "Introduction to Deontic Logic"
+        description:
+          type: string
+          nullable: true
+          example: "Overview of deontic operators O (Obligatory), P (Permitted), and F (Forbidden)."
+        displayOrder:
+          type: integer
+          example: 0
+
+    PodcastEpisode:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - audioUrl
+        - timecodes
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 42
+        slug:
+          type: string
+          example: "systems-and-deontic-logic"
+        title:
+          type: string
+          example: "Systems, Logic, and Autonomous Processes"
+        thesis:
+          type: string
+          nullable: true
+          example: "Your code and your decisions are who you truly are."
+        description:
+          type: string
+          nullable: true
+          example: "In this episode we explore deontic logic and Theory of Constraints."
+        audioUrl:
+          type: string
+          format: uri
+          example: "https://media.dmitryefremov.site/podcasts/ep-42.mp3"
+        youtubeUrl:
+          type: string
+          format: uri
+          nullable: true
+          example: "https://youtube.com/watch?v=example"
+        telegramUrl:
+          type: string
+          format: uri
+          nullable: true
+          example: "https://t.me/dmitryefremov/123"
+        durationSeconds:
+          type: integer
+          nullable: true
+          example: 3600
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-10-09T10:00:00Z"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-10-09T11:58:13Z"
+        timecodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastTimecode'
+        topics:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastTopic'
+
+    PodcastEpisodePage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastEpisode'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 0
+        totalPages:
+          type: integer
+          example: 0
+
+    Essay:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - content
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        slug:
+          type: string
+          example: "deontic-logic-and-editorial-minimalism"
+        title:
+          type: string
+          example: "Deontic Logic and Editorial Minimalism"
+        summary:
+          type: string
+          nullable: true
+          example: "An analysis of deontic logic and high-end dark design aesthetics."
+        content:
+          type: string
+          description: Raw Markdown body of the essay
+          example: "# Deontic Logic\n\nYour code and your decisions are who you truly are."
+        curatedBy:
+          type: string
+          nullable: true
+          example: "Dmitry Efremov"
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-10-12T18:00:00Z"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-10-12T18:32:32Z"
+
+    EssayPage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Essay'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 0
+        totalPages:
+          type: integer
+          example: 0
+
+    Spark:
+      type: object
+      required:
+        - id
+        - content
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 101
+        telegramMessageId:
+          type: integer
+          format: int64
+          nullable: true
+          example: 849201
+        telegramChatId:
+          type: integer
+          format: int64
+          nullable: true
+          example: -1001234567890
+        content:
+          type: string
+          example: "Архитектура автономии строится на инвариантах, а не на эвристиках."
+        domain:
+          type: string
+          nullable: true
+          example: "architecture"
+        tags:
+          type: string
+          nullable: true
+          example: "#architecture #heuristics"
+        author:
+          type: string
+          nullable: true
+          example: "@dmitryefremov"
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-10-12T20:34:00Z"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-10-12T20:34:09Z"
+
+    SparkPage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Spark'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 0
+        totalPages:
+          type: integer
+          example: 0
+
+    EmptyStateResponse:
+      type: object
+      required:
+        - section
+        - empty
+        - message
+      properties:
+        section:
+          type: string
+          description: Public portal section name (podcasts, essays, sparks, canon)
+          example: "podcasts"
+        empty:
+          type: boolean
+          description: Flag indicating whether section contains zero published records
+          example: true
+        message:
+          type: string
+          description: Honest user-facing Russian empty state message
+          example: "Выпуски подкаста пока не опубликованы"
+
+    TelegramWebhookPayload:
+      type: object
+      required:
+        - update_id
+      properties:
+        update_id:
+          type: integer
+          format: int64
+          example: 100001
+        message:
+          type: object
+          properties:
+            message_id:
+              type: integer
+              format: int64
+              example: 849201
+            text:
+              type: string
+              example: "Новая мысль про деонтическую логику #architecture"
+            date:
+              type: integer
+              example: 1760301240
+            chat:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                  example: -1001234567890
+                title:
+                  type: string
+                  example: "Dmitry Efremov Channel"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Invalid request"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-12T20:35:00Z"
