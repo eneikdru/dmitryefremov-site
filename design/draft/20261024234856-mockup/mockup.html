@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Identity &amp; Contact - Elena Vance</title>
+<!-- Material Symbols Outlined font -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Plus Jakarta Sans typography -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-fixed-dim": "#b4c5ff",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#45464d",
+            "outline": "#76777d",
+            "surface-bright": "#f8f9ff",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-secondary-container": "#fefcff",
+            "inverse-on-surface": "#eaf1ff",
+            "primary-container": "#131b2e",
+            "on-tertiary-fixed": "#00201d",
+            "error-container": "#ffdad6",
+            "tertiary": "#000000",
+            "secondary-container": "#316bf3",
+            "on-secondary-fixed": "#00174b",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#bec6e0",
+            "tertiary-container": "#00201d",
+            "inverse-surface": "#213145",
+            "inverse-primary": "#bec6e0",
+            "tertiary-fixed-dim": "#6bd8cb",
+            "surface-container-high": "#dce9ff",
+            "primary-fixed": "#dae2fd",
+            "on-primary-fixed": "#131b2e",
+            "surface-container-low": "#eff4ff",
+            "on-tertiary-container": "#0c9488",
+            "surface": "#f8f9ff",
+            "on-secondary-fixed-variant": "#003ea8",
+            "on-error-container": "#93000a",
+            "surface-container": "#e5eeff",
+            "tertiary-fixed": "#89f5e7",
+            "on-primary-container": "#7c839b",
+            "on-primary": "#ffffff",
+            "primary": "#000000",
+            "secondary": "#0051d5",
+            "on-primary-fixed-variant": "#3f465c",
+            "outline-variant": "#c6c6cd",
+            "secondary-fixed": "#dbe1ff",
+            "surface-variant": "#d3e4fe",
+            "on-tertiary-fixed-variant": "#005049",
+            "background": "#f8f9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-error": "#ffffff",
+            "on-background": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "surface-container-lowest": "#ffffff",
+            "surface-tint": "#565e74"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2rem",
+            "margin": "1rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+            "headline-md": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+            "headline-lg-mobile": ["26px", {"lineHeight": "34px", "fontWeight": "700"}],
+            "body-md": ["15px", {"lineHeight": "22px", "fontWeight": "400"}],
+            "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+            "headline-sm": ["18px", {"lineHeight": "26px", "fontWeight": "600"}],
+            "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Touch target guarantee utility */
+    .touch-target {
+      min-height: 48px;
+      min-width: 48px;
+    }
+    /* Tactile button push */
+    .tactile-btn:active {
+      transform: translateY(1px);
+    }
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c6c6cd;
+      border-radius: 4px;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col items-center selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- Mobile Shell Viewport Container (Constrained strictly to 540px / 390px typical mobile canvas) -->
+<div class="w-full max-w-[540px] bg-background min-h-screen flex flex-col relative pb-28 shadow-sm">
+<!-- Top Status Bar Simulation -->
+<div class="w-full bg-surface-container-lowest px-margin pt-2 pb-1 flex justify-between items-center text-label-sm font-label-sm text-on-surface select-none">
+<span class="tracking-tight font-bold">9:41</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<span class="material-symbols-outlined text-[16px]">battery_full</span>
+</div>
+</div>
+<!-- SHARED COMPONENT: TopAppBar (docked full-width top-0, border-b border-outline-variant, flex layout) -->
+<header class="bg-surface-container-lowest dark:bg-primary-container border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none docked full-width top-0 sticky z-40">
+<div class="flex justify-between items-center w-full px-margin h-14 max-w-[540px] mx-auto">
+<!-- Leading: Back Action & Avatar -->
+<div class="flex items-center gap-2">
+<button aria-label="Go back" class="touch-target flex items-center justify-center -ml-2 rounded-lg text-on-surface hover:bg-surface-container active:translate-y-px transition-transform duration-100" type="button">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="relative w-8 h-8 rounded-full overflow-hidden border border-outline-variant shrink-0 ring-1 ring-secondary/20">
+<img class="w-full h-full object-cover" data-alt="Close-up professional portrait of Elena Vance, a confident tech architect with subtle wireframe glasses, soft directional studio lighting, dressed in a sleek high-contrast charcoal collar against a serene architectural backdrop with minimalist cool tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLCQnU86Wm1yYO-6goLK0KfnwVQuP9EJSiT1UivwGp-JF6SGGBuE-1kJ-WtXuujtczflg5C5lzPtseF1q68pY7-v4oY1rDUDzU8pKIW5e4Jk1pWk5bgU5C-xx0-HM_gsDEI8eX5Lvx-z4d3vX5-KY-k7o_PaYIjWhrKOv7Tnfk-02gVr8ZI8m5Wo6M2_TdXJMVohxKwt8iEXLZE3pVN1uyybyi2E9DpF0vVh4ceHzt91tgNVv0HB_kaAayxA_8GLv11-W-wHC_rDeE"/>
+</div>
+</div>
+<!-- Headline & Verification Anchor -->
+<div class="flex flex-col items-center">
+<h1 class="text-headline-sm font-headline-sm text-on-surface dark:text-inverse-on-surface tracking-tight font-extrabold flex items-center gap-1">
+            Elena Vance
+            <span class="material-symbols-outlined text-secondary text-[18px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</h1>
+<span class="text-label-sm font-label-sm text-on-surface-variant tracking-normal">Identity &amp; Contact</span>
+</div>
+<!-- Trailing: Accessibility & Trust Indicator -->
+<div class="flex items-center gap-1">
+<button aria-label="Accessibility options: WCAG AAA Verified" class="touch-target flex items-center justify-center -mr-2 rounded-lg text-primary dark:text-inverse-primary hover:bg-surface-container active:translate-y-px transition-transform duration-100" type="button">
+<span class="material-symbols-outlined text-secondary" data-icon="accessibility_new">accessibility_new</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-margin pt-space-md space-y-space-lg">
+<!-- Trust & Compliance Bar -->
+<div class="flex items-center justify-between bg-surface-container-low px-space-md py-space-xs rounded-lg border border-outline-variant/60">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-tertiary-container text-[18px]" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-label-sm font-label-sm text-on-surface">Verified Public Identity</span>
+</div>
+<div class="inline-flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded-full border border-outline-variant text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          WCAG AAA
+        </div>
+</div>
+<!-- Identity Profile Card (Level 1 Card) -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm relative overflow-hidden">
+<!-- Subtle Top Tone Accent -->
+<div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-secondary-container via-secondary to-primary-container"></div>
+<div class="flex items-start gap-space-md mt-1">
+<!-- Verified Avatar with Status Dot -->
+<div class="relative shrink-0">
+<div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-surface-container-lowest shadow-sm ring-2 ring-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="High resolution professional portrait of Elena Vance smiling warmly in a bright architectural design studio. Daylight reflects gently off her spectacles, creating high contrast clarity and authentic warmth aligned with tactile accessibility aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFUr2K-7xz63OQmeNkRF495WJPjyH2nIatg8mXHKXTBdp9UB7x19v7c25B7M_jShtIpgi7l0wujoeV8IaWVtoqdtpiWesXdd1vf8HtZ0SKRJqgGdJAhEfTIAgB-NldWt9NZUishmmPvLE9QUS6iUml-uwiueyz0EkfddMjkaMdSiEWtuqp-J6tas6wX9PG4fsbPNpLGdkDgTeQu55PagkgNyXNYo0ZSNZaQm63dAJCwq9UcZX6gbI7IvI2FDGkAPdZBnZCO9htbhGX"/>
+</div>
+<!-- Online status badge -->
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-600 rounded-full border-2 border-surface-container-lowest ring-1 ring-emerald-700/30 flex items-center justify-center" title="Online now">
+<span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+</span>
+</div>
+<!-- Name, Entity & Bio -->
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5 flex-wrap">
+<h2 class="text-headline-sm font-headline-sm text-on-surface tracking-tight font-bold">Studio Vance</h2>
+<span class="inline-flex items-center gap-1 bg-secondary-fixed/50 text-on-secondary-fixed text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-secondary-fixed-dim">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Official
+              </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5 font-medium">Elena Vance · Systems &amp; Accessibility Lead</p>
+</div>
+</div>
+<!-- Bio text -->
+<p class="text-body-sm font-body-sm text-on-surface mt-space-md leading-relaxed">
+          Principal Accessibility Architect &amp; Design Systems Lead. Open for enterprise design infrastructure, WCAG audits, and high-impact advisory.
+        </p>
+<!-- Dynamic Status & Availabilities Chips -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant/40 flex flex-wrap gap-2">
+<div class="inline-flex items-center gap-1.5 bg-surface-container-low text-on-surface text-label-sm font-label-sm px-2.5 py-1 rounded-full border border-outline-variant/60">
+<span class="material-symbols-outlined text-secondary text-[15px]" data-icon="bolt">bolt</span>
+<span>Replies in &lt; 2 hrs</span>
+</div>
+<div class="inline-flex items-center gap-1.5 bg-surface-container-low text-on-surface text-label-sm font-label-sm px-2.5 py-1 rounded-full border border-outline-variant/60">
+<span class="material-symbols-outlined text-on-tertiary-container text-[15px]" data-icon="calendar_month">calendar_month</span>
+<span>Available for Q2</span>
+</div>
+<div class="inline-flex items-center gap-1.5 bg-surface-container-low text-on-surface-variant text-label-sm font-label-sm px-2.5 py-1 rounded-full border border-outline-variant/60">
+<span class="material-symbols-outlined text-[15px]" data-icon="schedule">schedule</span>
+<span>UTC-5 (EST)</span>
+</div>
+</div>
+</section>
+<!-- Verified Direct Channels & Keys -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-label-lg font-label-lg text-on-surface uppercase tracking-wider text-[12px]">Verified Direct Channels</h3>
+<span class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary" data-icon="lock">lock</span>
+            Encrypted
+          </span>
+</div>
+<div class="grid grid-cols-1 gap-2.5">
+<!-- Email Chip with Copy Button -->
+<div class="bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-3 flex items-center justify-between hover:border-secondary transition-colors group">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface shrink-0 group-hover:bg-secondary-fixed/40 transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+</div>
+<div class="min-w-0">
+<span class="text-label-sm font-label-sm text-on-surface-variant block">Primary Verified Inbox</span>
+<span class="text-body-md font-body-md text-on-surface font-semibold truncate block" id="emailText">elena@studiovance.design</span>
+</div>
+</div>
+<button aria-label="Copy email address" class="touch-target px-3 py-1.5 bg-surface-container-low text-on-surface hover:bg-surface-container border border-outline-variant rounded-lg flex items-center gap-1.5 text-label-sm font-label-sm tactile-btn shrink-0" id="copyEmailBtn" onclick="copyEmail()" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="content_copy" id="copyIcon">content_copy</span>
+<span id="copyLabel">Copy</span>
+</button>
+</div>
+<!-- PGP Key Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-3 flex items-center justify-between">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="key">key</span>
+</div>
+<div class="min-w-0">
+<span class="text-label-sm font-label-sm text-on-surface-variant block">PGP Fingerprint (4096R)</span>
+<code class="text-label-sm font-mono text-on-surface bg-surface-container px-1.5 py-0.5 rounded tracking-tighter truncate block max-w-[200px]">4F8A 92E1 02CD 78B9 ED11</code>
+</div>
+</div>
+<button aria-label="View public security key" class="touch-target px-3 py-1.5 bg-surface-container-low text-on-surface hover:bg-surface-container border border-outline-variant rounded-lg flex items-center gap-1 text-label-sm font-label-sm tactile-btn shrink-0" type="button">
+<span>View</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Quick Connect Profiles Bento -->
+<div class="grid grid-cols-2 gap-2.5 pt-1">
+<!-- Cal.com Booking -->
+<a class="col-span-2 bg-gradient-to-r from-primary-container to-secondary rounded-xl p-3.5 text-white flex items-center justify-between hover:opacity-95 tactile-btn shadow-sm" href="#intro">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[20px]" data-icon="calendar_today">calendar_today</span>
+</div>
+<div>
+<span class="text-label-lg font-label-lg text-white block">Schedule 15-Min Intro</span>
+<span class="text-label-sm font-label-sm text-white/80">Cal.com direct calendar sync</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-white" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<!-- GitHub -->
+<a class="touch-target bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-3 flex items-center gap-2.5 hover:border-secondary tactile-btn" href="#github">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface shrink-0">
+<span class="material-symbols-outlined text-[18px]" data-icon="code">code</span>
+</div>
+<div class="min-w-0 flex-1">
+<span class="text-label-md font-label-md text-on-surface block truncate">GitHub</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant truncate block">@elenavance</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="north_east">north_east</span>
+</a>
+<!-- LinkedIn -->
+<a class="touch-target bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-3 flex items-center gap-2.5 hover:border-secondary tactile-btn" href="#linkedin">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface shrink-0">
+<span class="material-symbols-outlined text-[18px]" data-icon="work">work</span>
+</div>
+<div class="min-w-0 flex-1">
+<span class="text-label-md font-label-md text-on-surface block truncate">LinkedIn</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant truncate block">in/elenavance</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="north_east">north_east</span>
+</a>
+</div>
+</section>
+<!-- Interactive Contact Form -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm space-y-space-md">
+<!-- Section Header with Privacy Assurance -->
+<div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="send">send</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-bold tracking-tight">Send an Encrypted Message</h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1 flex items-start gap-1.5">
+<span class="material-symbols-outlined text-on-tertiary-container text-[16px] shrink-0 mt-0.5" data-icon="shield">shield</span>
+<span>Zero tracking. End-to-end encrypted dispatch directly to Elena's verified inbox.</span>
+</p>
+</div>
+<form class="space-y-space-md" id="contactForm" onsubmit="handleFormSubmit(event)">
+<!-- Topic Selector Chips -->
+<div>
+<label class="block text-label-sm font-label-sm text-on-surface mb-2 uppercase tracking-wide">
+              Select Purpose <span class="text-secondary">*</span>
+</label>
+<div aria-label="Topic Selection" class="grid grid-cols-2 gap-2" role="radiogroup">
+<button aria-pressed="true" class="topic-chip touch-target bg-secondary-container text-on-secondary-container rounded-lg px-3 py-2 text-label-md font-label-md flex items-center justify-center gap-1.5 border border-secondary shadow-sm transition-all" onclick="selectTopic(this)" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="architecture">architecture</span>
+<span>Project Inquiry</span>
+</button>
+<button aria-pressed="false" class="topic-chip touch-target bg-surface-container-low text-on-surface-variant hover:text-on-surface rounded-lg px-3 py-2 text-label-md font-label-md flex items-center justify-center gap-1.5 border border-outline-variant transition-all" onclick="selectTopic(this)" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="checklist">checklist</span>
+<span>Accessibility Audit</span>
+</button>
+<button aria-pressed="false" class="topic-chip touch-target bg-surface-container-low text-on-surface-variant hover:text-on-surface rounded-lg px-3 py-2 text-label-md font-label-md flex items-center justify-center gap-1.5 border border-outline-variant transition-all" onclick="selectTopic(this)" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="mic">mic</span>
+<span>Speaking</span>
+</button>
+<button aria-pressed="false" class="topic-chip touch-target bg-surface-container-low text-on-surface-variant hover:text-on-surface rounded-lg px-3 py-2 text-label-md font-label-md flex items-center justify-center gap-1.5 border border-outline-variant transition-all" onclick="selectTopic(this)" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="chat_bubble_outline">chat_bubble_outline</span>
+<span>General</span>
+</button>
+</div>
+</div>
+<!-- Full Name Field -->
+<div class="space-y-space-xs">
+<label class="block text-label-lg font-label-lg text-on-surface" for="fullName">
+              Full Name <span aria-hidden="true" class="text-error">*</span>
+</label>
+<div class="relative">
+<input class="w-full h-[52px] px-space-md bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline focus:border-secondary focus:bg-surface-bright focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all" id="fullName" placeholder="e.g. Marcus Aurelius" required="" type="text"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline-variant text-[20px]" data-icon="badge">badge</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Your verified professional name or pseudonym.</p>
+</div>
+<!-- Email Address Field with Live Verified Indicator -->
+<div class="space-y-space-xs">
+<label class="block text-label-lg font-label-lg text-on-surface" for="emailAddr">
+              Your Email Address <span aria-hidden="true" class="text-error">*</span>
+</label>
+<div class="relative">
+<input class="w-full h-[52px] px-space-md bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline focus:border-secondary focus:bg-surface-bright focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all pr-10" id="emailAddr" oninput="validateEmail(this)" placeholder="name@organization.com" required="" type="email"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline-variant text-[20px]" data-icon="mail" id="emailValidIcon">mail</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant" id="emailHint">We dispatch automatic read receipts upon receipt.</p>
+</div>
+<!-- Subject / Organization -->
+<div class="space-y-space-xs">
+<label class="block text-label-lg font-label-lg text-on-surface" for="organization">
+              Subject or Organization
+            </label>
+<input class="w-full h-[52px] px-space-md bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline focus:border-secondary focus:bg-surface-bright focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all" id="organization" placeholder="e.g. Design Systems Advisory" type="text"/>
+</div>
+<!-- Preferred Response Channel -->
+<div>
+<label class="block text-label-sm font-label-sm text-on-surface mb-1.5 uppercase tracking-wide">
+              Preferred Reply Channel
+            </label>
+<div class="flex items-center gap-3">
+<label class="flex items-center gap-2 cursor-pointer touch-target">
+<input checked="" class="w-5 h-5 text-secondary border-outline focus:ring-secondary" name="replyChannel" type="radio" value="email"/>
+<span class="text-body-md font-body-md text-on-surface">Email</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer touch-target">
+<input class="w-5 h-5 text-secondary border-outline focus:ring-secondary" name="replyChannel" type="radio" value="signal"/>
+<span class="text-body-md font-body-md text-on-surface">Signal Private Messenger</span>
+</label>
+</div>
+</div>
+<!-- Message Field with Character Counter -->
+<div class="space-y-space-xs">
+<div class="flex justify-between items-center">
+<label class="block text-label-lg font-label-lg text-on-surface" for="messageText">
+                Your Message <span aria-hidden="true" class="text-error">*</span>
+</label>
+<span class="text-label-sm font-label-sm text-on-surface-variant" id="charCount">0 / 1000</span>
+</div>
+<textarea class="w-full p-space-md bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg text-body-md font-body-md text-on-surface placeholder:text-outline focus:border-secondary focus:bg-surface-bright focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all resize-y min-h-[110px]" id="messageText" maxlength="1000" oninput="updateCharCount(this)" placeholder="Describe your context, project parameters, or question in detail..." required="" rows="4"></textarea>
+</div>
+<!-- Primary Submit Button -->
+<button class="w-full h-12 min-h-[48px] bg-primary hover:bg-slate-900 active:translate-y-px transition-all text-on-primary font-label-lg text-label-lg rounded-lg flex items-center justify-center gap-2 shadow-sm font-bold tracking-wide" id="submitBtn" type="submit">
+<span class="material-symbols-outlined text-[20px]" data-icon="lock_open">lock_open</span>
+<span id="btnText">Send Encrypted Message</span>
+</button>
+</form>
+<!-- Submission Feedback Alert Container (Hidden by default) -->
+<div class="hidden p-3.5 bg-surface-container-low border border-secondary rounded-lg flex items-start gap-2.5" id="submitAlert">
+<span class="material-symbols-outlined text-secondary text-[22px] shrink-0" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<h4 class="text-label-md font-label-md text-on-surface font-bold">Transmission Complete</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Your encrypted message has been logged. Elena Vance will review and respond within 2 hours.</p>
+</div>
+</div>
+</section>
+<!-- Security Certificate Footer Badge -->
+<div class="text-center py-space-sm space-y-1">
+<div class="inline-flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="verified">verified</span>
+<span>Profile Cryptographically Verified · Keybase ID: vance_elena</span>
+</div>
+<p class="text-[11px] text-outline leading-tight">WCAG 2.2 Level AAA Compliant Mobile Contact Architecture</p>
+</div>
+</main>
+<!-- SHARED COMPONENT: BottomNavBar (Fixed bottom-0, destination_count 4: Identity, Connect, Security, History) -->
+<!-- The primary intent of this screen is Contact & Identity verification, so 'Identity' tab is Active -->
+<nav class="bg-surface-container-lowest dark:bg-primary-container border-t border-outline-variant dark:border-outline shadow-sm dark:shadow-none fixed bottom-0 left-0 w-full z-50">
+<div class="flex justify-around items-center px-gutter py-space-xs max-w-[540px] mx-auto min-h-[56px]">
+<!-- Tab 1: Identity (ACTIVE) -->
+<button aria-current="page" class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg px-space-md py-space-xs min-h-[48px] tactile-btn" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="badge" style="font-variation-settings: 'FILL' 1;">badge</span>
+<span class="text-label-sm font-label-sm tracking-tight mt-0.5">Identity</span>
+</button>
+<!-- Tab 2: Connect (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-primary-container px-space-md py-space-xs min-h-[48px] hover:bg-surface-container-low tactile-btn rounded-lg" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="chat">chat</span>
+<span class="text-label-sm font-label-sm tracking-tight mt-0.5">Connect</span>
+</button>
+<!-- Tab 3: Security (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-primary-container px-space-md py-space-xs min-h-[48px] hover:bg-surface-container-low tactile-btn rounded-lg" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="verified_user">verified_user</span>
+<span class="text-label-sm font-label-sm tracking-tight mt-0.5">Security</span>
+</button>
+<!-- Tab 4: History (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-primary-container px-space-md py-space-xs min-h-[48px] hover:bg-surface-container-low tactile-btn rounded-lg" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="schedule">schedule</span>
+<span class="text-label-sm font-label-sm tracking-tight mt-0.5">History</span>
+</button>
+</div>
+</nav>
+</div>
+<!-- Interactive Logic Scripts -->
+<script>
+    // Copy Email to clipboard with visual micro-feedback
+    function copyEmail() {
+      const email = document.getElementById('emailText').innerText;
+      const copyBtn = document.getElementById('copyEmailBtn');
+      const copyIcon = document.getElementById('copyIcon');
+      const copyLabel = document.getElementById('copyLabel');
+
+      navigator.clipboard.writeText(email).then(() => {
+        copyIcon.innerText = 'check';
+        copyLabel.innerText = 'Copied';
+        copyBtn.classList.add('bg-secondary-fixed', 'text-on-secondary-fixed');
+
+        setTimeout(() => {
+          copyIcon.innerText = 'content_copy';
+          copyLabel.innerText = 'Copy';
+          copyBtn.classList.remove('bg-secondary-fixed', 'text-on-secondary-fixed');
+        }, 2200);
+      }).catch(err => {
+        // Fallback for non-https test runners
+        copyLabel.innerText = 'Copied!';
+        setTimeout(() => { copyLabel.innerText = 'Copy'; }, 1800);
+      });
+    }
+
+    // Interactive topic selector pill toggle
+    function selectTopic(selectedBtn) {
+      const buttons = document.querySelectorAll('.topic-chip');
+      buttons.forEach(btn => {
+        btn.setAttribute('aria-pressed', 'false');
+        btn.className = 'topic-chip touch-target bg-surface-container-low text-on-surface-variant hover:text-on-surface rounded-lg px-3 py-2 text-label-md font-label-md flex items-center justify-center gap-1.5 border border-outline-variant transition-all';
+      });
+
+      selectedBtn.setAttribute('aria-pressed', 'true');
+      selectedBtn.className = 'topic-chip touch-target bg-secondary-container text-on-secondary-container rounded-lg px-3 py-2 text-label-md font-label-md flex items-center justify-center gap-1.5 border border-secondary shadow-sm transition-all';
+    }
+
+    // Dynamic Character Counter
+    function updateCharCount(textarea) {
+      const counter = document.getElementById('charCount');
+      const length = textarea.value.length;
+      counter.innerText = `${length} / 1000`;
+      if (length >= 900) {
+        counter.classList.add('text-error');
+      } else {
+        counter.classList.remove('text-error');
+      }
+    }
+
+    // Dynamic Email validation icon
+    function validateEmail(input) {
+      const icon = document.getElementById('emailValidIcon');
+      const hint = document.getElementById('emailHint');
+      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+
+      if (valid) {
+        icon.innerText = 'verified';
+        icon.classList.remove('text-outline-variant');
+        icon.classList.add('text-secondary');
+        hint.innerText = 'Valid format verified. Direct inbox routing enabled.';
+        hint.classList.add('text-secondary');
+      } else {
+        icon.innerText = 'mail';
+        icon.classList.remove('text-secondary');
+        icon.classList.add('text-outline-variant');
+        hint.innerText = 'We dispatch automatic read receipts upon receipt.';
+        hint.classList.remove('text-secondary');
+      }
+    }
+
+    // Simulated Form Submit with tactile feedback
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const alertBox = document.getElementById('submitAlert');
+
+      // Loading state
+      btn.disabled = true;
+      btn.classList.add('opacity-80');
+      btnText.innerText = 'Encrypting & Transmitting...';
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.classList.remove('opacity-80');
+        btnText.innerText = 'Message Sent';
+        alertBox.classList.remove('hidden');
+        alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        document.getElementById('contactForm').reset();
+        document.getElementById('charCount').innerText = '0 / 1000';
+      }, 1200);
+    }
+  </script>
+</body></html>
