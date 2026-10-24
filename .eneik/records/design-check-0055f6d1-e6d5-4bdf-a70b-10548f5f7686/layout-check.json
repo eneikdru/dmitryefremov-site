@@ -1,0 +1,93 @@
+[
+  {
+    "id": "main-header",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 49
+  },
+  {
+    "id": "cmd-k-trigger-btn",
+    "left": 1132,
+    "top": 529,
+    "width": 116,
+    "height": 32
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 431,
+    "width": 1007,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-graph",
+    "left": 183,
+    "top": 438,
+    "width": 133,
+    "height": 36
+  },
+  {
+    "id": "kpi-grid",
+    "left": 192,
+    "top": 686,
+    "width": 1056,
+    "height": 97
+  },
+  {
+    "id": "kpi-card-graph-nav",
+    "left": 192,
+    "top": 686,
+    "width": 258,
+    "height": 97
+  },
+  {
+    "id": "kpi-card-canon-search",
+    "left": 458,
+    "top": 686,
+    "width": 258,
+    "height": 97
+  },
+  {
+    "id": "kpi-card-pivot-rate",
+    "left": 724,
+    "top": 686,
+    "width": 258,
+    "height": 97
+  },
+  {
+    "id": "kpi-card-active-explorers",
+    "left": 990,
+    "top": 686,
+    "width": 258,
+    "height": 97
+  },
+  {
+    "id": "graph-crosslink-section",
+    "left": 192,
+    "top": 799,
+    "width": 1056,
+    "height": 510
+  },
+  {
+    "id": "audit-event-trace-section",
+    "left": 192,
+    "top": 1581,
+    "width": 1056,
+    "height": 127
+  },
+  {
+    "id": "audit-trace-log",
+    "left": 205,
+    "top": 1627,
+    "width": 1030,
+    "height": 68
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 1812,
+    "width": 1088,
+    "height": 49
+  }
+]

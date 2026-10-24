@@ -13,9 +13,25 @@ export interface TelemetryEvent {
     | 'canon_dwell_heartbeat'
     | 'form_field_focused'
     | 'form_validation_passed'
-    | 'canon_submit_converted';
+    | 'canon_submit_converted'
+    | 'graph_node_navigation'
+    | 'canon_search_execute';
   timestamp: string;
   payload: Record<string, unknown>;
+}
+
+export interface GraphNavigationPayload {
+  sourceNodeId: string;
+  targetNodeId: string;
+  relationType?: string;
+  nodeType?: string;
+}
+
+export interface CanonSearchPayload {
+  query: string;
+  resultCount: number;
+  latencyMs?: number;
+  searchType?: string;
 }
 
 export interface EssayViewPayload {
@@ -78,6 +94,54 @@ class TelemetryService {
       payload: {
         articleId,
         title: title ?? articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackGraphNavigation(
+    sourceNodeId: string,
+    targetNodeId: string,
+    relationType: string = 'cross_link',
+    nodeType: string = 'CanonConcept'
+  ): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'graph_node_navigation',
+      timestamp: new Date().toISOString(),
+      payload: {
+        source_node_id: sourceNodeId,
+        target_node_id: targetNodeId,
+        relation_type: relationType,
+        node_type: nodeType
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackCanonSearchExecute(
+    query: string,
+    resultCount: number,
+    latencyMs: number = 0,
+    searchType: string = 'semantic_cmd_k'
+  ): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'canon_search_execute',
+      timestamp: new Date().toISOString(),
+      payload: {
+        query,
+        result_count: resultCount,
+        latency_ms: latencyMs,
+        search_type: searchType
       }
     };
     this.recordEvent(event);

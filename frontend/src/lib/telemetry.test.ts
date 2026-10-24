@@ -125,6 +125,41 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     });
   });
 
+  describe('Canon Graph & Cmd+K Search Telemetry Events', () => {
+    it('dispatches graph_node_navigation telemetry event with correct payload', () => {
+      const evt = telemetry.trackGraphNavigation(
+        'concept_ontological_autonomy',
+        'podcast_ep03',
+        'analyzed_in',
+        'Podcast'
+      );
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('graph_node_navigation');
+      expect(evt?.payload.source_node_id).toBe('concept_ontological_autonomy');
+      expect(evt?.payload.target_node_id).toBe('podcast_ep03');
+      expect(evt?.payload.relation_type).toBe('analyzed_in');
+      expect(evt?.payload.node_type).toBe('Podcast');
+
+      const events = telemetry.getEvents();
+      expect(events).toContainEqual(evt);
+    });
+
+    it('dispatches canon_search_execute telemetry event on search utilization', () => {
+      const evt = telemetry.trackCanonSearchExecute('state_machine', 14, 18, 'semantic_cmd_k');
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('canon_search_execute');
+      expect(evt?.payload.query).toBe('state_machine');
+      expect(evt?.payload.result_count).toBe(14);
+      expect(evt?.payload.latency_ms).toBe(18);
+      expect(evt?.payload.search_type).toBe('semantic_cmd_k');
+
+      const events = telemetry.getEvents();
+      expect(events).toContainEqual(evt);
+    });
+  });
+
   describe('GQM Telemetry Instrumentation (Dwell Time & Form Conversions)', () => {
     it('dispatches canon_dwell_heartbeat telemetry events with correct payload', () => {
       const evt = telemetry.trackCanonDwellHeartbeat(15000, 'canon_reader', 75, true);
