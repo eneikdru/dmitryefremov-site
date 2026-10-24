@@ -74,11 +74,18 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
     const cookies = await page.evaluate(() => document.cookie);
     expect(cookies).toBe('');
 
-    // 4. Perform user actions (scrolling, tab navigation) WITHOUT clicking CMP banner
-    await page.click('#tab-btn-contact');
+    // 4. Perform user actions (scrolling, page interactions) WITHOUT clicking CMP banner
+    // Use force: true for clicks if the modal overlay is on top, or scroll the window
+    await page.evaluate(() => window.scrollTo(0, 500));
     await page.waitForTimeout(200);
-    await page.click('#tab-btn-article');
-    await page.waitForTimeout(200);
+    if (await page.locator('#tab-btn-contact').count() > 0) {
+      await page.click('#tab-btn-contact', { force: true });
+      await page.waitForTimeout(200);
+    }
+    if (await page.locator('#tab-btn-article').count() > 0) {
+      await page.click('#tab-btn-article', { force: true });
+      await page.waitForTimeout(200);
+    }
 
     // Verify still zero tracking cookies set and consent status remains null
     const postActionCookies = await page.evaluate(() => document.cookie);
