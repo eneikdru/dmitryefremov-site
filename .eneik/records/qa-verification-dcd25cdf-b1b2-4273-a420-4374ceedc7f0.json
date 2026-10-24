@@ -1,0 +1,13 @@
+{
+  "testsRun": 8,
+  "testsPassed": 8,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given a populated backup archive, When the restore script is executed against a fresh test container, Then the database state is successfully fully recovered",
+    "Given this role completes the Atomic Goal, When the relevant verification command runs, Then the change passes without unrelated scope",
+    "Given the change is reviewed, When the PR diff is inspected, Then it contains only source, config, test, or documentation files needed for this slice"
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified database backup generation, metric emission, file permissions (600), offsite persistence, restore execution, full data recovery, and retention purge logic via scripts/test_backup_restore.sh."
+}
