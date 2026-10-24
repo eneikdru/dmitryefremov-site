@@ -51,6 +51,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+    post:
+      summary: Create or ingest essay
+      description: Submits a new edited essay payload accepting raw Markdown content and metadata for headless content ingestion.
+      operationId: createEssay
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEssayRequest'
+      responses:
+        '201':
+          description: Essay created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Essay'
+        '400':
+          description: Invalid request payload or validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /api/v1/essays/{slug}:
     get:
       summary: Get essay by slug
@@ -85,6 +115,42 @@ paths:
 
 components:
   schemas:
+    CreateEssayRequest:
+      type: object
+      required:
+        - slug
+        - title
+        - content
+      properties:
+        slug:
+          type: string
+          description: Unique URL-friendly slug of the essay
+          example: "deontic-logic-and-editorial-minimalism"
+        title:
+          type: string
+          description: Title of the essay
+          example: "Deontic Logic and Editorial Minimalism"
+        summary:
+          type: string
+          nullable: true
+          description: Short summary or excerpt of the essay
+          example: "An analysis of deontic logic and high-end dark design aesthetics."
+        content:
+          type: string
+          description: Raw Markdown body of the essay
+          example: "# Deontic Logic\n\nYour code and your decisions are who you truly are."
+        curatedBy:
+          type: string
+          nullable: true
+          description: Curator attribution for polished essay content
+          example: "Dmitry Efremov"
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the essay was published
+          example: "2026-10-12T18:00:00Z"
+
     Essay:
       type: object
       required:

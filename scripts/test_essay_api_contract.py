@@ -44,6 +44,7 @@ def main():
     paths = spec.get("paths", {})
     assert "/api/v1/essays" in paths, "Missing /api/v1/essays endpoint"
     assert "get" in paths["/api/v1/essays"], "Missing GET operation on /api/v1/essays"
+    assert "post" in paths["/api/v1/essays"], "Missing POST operation on /api/v1/essays for headless content ingestion"
 
     assert "/api/v1/essays/{slug}" in paths, "Missing /api/v1/essays/{slug} endpoint"
     assert "get" in paths["/api/v1/essays/{slug}"], "Missing GET operation on /api/v1/essays/{slug}"
@@ -52,7 +53,7 @@ def main():
     components = spec.get("components", {})
     schemas = components.get("schemas", {})
 
-    for required_schema in ["Essay", "EssayPage", "ErrorResponse"]:
+    for required_schema in ["Essay", "CreateEssayRequest", "EssayPage", "ErrorResponse"]:
         assert required_schema in schemas, f"Missing schema definition for {required_schema}"
 
     # 4. Check Essay schema properties
