@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "bb19579b-628f-4eaf-900d-94e6eeea2e20",
+      "title": "Initial Content and Acceptance",
+      "jtbd": "When receiving the delivered system, I want to see it populated with realistic content, so that I can verify all paths and features work end-to-end.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "End-to-end path success rate",
+      "tocConstraintRef": "Production data completeness",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The instance holds realistic initial content sufficient to exercise every link of every declared path.",
+        "R2: One complete traversal of each live path has been performed on the instance."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Verification of initial content and live paths",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing verification of initial content and live paths for this epic, I want to execute comprehensive end-to-end tests against realistic data, so that I can verify all paths and features work end-to-end.",
+          "acceptanceCriteria": "Given a deployed instance populated with initial realistic content\nWhen a complete traversal of each live path is executed\nThen the instance behaves correctly without errors\nGiven the verification process\nWhen the traversal is completed\nThen the results are recorded and confirm that the instance operates correctly with the initial content",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "End-to-end test execution capability",
+          "sixSigmaMetric": "Defect escape rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
