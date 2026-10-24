@@ -83,7 +83,7 @@ class ArticleServiceTest {
         OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 9, 12, 0, 0, 0, ZoneOffset.UTC);
         Article article = new Article("deontic-logic", "Deontic Logic", "Summary", "# Content markdown", publishedAt);
 
-        when(articleRepository.findBySlug("deontic-logic")).thenReturn(Optional.of(article));
+        when(articleRepository.findBySlugAndPublishedAtNotNull("deontic-logic")).thenReturn(Optional.of(article));
 
         Optional<ArticleDto> result = articleService.getArticleBySlug("deontic-logic");
 
@@ -95,7 +95,7 @@ class ArticleServiceTest {
 
     @Test
     void testGetArticleBySlugNotFound() {
-        when(articleRepository.findBySlug("unknown")).thenReturn(Optional.empty());
+        when(articleRepository.findBySlugAndPublishedAtNotNull("unknown")).thenReturn(Optional.empty());
 
         Optional<ArticleDto> result = articleService.getArticleBySlug("unknown");
 

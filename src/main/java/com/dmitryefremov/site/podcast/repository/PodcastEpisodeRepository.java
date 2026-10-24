@@ -11,5 +11,8 @@ import java.util.Optional;
 @Repository
 public interface PodcastEpisodeRepository extends JpaRepository<PodcastEpisode, Long> {
     Optional<PodcastEpisode> findBySlug(String slug);
+    Optional<PodcastEpisode> findBySlugAndPublishedAtNotNull(String slug);
     Page<PodcastEpisode> findAllByOrderByPublishedAtDesc(Pageable pageable);
+    Page<PodcastEpisode> findAllByPublishedAtNotNullOrderByPublishedAtDesc(Pageable pageable);
+    long countByPublishedAtNotNull();
 }

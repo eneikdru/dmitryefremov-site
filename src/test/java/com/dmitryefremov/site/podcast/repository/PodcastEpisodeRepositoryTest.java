@@ -269,4 +269,53 @@ class PodcastEpisodeRepositoryTest {
         assertThat(fetched.get().getQuotes().get(0).getQuoteText()).contains("Идентичность есть необходимое отношение");
         assertThat(fetched.get().getQuotes().get(0).getSpeaker()).isEqualTo("Рут Баркан Маркус");
     }
+
+    @Test
+    void testDraftPodcastEpisodesAreExcludedFromPublishedQueriesAndCounts() {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 15, 12, 0, 0, 0, ZoneOffset.UTC);
+
+        // Published episode
+        PodcastEpisode published = new PodcastEpisode(
+                "published-ep-1",
+                "Published Episode 1",
+                "Published thesis",
+                "Published description",
+                "https://cdn.dmitryefremov.com/podcast/pub1.mp3",
+                "https://dmitryefremov.com/podcasts/pub1",
+                1800,
+                publishedAt
+        );
+
+        // Raw teleprompter draft episode (publishedAt = null)
+        PodcastEpisode draft = new PodcastEpisode(
+                "teleprompter-draft-ep-raw",
+                "Raw Teleprompter Draft Episode",
+                "Raw draft thesis",
+                "Raw draft description /mnt/HC_Volume_106932004/raw",
+                "https://cdn.dmitryefremov.com/podcast/draft.mp3",
+                "https://dmitryefremov.com/podcasts/draft",
+                1800,
+                null
+        );
+
+        podcastEpisodeRepository.save(published);
+        podcastEpisodeRepository.save(draft);
+        podcastEpisodeRepository.flush();
+
+        // 1. Verify findBySlugAndPublishedAtNotNull excludes draft
+        Optional<PodcastEpisode> foundDraft = podcastEpisodeRepository.findBySlugAndPublishedAtNotNull("teleprompter-draft-ep-raw");
+        assertThat(foundDraft).isEmpty();
+
+        Optional<PodcastEpisode> foundPublished = podcastEpisodeRepository.findBySlugAndPublishedAtNotNull("published-ep-1");
+        assertThat(foundPublished).isPresent();
+
+        // 2. Verify findAllByPublishedAtNotNullOrderByPublishedAtDesc excludes draft
+        org.springframework.data.domain.Page<PodcastEpisode> page = podcastEpisodeRepository.findAllByPublishedAtNotNullOrderByPublishedAtDesc(org.springframework.data.domain.PageRequest.of(0, 100));
+        assertThat(page.getContent()).extracting(PodcastEpisode::getSlug).contains("published-ep-1").doesNotContain("teleprompter-draft-ep-raw");
+
+        // 3. Verify countByPublishedAtNotNull reflects exact live count of published episodes
+        long publishedCount = podcastEpisodeRepository.countByPublishedAtNotNull();
+        long totalRawCount = podcastEpisodeRepository.count();
+        assertThat(publishedCount).isLessThan(totalRawCount);
+    }
 }

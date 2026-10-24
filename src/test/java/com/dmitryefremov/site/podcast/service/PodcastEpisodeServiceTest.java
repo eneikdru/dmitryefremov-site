@@ -52,7 +52,7 @@ class PodcastEpisodeServiceTest {
         );
 
         Pageable pageable = PageRequest.of(0, 20);
-        when(podcastEpisodeRepository.findAllByOrderByPublishedAtDesc(pageable))
+        when(podcastEpisodeRepository.findAllByPublishedAtNotNullOrderByPublishedAtDesc(pageable))
                 .thenReturn(new PageImpl<>(List.of(episode), pageable, 1));
 
         PodcastEpisodePageDto result = podcastEpisodeService.getEpisodes(0, 20);
@@ -102,7 +102,7 @@ class PodcastEpisodeServiceTest {
         EpisodeTopic t1 = new EpisodeTopic("Ruth Barcan Marcus", 0, 1800, "Modal logic topic", 1);
         episode.addTopic(t1);
 
-        when(podcastEpisodeRepository.findBySlug("systems-ep1")).thenReturn(Optional.of(episode));
+        when(podcastEpisodeRepository.findBySlugAndPublishedAtNotNull("systems-ep1")).thenReturn(Optional.of(episode));
 
         Optional<PodcastEpisodeDto> result = podcastEpisodeService.getEpisodeBySlug("systems-ep1");
 
@@ -122,10 +122,19 @@ class PodcastEpisodeServiceTest {
 
     @Test
     void testGetEpisodeBySlugNotFound() {
-        when(podcastEpisodeRepository.findBySlug("unknown")).thenReturn(Optional.empty());
+        when(podcastEpisodeRepository.findBySlugAndPublishedAtNotNull("unknown")).thenReturn(Optional.empty());
 
         Optional<PodcastEpisodeDto> result = podcastEpisodeService.getEpisodeBySlug("unknown");
 
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    void testGetPublishedEpisodeCount() {
+        when(podcastEpisodeRepository.countByPublishedAtNotNull()).thenReturn(5L);
+
+        long count = podcastEpisodeService.getPublishedEpisodeCount();
+
+        assertThat(count).isEqualTo(5L);
     }
 }
