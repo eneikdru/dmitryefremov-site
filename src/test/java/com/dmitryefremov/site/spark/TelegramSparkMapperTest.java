@@ -85,4 +85,57 @@ class TelegramSparkMapperTest {
         assertThat(spark.getTags()).isEqualTo("philosophy,mind");
         assertThat(spark.getAuthor()).isEqualTo("@efremov_mvp");
     }
+
+    @Test
+    void testMapCaptionFieldWhenTextIsMissing() {
+        String jsonPayload = """
+                {
+                  "update_id": 200,
+                  "channel_post": {
+                    "message_id": 512,
+                    "chat": { "id": -100100 },
+                    "date": 1760304000,
+                    "caption": "Media post on autonomous engineering architecture #architecture"
+                  }
+                }
+                """;
+
+        Spark spark = mapper.mapTelegramPayload(jsonPayload);
+
+        assertThat(spark.getTelegramMessageId()).isEqualTo(512L);
+        assertThat(spark.getContent()).isEqualTo("Media post on autonomous engineering architecture #architecture");
+        assertThat(spark.getPublishedAt().toEpochSecond()).isEqualTo(1760304000L);
+        assertThat(spark.getDomain()).isEqualTo("Autonomous Engineering");
+        assertThat(spark.getTags()).isEqualTo("architecture");
+    }
+
+    @Test
+    void testMapUserWithFirstNameWhenUsernameMissing() {
+        String jsonPayload = """
+                {
+                  "message_id": 77,
+                  "from": {
+                    "id": 123,
+                    "first_name": "Alexander"
+                  },
+                  "date": 1760304000,
+                  "text": "Pragmatic business strategy notes #strategy #mvp"
+                }
+                """;
+
+        Spark spark = mapper.mapTelegramPayload(jsonPayload);
+
+        assertThat(spark.getTelegramMessageId()).isEqualTo(77L);
+        assertThat(spark.getAuthor()).isEqualTo("Alexander");
+        assertThat(spark.getPublishedAt().toEpochSecond()).isEqualTo(1760304000L);
+        assertThat(spark.getDomain()).isEqualTo("Pragmatic Business Strategy");
+        assertThat(spark.getTags()).isEqualTo("strategy,mvp");
+    }
+
+    @Test
+    void testMapInvalidJsonThrowsIllegalArgumentException() {
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            mapper.mapTelegramPayload("invalid-json-content");
+        });
+    }
 }
