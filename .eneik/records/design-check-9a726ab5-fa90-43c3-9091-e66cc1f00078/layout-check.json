@@ -1,0 +1,72 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -438,
+    "width": 1440,
+    "height": 2108
+  },
+  {
+    "id": "contact-terminal-root",
+    "left": 336,
+    "top": 83,
+    "width": 768,
+    "height": 1466
+  },
+  {
+    "id": "vault-intake-root",
+    "left": 432,
+    "top": 158,
+    "width": 576,
+    "height": 1391
+  },
+  {
+    "id": "label-classification",
+    "left": 482,
+    "top": 652,
+    "width": 476,
+    "height": 16
+  },
+  {
+    "id": "submission-title-input",
+    "left": 482,
+    "top": 781,
+    "width": 476,
+    "height": 44
+  },
+  {
+    "id": "client-email-input",
+    "left": 482,
+    "top": 889,
+    "width": 476,
+    "height": 44
+  },
+  {
+    "id": "narrative-textarea",
+    "left": 482,
+    "top": 1130,
+    "width": 476,
+    "height": 90
+  },
+  {
+    "id": "toggle-discard-metadata",
+    "left": 925,
+    "top": 1317,
+    "width": 16,
+    "height": 16
+  },
+  {
+    "id": "toggle-recovery-phrase",
+    "left": 925,
+    "top": 1376,
+    "width": 16,
+    "height": 16
+  },
+  {
+    "id": "submit-intake-btn",
+    "left": 482,
+    "top": 1451,
+    "width": 476,
+    "height": 48
+  }
+]

@@ -7,10 +7,13 @@
 
   let classification: Classification = 'confidential';
   let email: string = '';
-  let title: string = 'Unauthorized telemetry egress in core subsystem';
-  let narrative: string = 'Observed unauthorized TLS 1.2 handshake initiated from production pod node-04b targeting unmapped external endpoint [REDACTED_IP]. Handshake payload contained periodic serialized ledger memory segments.';
+  let title: string = 'Project Obsidian Aegis';
+  let narrative: string = 'Phase I intake specification: Requesting bespoke cryptographic dossier and zero-knowledge transmission routing.';
   let discardMetadata: boolean = true;
   let requireRecoveryPhrase: boolean = true;
+  let selectedArchetype: string = 'horology';
+  let selectedMaterial: string = 'damascus';
+  let confidentialityTier: string = 'ghost';
 
   let isSubmitting: boolean = false;
   let submitError: string | null = null;
@@ -18,7 +21,7 @@
   let acknowledgementEmailSent: boolean = false;
   let claimTicket: string = '';
 
-  let isTooltipExpanded: boolean = false;
+  let isCovenantExpanded: boolean = false;
 
   const STORAGE_KEY = 'vault_intake_draft';
 
@@ -33,6 +36,9 @@
         if (parsed.narrative !== undefined) narrative = parsed.narrative;
         if (parsed.discardMetadata !== undefined) discardMetadata = parsed.discardMetadata;
         if (parsed.requireRecoveryPhrase !== undefined) requireRecoveryPhrase = parsed.requireRecoveryPhrase;
+        if (parsed.selectedArchetype !== undefined) selectedArchetype = parsed.selectedArchetype;
+        if (parsed.selectedMaterial !== undefined) selectedMaterial = parsed.selectedMaterial;
+        if (parsed.confidentialityTier !== undefined) confidentialityTier = parsed.confidentialityTier;
       }
     } catch {
       // Ignore storage errors
@@ -41,7 +47,17 @@
 
   function saveDraft() {
     try {
-      const draft = { classification, email, title, narrative, discardMetadata, requireRecoveryPhrase };
+      const draft = {
+        classification,
+        email,
+        title,
+        narrative,
+        discardMetadata,
+        requireRecoveryPhrase,
+        selectedArchetype,
+        selectedMaterial,
+        confidentialityTier
+      };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
     } catch {
       // Ignore storage errors
@@ -82,6 +98,9 @@
         narrative: narrative.trim(),
         discardMetadata,
         requireRecoveryPhrase,
+        selectedArchetype,
+        selectedMaterial,
+        confidentialityTier,
         timestamp: new Date().toISOString()
       };
 
@@ -107,7 +126,7 @@
       acknowledgementEmailSent = true;
       clearDraft();
     } catch (err: any) {
-      // Network failure or API error - draft is retained so nothing typed is lost
+      // Connection or validation error during transmission. Draft is retained so no user input is lost.
       submitError = 'Connection issue or validation error during transmission. Your input was safely preserved locally. Please try submitting again.';
     } finally {
       isSubmitting = false;
@@ -125,97 +144,86 @@
   }
 </script>
 
-<div id="vault-intake-root" class="w-full max-w-xl mx-auto space-y-6 font-sans text-[#0b1c30]">
-  <!-- Header / Telemetry Bar -->
-  <div class="flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-[#c3c6d7]/50 shadow-sm">
+<div id="vault-intake-root" class="w-full max-w-xl mx-auto space-y-6 font-sans text-[#e6e1df] bg-[#141312] p-4 sm:p-6 rounded-2xl border border-[#363433]">
+  <!-- Top Bar: Protocol & Security Badge -->
+  <header class="flex items-center justify-between bg-[#1d1b1a] px-4 py-3 rounded-xl border border-[#4d4635]/40 shadow-sm">
     <div class="flex items-center space-x-2">
       <span class="relative flex h-2.5 w-2.5">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#006c49] opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#006c49]"></span>
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f2ca50] opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#f2ca50]"></span>
       </span>
-      <span class="font-mono text-xs font-semibold text-[#006c49] uppercase tracking-wider">Zero-Knowledge E2EE Active</span>
+      <span class="font-mono text-xs font-semibold text-[#f2ca50] uppercase tracking-wider">PROT-256-G · NDA ACTIVE</span>
     </div>
-    <div class="flex items-center space-x-1 text-[#434655] bg-[#eff4ff] px-2.5 py-1 rounded border border-[#c3c6d7]/40 font-mono text-[11px]">
-      <span class="text-[#006c49]">🔒</span>
-      <span>NODE-US-EAST // TLS-1.3</span>
+    <div class="flex items-center space-x-1.5 text-[#d0c5af] bg-[#2b2a28] px-2.5 py-1 rounded border border-[#4d4635]/50 font-mono text-[11px]">
+      <span class="text-[#f2ca50]">🔒</span>
+      <span>CLEARANCE LEVEL IV</span>
     </div>
-  </div>
+  </header>
 
-  <!-- Black-Box Ingestion Pipeline Banner -->
-  <section class="bg-white rounded-xl p-5 border border-[#c3c6d7]/70 shadow-sm relative overflow-hidden">
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center space-x-2">
-        <span class="text-[#004ac6] text-lg font-bold">🛡️</span>
-        <h2 class="font-bold text-base text-[#0b1c30] tracking-tight">Black-Box Ingestion Pipeline</h2>
+  <!-- Hero Section -->
+  <section class="space-y-2 pt-1">
+    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#363433] border border-[#4d4635]/60">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#f2ca50] animate-pulse"></span>
+      <span class="font-mono text-[11px] uppercase text-[#d3c4b1] tracking-widest font-semibold">Confidential Intake Chamber</span>
+    </div>
+    <h1 class="text-2xl sm:text-3xl font-serif text-[#e6e1df] font-normal tracking-tight">
+      Bespoke Commission Dossier
+    </h1>
+    <p class="text-xs sm:text-sm text-[#d3c4b1] font-light leading-relaxed">
+      Phase I: Bilateral Non-Disclosure & Creative Premise. Curating sovereign artifacts of singular architectural integrity.
+    </p>
+  </section>
+
+  <!-- Cryptographic NDA Status Card -->
+  <section class="relative p-4 sm:p-5 bg-[#1d1b1a] rounded-xl border border-[#4d4635]/50 shadow-xl overflow-hidden space-y-3">
+    <div class="flex items-start justify-between gap-3">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="text-[#f2ca50] text-base">🛡️</span>
+          <h2 class="font-semibold text-sm uppercase tracking-wider text-[#e6e1df]">Mutual NDA Status: Active & Sealed</h2>
+        </div>
+        <p class="text-xs text-[#99907c] font-light">
+          Cryptographic Escrow Protocol · Place Vendôme & Geneva
+        </p>
       </div>
-      <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-[#6cf8bb]/30 text-[#006c49] border border-[#006c49]/30 uppercase">
-        Verifiable
+      <span class="px-2 py-1 rounded bg-[#f2ca50]/10 border border-[#f2ca50]/40 font-mono text-[10px] text-[#f2ca50] tracking-widest font-bold uppercase">
+        CLEARANCE IV
       </span>
     </div>
 
-    <!-- Pipeline Steps -->
-    <div class="space-y-3 relative">
-      <div class="flex items-start space-x-3 bg-[#eff4ff]/70 p-3 rounded-lg border border-[#c3c6d7]/40">
-        <div class="w-7 h-7 rounded-full bg-[#6cf8bb] text-[#00714d] flex items-center justify-center font-bold shrink-0 text-xs">
-          1
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-[#0b1c30]">1. Client-Side Encrypted</span>
-            <span class="font-mono text-[10px] text-[#006c49] font-semibold bg-white px-1.5 py-0.5 rounded border border-[#c3c6d7]/30">AES-256-GCM</span>
-          </div>
-          <p class="text-xs text-[#434655] mt-0.5 leading-snug">Payload scrambled via ephemeral client key before touching any transmission socket.</p>
-        </div>
+    <!-- Detail Badges -->
+    <div class="grid grid-cols-2 gap-3 pt-2 border-t border-[#363433]">
+      <div>
+        <span class="block text-[10px] text-[#99907c] uppercase tracking-wider font-mono">Covenant Reference</span>
+        <span class="text-xs text-[#d3c4b1] font-mono font-medium">#AT-9842-NDA</span>
       </div>
-
-      <div class="flex items-start space-x-3 bg-[#eff4ff]/40 p-3 rounded-lg border border-[#c3c6d7]/30">
-        <div class="w-7 h-7 rounded-full bg-[#dce9ff] text-[#004ac6] flex items-center justify-center font-bold shrink-0 text-xs">
-          2
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-[#0b1c30]">2. Isolated Enclave Ingestion</span>
-            <span class="font-mono text-[10px] text-[#4d556b] bg-white px-1.5 py-0.5 rounded border border-[#c3c6d7]/30">Nitro / SGX</span>
-          </div>
-          <p class="text-xs text-[#434655] mt-0.5 leading-snug">Autonomous blind routing. Strict zero-human memory access; execution logs zero payload text.</p>
-        </div>
-      </div>
-
-      <div class="flex items-start space-x-3 bg-[#eff4ff]/40 p-3 rounded-lg border border-[#c3c6d7]/30">
-        <div class="w-7 h-7 rounded-full bg-[#dce9ff] text-[#4d556b] flex items-center justify-center font-bold shrink-0 text-xs">
-          3
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-[#0b1c30]">3. Immutable Audit Key</span>
-            <span class="font-mono text-[10px] text-[#4d556b] bg-white px-1.5 py-0.5 rounded border border-[#c3c6d7]/30">SHA-256</span>
-          </div>
-          <p class="text-xs text-[#434655] mt-0.5 leading-snug">Cryptographic receipt uniquely generated for submitter without exposing metadata.</p>
-        </div>
+      <div>
+        <span class="block text-[10px] text-[#99907c] uppercase tracking-wider font-mono">Bilateral Timestamp</span>
+        <span class="text-xs text-[#d3c4b1] font-mono font-medium">2026.10.12 · 20:46:15 Z</span>
       </div>
     </div>
 
-    <!-- Accordion Tooltip -->
-    <div class="mt-4 pt-3 border-t border-[#c3c6d7]/40">
+    <!-- Inspect Covenant Button & Expandable Content -->
+    <div class="pt-1">
       <button
         id="toggle-pipeline-tooltip-btn"
         type="button"
-        on:click={() => isTooltipExpanded = !isTooltipExpanded}
-        aria-expanded={isTooltipExpanded}
+        on:click={() => isCovenantExpanded = !isCovenantExpanded}
+        aria-expanded={isCovenantExpanded}
         aria-controls="pipeline-tooltip-content"
-        class="w-full flex items-center justify-between text-left text-[#004ac6] hover:text-[#2563eb] transition-colors py-1 focus:outline-none focus:ring-2 focus:ring-[#004ac6]/30 rounded"
+        class="w-full flex items-center justify-between py-2 px-3 rounded bg-[#211f1e] hover:bg-[#2b2a28] transition-colors border border-[#4d4635]/40 text-left text-xs text-[#d3c4b1] hover:text-[#f2ca50] focus:outline-none focus:ring-2 focus:ring-[#f2ca50]"
       >
-        <span class="flex items-center space-x-1.5 text-xs font-semibold">
-          <span>🔒</span>
-          <span>How your identity is mathematically protected</span>
+        <span class="font-mono text-[11px] tracking-wider uppercase font-medium">
+          Inspect Executed Bilateral Covenant & Protections
         </span>
-        <span class="text-xs font-bold transform transition-transform duration-200 {isTooltipExpanded ? 'rotate-180' : ''}">▼</span>
+        <span class="transform transition-transform duration-200 {isCovenantExpanded ? 'rotate-180' : ''}">▼</span>
       </button>
 
-      {#if isTooltipExpanded}
-        <div id="pipeline-tooltip-content" class="mt-2 p-3 bg-[#eff4ff] rounded-lg text-xs text-[#434655] space-y-1.5 border border-[#c3c6d7]/40">
-          <p><strong class="text-[#0b1c30]">1. Zero Origin Retention:</strong> Client TCP/IP addresses are stripped at the edge proxy prior to enclave arrival.</p>
-          <p><strong class="text-[#0b1c30]">2. Blind Routing:</strong> Administrators cannot decrypt payloads without recipient's private shard.</p>
+      {#if isCovenantExpanded}
+        <div id="pipeline-tooltip-content" class="mt-2 p-3 bg-[#2b2a28] rounded-lg text-xs text-[#d0c5af] space-y-2 border border-[#4d4635]/60 font-sans">
+          <p><strong class="text-[#f2ca50]">1. Zero Origin Leakage:</strong> All internal pipeline and operational references are strictly obfuscated and stripped from client records.</p>
+          <p><strong class="text-[#f2ca50]">2. Absolute Commercial Confidentiality:</strong> Submissions are processed via blind, zero-knowledge enclave isolation. No third-party data dispersion.</p>
+          <p><strong class="text-[#f2ca50]">3. Immutable Claim Receipt:</strong> Upon transmission, a zero-knowledge claim ticket is generated for client-side receipt verification.</p>
         </div>
       {/if}
     </div>
@@ -227,27 +235,27 @@
       id="intake-success-feedback"
       role="status"
       aria-live="polite"
-      class="bg-[#eff4ff] border-2 border-[#006c49] p-6 rounded-xl space-y-4 shadow-lg text-[#0b1c30]"
+      class="bg-[#1d1b1a] border-2 border-[#f2ca50] p-6 rounded-xl space-y-4 shadow-2xl text-[#e6e1df]"
     >
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-full bg-[#006c49] text-white flex items-center justify-center font-bold text-xl shrink-0">
+        <div class="w-10 h-10 rounded-full bg-[#f2ca50] text-[#3c2f00] flex items-center justify-center font-bold text-xl shrink-0">
           ✓
         </div>
         <div>
-          <h3 id="success-heading" class="text-lg font-bold text-[#006c49]">Payload Encrypted & Submitted Successfully</h3>
-          <p id="email-acknowledgement-notice" class="text-xs text-[#006c49] font-medium mt-0.5">
-            ✓ An email acknowledgement has been sent to {email ? email : 'your provided email address'}.
+          <h3 id="success-heading" class="text-base font-bold text-[#f2ca50]">Payload Encrypted & Submitted Successfully</h3>
+          <p id="email-acknowledgement-notice" class="text-xs text-[#d0c5af] font-medium mt-0.5">
+            An email acknowledgement has been sent to {email ? email : 'your provided email address'}.
           </p>
         </div>
       </div>
 
-      <div class="bg-white p-4 rounded-lg border border-[#c3c6d7] space-y-2">
-        <div class="flex items-center justify-between font-mono text-xs">
-          <span class="text-[#434655]">Claim Ticket Receipt:</span>
-          <span id="claim-ticket-id" class="font-bold text-[#004ac6]">{claimTicket}</span>
+      <div class="bg-[#211f1e] p-4 rounded-lg border border-[#4d4635] space-y-2 font-mono text-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-[#99907c]">Claim Ticket Receipt:</span>
+          <span id="claim-ticket-id" class="font-bold text-[#f2ca50]">{claimTicket}</span>
         </div>
-        <p class="text-xs text-[#434655]">
-          Your confidential disclosure is stored securely within the black-box vault. You may keep this receipt for verification.
+        <p class="text-[11px] text-[#d0c5af] font-sans">
+          Your confidential disclosure is stored securely within the black-box vault under strict NDA protocols.
         </p>
       </div>
 
@@ -256,7 +264,7 @@
           id="intake-reset-btn"
           type="button"
           on:click={resetForm}
-          class="w-full py-2.5 px-4 bg-[#004ac6] hover:bg-[#2563eb] text-white font-semibold rounded-lg text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-[#004ac6]"
+          class="w-full py-3 px-4 bg-[#f2ca50] hover:bg-[#ffe088] text-[#3c2f00] font-semibold rounded-lg text-xs uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#f2ca50]"
         >
           Submit Another Intake Request
         </button>
@@ -264,26 +272,26 @@
     </div>
   {:else}
     <!-- INTAKE FORM -->
-    <form id="vault-intake-form" on:submit|preventDefault={handleSubmit} class="space-y-5 bg-white p-6 rounded-xl border border-[#c3c6d7]/70 shadow-sm">
+    <form id="vault-intake-form" on:submit|preventDefault={handleSubmit} class="space-y-5 bg-[#1d1b1a] p-5 sm:p-6 rounded-xl border border-[#4d4635]/50 shadow-lg">
       {#if submitError}
-        <div id="intake-error-banner" role="alert" class="p-3 bg-[#ffdad6] border border-[#ba1a1a] text-[#93000a] text-xs rounded-lg flex items-start space-x-2">
+        <div id="intake-error-banner" role="alert" class="p-3.5 bg-[#93000a]/30 border border-[#ffb4ab] text-[#ffdad6] text-xs rounded-lg flex items-start space-x-2">
           <span class="font-bold">⚠️</span>
-          <p id="intake-error-message">{submitError}</p>
+          <p id="intake-error-message" class="leading-relaxed">{submitError}</p>
         </div>
       {/if}
 
       <!-- Classification Selector -->
       <div class="space-y-1.5">
-        <span id="label-classification" class="block text-xs font-semibold text-[#0b1c30]">
-          Submission Classification <span class="text-[#ba1a1a]" aria-hidden="true">*</span>
+        <span id="label-classification" class="block text-xs font-semibold uppercase tracking-wider text-[#e6e1df]">
+          Submission Classification <span class="text-[#ffb4ab]" aria-hidden="true">*</span>
         </span>
-        <div class="grid grid-cols-3 gap-1.5 bg-[#e5eeff] p-1 rounded-xl border border-[#c3c6d7]/60" role="radiogroup" aria-labelledby="label-classification">
+        <div class="grid grid-cols-3 gap-2 bg-[#211f1e] p-1.5 rounded-xl border border-[#4d4635]/60" role="radiogroup" aria-labelledby="label-classification">
           <button
             type="button"
             role="radio"
             aria-checked={classification === 'confidential'}
             on:click={() => setClassification('confidential')}
-            class="py-2 px-1 text-center rounded-lg text-[11px] font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-[#004ac6] {classification === 'confidential' ? 'bg-white text-[#004ac6] shadow-xs border border-[#004ac6]/20' : 'text-[#434655] hover:text-[#0b1c30]'}"
+            class="py-2 px-1 text-center rounded-lg text-[11px] font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-[#f2ca50] {classification === 'confidential' ? 'bg-[#363433] text-[#f2ca50] shadow-md border border-[#f2ca50]/30' : 'text-[#d0c5af] hover:text-[#e6e1df]'}"
           >
             Confidential<br/>Disclosure
           </button>
@@ -293,7 +301,7 @@
             role="radio"
             aria-checked={classification === 'whistleblower'}
             on:click={() => setClassification('whistleblower')}
-            class="py-2 px-1 text-center rounded-lg text-[11px] font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-[#004ac6] {classification === 'whistleblower' ? 'bg-white text-[#004ac6] shadow-xs border border-[#004ac6]/20' : 'text-[#434655] hover:text-[#0b1c30]'}"
+            class="py-2 px-1 text-center rounded-lg text-[11px] font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-[#f2ca50] {classification === 'whistleblower' ? 'bg-[#363433] text-[#f2ca50] shadow-md border border-[#f2ca50]/30' : 'text-[#d0c5af] hover:text-[#e6e1df]'}"
           >
             Whistleblower<br/>Report
           </button>
@@ -303,17 +311,39 @@
             role="radio"
             aria-checked={classification === 'security'}
             on:click={() => setClassification('security')}
-            class="py-2 px-1 text-center rounded-lg text-[11px] font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-[#004ac6] {classification === 'security' ? 'bg-white text-[#004ac6] shadow-xs border border-[#004ac6]/20' : 'text-[#434655] hover:text-[#0b1c30]'}"
+            class="py-2 px-1 text-center rounded-lg text-[11px] font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-[#f2ca50] {classification === 'security' ? 'bg-[#363433] text-[#f2ca50] shadow-md border border-[#f2ca50]/30' : 'text-[#d0c5af] hover:text-[#e6e1df]'}"
           >
             Security<br/>Vulnerability
           </button>
         </div>
       </div>
 
-      <!-- Optional Client Email for Acknowledgement -->
+      <!-- Field 1: Commission Moniker / Title -->
       <div class="space-y-1.5">
         <div class="flex items-center justify-between">
-          <label for="client-email-input" class="text-xs font-semibold text-[#0b1c30]">
+          <label for="submission-title-input" class="text-xs font-semibold uppercase tracking-wider text-[#e6e1df]">
+            Commission Moniker / Subject <span class="text-[#ffb4ab]">*</span>
+          </label>
+          <span class="font-mono text-[10px] text-[#f2ca50]/80 uppercase tracking-wider">Confidential Title</span>
+        </div>
+        <input
+          id="submission-title-input"
+          type="text"
+          required
+          bind:value={title}
+          on:input={handleInput}
+          placeholder="e.g. Project Solitude / Obsidian Aegis"
+          class="w-full h-11 bg-[#0f0e0d] text-[#e6e1df] text-xs border border-[#4d4635] rounded-lg px-3.5 focus:border-[#f2ca50] focus:ring-2 focus:ring-[#f2ca50]/30 outline-none transition-all placeholder-[#99907c]"
+        />
+        <p class="text-[11px] text-[#99907c] font-light flex items-center gap-1">
+          <span class="text-[#f2ca50]">◆</span> Encrypted Client Record — Atelier Clearance Level IV
+        </p>
+      </div>
+
+      <!-- Field 2: Client Email for Acknowledgement -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <label for="client-email-input" class="text-xs font-semibold uppercase tracking-wider text-[#e6e1df]">
             Notification Email (Optional for acknowledgement)
           </label>
         </div>
@@ -322,44 +352,50 @@
           type="email"
           bind:value={email}
           on:input={handleInput}
-          placeholder="your.email@organization.com"
-          class="w-full h-11 bg-white text-[#0b1c30] text-xs border border-[#c3c6d7] rounded-lg px-3.5 focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/20 outline-none transition-all"
+          placeholder="client.liaison@organization.com"
+          class="w-full h-11 bg-[#0f0e0d] text-[#e6e1df] text-xs border border-[#4d4635] rounded-lg px-3.5 focus:border-[#f2ca50] focus:ring-2 focus:ring-[#f2ca50]/30 outline-none transition-all placeholder-[#99907c]"
         />
-        <p class="text-[11px] text-[#737686]">Used solely for dispatching email receipt & status confirmation.</p>
+        <p class="text-[11px] text-[#99907c]">Used solely for dispatching confidential status confirmation & receipt.</p>
       </div>
 
-      <!-- Submission Title -->
-      <div class="space-y-1.5">
+      <!-- Field 3: Aesthetic Intent & Archetype Selection -->
+      <div class="space-y-2">
         <div class="flex items-center justify-between">
-          <label for="submission-title-input" class="text-xs font-semibold text-[#0b1c30]">
-            Subject / Brief Title <span class="text-[#ba1a1a]">*</span>
-          </label>
-          <div class="flex items-center space-x-1 text-[#006c49] font-mono text-[10px]">
-            <span>🔒</span>
-            <span>E2EE Active</span>
-          </div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-[#e6e1df]">
+            Aesthetic Archetype & Discipline
+          </span>
+          <span class="text-[10px] text-[#99907c] font-mono uppercase">Select Primary</span>
         </div>
-        <input
-          id="submission-title-input"
-          type="text"
-          required
-          bind:value={title}
-          on:input={handleInput}
-          placeholder="e.g. Memory anomaly in enclave worker node"
-          class="w-full h-11 bg-white text-[#0b1c30] text-xs border border-[#c3c6d7] rounded-lg px-3.5 focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/20 outline-none transition-all"
-        />
+        <div class="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            on:click={() => { selectedArchetype = 'horology'; handleInput(); }}
+            class="p-2.5 rounded-lg text-left transition-all focus:outline-none focus:ring-2 focus:ring-[#f2ca50] {selectedArchetype === 'horology' ? 'bg-[#2b2a28] border-2 border-[#f2ca50]' : 'bg-[#0f0e0d] border border-[#4d4635]/40 hover:border-[#4d4635]'}"
+          >
+            <span class="block text-[10px] font-mono text-[#f2ca50] font-bold">01 / ARCHETYPE</span>
+            <span class="block text-xs font-serif text-[#e6e1df] font-normal mt-0.5">Haute Horology</span>
+            <span class="block text-[10px] text-[#99907c]">Tourbillon & Precision</span>
+          </button>
+
+          <button
+            type="button"
+            on:click={() => { selectedArchetype = 'metallurgy'; handleInput(); }}
+            class="p-2.5 rounded-lg text-left transition-all focus:outline-none focus:ring-2 focus:ring-[#f2ca50] {selectedArchetype === 'metallurgy' ? 'bg-[#2b2a28] border-2 border-[#f2ca50]' : 'bg-[#0f0e0d] border border-[#4d4635]/40 hover:border-[#4d4635]'}"
+          >
+            <span class="block text-[10px] font-mono text-[#99907c]">02 / ARCHETYPE</span>
+            <span class="block text-xs font-serif text-[#e6e1df] font-normal mt-0.5">Fine Metallurgy</span>
+            <span class="block text-[10px] text-[#99907c]">Bespoke Monolith</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Confidential Narrative Textarea -->
+      <!-- Field 4: Confidential Narrative / Creative Premise -->
       <div class="space-y-1.5">
         <div class="flex items-center justify-between">
-          <label for="narrative-textarea" class="text-xs font-semibold text-[#0b1c30]">
-            Confidential Narrative & Technical Context <span class="text-[#ba1a1a]">*</span>
+          <label for="narrative-textarea" class="text-xs font-semibold uppercase tracking-wider text-[#e6e1df]">
+            Confidential Narrative & Technical Premise <span class="text-[#ffb4ab]">*</span>
           </label>
-          <div class="flex items-center space-x-1 bg-[#e5eeff] px-2 py-0.5 rounded-full border border-[#c3c6d7]/60 text-[10px] font-mono">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#006c49]"></span>
-            <span class="font-semibold text-[#0b1c30]">Auto-Sanitize PII Active</span>
-          </div>
+          <span class="text-[10px] font-mono text-[#f2ca50]">Auto-Sanitize Active</span>
         </div>
         <textarea
           id="narrative-textarea"
@@ -367,49 +403,49 @@
           rows="4"
           bind:value={narrative}
           on:input={handleInput}
-          placeholder="Describe the vulnerability or incident with specifics. All phone numbers, emails, and IP strings are tokenized..."
-          class="w-full bg-white text-[#0b1c30] text-xs border border-[#c3c6d7] rounded-lg p-3 focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/20 outline-none transition-all resize-none font-sans"
+          placeholder="Describe the architectural concept, technical context, or security scope. All phone numbers, emails, and identifiers are tokenized client-side..."
+          class="w-full bg-[#0f0e0d] text-[#e6e1df] text-xs border border-[#4d4635] rounded-lg p-3 focus:border-[#f2ca50] focus:ring-2 focus:ring-[#f2ca50]/30 outline-none transition-all resize-none placeholder-[#99907c]"
         ></textarea>
-        <div class="flex items-center justify-between text-[10px] font-mono text-[#737686]">
+        <div class="flex items-center justify-between text-[10px] font-mono text-[#99907c]">
           <span>Client cryptographic entropy: 99.8%</span>
           <span id="char-counter">{narrative.length} / 4000</span>
         </div>
       </div>
 
-      <!-- Safeguard Toggles -->
-      <div class="bg-[#f8f9ff] rounded-xl p-4 border border-[#c3c6d7]/70 space-y-3">
-        <h3 class="text-xs font-bold text-[#0b1c30] tracking-tight flex items-center space-x-1.5">
+      <!-- Field 5: Safeguard & Anonymity Toggles -->
+      <div class="bg-[#141312] rounded-xl p-4 border border-[#4d4635]/60 space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-[#e6e1df] flex items-center space-x-1.5">
           <span>🛡️</span>
-          <span>Submitter Safeguard Controls</span>
+          <span>Submitter Protection Controls</span>
         </h3>
 
         <label class="flex items-start justify-between cursor-pointer space-x-3 text-xs">
           <div class="flex-1">
-            <div class="font-semibold text-[#0b1c30]">Discard IP & User-Agent from receipt</div>
-            <p class="text-[11px] text-[#434655] mt-0.5">Enclave will zero-fill connection metadata headers before generating immutable proof.</p>
+            <div class="font-semibold text-[#e6e1df]">Discard origin headers from receipt</div>
+            <p class="text-[11px] text-[#d0c5af] mt-0.5">Zero-fill IP and connection metadata before generating immutable proof.</p>
           </div>
           <input
             id="toggle-discard-metadata"
             type="checkbox"
             bind:checked={discardMetadata}
             on:change={handleInput}
-            class="mt-1 w-4 h-4 text-[#004ac6] focus:ring-[#004ac6] rounded"
+            class="mt-1 w-4 h-4 text-[#f2ca50] focus:ring-[#f2ca50] rounded bg-[#0f0e0d] border-[#4d4635]"
           />
         </label>
 
-        <div class="h-px bg-[#c3c6d7]/40"></div>
+        <div class="h-px bg-[#363433]"></div>
 
         <label class="flex items-start justify-between cursor-pointer space-x-3 text-xs">
           <div class="flex-1">
-            <div class="font-semibold text-[#0b1c30]">Require two-part recovery phrase</div>
-            <p class="text-[11px] text-[#434655] mt-0.5">Splits verification token using Shamir's Secret Sharing (2-of-3 threshold).</p>
+            <div class="font-semibold text-[#e6e1df]">Require two-part recovery phrase</div>
+            <p class="text-[11px] text-[#d0c5af] mt-0.5">Splits verification token using Shamir's Secret Sharing (2-of-3 threshold).</p>
           </div>
           <input
             id="toggle-recovery-phrase"
             type="checkbox"
             bind:checked={requireRecoveryPhrase}
             on:change={handleInput}
-            class="mt-1 w-4 h-4 text-[#004ac6] focus:ring-[#004ac6] rounded"
+            class="mt-1 w-4 h-4 text-[#f2ca50] focus:ring-[#f2ca50] rounded bg-[#0f0e0d] border-[#4d4635]"
           />
         </label>
       </div>
@@ -420,19 +456,19 @@
           id="submit-intake-btn"
           type="submit"
           disabled={isSubmitting}
-          class="w-full h-12 bg-[#004ac6] hover:bg-[#2563eb] text-white font-semibold rounded-xl flex flex-col items-center justify-center shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-[#004ac6] disabled:opacity-50 cursor-pointer"
+          class="w-full h-12 bg-[#1C1A17] hover:bg-[#24221E] text-[#e6e1df] border border-[#f2ca50]/60 font-semibold rounded-xl flex flex-col items-center justify-center shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#f2ca50] disabled:opacity-50 cursor-pointer group"
         >
           {#if isSubmitting}
             <div class="flex items-center space-x-2 text-xs">
               <span class="animate-spin text-sm">⌛</span>
-              <span>Encrypting & Transmitting Payload...</span>
+              <span>Encrypting & Dispatching Dossier...</span>
             </div>
           {:else}
-            <div class="flex items-center space-x-2 text-xs">
+            <div class="flex items-center space-x-2 text-xs uppercase tracking-wider group-hover:text-[#f2ca50]">
               <span>🔒</span>
-              <span>Lock & Transmit Payload</span>
+              <span>Execute Sealed Dossier & Dispatch</span>
             </div>
-            <span class="text-[10px] font-mono text-[#eeefff]/90">Generates One-Time Cryptographic Claim Ticket</span>
+            <span class="text-[10px] font-mono text-[#d0c5af]">Protected by Sovereign Escrow Protocols</span>
           {/if}
         </button>
       </div>
