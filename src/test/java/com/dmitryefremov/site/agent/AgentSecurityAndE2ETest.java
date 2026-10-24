@@ -8,11 +8,14 @@ import com.dmitryefremov.site.agent.repository.AgentMessageRepository;
 import com.dmitryefremov.site.agent.repository.AgentOrderRepository;
 import com.dmitryefremov.site.agent.repository.ContentAuditLogRepository;
 import com.dmitryefremov.site.article.repository.ArticleRepository;
+import com.dmitryefremov.site.canon.repository.CanonItemRepository;
+import com.dmitryefremov.site.essay.repository.PublishedEssayRepository;
 import com.dmitryefremov.site.podcast.repository.PodcastEpisodeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -50,6 +53,13 @@ class AgentSecurityAndE2ETest {
     private PodcastEpisodeRepository podcastEpisodeRepository;
 
     @Autowired
+    private PublishedEssayRepository publishedEssayRepository;
+
+    @Autowired
+    @Qualifier("siteCanonItemRepository")
+    private CanonItemRepository canonItemRepository;
+
+    @Autowired
     private AgentOrderRepository orderRepository;
 
     @Autowired
@@ -64,6 +74,8 @@ class AgentSecurityAndE2ETest {
         tokenRepository.deleteAll();
         articleRepository.deleteAll();
         podcastEpisodeRepository.deleteAll();
+        publishedEssayRepository.deleteAll();
+        canonItemRepository.deleteAll();
         orderRepository.deleteAll();
         messageRepository.deleteAll();
 
@@ -85,6 +97,18 @@ class AgentSecurityAndE2ETest {
 
         // PUT podcast without credentials must return 401
         mockMvc.perform(put("/api/v1/agent/content/podcasts/unauth-podcast")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"Test\"}"))
+                .andExpect(status().isUnauthorized());
+
+        // PUT essay without credentials must return 401
+        mockMvc.perform(put("/api/v1/agent/content/essays/unauth-essay")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"Test\"}"))
+                .andExpect(status().isUnauthorized());
+
+        // PUT canon without credentials must return 401
+        mockMvc.perform(put("/api/v1/agent/content/canon/unauth-canon")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\":\"Test\"}"))
                 .andExpect(status().isUnauthorized());
@@ -130,7 +154,9 @@ class AgentSecurityAndE2ETest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.articles", hasSize(0)))
-                .andExpect(jsonPath("$.podcasts", hasSize(0)));
+                .andExpect(jsonPath("$.podcasts", hasSize(0)))
+                .andExpect(jsonPath("$.essays", hasSize(0)))
+                .andExpect(jsonPath("$.canon", hasSize(0)));
 
         // Step 2: Autonomous Agent updates an Article via JSON
         String articleJson = """
@@ -169,15 +195,53 @@ class AgentSecurityAndE2ETest {
                 .andExpect(jsonPath("$.title", is("Autonomous Podcast Episode 1")))
                 .andExpect(jsonPath("$.audioUrl", is("https://cdn.example.com/audio/ep1.mp3")));
 
-        // Step 4: Verify content retrieval via RSS feed
+        // Step 4: Autonomous Agent updates an Essay via JSON
+        String essayJson = """
+                {
+                    "title": "Autonomous AI Essay",
+                    "summary": "E2E AI essay summary",
+                    "content": "Full essay content created by autonomous agent"
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/agent/content/essays/e2e-ai-essay")
+                        .header("X-API-Token", rawToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(essayJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("e2e-ai-essay")))
+                .andExpect(jsonPath("$.title", is("Autonomous AI Essay")));
+
+        // Step 5: Autonomous Agent updates a Canon concept via Markdown
+        String canonMd = """
+                ---
+                title: E2E Canon Concept
+                type: ONTOLOGY
+                domain: PHILOSOPHY_OF_MIND
+                summary: Extended mind ontology
+                ---
+                # Extended Mind Ontology Body
+                """;
+
+        mockMvc.perform(put("/api/v1/agent/content/canon/e2e-canon-concept")
+                        .header("Authorization", "Bearer " + rawToken)
+                        .contentType("text/markdown")
+                        .content(canonMd))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("e2e-canon-concept")))
+                .andExpect(jsonPath("$.title", is("E2E Canon Concept")));
+
+        // Step 6: Verify content retrieval via RSS feed
         mockMvc.perform(get("/api/v1/agent/content")
                         .header("X-API-Token", rawToken)
                         .header("Accept", "application/rss+xml"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Autonomous AI Article")))
-                .andExpect(content().string(containsString("Autonomous Podcast Episode 1")));
+                .andExpect(content().string(containsString("Autonomous Podcast Episode 1")))
+                .andExpect(content().string(containsString("Autonomous AI Essay")))
+                .andExpect(content().string(containsString("E2E Canon Concept")));
 
-        // Step 5: Agent submits service order and message
+        // Step 7: Agent submits service order and message
         AgentOrderRequest orderRequest = new AgentOrderRequest(
                 "E2E Agent Client",
                 "agent@autonomous.org",
@@ -199,16 +263,18 @@ class AgentSecurityAndE2ETest {
                         .content(objectMapper.writeValueAsString(messageRequest)))
                 .andExpect(status().isCreated());
 
-        // Step 6: Verify Telemetry statistics reflect interaction activity
+        // Step 8: Verify Telemetry statistics reflect interaction activity
         mockMvc.perform(get("/api/v1/agent/telemetry"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalOrders", is(1)))
                 .andExpect(jsonPath("$.totalMessages", is(1)))
                 .andExpect(jsonPath("$.totalInteractions", is(2)));
 
-        // Step 7: Verify Database state and audit logs
+        // Step 9: Verify Database state and audit logs
         assertThat(articleRepository.findBySlug("e2e-ai-article")).isPresent();
         assertThat(podcastEpisodeRepository.findBySlug("e2e-ai-podcast")).isPresent();
-        assertThat(auditLogRepository.findByAgentId(validAgentToken.getId())).hasSize(2);
+        assertThat(publishedEssayRepository.findBySlug("e2e-ai-essay")).isPresent();
+        assertThat(canonItemRepository.findBySlug("e2e-canon-concept")).isPresent();
+        assertThat(auditLogRepository.findByAgentId(validAgentToken.getId())).hasSize(4);
     }
 }

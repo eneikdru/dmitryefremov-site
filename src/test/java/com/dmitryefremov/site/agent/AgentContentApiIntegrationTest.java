@@ -5,11 +5,14 @@ import com.dmitryefremov.site.agent.repository.AgentApiTokenRepository;
 import com.dmitryefremov.site.agent.repository.ContentAuditLogRepository;
 import com.dmitryefremov.site.article.domain.Article;
 import com.dmitryefremov.site.article.repository.ArticleRepository;
+import com.dmitryefremov.site.canon.repository.CanonItemRepository;
+import com.dmitryefremov.site.essay.repository.PublishedEssayRepository;
 import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
 import com.dmitryefremov.site.podcast.repository.PodcastEpisodeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -44,6 +47,13 @@ class AgentContentApiIntegrationTest {
     @Autowired
     private PodcastEpisodeRepository podcastEpisodeRepository;
 
+    @Autowired
+    private PublishedEssayRepository publishedEssayRepository;
+
+    @Autowired
+    @Qualifier("siteCanonItemRepository")
+    private CanonItemRepository canonItemRepository;
+
     private AgentApiToken validAgentToken;
     private final String rawToken = "secret-agent-token-123";
 
@@ -53,6 +63,8 @@ class AgentContentApiIntegrationTest {
         tokenRepository.deleteAll();
         articleRepository.deleteAll();
         podcastEpisodeRepository.deleteAll();
+        publishedEssayRepository.deleteAll();
+        canonItemRepository.deleteAll();
 
         validAgentToken = new AgentApiToken("autonomous-agent-1", rawToken);
         tokenRepository.save(validAgentToken);
@@ -250,6 +262,156 @@ class AgentContentApiIntegrationTest {
                 .andExpect(jsonPath("$.quotes[0].quoteText", containsString("Where does the mind stop")));
 
         assertThat(podcastEpisodeRepository.findBySlug("andy-clark-extended-mind")).isPresent();
+    }
+
+    @Test
+    void testUpdateEssayJsonCreateAndPubliclyAvailable() throws Exception {
+        String jsonPayload = """
+                {
+                    "title": "Deontic Logic in Agentic Systems",
+                    "summary": "Exploring deontic logic in autonomous processes",
+                    "content": "Full text of essay on deontic logic and agentic boundaries.",
+                    "curatedBy": "Dmitry Efremov"
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/agent/content/essays/deontic-logic-agentic-systems")
+                        .header("X-API-Token", rawToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("deontic-logic-agentic-systems")))
+                .andExpect(jsonPath("$.title", is("Deontic Logic in Agentic Systems")))
+                .andExpect(jsonPath("$.summary", is("Exploring deontic logic in autonomous processes")));
+
+        assertThat(publishedEssayRepository.findBySlug("deontic-logic-agentic-systems")).isPresent();
+        assertThat(auditLogRepository.findByAgentId(validAgentToken.getId())).hasSize(1);
+
+        // Verify immediate public availability via public reader endpoint
+        mockMvc.perform(get("/api/v1/essays/deontic-logic-agentic-systems"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("deontic-logic-agentic-systems")))
+                .andExpect(jsonPath("$.title", is("Deontic Logic in Agentic Systems")));
+    }
+
+    @Test
+    void testUpdateEssayMarkdownWithFrontmatter() throws Exception {
+        String markdownPayload = """
+                ---
+                title: Extended Mind Essay
+                summary: Short summary of extended mind
+                curatedBy: Dmitry Efremov
+                ---
+                # Extended Mind Theory
+
+                The human mind is extended into external tools.
+                """;
+
+        mockMvc.perform(put("/api/v1/agent/content/essays/extended-mind-essay")
+                        .header("Authorization", "Bearer " + rawToken)
+                        .contentType("text/markdown")
+                        .content(markdownPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("extended-mind-essay")))
+                .andExpect(jsonPath("$.title", is("Extended Mind Essay")))
+                .andExpect(jsonPath("$.summary", is("Short summary of extended mind")));
+
+        assertThat(publishedEssayRepository.findBySlug("extended-mind-essay")).isPresent();
+
+        // Verify public access
+        mockMvc.perform(get("/api/v1/essays/extended-mind-essay"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", is("Extended Mind Essay")));
+    }
+
+    @Test
+    void testUpdateCanonJsonCreateAndPubliclyAvailable() throws Exception {
+        String jsonPayload = """
+                {
+                    "title": "Rigid Designators in API Architecture",
+                    "type": "ONTOLOGY",
+                    "domain": "AUTONOMOUS_ENGINEERING",
+                    "summary": "Naming stability across possible worlds",
+                    "content": "A rigid designator designates the same object in every possible world."
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/agent/content/canon/rigid-designator-concept")
+                        .header("X-API-Token", rawToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("rigid-designator-concept")))
+                .andExpect(jsonPath("$.title", is("Rigid Designators in API Architecture")))
+                .andExpect(jsonPath("$.type", is("ONTOLOGY")))
+                .andExpect(jsonPath("$.domain", is("AUTONOMOUS_ENGINEERING")));
+
+        assertThat(canonItemRepository.findBySlug("rigid-designator-concept")).isPresent();
+        assertThat(auditLogRepository.findByAgentId(validAgentToken.getId())).hasSize(1);
+
+        // Verify immediate public availability via public canon endpoint
+        mockMvc.perform(get("/api/v1/canon/rigid-designator-concept"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("rigid-designator-concept")))
+                .andExpect(jsonPath("$.title", is("Rigid Designators in API Architecture")));
+    }
+
+    @Test
+    void testUpdateCanonMarkdownWithFrontmatter() throws Exception {
+        String markdownPayload = """
+                ---
+                title: Deontic Logic Manifesto
+                type: MANIFESTO
+                domain: AUTONOMOUS_ENGINEERING
+                summary: Core principles of autonomous deontic logic
+                ---
+                # Deontic Logic Manifesto
+
+                Systems must explicitly model obligations, permissions, and prohibitions.
+                """;
+
+        mockMvc.perform(put("/api/v1/agent/content/concepts/deontic-logic-manifesto")
+                        .header("Authorization", "Bearer " + rawToken)
+                        .contentType("text/markdown")
+                        .content(markdownPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.slug", is("deontic-logic-manifesto")))
+                .andExpect(jsonPath("$.title", is("Deontic Logic Manifesto")))
+                .andExpect(jsonPath("$.type", is("MANIFESTO")))
+                .andExpect(jsonPath("$.domain", is("AUTONOMOUS_ENGINEERING")));
+
+        assertThat(canonItemRepository.findBySlug("deontic-logic-manifesto")).isPresent();
+
+        mockMvc.perform(get("/api/v1/canon/deontic-logic-manifesto"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", is("Deontic Logic Manifesto")));
+    }
+
+    @Test
+    void testUpdateEssayUnauthorizedAndInvalidPayloadRejected() throws Exception {
+        // Missing token -> 401
+        mockMvc.perform(put("/api/v1/agent/content/essays/unauth-essay")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"Unauth Essay\"}"))
+                .andExpect(status().isUnauthorized());
+
+        // Empty markdown payload -> 400
+        mockMvc.perform(put("/api/v1/agent/content/essays/invalid-essay")
+                        .header("X-API-Token", rawToken)
+                        .contentType("text/markdown")
+                        .content("   "))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.message", containsString("Markdown payload cannot be empty")));
+
+        // Empty markdown payload for canon -> 400
+        mockMvc.perform(put("/api/v1/agent/content/canon/invalid-canon")
+                        .header("X-API-Token", rawToken)
+                        .contentType("text/markdown")
+                        .content("   "))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.message", containsString("Markdown payload cannot be empty")));
     }
 
     @Test
