@@ -97,9 +97,9 @@ describe('TelemetryHub Component & CMP Integration', () => {
     expect(overlay).not.toBeNull();
     expect(overlay?.getAttribute('role')).toBe('dialog');
     expect(overlay?.getAttribute('aria-modal')).toBe('true');
-    expect(target.textContent).toContain('Privacy & Consent Management');
-    expect(target.textContent).toContain('IAB TCF v2.2 Compliant');
-    expect(target.textContent).toContain('Category Permissions');
+    expect(target.textContent).toContain('Consent Preferences');
+    expect(target.textContent).toContain('Consent Version 2.4 - Validated');
+    expect(target.textContent).toContain('Consent Domains (4 Categories)');
 
     const acceptBtn = target.querySelector('#cmp-accept-btn') as HTMLButtonElement;
     expect(acceptBtn).not.toBeNull();
@@ -133,6 +133,6 @@ describe('TelemetryHub Component & CMP Integration', () => {
 
     const reOpenedOverlay = target.querySelector('#cmp-modal-overlay');
     expect(reOpenedOverlay).not.toBeNull();
-    expect(target.textContent).toContain('TRACKERS_BLOCKED');
+    expect(target.textContent).toContain('1 OF 4 ACTIVE');
   });
 });
