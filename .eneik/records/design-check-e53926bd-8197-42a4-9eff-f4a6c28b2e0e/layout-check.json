@@ -1,0 +1,93 @@
+[
+  {
+    "id": "main-header",
+    "left": 176,
+    "top": 32,
+    "width": 1088,
+    "height": 455
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 109,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 209,
+    "top": 142,
+    "width": 208,
+    "height": 208
+  },
+  {
+    "id": "hero-title",
+    "left": 449,
+    "top": 168,
+    "width": 782,
+    "height": 48
+  },
+  {
+    "id": "search-trigger-btn",
+    "left": 994,
+    "top": 32,
+    "width": 123,
+    "height": 36
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 437,
+    "width": 851,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 183,
+    "top": 444,
+    "width": 185,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 376,
+    "top": 444,
+    "width": 141,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-canon",
+    "left": 524,
+    "top": 444,
+    "width": 141,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-sparks",
+    "left": 673,
+    "top": 444,
+    "width": 162,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 843,
+    "top": 444,
+    "width": 177,
+    "height": 36
+  },
+  {
+    "id": "canon-graph-view",
+    "left": 176,
+    "top": 527,
+    "width": 1088,
+    "height": 941
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 1508,
+    "width": 1088,
+    "height": 49
+  }
+]

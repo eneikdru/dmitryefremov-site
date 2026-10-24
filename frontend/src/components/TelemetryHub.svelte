@@ -7,16 +7,21 @@
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import SparksView from './SparksView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
+  import CanonGraphView from './CanonGraphView.svelte';
+  import CmdKSearchModal from './CmdKSearchModal.svelte';
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
+  import type { CorpusSearchResult } from '../lib/canon';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'canon' | 'contact' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'canon' | 'contact' = initialTab;
+  let activeCanonSlug: string = 'raft-protocol-state-machine';
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
+  let isSearchModalOpen: boolean = false;
   let currentPath: string = typeof window !== 'undefined' ? window.location.pathname : '/';
   let podcastCount: number = 0;
 
@@ -62,6 +67,24 @@
     isCmpModalOpen = !isCmpModalOpen;
   }
 
+  function openSearchModal() {
+    isSearchModalOpen = true;
+  }
+
+  function handleSearchResultSelect(event: CustomEvent<CorpusSearchResult>) {
+    const result = event.detail;
+    if (result.type === 'canon') {
+      activeCanonSlug = result.slug;
+      activeTab = 'canon';
+    } else if (result.type === 'podcast') {
+      activeTab = 'podcast';
+    } else if (result.type === 'essay') {
+      activeTab = 'article';
+    } else if (result.type === 'spark') {
+      activeTab = 'sparks';
+    }
+  }
+
   function handleOutboundClick(destination: string, label: string, platform: string) {
     telemetry.trackOutboundClick(destination, label, platform);
   }
@@ -80,9 +103,9 @@
     id="telemetry-hub-root"
     class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
   >
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+    <main id="main-content" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       <!-- Top System & Status Bar -->
-      <header class="space-y-6">
+      <header id="main-header" class="space-y-6">
         <div class="flex items-center justify-between gap-4 border-b pb-4 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
           <div class="flex items-center gap-3">
             <span
@@ -97,6 +120,19 @@
           </div>
 
           <div class="flex items-center gap-3">
+            <!-- Search Cmd+K Trigger Button -->
+            <button
+              id="search-trigger-btn"
+              type="button"
+              on:click={openSearchModal}
+              aria-label="Открыть мгновенный поиск"
+              class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
+            >
+              <span class="text-[#38bdf8]">🔍</span>
+              <span class="hidden sm:inline">ПОИСК</span>
+              <kbd class="px-1.5 py-0.5 rounded text-[10px] bg-[#1c2028] text-[#908fa0] border border-[#464554]">⌘K</kbd>
+            </button>
+
             <!-- Theme Toggle -->
             <button
               id="theme-toggle-btn"
@@ -201,6 +237,14 @@
             <span>📖 ЭССЕ & МЫСЛИ</span>
           </button>
           <button
+            id="tab-btn-canon"
+            type="button"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            on:click={() => (activeTab = 'canon')}
+          >
+            <span>🕸️ КАНОН / ГРАФ</span>
+          </button>
+          <button
             id="tab-btn-sparks"
             type="button"
             class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
@@ -228,6 +272,10 @@
         {:else if activeTab === 'article'}
           <div class="space-y-6">
             <ArticleStreamView />
+          </div>
+        {:else if activeTab === 'canon'}
+          <div class="space-y-6">
+            <CanonGraphView bind:activeSlug={activeCanonSlug} {theme} />
           </div>
         {:else if activeTab === 'sparks'}
           <div class="space-y-6">
@@ -290,6 +338,12 @@
           </div>
         </div>
       {/if}
+
+      <CmdKSearchModal
+        bind:isOpen={isSearchModalOpen}
+        {theme}
+        on:select={handleSearchResultSelect}
+      />
 
       <ConsentManager {theme} bind:isOpen={isCmpModalOpen} />
     </main>
