@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Canon Telemetry &amp; Navigation Metrics</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#dfe2ef",
+            "tertiary-fixed": "#6ffbbe",
+            "on-background": "#dfe2ef",
+            "primary-container": "#00f0ff",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-container": "#1c1f29",
+            "surface-container-lowest": "#0a0e17",
+            "error-container": "#93000a",
+            "on-tertiary-fixed": "#002113",
+            "secondary-fixed": "#e2dfff",
+            "background": "#0f131c",
+            "tertiary": "#d8ffe7",
+            "primary-fixed-dim": "#00dbe9",
+            "outline": "#849495",
+            "on-primary-fixed": "#002022",
+            "secondary-container": "#3626ce",
+            "primary": "#dbfcff",
+            "on-surface": "#dfe2ef",
+            "surface-container-high": "#262a34",
+            "secondary": "#c3c0ff",
+            "on-primary": "#00363a",
+            "primary-fixed": "#7df4ff",
+            "on-primary-fixed-variant": "#004f54",
+            "on-secondary-container": "#b3b1ff",
+            "error": "#ffb4ab",
+            "on-error-container": "#ffdad6",
+            "outline-variant": "#3b494b",
+            "surface-container-highest": "#31353f",
+            "surface-dim": "#0f131c",
+            "inverse-primary": "#006970",
+            "secondary-fixed-dim": "#c3c0ff",
+            "on-tertiary-container": "#006d4a",
+            "on-error": "#690005",
+            "on-primary-container": "#006970",
+            "tertiary-container": "#65f2b5",
+            "on-secondary": "#1d00a5",
+            "on-secondary-fixed": "#0f0069",
+            "surface-bright": "#353943",
+            "inverse-on-surface": "#2c303a",
+            "surface-tint": "#00dbe9",
+            "on-tertiary": "#003824",
+            "surface": "#0f131c",
+            "surface-variant": "#31353f",
+            "on-surface-variant": "#b9cacb",
+            "surface-container-low": "#181b25",
+            "on-secondary-fixed-variant": "#3323cc",
+            "on-tertiary-fixed-variant": "#005236"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-xl": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter": "0.75rem",
+            "margin": "1rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Geist", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-code-sm": ["JetBrains Mono", "monospace"],
+            "display-lg": ["Geist", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "label-code-md": ["JetBrains Mono", "monospace"],
+            "headline-lg": ["Geist", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "headline-md": ["Geist", "sans-serif"],
+            "label-code-lg": ["JetBrains Mono", "monospace"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "label-code-sm": ["9px", { "lineHeight": "12px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "label-code-md": ["11px", { "lineHeight": "14px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-lg": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-code-lg": ["13px", { "lineHeight": "16px", "letterSpacing": "-0.01em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    /* Hairline dot-matrix background */
+    .bg-grid-pattern {
+      background-size: 16px 16px;
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    }
+    /* Pulse indicators */
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .animate-telemetry-pulse {
+      animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased font-body-md selection:bg-primary-container selection:text-on-primary-container pb-24">
+<!-- TopAppBar Component (from Shared JSON) -->
+<header class="flex justify-between items-center w-full px-margin h-14 z-40 bg-surface-container-lowest border-b border-outline-variant/30 sticky top-0 backdrop-blur-md">
+<div class="flex items-center space-x-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/40 text-primary">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+</div>
+<div>
+<div class="flex items-center space-x-space-xs">
+<span class="text-headline-md font-headline-md text-primary tracking-tight">Canon Telemetry</span>
+</div>
+<div class="flex items-center space-x-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-telemetry-pulse"></span>
+<span class="font-label-code-sm text-label-code-sm text-tertiary-fixed tracking-wider">LIVE · 120 evt/s</span>
+</div>
+</div>
+</div>
+<div class="flex items-center space-x-space-sm">
+<div class="flex items-center space-x-1 px-space-sm py-1 rounded bg-surface-container-low border border-outline-variant/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span>
+<span class="font-label-code-md text-label-code-md text-primary">PROD-US</span>
+<span class="material-symbols-outlined text-outline text-[14px]">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Main Observability Screen Canvas -->
+<main class="max-w-md mx-auto px-margin pt-space-md space-y-space-md">
+<!-- Epic Telemetry Goal Context Card -->
+<section class="p-space-md rounded bg-surface-container-low border border-outline-variant/40 relative overflow-hidden bg-grid-pattern">
+<div class="flex items-start justify-between mb-space-sm">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[16px]">radar</span>
+<span class="font-label-code-sm text-label-code-sm text-primary-fixed-dim uppercase tracking-wider">Telemetry Context · Epic Eng-402</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded border border-outline-variant/20">v2.1.0-stream</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-md">
+        Tracking real-time node transitions, deep graph path hops, and search-to-knowledge traversal to measure holistic Canon core engagement.
+      </p>
+<!-- Key KPI Tiles (Fluid 3-col micro-dense grid) -->
+<div class="grid grid-cols-3 gap-space-xs pt-space-xs border-t border-outline-variant/30">
+<div class="p-space-xs bg-surface-container-lowest/80 rounded border border-outline-variant/30">
+<div class="font-label-code-sm text-label-code-sm text-on-surface-variant">Active Sessions</div>
+<div class="font-headline-md text-headline-md text-primary mt-0.5">2,840</div>
+<div class="font-label-code-sm text-label-code-sm text-tertiary-fixed flex items-center mt-0.5">
+<span class="material-symbols-outlined text-[10px] mr-0.5">arrow_upward</span>+12.4%
+          </div>
+</div>
+<div class="p-space-xs bg-surface-container-lowest/80 rounded border border-outline-variant/30">
+<div class="font-label-code-sm text-label-code-sm text-on-surface-variant">Daily Graph Hops</div>
+<div class="font-headline-md text-headline-md text-primary mt-0.5">142.8k</div>
+<div class="font-label-code-sm text-label-code-sm text-primary-fixed-dim flex items-center mt-0.5">
+<span class="material-symbols-outlined text-[10px] mr-0.5">sync_alt</span>3.4 / sess
+          </div>
+</div>
+<div class="p-space-xs bg-surface-container-lowest/80 rounded border border-outline-variant/30">
+<div class="font-label-code-sm text-label-code-sm text-on-surface-variant">Search Coverage</div>
+<div class="font-headline-md text-headline-md text-tertiary-fixed-dim mt-0.5">94.2%</div>
+<div class="font-label-code-sm text-label-code-sm text-tertiary-fixed flex items-center mt-0.5">
+<span class="material-symbols-outlined text-[10px] mr-0.5">check_circle</span>High
+          </div>
+</div>
+</div>
+</section>
+<!-- Granularity & Metric Filter Controls -->
+<section class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<!-- Segmented Time Range -->
+<div class="flex bg-surface-container-lowest p-0.5 rounded border border-outline-variant/40">
+<button class="px-2.5 py-1 rounded font-label-code-sm text-label-code-sm text-on-surface-variant hover:text-primary transition-all duration-150">1H</button>
+<button class="px-2.5 py-1 rounded font-label-code-sm text-label-code-sm bg-surface-container-high text-primary font-medium border border-outline-variant/50 transition-all duration-150">24H</button>
+<button class="px-2.5 py-1 rounded font-label-code-sm text-label-code-sm text-on-surface-variant hover:text-primary transition-all duration-150">7D</button>
+</div>
+<!-- Metric Refresh & Stream Status -->
+<div class="flex items-center space-x-1.5">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">Refreshed 4s ago</span>
+<button class="p-1 rounded bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant hover:text-primary active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[14px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- Horizontal Scrollable Metric Pills -->
+<div class="flex space-x-1.5 overflow-x-auto no-scrollbar py-1">
+<button class="px-space-sm py-1 rounded bg-primary-container/10 border border-primary-container/40 text-primary-fixed-dim font-label-code-sm text-label-code-sm whitespace-nowrap flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span>
+<span>All Events</span>
+<span class="text-on-surface-variant ml-1 font-normal">384k</span>
+</button>
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant hover:text-primary font-label-code-sm text-label-code-sm whitespace-nowrap flex items-center space-x-1">
+<span>Graph Expansions</span>
+<span class="text-outline ml-1 font-normal">82k</span>
+</button>
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant hover:text-primary font-label-code-sm text-label-code-sm whitespace-nowrap flex items-center space-x-1">
+<span>Search Queries</span>
+<span class="text-outline ml-1 font-normal">18.4k</span>
+</button>
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant hover:text-primary font-label-code-sm text-label-code-sm whitespace-nowrap flex items-center space-x-1">
+<span>Node Dwells</span>
+<span class="text-outline ml-1 font-normal">45k</span>
+</button>
+</div>
+</section>
+<!-- Section 1: Graph Navigation Telemetry -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">account_tree</span>
+<h2 class="font-headline-md text-headline-md text-primary">Graph Traversal Telemetry</h2>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">p95: 4.8 hops</span>
+</div>
+<!-- Telemetry Metric Cards Bento -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-space-md rounded bg-surface-container-low border border-outline-variant/40">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">Avg Traversal Depth</span>
+<span class="material-symbols-outlined text-primary-fixed-dim text-[14px]">route</span>
+</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary">3.4 <span class="font-label-code-md text-label-code-md text-on-surface-variant">hops</span></div>
+<div class="mt-2 h-1 w-full bg-surface-container-high rounded overflow-hidden flex">
+<div class="bg-primary-container h-full" style="width: 68%;"></div>
+</div>
+<div class="flex justify-between items-center mt-1 font-label-code-sm text-label-code-sm text-outline">
+<span>target: 2.5</span>
+<span class="text-tertiary-fixed">+36% depth</span>
+</div>
+</div>
+<div class="p-space-md rounded bg-surface-container-low border border-outline-variant/40">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">Node Expansion Rate</span>
+<span class="material-symbols-outlined text-tertiary-fixed text-[14px]">unfold_more</span>
+</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary">61.8%</div>
+<div class="mt-2 h-1 w-full bg-surface-container-high rounded overflow-hidden flex">
+<div class="bg-tertiary-fixed-dim h-full" style="width: 61.8%;"></div>
+</div>
+<div class="flex justify-between items-center mt-1 font-label-code-sm text-label-code-sm text-outline">
+<span>vs baseline 54%</span>
+<span class="text-tertiary-fixed">Healthy</span>
+</div>
+</div>
+</div>
+<!-- Interactive High-Traffic Transition Flow Diagram -->
+<div class="p-space-md rounded bg-surface-container-low border border-outline-variant/40 space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-code-sm text-label-code-sm text-primary uppercase tracking-wider">High-Traffic Path Funnel &amp; Transitions</span>
+<span class="font-label-code-sm text-label-code-sm text-outline">Session Aggregation</span>
+</div>
+<!-- Node Transition Diagram Step 1 -->
+<div class="space-y-2">
+<!-- Step A -->
+<div class="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.4)]"></span>
+<div>
+<span class="font-label-code-md text-label-code-md text-primary">CoreConcept:Schema</span>
+<span class="block font-body-sm text-body-sm text-outline">Entry Point · 42.1k hits</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-code-sm text-label-code-sm text-tertiary-fixed">100% volume</span>
+</div>
+</div>
+<!-- Transition connector 1 -->
+<div class="flex items-center justify-between px-space-md text-outline">
+<div class="flex items-center space-x-1 font-label-code-sm text-label-code-sm">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+<span>via <code class="text-secondary-fixed">HAS_SPECIFICATION</code></span>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">Drop-off: 14.2%</span>
+</div>
+<!-- Step B -->
+<div class="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed"></span>
+<div>
+<span class="font-label-code-md text-label-code-md text-primary">Specification:AuthV2</span>
+<span class="block font-body-sm text-body-sm text-outline">Mid Node · 36.1k hops</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-code-sm text-label-code-sm text-on-surface">85.8% retained</span>
+</div>
+</div>
+<!-- Transition connector 2 -->
+<div class="flex items-center justify-between px-space-md text-outline">
+<div class="flex items-center space-x-1 font-label-code-sm text-label-code-sm">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+<span>via <code class="text-secondary-fixed">IMPLEMENTED_BY</code></span>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">Drop-off: 9.1%</span>
+</div>
+<!-- Step C -->
+<div class="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed"></span>
+<div>
+<span class="font-label-code-md text-label-code-md text-primary">API Reference:SessionValidator</span>
+<span class="block font-body-sm text-body-sm text-outline">Terminal Depth · 32.8k hops</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-code-sm text-label-code-sm text-tertiary-fixed">77.9% completed</span>
+</div>
+</div>
+</div>
+<!-- Path Traverse Ranked List -->
+<div class="pt-space-xs border-t border-outline-variant/20 space-y-1.5">
+<div class="font-label-code-sm text-label-code-sm text-on-surface-variant">Top Graph Traversal Sequences</div>
+<div class="p-2 rounded bg-surface-container-lowest/60 border border-outline-variant/20 flex items-center justify-between text-body-sm">
+<div class="truncate pr-2">
+<span class="font-label-code-sm text-label-code-sm text-primary">RFC-204</span>
+<span class="text-outline">→</span>
+<span class="font-label-code-sm text-label-code-sm text-primary">ImplGuide</span>
+<span class="text-outline">→</span>
+<span class="font-label-code-sm text-label-code-sm text-secondary">TokenExchange</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-primary-fixed-dim whitespace-nowrap">18.9k hits</span>
+</div>
+<div class="p-2 rounded bg-surface-container-lowest/60 border border-outline-variant/20 flex items-center justify-between text-body-sm">
+<div class="truncate pr-2">
+<span class="font-label-code-sm text-label-code-sm text-primary">PipelineDef</span>
+<span class="text-outline">→</span>
+<span class="font-label-code-sm text-label-code-sm text-primary">StageArtifact</span>
+<span class="text-outline">→</span>
+<span class="font-label-code-sm text-label-code-sm text-secondary">ObservabilityProbe</span>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-primary-fixed-dim whitespace-nowrap">14.2k hits</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Search Usage & Query Telemetry -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">travel_explore</span>
+<h2 class="font-headline-md text-headline-md text-primary">Search &amp; Query Telemetry</h2>
+</div>
+<span class="font-label-code-sm text-label-code-sm text-tertiary-fixed">CTR 84.6%</span>
+</div>
+<!-- Search Metrics Grid -->
+<div class="grid grid-cols-3 gap-space-xs">
+<div class="p-space-xs rounded bg-surface-container-low border border-outline-variant/40">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">Query Count</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">18.4k</div>
+<div class="font-label-code-sm text-label-code-sm text-outline mt-0.5">24h volume</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low border border-outline-variant/40">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">Zero-Result</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">1.8%</div>
+<div class="font-label-code-sm text-label-code-sm text-tertiary-fixed mt-0.5">-0.4% QoQ</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low border border-outline-variant/40">
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant">Med Latency</span>
+<div class="font-headline-md text-headline-md text-primary-fixed-dim mt-1">42ms</div>
+<div class="font-label-code-sm text-label-code-sm text-tertiary-fixed mt-0.5">p99: 98ms</div>
+</div>
+</div>
+<!-- Top Canon Search Terms & Graph Entry Conversions -->
+<div class="p-space-md rounded bg-surface-container-low border border-outline-variant/40 space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-code-sm text-label-code-sm text-primary uppercase tracking-wider">Top Queries &amp; Graph Conversions</span>
+<span class="font-label-code-sm text-label-code-sm text-outline">Conv to Hop</span>
+</div>
+<div class="space-y-2">
+<!-- Term 1 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="space-y-1 truncate pr-2">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-code-md text-label-code-md text-primary">"JWT verification spec"</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/30 font-label-code-sm text-label-code-sm">semantic</span>
+</div>
+<div class="font-body-sm text-body-sm text-outline flex items-center space-x-1 truncate">
+<span>Entry point:</span>
+<code class="text-primary-fixed-dim font-label-code-sm">SecurityModel:JWT</code>
+</div>
+</div>
+<div class="text-right whitespace-nowrap">
+<div class="font-label-code-md text-label-code-md text-primary">91.4%</div>
+<span class="font-label-code-sm text-label-code-sm text-outline">converts</span>
+</div>
+</div>
+<!-- Term 2 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="space-y-1 truncate pr-2">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-code-md text-label-code-md text-primary">"EventCatalogSchema"</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-secondary-fixed border border-secondary-fixed/30 font-label-code-sm text-label-code-sm">exact</span>
+</div>
+<div class="font-body-sm text-body-sm text-outline flex items-center space-x-1 truncate">
+<span>Entry point:</span>
+<code class="text-primary-fixed-dim font-label-code-sm">SchemaNode:KafkaV1</code>
+</div>
+</div>
+<div class="text-right whitespace-nowrap">
+<div class="font-label-code-md text-label-code-md text-primary">87.2%</div>
+<span class="font-label-code-sm text-label-code-sm text-outline">converts</span>
+</div>
+</div>
+<!-- Term 3 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="space-y-1 truncate pr-2">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-code-md text-label-code-md text-primary">"latency p99 threshold"</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/30 font-label-code-sm text-label-code-sm">semantic</span>
+</div>
+<div class="font-body-sm text-body-sm text-outline flex items-center space-x-1 truncate">
+<span>Entry point:</span>
+<code class="text-primary-fixed-dim font-label-code-sm">SLOPolicy:Observability</code>
+</div>
+</div>
+<div class="text-right whitespace-nowrap">
+<div class="font-label-code-md text-label-code-md text-primary">74.6%</div>
+<span class="font-label-code-sm text-label-code-sm text-outline">converts</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Live Ingestion Event Stream (Recent Traversal Logs) -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">stream</span>
+<h2 class="font-headline-md text-headline-md text-primary">Live Traversal Event Log</h2>
+</div>
+<div class="flex items-center space-x-1">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-telemetry-pulse"></span>
+<span class="font-label-code-sm text-label-code-sm text-on-surface-variant font-medium">Streaming</span>
+</div>
+</div>
+<!-- Real-Time Log Feed Container -->
+<div class="rounded bg-surface-container-low border border-outline-variant/40 divide-y divide-outline-variant/20 overflow-hidden font-label-code-sm text-label-code-sm">
+<!-- Stream Item 1 -->
+<div class="p-space-sm bg-surface-container-lowest/60 hover:bg-surface-container-high transition-colors flex items-start space-x-2">
+<div class="w-1 self-stretch rounded bg-primary-container"></div>
+<div class="flex-1 space-y-0.5">
+<div class="flex items-center justify-between text-outline">
+<span class="text-on-surface-variant">14:28:49.102 UTC</span>
+<span class="px-1 rounded bg-surface-container text-primary-fixed-dim border border-outline-variant/30">tracked</span>
+</div>
+<div class="font-label-code-md text-label-code-md text-primary truncate">
+              nav.graph.expand_node: <span class="text-secondary-fixed">Entity[AuthV2]</span>
+</div>
+<div class="flex items-center justify-between text-outline">
+<span>sess: <code class="text-on-surface-variant">anon-e7f12</code></span>
+<span class="text-tertiary-fixed">12ms · depth 3</span>
+</div>
+</div>
+</div>
+<!-- Stream Item 2 -->
+<div class="p-space-sm bg-surface-container-lowest/60 hover:bg-surface-container-high transition-colors flex items-start space-x-2">
+<div class="w-1 self-stretch rounded bg-tertiary-fixed"></div>
+<div class="flex-1 space-y-0.5">
+<div class="flex items-center justify-between text-outline">
+<span class="text-on-surface-variant">14:28:48.841 UTC</span>
+<span class="px-1 rounded bg-surface-container text-tertiary-fixed-dim border border-outline-variant/30">indexed</span>
+</div>
+<div class="font-label-code-md text-label-code-md text-primary truncate">
+              search.execute: <span class="text-tertiary">"JWT verification spec"</span> → Node[SecurityModel]
+            </div>
+<div class="flex items-center justify-between text-outline">
+<span>sess: <code class="text-on-surface-variant">anon-89a31</code></span>
+<span class="text-tertiary-fixed">38ms · 12 results</span>
+</div>
+</div>
+</div>
+<!-- Stream Item 3 -->
+<div class="p-space-sm bg-surface-container-lowest/60 hover:bg-surface-container-high transition-colors flex items-start space-x-2">
+<div class="w-1 self-stretch rounded bg-primary-container"></div>
+<div class="flex-1 space-y-0.5">
+<div class="flex items-center justify-between text-outline">
+<span class="text-on-surface-variant">14:28:47.490 UTC</span>
+<span class="px-1 rounded bg-surface-container text-primary-fixed-dim border border-outline-variant/30">tracked</span>
+</div>
+<div class="font-label-code-md text-label-code-md text-primary truncate">
+              nav.graph.path_traverse: <span class="text-secondary-fixed">CoreConcept → API → Session</span>
+</div>
+<div class="flex items-center justify-between text-outline">
+<span>sess: <code class="text-on-surface-variant">anon-33b09</code></span>
+<span class="text-tertiary-fixed">4 hops · dwell 18s</span>
+</div>
+</div>
+</div>
+<!-- Stream Item 4 -->
+<div class="p-space-sm bg-surface-container-lowest/60 hover:bg-surface-container-high transition-colors flex items-start space-x-2">
+<div class="w-1 self-stretch rounded bg-outline-variant"></div>
+<div class="flex-1 space-y-0.5">
+<div class="flex items-center justify-between text-outline">
+<span class="text-on-surface-variant">14:28:46.012 UTC</span>
+<span class="px-1 rounded bg-surface-container text-primary-fixed-dim border border-outline-variant/30">tracked</span>
+</div>
+<div class="font-label-code-md text-label-code-md text-primary truncate">
+              nav.dwell.threshold_reached: <span class="text-primary-fixed">Schema[GraphQL_v3]</span>
+</div>
+<div class="flex items-center justify-between text-outline">
+<span>sess: <code class="text-on-surface-variant">anon-00fa9</code></span>
+<span class="text-outline">45s dwell</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button for Full Raw Telemetry -->
+<button class="w-full py-2 rounded bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 text-primary font-label-code-sm text-label-code-sm flex items-center justify-center space-x-1.5 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span>View Full Kafka Telemetry Stream</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar Component (from Shared JSON) -->
+<!-- Active Tab: 'Overview' (Destination 1 matches current metrics overview intent) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs bg-surface-container-lowest border-t border-outline-variant/30 backdrop-blur-lg">
+<!-- Destination 1: Overview (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-primary-fixed-dim rounded-lg px-space-sm py-1 transition-all duration-150" href="#overview">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+<span class="font-label-code-sm text-label-code-sm mt-0.5 font-medium">Overview</span>
+</a>
+<!-- Destination 2: Graph Nav -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary px-space-sm py-1 transition-all duration-150" href="#graph">
+<span class="material-symbols-outlined text-[20px]">account_tree</span>
+<span class="font-label-code-sm text-label-code-sm mt-0.5 font-normal">Graph Nav</span>
+</a>
+<!-- Destination 3: Search -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary px-space-sm py-1 transition-all duration-150" href="#search">
+<span class="material-symbols-outlined text-[20px]">travel_explore</span>
+<span class="font-label-code-sm text-label-code-sm mt-0.5 font-normal">Search</span>
+</a>
+<!-- Destination 4: Live Events -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary px-space-sm py-1 transition-all duration-150" href="#events">
+<span class="material-symbols-outlined text-[20px]">stream</span>
+<span class="font-label-code-sm text-label-code-sm mt-0.5 font-normal">Live Events</span>
+</a>
+</nav>
+</body></html>
