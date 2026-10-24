@@ -1,8 +1,48 @@
 import { test, expect } from '@playwright/test';
 
+const MOCK_PODCASTS = [
+  {
+    id: 101,
+    slug: 'vypusk-05-rasshirennyy-razum-i-kognitivnaya-arhitektura',
+    philosopher: 'Дмитрий Ефремов',
+    title: 'Выпуск 05: Расширенный разум, граф Канона и агентная экономика',
+    thesis: 'Обсуждение того, как персональный сайт превращается во внешнюю память автора и платформу для ИИ-агентов.',
+    description: 'В пятом выпуске Дмитрий Ефремов разбирает концепцию Энди Кларка, структуру Канона, связность эссе и подкастов.',
+    audioUrl: 'https://dmitryefremov.com/media/podcast/ep05-extended-mind.mp3',
+    youtubeUrl: 'https://www.youtube.com/watch?v=efremov_ep05',
+    telegramUrl: 'https://t.me/efremov_mvp/1005',
+    durationSeconds: 3600,
+    publishedAt: '2026-10-23T15:00:00Z',
+    timecodes: [
+      { id: 501, timeOffsetSeconds: 0, title: 'Введение: Концепция Extended Mind и сайт как память', description: 'Почему сайт должен являться продолжением мышления.' },
+      { id: 502, timeOffsetSeconds: 900, title: 'Канон как семантическое ядро системы взглядов', description: 'Связывание понятий с выпусками подкаста.' },
+      { id: 503, timeOffsetSeconds: 2100, title: 'Деонтическая автономия и Agent-to-Agent протоколы', description: 'Как ИИ-агенты взаимодействуют с графом знаний.' }
+    ]
+  },
+  {
+    id: 102,
+    slug: 'vypusk-04-deonticheskaya-avtonomiya',
+    philosopher: 'Дмитрий Ефремов',
+    title: 'Выпуск 04: Деонтическая автономия ИИ-агентов',
+    thesis: 'Формализация обязательств, разрешений и запретов при выполнении автономных действий.',
+    description: 'В четвёртом выпуске обсуждаются деонтические операторы O(A), P(A), F(A) в архитектуре.',
+    audioUrl: 'https://dmitryefremov.com/media/podcast/ep04-deontic.mp3',
+    youtubeUrl: 'https://www.youtube.com/watch?v=efremov_ep04',
+    telegramUrl: 'https://t.me/efremov_mvp/1004',
+    durationSeconds: 2700,
+    publishedAt: '2026-10-20T12:00:00Z',
+    timecodes: [
+      { id: 401, timeOffsetSeconds: 0, title: 'Введение в деонтическую логику', description: 'Модальные операторы.' }
+    ]
+  }
+];
+
 test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route('/api/v1/podcasts', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(MOCK_PODCASTS) }));
+  });
+
   test('seeded podcast catalog is accessible and controls are fully keyboard operable', async ({ page }) => {
-    // Inject HTMLMediaElement mock to allow synthetic audio playback in headless Chromium
     await page.addInitScript(() => {
       Object.defineProperty(window.HTMLMediaElement.prototype, 'paused', {
         get(this: any) {
@@ -19,83 +59,69 @@ test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability
       };
     });
 
-    // 1. Navigate to main page (Podcast Media Hub tab is active by default)
     await page.goto('/');
 
-    // Ensure Podcast player container is rendered
-    await page.waitForSelector('#podcast-player-container');
-    await expect(page.locator('#podcast-title').first()).toContainText('Рут Баркан Маркус');
+    if (await page.locator('#cmp-accept-btn').isVisible()) {
+      await page.click('#cmp-accept-btn');
+    }
 
-    // 2. Test Play / Pause button via mouse click and keyboard Focus & Space
+    await page.waitForSelector('#podcast-player-container');
+    await expect(page.locator('#podcast-title').first()).toContainText('Выпуск 05');
+
     const playBtn = page.locator('#play-pause-btn');
     await expect(playBtn).toBeVisible();
     await expect(playBtn).toHaveAttribute('aria-label', 'Play Podcast Episode');
 
-    // Click play button to start playback
     await playBtn.click();
     await expect(playBtn).toHaveAttribute('aria-label', 'Pause Podcast Episode');
 
-    // Click play button again to pause playback
     await playBtn.click();
     await expect(playBtn).toHaveAttribute('aria-label', 'Play Podcast Episode');
 
-    // Focus play button and press Space to toggle
     await playBtn.focus();
     await page.keyboard.press('Space');
     await expect(playBtn).toHaveAttribute('aria-label', 'Pause Podcast Episode');
 
-    // Press Space again to Pause
     await page.keyboard.press('Space');
     await expect(playBtn).toHaveAttribute('aria-label', 'Play Podcast Episode');
 
-    // 3. Test Waveform visualizer slider keyboard operability (ArrowRight / ArrowLeft / Space)
     const waveform = page.locator('#waveform-container');
     await expect(waveform).toBeVisible();
 
     await waveform.focus();
-    // Press ArrowRight to seek forward (+5 seconds)
     await page.keyboard.press('ArrowRight');
     await expect(page.locator('#current-time-val')).toHaveText('00:05');
 
-    // Press ArrowRight again (+5 seconds -> 10s)
     await page.keyboard.press('ArrowRight');
     await expect(page.locator('#current-time-val')).toHaveText('00:10');
 
-    // Press ArrowLeft to seek backward (-5 seconds -> 5s)
     await page.keyboard.press('ArrowLeft');
     await expect(page.locator('#current-time-val')).toHaveText('00:05');
 
-    // 4. Test Timecode / topic navigation selection via mouse click and keyboard
-    const secondTimecode = page.locator('#timecode-btn-102');
+    const secondTimecode = page.locator('#timecode-btn-502');
     await expect(secondTimecode).toBeVisible();
 
-    // Click topic timecode button directly
     await secondTimecode.click();
 
-    // Timecode 102 offset is 340 seconds = 05:40
-    await expect(page.locator('#current-time-val')).toHaveText('05:40');
+    await expect(page.locator('#current-time-val')).toHaveText('15:00');
     await expect(secondTimecode).toContainText('СЕЙЧАС ИГРАЕТ');
 
-    // Click third topic timecode button
-    const thirdTimecode = page.locator('#timecode-btn-103');
+    const thirdTimecode = page.locator('#timecode-btn-503');
     await expect(thirdTimecode).toBeVisible();
 
     await thirdTimecode.focus();
     await page.keyboard.press('Enter');
 
-    // Timecode 103 offset is 920 seconds = 15:20
-    await expect(page.locator('#current-time-val')).toHaveText('15:20');
+    await expect(page.locator('#current-time-val')).toHaveText('35:00');
     await expect(thirdTimecode).toContainText('СЕЙЧАС ИГРАЕТ');
 
-    // 5. Test switching episodes in catalog via keyboard focus & Space
-    const ep2Card = page.locator('#episode-card-2');
+    const ep2Card = page.locator('#episode-card-102');
     await expect(ep2Card).toBeVisible();
 
     await ep2Card.focus();
     await page.keyboard.press('Enter');
 
-    // Verify active episode switched to Episode 2 (Пол Таггард)
-    await expect(page.locator('#podcast-title')).toContainText('Пол Таггард');
+    await expect(page.locator('#podcast-title')).toContainText('Выпуск 04');
     await expect(ep2Card).toContainText('АКТИВЕН');
   });
 });
