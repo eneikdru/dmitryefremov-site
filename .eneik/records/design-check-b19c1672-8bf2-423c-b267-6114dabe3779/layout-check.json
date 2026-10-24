@@ -1,0 +1,121 @@
+[
+  {
+    "id": "main-header",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 103,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 209,
+    "top": 136,
+    "width": 208,
+    "height": 208
+  },
+  {
+    "id": "hero-avatar-img",
+    "left": 211,
+    "top": 138,
+    "width": 204,
+    "height": 204
+  },
+  {
+    "id": "hero-title",
+    "left": 449,
+    "top": 162,
+    "width": 782,
+    "height": 48
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 449,
+    "top": 216,
+    "width": 782,
+    "height": 28
+  },
+  {
+    "id": "hero-manifest",
+    "left": 449,
+    "top": 260,
+    "width": 782,
+    "height": 56
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1129,
+    "top": 32,
+    "width": 135,
+    "height": 30
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 431,
+    "width": 865,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 376,
+    "top": 438,
+    "width": 141,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 183,
+    "top": 438,
+    "width": 185,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 858,
+    "top": 438,
+    "width": 177,
+    "height": 36
+  },
+  {
+    "id": "podcast-player-container",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 1785
+  },
+  {
+    "id": "podcast-episodes-section",
+    "left": 176,
+    "top": 616,
+    "width": 439,
+    "height": 1690
+  },
+  {
+    "id": "podcast-player-section",
+    "left": 639,
+    "top": 616,
+    "width": 625,
+    "height": 1690
+  },
+  {
+    "id": "podcast-player-card",
+    "left": 639,
+    "top": 616,
+    "width": 625,
+    "height": 922
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 2346,
+    "width": 1088,
+    "height": 49
+  }
+]
