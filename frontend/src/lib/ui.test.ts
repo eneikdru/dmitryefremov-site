@@ -135,4 +135,33 @@ describe('TelemetryHub Component & CMP Integration', () => {
     expect(reOpenedOverlay).not.toBeNull();
     expect(target.textContent).toContain('TRACKERS_BLOCKED');
   });
+
+  it('ensures no /admin links or Studio tab exist in the public UI', () => {
+    component = mount(TelemetryHub, { target });
+
+    const adminLink = target.querySelector('#admin-portal-link');
+    const studioTabBtn = target.querySelector('#tab-btn-gallery');
+
+    expect(adminLink).toBeNull();
+    expect(studioTabBtn).toBeNull();
+    expect(target.textContent).not.toContain('Admin Ops');
+    expect(target.textContent).not.toContain('СТУДИЯ & СЕТАП');
+  });
+
+  it('meets WCAG 2.1 AA keyboard operability standards on public navigation buttons', () => {
+    component = mount(TelemetryHub, { target });
+
+    const tabButtons = [
+      target.querySelector('#tab-btn-podcast'),
+      target.querySelector('#tab-btn-article'),
+      target.querySelector('#tab-btn-sparks'),
+      target.querySelector('#tab-btn-contact')
+    ];
+
+    tabButtons.forEach(btn => {
+      expect(btn).not.toBeNull();
+      expect(btn?.getAttribute('type')).toBe('button');
+      expect(btn?.classList.contains('cursor-pointer')).toBe(true);
+    });
+  });
 });
