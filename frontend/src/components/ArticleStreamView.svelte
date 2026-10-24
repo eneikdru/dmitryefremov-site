@@ -191,28 +191,30 @@
         {:else}
           <div class="space-y-3" role="list" aria-label="Available Longreads">
             {#each filteredArticles as article}
-              <button
-                type="button"
-                class="article-card w-full p-4 rounded-lg border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#38bdf8] {selectedArticleId === article.id ? 'bg-[#12151e] border-[#38bdf8] shadow-md' : 'bg-[#090a0f] border-[#1f2433] hover:border-[#34d399]/50 hover:bg-[#12151e]/50'}"
-                on:click={() => handleArticleSelect(article.id)}
-              >
-                <div class="flex justify-between items-center text-xs font-mono mb-2">
-                  <span class="px-1.5 py-0.5 rounded bg-[#1f2433] text-[#38bdf8] uppercase">
-                    {article.topic}
-                  </span>
-                  <span class="text-[#64748b]">{article.readTime}</span>
-                </div>
-                <h3 class="font-bold text-white text-base mb-1 hover:text-[#38bdf8] transition-colors">
-                  {article.title}
-                </h3>
-                <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
-                  {article.summary}
-                </p>
-                <div class="mt-3 text-[11px] font-mono text-[#64748b] flex justify-between items-center">
-                  <span>{article.publishedAt}</span>
-                  <span class="text-[#38bdf8]">{selectedArticleId === article.id ? '● READING' : 'READ →'}</span>
-                </div>
-              </button>
+              <div role="listitem">
+                <button
+                  type="button"
+                  class="article-card w-full p-4 rounded-lg border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#38bdf8] {selectedArticleId === article.id ? 'bg-[#12151e] border-[#38bdf8] shadow-md' : 'bg-[#090a0f] border-[#1f2433] hover:border-[#34d399]/50 hover:bg-[#12151e]/50'}"
+                  on:click={() => handleArticleSelect(article.id)}
+                >
+                  <div class="flex justify-between items-center text-xs font-mono mb-2">
+                    <span class="px-1.5 py-0.5 rounded bg-[#1f2433] text-[#38bdf8] uppercase">
+                      {article.topic}
+                    </span>
+                    <span class="text-[#94a3b8]">{article.readTime}</span>
+                  </div>
+                  <h3 class="font-bold text-white text-base mb-1 hover:text-[#38bdf8] transition-colors">
+                    {article.title}
+                  </h3>
+                  <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
+                    {article.summary}
+                  </p>
+                  <div class="mt-3 text-[11px] font-mono text-[#94a3b8] flex justify-between items-center">
+                    <span>{article.publishedAt}</span>
+                    <span class="text-[#38bdf8]">{selectedArticleId === article.id ? '● READING' : 'READ →'}</span>
+                  </div>
+                </button>
+              </div>
             {/each}
           </div>
         {/if}
@@ -232,17 +234,17 @@
         {:else}
           <div class="space-y-3" role="list" aria-label="Telegram Sparks Stream">
             {#each sparks as spark}
-              <div class="spark-card p-3 rounded-lg border border-[#1f2433] bg-[#12151e]/60 font-mono text-xs space-y-2">
+              <div role="listitem" class="spark-card p-3 rounded-lg border border-[#1f2433] bg-[#12151e]/60 font-mono text-xs space-y-2">
                 <div class="flex justify-between items-center text-[11px] text-[#94a3b8]">
                   <span class="px-1.5 py-0.5 rounded bg-[#1f2433] text-[#34d399]">
                     {spark.telegramMessageId ? `TG_MSG_#${spark.telegramMessageId}` : 'TG_MSG'}
                   </span>
-                  <span class="text-[#64748b]">{spark.domain || 'General'}</span>
+                  <span class="text-[#94a3b8]">{spark.domain || 'General'}</span>
                 </div>
                 <p class="text-[#e2e8f0] font-sans leading-relaxed text-xs">
                   {spark.content}
                 </p>
-                <div class="flex justify-between items-center text-[10px] text-[#64748b]">
+                <div class="flex justify-between items-center text-[10px] text-[#94a3b8]">
                   <span>{spark.author || '@efremov_mvp'}</span>
                   <span>{spark.publishedAt}</span>
                 </div>
@@ -317,9 +319,14 @@
               <span>[TELEMETRY_EVENT_FEED]</span>
               <span class="text-[#34d399]">ZERO_COOKIE_ACTIVE</span>
             </div>
-            <div class="bg-[#12151e] p-3 rounded border border-[#1f2433] font-mono text-xs max-h-28 overflow-y-auto space-y-1 text-[#a7f3d0]">
+            <div
+              tabindex="0"
+              role="region"
+              aria-label="Telemetry Event Log Feed"
+              class="bg-[#12151e] p-3 rounded border border-[#1f2433] font-mono text-xs max-h-28 overflow-y-auto space-y-1 text-[#a7f3d0]"
+            >
               {#if loggedEvents.length === 0}
-                <span class="text-[#64748b]">Scroll the article container above to trigger scroll depth telemetry events...</span>
+                <span class="text-[#94a3b8]">Scroll the article container above to trigger scroll depth telemetry events...</span>
               {:else}
                 {#each loggedEvents as evt}
                   <div class="flex justify-between border-b border-[#1f2433] pb-1">
@@ -328,7 +335,7 @@
                     {:else}
                       <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
                     {/if}
-                    <span class="text-[#64748b]">{evt.timestamp.slice(11, 19)}</span>
+                    <span class="text-[#94a3b8]">{evt.timestamp.slice(11, 19)}</span>
                   </div>
                 {/each}
               {/if}

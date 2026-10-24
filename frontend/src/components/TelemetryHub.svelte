@@ -104,7 +104,7 @@
             >
               DMITRY EFREMOV
             </span>
-            <span id="sys-domain" class="text-xs font-mono hidden sm:inline {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">
+            <span id="sys-domain" class="text-xs font-mono hidden sm:inline {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
               dmitryefremov.com
             </span>
           </div>
@@ -115,7 +115,6 @@
               id="theme-toggle-btn"
               type="button"
               on:click={toggleTheme}
-              aria-label="Toggle theme"
               class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
             >
               <span>ТЕМА:</span>

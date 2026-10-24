@@ -68,7 +68,7 @@
       <p id="identity-bio" class="text-xs sm:text-sm text-[#94a3b8] font-mono leading-relaxed">Systems Architect & Deontic Logic Researcher</p>
     </div>
     <div class="px-3 py-1.5 rounded-lg bg-[#12151e] border border-[#1f2433] text-right font-mono text-xs">
-      <span class="text-[#64748b] block">STATUS</span>
+      <span class="text-[#94a3b8] block">STATUS</span>
       <span class="text-[#38bdf8] font-bold flex items-center gap-1.5 justify-end">
         <span class="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse"></span>
         ACTIVE_ONLINE
@@ -90,7 +90,6 @@
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="{link.label} - {link.description}"
             on:click={(e) => handleOutboundClick(link, e)}
             class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm font-mono focus:outline-none"
           >
@@ -98,10 +97,10 @@
               <span class="text-[#f43f5e] text-xs font-bold shrink-0">{link.tag}</span>
               <div class="min-w-0">
                 <span class="text-white font-semibold group-hover:text-[#38bdf8] transition-colors block truncate">{link.label}</span>
-                <span class="text-xs text-[#64748b] group-hover:text-[#94a3b8] transition-colors block truncate">{link.description}</span>
+                <span class="text-xs text-[#94a3b8] group-hover:text-white transition-colors block truncate">{link.description}</span>
               </div>
             </div>
-            <div class="flex items-center gap-1 text-xs text-[#64748b] group-hover:text-[#38bdf8] shrink-0">
+            <div class="flex items-center gap-1 text-xs text-[#94a3b8] group-hover:text-[#38bdf8] shrink-0">
               <span class="truncate max-w-[180px] hidden md:inline">{link.url}</span>
               <span class="font-bold">↗</span>
             </div>
@@ -132,8 +131,8 @@
   </section>
 
   <!-- High-End Dark Clean Footer / Identity Note -->
-  <footer id="identity-card-footer" class="pt-4 border-t border-[#1f2433] flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#64748b] gap-2">
+  <footer id="identity-card-footer" class="pt-4 border-t border-[#1f2433] flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#94a3b8] gap-2">
     <span>[DEONTIC_SPEC_2026]</span>
-    <span class="text-[#94a3b8]">Zero debug logging on facade · Clean Brand Identity</span>
+    <span class="text-[#cbd5e1]">Zero debug logging on facade · Clean Brand Identity</span>
   </footer>
 </div>
