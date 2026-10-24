@@ -4,6 +4,7 @@
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import SeoMeta from './SeoMeta.svelte';
+  import CanonCrossLinks from './CanonCrossLinks.svelte';
 
   export interface Article {
     id: string;
@@ -413,6 +414,26 @@ All non-deterministic sources (timestamps, random number generators, network res
           aria-label="Article content scroll area"
         >
           {@html parsedContent.html}
+        </div>
+
+        <!-- Cross-Links to Other Content Nodes -->
+        <div class="mt-4">
+          <CanonCrossLinks
+            currentNodeId={selectedArticle.id}
+            currentNodeType="essay"
+            theme="dark"
+            crossLinks={[
+              { targetId: 'art-01-deontic-logic', title: 'Деонтическая логика в автономиях', category: 'Essay', relation: 'formal_model' },
+              { targetId: 'art-02-theory-of-constraints', title: 'Теория ограничений в пайплайнах', category: 'Essay', relation: 'throughput_optimization' },
+              { targetId: 'concept-autonomous-agents', title: 'Концепт: Автономные агенты', category: 'Concept', relation: 'architectural_core' }
+            ]}
+            onNavigate={(targetId) => {
+              const target = ARTICLES.find(a => a.id === targetId);
+              if (target) {
+                handleArticleSelect(target.id);
+              }
+            }}
+          />
         </div>
 
         <!-- Telemetry Event Log -->

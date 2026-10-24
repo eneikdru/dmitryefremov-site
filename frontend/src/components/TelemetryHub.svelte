@@ -9,6 +9,7 @@
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
+  import CmdKSearchModal from './CmdKSearchModal.svelte';
 
   export let initialTab: 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = 'podcast';
 
@@ -16,6 +17,7 @@
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
+  let isSearchModalOpen: boolean = false;
   let currentPath: string = typeof window !== 'undefined' ? window.location.pathname : '/';
 
   function updateRoute() {
@@ -91,6 +93,18 @@
           </div>
 
           <div class="flex items-center gap-3">
+            <!-- Cmd+K Search Trigger -->
+            <button
+              id="cmd-k-search-trigger"
+              type="button"
+              on:click={() => (isSearchModalOpen = true)}
+              aria-label="Открыть поиск по Канону (Cmd+K)"
+              class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#38bdf8] {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
+            >
+              <span class="text-[#38bdf8] font-bold">🔍 Cmd+K</span>
+              <span class="hidden md:inline text-[#94a3b8]">Поиск</span>
+            </button>
+
             <!-- Theme Toggle -->
             <button
               id="theme-toggle-btn"
@@ -405,6 +419,15 @@
       {/if}
 
       <ConsentManager {theme} bind:isOpen={isCmpModalOpen} />
+      <CmdKSearchModal
+        bind:isOpen={isSearchModalOpen}
+        {theme}
+        onSelectNode={(targetId, category) => {
+          if (category === 'Podcast') activeTab = 'podcast';
+          else if (category === 'Essay') activeTab = 'article';
+          else if (category === 'Spark') activeTab = 'sparks';
+        }}
+      />
     </main>
   </div>
 {/if}

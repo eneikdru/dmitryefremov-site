@@ -13,9 +13,27 @@ export interface TelemetryEvent {
     | 'canon_dwell_heartbeat'
     | 'form_field_focused'
     | 'form_validation_passed'
-    | 'canon_submit_converted';
+    | 'canon_submit_converted'
+    | 'graph_navigation'
+    | 'cross_link_click'
+    | 'search_utilization'
+    | 'canon_search_execute';
   timestamp: string;
   payload: Record<string, unknown>;
+}
+
+export interface GraphNavigationPayload {
+  fromNodeId: string;
+  toNodeId: string;
+  relation?: string;
+  entityType?: string;
+}
+
+export interface SearchUtilizationPayload {
+  query: string;
+  resultCount?: number;
+  latencyMs?: number;
+  searchType?: 'cmd_k' | 'input';
 }
 
 export interface EssayViewPayload {
@@ -78,6 +96,59 @@ class TelemetryService {
       payload: {
         articleId,
         title: title ?? articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackGraphNavigation(
+    fromNodeId: string,
+    toNodeId: string,
+    relation: string = 'cross_link',
+    entityType: string = 'CanonConcept'
+  ): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'graph_navigation',
+      timestamp: new Date().toISOString(),
+      payload: {
+        from_node_id: fromNodeId,
+        to_node_id: toNodeId,
+        fromNodeId,
+        toNodeId,
+        relation,
+        entity_type: entityType,
+        status: '200_OK'
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackSearchExecution(
+    query: string,
+    resultCount: number = 0,
+    latencyMs: number = 0,
+    searchType: 'cmd_k' | 'input' = 'cmd_k'
+  ): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'search_utilization',
+      timestamp: new Date().toISOString(),
+      payload: {
+        query,
+        result_count: resultCount,
+        resultCount,
+        latency_ms: latencyMs,
+        search_type: searchType,
+        status: '200_OK'
       }
     };
     this.recordEvent(event);

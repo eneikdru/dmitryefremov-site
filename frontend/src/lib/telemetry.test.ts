@@ -177,6 +177,59 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     });
   });
 
+  describe('Graph Navigation & Cross-Link Telemetry Dispatching', () => {
+    it('dispatches graph_navigation telemetry event when user clicks a cross-link', () => {
+      const evt = telemetry.trackGraphNavigation(
+        'art-01-deontic-logic',
+        'concept-deontic-logic',
+        'explains_invariants',
+        'Concept'
+      );
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('graph_navigation');
+      expect(evt?.payload.from_node_id).toBe('art-01-deontic-logic');
+      expect(evt?.payload.to_node_id).toBe('concept-deontic-logic');
+      expect(evt?.payload.relation).toBe('explains_invariants');
+      expect(evt?.payload.entity_type).toBe('Concept');
+
+      const events = telemetry.getEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toEqual(evt);
+    });
+
+    it('returns null if telemetry is blocked by consent settings', () => {
+      setConsentStatus('declined');
+      const evt = telemetry.trackGraphNavigation('node-a', 'node-b');
+      expect(evt).toBeNull();
+      expect(telemetry.getEvents()).toHaveLength(0);
+    });
+  });
+
+  describe('Cmd+K Search Utilization Telemetry Dispatching', () => {
+    it('dispatches search_utilization telemetry event when Cmd+K search is executed', () => {
+      const evt = telemetry.trackSearchExecution('state_machine', 14, 18, 'cmd_k');
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('search_utilization');
+      expect(evt?.payload.query).toBe('state_machine');
+      expect(evt?.payload.result_count).toBe(14);
+      expect(evt?.payload.latency_ms).toBe(18);
+      expect(evt?.payload.search_type).toBe('cmd_k');
+
+      const events = telemetry.getEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toEqual(evt);
+    });
+
+    it('returns null if consent is not accepted for search tracking', () => {
+      setConsentStatus('declined');
+      const evt = telemetry.trackSearchExecution('deontic', 5, 10, 'cmd_k');
+      expect(evt).toBeNull();
+      expect(telemetry.getEvents()).toHaveLength(0);
+    });
+  });
+
   describe('GQM Event Firing Exact-Once Measurement Verification', () => {
     it('fires correct GQM metric event exactly once per simulated user engagement action', () => {
       const dispatchedEvents: TelemetryEvent[] = [];
