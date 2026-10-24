@@ -13,9 +13,25 @@ export interface TelemetryEvent {
     | 'canon_dwell_heartbeat'
     | 'form_field_focused'
     | 'form_validation_passed'
-    | 'canon_submit_converted';
+    | 'canon_submit_converted'
+    | 'graph_navigation'
+    | 'search_utilization';
   timestamp: string;
   payload: Record<string, unknown>;
+}
+
+export interface GraphNavigationPayload {
+  sourceNodeId: string;
+  targetNodeId: string;
+  relationType?: string;
+  label?: string;
+}
+
+export interface SearchUtilizationPayload {
+  query: string;
+  resultsCount: number;
+  latencyMs?: number;
+  triggerSource?: string;
 }
 
 export interface EssayViewPayload {
@@ -78,6 +94,54 @@ class TelemetryService {
       payload: {
         articleId,
         title: title ?? articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackGraphNavigation(
+    sourceNodeId: string,
+    targetNodeId: string,
+    relationType: string = 'cross_link',
+    label?: string
+  ): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'graph_navigation',
+      timestamp: new Date().toISOString(),
+      payload: {
+        source_node_id: sourceNodeId,
+        target_node_id: targetNodeId,
+        relation_type: relationType,
+        label: label ?? `${sourceNodeId} -> ${targetNodeId}`
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackSearchUtilization(
+    query: string,
+    resultsCount: number = 0,
+    latencyMs: number = 0,
+    triggerSource: string = 'cmd_k'
+  ): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'search_utilization',
+      timestamp: new Date().toISOString(),
+      payload: {
+        query,
+        results_count: resultsCount,
+        latency_ms: latencyMs,
+        trigger_source: triggerSource
       }
     };
     this.recordEvent(event);

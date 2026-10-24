@@ -8,6 +8,7 @@
     fetchAgentTelemetry,
     submitAgentOrder
   } from '../lib/canon';
+  import CanonGraphSearchTelemetryView from './CanonGraphSearchTelemetryView.svelte';
 
   export let theme: 'dark' | 'light' = 'dark';
 
@@ -300,6 +301,11 @@
         {/if}
       </article>
     {/each}
+  </section>
+
+  <!-- Graph Navigation & Cmd+K Search Telemetry Dashboard -->
+  <section id="canon-graph-telemetry-container" class="pt-4 border-t border-[#3a494b]/30">
+    <CanonGraphSearchTelemetryView {theme} />
   </section>
 
   <!-- Security & External Agent Auth Card -->

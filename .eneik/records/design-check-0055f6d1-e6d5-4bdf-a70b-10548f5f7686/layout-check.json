@@ -1,0 +1,93 @@
+[
+  {
+    "id": "canon-gateway-header",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 80
+  },
+  {
+    "id": "gateway-header-title",
+    "left": 248,
+    "top": 538,
+    "width": 583,
+    "height": 28
+  },
+  {
+    "id": "ingress-gateway-card",
+    "left": 176,
+    "top": 625,
+    "width": 1088,
+    "height": 213
+  },
+  {
+    "id": "ingress-card-title",
+    "left": 197,
+    "top": 665,
+    "width": 296,
+    "height": 28
+  },
+  {
+    "id": "canon-telemetry-dashboard",
+    "left": 176,
+    "top": 2109,
+    "width": 1088,
+    "height": 856
+  },
+  {
+    "id": "telemetry-dashboard-header",
+    "left": 176,
+    "top": 2109,
+    "width": 1088,
+    "height": 62
+  },
+  {
+    "id": "cmd-k-trigger-btn",
+    "left": 899,
+    "top": 2122,
+    "width": 217,
+    "height": 36
+  },
+  {
+    "id": "canon-graph-explorer-section",
+    "left": 176,
+    "top": 2415,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "explorer-section-title",
+    "left": 225,
+    "top": 2440,
+    "width": 304,
+    "height": 16
+  },
+  {
+    "id": "active-node-title",
+    "left": 214,
+    "top": 2539,
+    "width": 1012,
+    "height": 28
+  },
+  {
+    "id": "telemetry-audit-log-section",
+    "left": 176,
+    "top": 2742,
+    "width": 1088,
+    "height": 223
+  },
+  {
+    "id": "security-auth-card",
+    "left": 176,
+    "top": 2989,
+    "width": 1088,
+    "height": 381
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 3410,
+    "width": 1088,
+    "height": 49
+  }
+]

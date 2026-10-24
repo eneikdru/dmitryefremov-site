@@ -177,6 +177,41 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     });
   });
 
+  describe('Graph Navigation & Cmd+K Search Telemetry Events', () => {
+    it('dispatches graph_navigation telemetry event when cross-links between nodes are clicked', () => {
+      const evt = telemetry.trackGraphNavigation(
+        'concept_deontic_logic',
+        'podcast_episode_01',
+        'cross_link',
+        'Деонтическая логика -> Выпуск 01'
+      );
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('graph_navigation');
+      expect(evt?.payload.source_node_id).toBe('concept_deontic_logic');
+      expect(evt?.payload.target_node_id).toBe('podcast_episode_01');
+      expect(evt?.payload.relation_type).toBe('cross_link');
+      expect(evt?.payload.label).toBe('Деонтическая логика -> Выпуск 01');
+
+      const events = telemetry.getEvents();
+      expect(events).toContainEqual(evt);
+    });
+
+    it('dispatches search_utilization telemetry event when Cmd+K search is executed', () => {
+      const evt = telemetry.trackSearchUtilization('state_machine', 14, 18, 'cmd_k');
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('search_utilization');
+      expect(evt?.payload.query).toBe('state_machine');
+      expect(evt?.payload.results_count).toBe(14);
+      expect(evt?.payload.latency_ms).toBe(18);
+      expect(evt?.payload.trigger_source).toBe('cmd_k');
+
+      const events = telemetry.getEvents();
+      expect(events).toContainEqual(evt);
+    });
+  });
+
   describe('GQM Event Firing Exact-Once Measurement Verification', () => {
     it('fires correct GQM metric event exactly once per simulated user engagement action', () => {
       const dispatchedEvents: TelemetryEvent[] = [];
