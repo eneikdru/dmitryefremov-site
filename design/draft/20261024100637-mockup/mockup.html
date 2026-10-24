@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seed Data &amp; Core Paths | Release Verification</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Geist & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#464554",
+            "surface-container-highest": "#313540",
+            "surface": "#0f131d",
+            "on-secondary-fixed-variant": "#004e5c",
+            "on-surface": "#dfe2f1",
+            "background": "#0f131d",
+            "outline": "#908fa0",
+            "tertiary": "#4edea3",
+            "on-primary-container": "#0d0096",
+            "inverse-primary": "#494bd6",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-container": "#000703",
+            "surface-variant": "#313540",
+            "on-tertiary-fixed": "#002113",
+            "surface-container-lowest": "#0a0e18",
+            "tertiary-fixed-dim": "#4edea3",
+            "primary-fixed-dim": "#c0c1ff",
+            "surface-container": "#1c1f2a",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-bright": "#353944",
+            "on-background": "#dfe2f1",
+            "inverse-surface": "#dfe2f1",
+            "surface-container-high": "#262a35",
+            "secondary-container": "#03b5d3",
+            "tertiary-container": "#00885d",
+            "on-primary": "#1000a9",
+            "primary-container": "#8083ff",
+            "error": "#ffb4ab",
+            "primary": "#c0c1ff",
+            "on-tertiary": "#003824",
+            "on-primary-fixed": "#07006c",
+            "secondary-fixed-dim": "#4cd7f6",
+            "on-secondary": "#003640",
+            "on-surface-variant": "#c7c4d7",
+            "inverse-on-surface": "#2c303b",
+            "secondary-fixed": "#acedff",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "secondary": "#4cd7f6",
+            "surface-container-low": "#171b26",
+            "on-error": "#690005",
+            "on-secondary-fixed": "#001f26",
+            "primary-fixed": "#e1e0ff",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-tint": "#c0c1ff",
+            "on-secondary-container": "#00424e",
+            "error-container": "#93000a",
+            "surface-dim": "#0f131d"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "margin-mobile": "0.75rem",
+            "space-xl": "1.5rem",
+            "margin": "1rem",
+            "gutter": "0.75rem",
+            "space-md": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "0.5rem",
+            "space-lg": "1rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Geist"],
+            "code-snippet": ["JetBrains Mono"],
+            "body-sm": ["Geist"],
+            "label-md": ["JetBrains Mono"],
+            "label-lg": ["JetBrains Mono"],
+            "headline-sm": ["Geist"],
+            "body-md": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "headline-lg": ["Geist"],
+            "label-sm": ["JetBrains Mono"],
+            "body-lg": ["Geist"]
+          },
+          "fontSize": {
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "code-snippet": ["11px", { "lineHeight": "15px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "18px", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "38px", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Monospace tabular align */
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+    /* Custom subtle pulse for operational status */
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.15); }
+    }
+    .status-pulse {
+      animation: subtlePulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen flex flex-col pb-24 selection:bg-primary-container selection:text-on-primary-container">
+<!-- TOP APP BAR (Shared Component Anchor) -->
+<header class="sticky top-0 z-40 bg-surface dark:bg-surface border-b border-outline-variant/30 dark:border-outline-variant/30 flex justify-between items-center w-full px-margin-mobile py-space-sm shadow-none">
+<div class="flex items-center space-x-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="terminal">terminal</span>
+<span class="text-headline-sm font-headline-sm text-on-surface dark:text-on-surface tracking-tight font-bold">Release Verification</span>
+</div>
+<div class="flex items-center space-x-space-sm">
+<button aria-label="Trigger Run" class="flex items-center justify-center p-space-xs rounded-lg hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors active:opacity-80" type="button">
+<span class="material-symbols-outlined text-primary text-[22px]" data-icon="play_circle">play_circle</span>
+</button>
+</div>
+</header>
+<!-- SUBHEADER / EPIC & ENV CONTEXT -->
+<section class="px-margin-mobile pt-space-md pb-space-sm bg-surface-container-lowest/60 border-b border-outline-variant/20">
+<div class="flex flex-col gap-y-space-xs">
+<div class="flex items-center justify-between flex-wrap gap-1">
+<div class="flex items-center gap-1.5">
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-surface-container-high border border-outline-variant/50 text-secondary tracking-wide uppercase font-semibold">
+            [Staging: sandbox-eu-1]
+          </span>
+<span class="text-label-sm font-label-sm text-outline">v2.41-rc3</span>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+          100% Core Paths Exercisable
+        </span>
+</div>
+<div class="mt-1">
+<div class="flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="rule">rule</span>
+<span>Epic-482: Core Flow Integrity &amp; Seed Verification</span>
+</div>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface font-bold tracking-tight mt-0.5">
+          Seed Data &amp; Core Paths
+        </h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+          Live deterministic fixtures, schema states, and end-to-end sandbox traversal integrity.
+        </p>
+</div>
+</div>
+</section>
+<!-- MAIN SCROLLABLE CONTENT CANVAS -->
+<main class="flex-1 px-margin-mobile py-space-md space-y-space-md">
+<!-- 1. EXECUTIVE HEALTH CARD -->
+<div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-space-md space-y-space-sm relative overflow-hidden">
+<!-- Glow Accent Line -->
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-tertiary via-secondary to-primary"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<!-- Status pill with pulse dot -->
+<div class="inline-flex items-center gap-1.5 bg-tertiary-container/30 border border-tertiary/40 px-2 py-0.5 rounded-full">
+<span class="w-2 h-2 rounded-full bg-tertiary status-pulse"></span>
+<span class="text-label-sm font-label-sm text-tertiary font-semibold tracking-wide">
+              Seed State: Healthy / Sync OK
+            </span>
+</div>
+</div>
+<button aria-label="Force Sync Verification" class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="sync">sync</span>
+</button>
+</div>
+<!-- Seeded Timestamp Metadata -->
+<div class="flex items-center gap-1.5 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="database">database</span>
+<span>Seeded 14m ago by CI/CD pipeline <span class="text-primary font-mono font-medium">#8942</span></span>
+</div>
+<!-- Progress Metric Bar -->
+<div class="space-y-1.5 pt-1">
+<div class="flex items-center justify-between text-label-md font-label-md">
+<span class="text-on-surface font-medium">Core Paths Exercised</span>
+<span class="text-tertiary font-semibold tabular-nums">7 / 7 (100% coverage)</span>
+</div>
+<!-- Progress track -->
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-tertiary transition-all duration-500 rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+<!-- Quick health chips -->
+<div class="grid grid-cols-3 gap-2 pt-1 border-t border-outline-variant/20">
+<div class="bg-surface-container px-2 py-1.5 rounded border border-outline-variant/30">
+<div class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Isolation</div>
+<div class="text-label-md font-label-md text-on-surface font-semibold mt-0.5">Strict (L3)</div>
+</div>
+<div class="bg-surface-container px-2 py-1.5 rounded border border-outline-variant/30">
+<div class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Entropy</div>
+<div class="text-label-md font-label-md text-secondary font-semibold mt-0.5">Deterministic</div>
+</div>
+<div class="bg-surface-container px-2 py-1.5 rounded border border-outline-variant/30">
+<div class="text-label-sm font-label-sm text-outline uppercase tracking-wider">DB Latency</div>
+<div class="text-label-md font-label-md text-tertiary font-semibold mt-0.5">1.2ms</div>
+</div>
+</div>
+</div>
+<!-- 2. CORE PATHS EXERCISABLE CHECKLIST -->
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between px-0.5">
+<div class="flex items-center gap-1.5">
+<span class="text-headline-sm font-headline-sm text-on-surface font-bold tracking-tight">Core Paths</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-surface-container-high border border-outline-variant/40 text-on-surface-variant font-mono">
+            4 Critical Active
+          </span>
+</div>
+<span class="text-label-sm font-label-sm text-outline">Filter: All passing</span>
+</div>
+<div class="space-y-space-sm" id="path-accordion-container">
+<!-- Path Card 1 -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl overflow-hidden transition-colors hover:border-outline-variant/60">
+<div class="p-space-md space-y-space-xs">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] mt-0.5 flex-shrink-0" data-icon="check_circle">check_circle</span>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold text-base leading-tight">
+                    User Onboarding &amp; KYC Flow
+                  </h2>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">
+                    Path #1 • Persona: <span class="text-primary font-mono">test.buyer_eu@domain.io</span>
+</div>
+</div>
+</div>
+<!-- Exercisable Badge -->
+<span class="text-label-sm font-label-sm px-2 py-0.5 rounded bg-tertiary/10 border border-tertiary/30 text-tertiary font-medium flex items-center gap-1 flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                Exercised
+              </span>
+</div>
+<!-- Path Verification Details -->
+<div class="bg-surface-container rounded p-space-sm text-body-sm font-body-sm text-on-surface-variant space-y-1 mt-1 border border-outline-variant/20">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-outline">Entities Linked:</span>
+<span class="text-on-surface font-mono">4 fixtures (Org, Wallet, Tier2, DocID)</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-outline">Probe Duration:</span>
+<span class="text-secondary font-mono">142ms • Zero schema drift</span>
+</div>
+</div>
+<!-- Card Bottom Bar: Logs & Timestamp -->
+<div class="flex items-center justify-between pt-1 text-label-sm font-label-sm">
+<span class="text-outline flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[13px]" data-icon="sync">sync</span> 
+                Last probe: 2m ago
+              </span>
+<button class="text-primary hover:text-primary-fixed flex items-center gap-0.5 font-medium active:scale-95 transition-transform" onclick="toggleLogs('logs-path-1')" type="button">
+<span>View Assertions</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+<!-- Expandable Logs Drawer -->
+<div class="hidden border-t border-outline-variant/30 bg-surface-container-lowest p-space-sm font-code-snippet text-code-snippet space-y-1" id="logs-path-1">
+<div class="text-outline flex items-center justify-between">
+<span>PROBE TRACE #PRB-8910</span>
+<span class="text-tertiary">STATUS: 200 OK</span>
+</div>
+<p class="text-on-surface font-mono text-[11px] leading-4">
+              &gt; [0.00s] Hydrated user: test.buyer_eu@domain.io (ID: usr_9942a)<br/>
+              &gt; [0.04s] Verified mock ID doc hash &amp; sanctioned identity check<br/>
+              &gt; [0.09s] KYC state transition: PENDING -&gt; LEVEL_2_VERIFIED<br/>
+              &gt; [0.14s] Asserted ledger account creation &amp; 4 seed relation links
+            </p>
+</div>
+</div>
+<!-- Path Card 2 -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl overflow-hidden transition-colors hover:border-outline-variant/60">
+<div class="p-space-md space-y-space-xs">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] mt-0.5 flex-shrink-0" data-icon="check_circle">check_circle</span>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold text-base leading-tight">
+                    Checkout &amp; Split-Tender Payment
+                  </h2>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">
+                    Path #2 • Order: <span class="text-secondary font-mono">ORD-99201</span> • Mock 3DS
+                  </div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm px-2 py-0.5 rounded bg-tertiary/10 border border-tertiary/30 text-tertiary font-medium flex items-center gap-1 flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                Exercised
+              </span>
+</div>
+<div class="bg-surface-container rounded p-space-sm text-body-sm font-body-sm text-on-surface-variant space-y-1 mt-1 border border-outline-variant/20">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-outline">Seed Fixture:</span>
+<span class="text-on-surface font-mono">tok_visa_debit_split &amp; EUR 450.00</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-outline">Probe Duration:</span>
+<span class="text-secondary font-mono">288ms • 2 idempotent webhooks</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 text-label-sm font-label-sm">
+<span class="text-outline flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[13px]" data-icon="sync">sync</span> 
+                Last probe: 4m ago
+              </span>
+<button class="text-primary hover:text-primary-fixed flex items-center gap-0.5 font-medium active:scale-95 transition-transform" onclick="toggleLogs('logs-path-2')" type="button">
+<span>View Assertions</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+<div class="hidden border-t border-outline-variant/30 bg-surface-container-lowest p-space-sm font-code-snippet text-code-snippet space-y-1" id="logs-path-2">
+<div class="text-outline flex items-center justify-between">
+<span>PROBE TRACE #PRB-8911</span>
+<span class="text-tertiary">STATUS: SPLIT_SETTLED</span>
+</div>
+<p class="text-on-surface font-mono text-[11px] leading-4">
+              &gt; [0.00s] Seed cart ORD-99201 locked with reserved ledger hold<br/>
+              &gt; [0.12s] Primary card token accepted: 320.00 EUR<br/>
+              &gt; [0.21s] Secondary store credits redeemed: 130.00 EUR<br/>
+              &gt; [0.28s] Emission check: payment.succeeded webhook captured
+            </p>
+</div>
+</div>
+<!-- Path Card 3 -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl overflow-hidden transition-colors hover:border-outline-variant/60">
+<div class="p-space-md space-y-space-xs">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] mt-0.5 flex-shrink-0" data-icon="check_circle">check_circle</span>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold text-base leading-tight">
+                    Multi-Role Permission Escalation
+                  </h2>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">
+                    Path #3 • Tenant Isolation • RBAC Guard
+                  </div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm px-2 py-0.5 rounded bg-tertiary/10 border border-tertiary/30 text-tertiary font-medium flex items-center gap-1 flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                Exercised
+              </span>
+</div>
+<div class="bg-surface-container rounded p-space-sm text-body-sm font-body-sm text-on-surface-variant space-y-1 mt-1 border border-outline-variant/20">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-outline">Roles Tested:</span>
+<span class="text-on-surface font-mono">tenant_guest -&gt; org_admin (Elevated)</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-outline">Probe Duration:</span>
+<span class="text-secondary font-mono">65ms • Enforced cross-tenant barrier</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 text-label-sm font-label-sm">
+<span class="text-outline flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[13px]" data-icon="sync">sync</span> 
+                Last probe: 8m ago
+              </span>
+<button class="text-primary hover:text-primary-fixed flex items-center gap-0.5 font-medium active:scale-95 transition-transform" onclick="toggleLogs('logs-path-3')" type="button">
+<span>View Assertions</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+<div class="hidden border-t border-outline-variant/30 bg-surface-container-lowest p-space-sm font-code-snippet text-code-snippet space-y-1" id="logs-path-3">
+<div class="text-outline flex items-center justify-between">
+<span>PROBE TRACE #PRB-8912</span>
+<span class="text-tertiary">STATUS: RBAC_PASS</span>
+</div>
+<p class="text-on-surface font-mono text-[11px] leading-4">
+              &gt; [0.00s] Bound tenant fixture tnt_prod_alpha_09<br/>
+              &gt; [0.02s] Disallowed horizontal write to tnt_beta (HTTP 403 verified)<br/>
+              &gt; [0.05s] Token stepped up via MFA seed mock key<br/>
+              &gt; [0.06s] Admin role write authorized and logged to audit trail
+            </p>
+</div>
+</div>
+<!-- Path Card 4 -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl overflow-hidden transition-colors hover:border-outline-variant/60">
+<div class="p-space-md space-y-space-xs">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] mt-0.5 flex-shrink-0" data-icon="check_circle">check_circle</span>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold text-base leading-tight">
+                    Inventory Allocation &amp; Backorder Trigger
+                  </h2>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">
+                    Path #4 • SKU: <span class="text-primary font-mono">ITM-SEED-04</span> (Stock = 1)
+                  </div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm px-2 py-0.5 rounded bg-tertiary/10 border border-tertiary/30 text-tertiary font-medium flex items-center gap-1 flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                Exercised
+              </span>
+</div>
+<div class="bg-surface-container rounded p-space-sm text-body-sm font-body-sm text-on-surface-variant space-y-1 mt-1 border border-outline-variant/20">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-outline">Edge Case Triggered:</span>
+<span class="text-on-surface font-mono">Simultaneous race for final unit</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-outline">Resolution:</span>
+<span class="text-secondary font-mono">1 allocated, 1 deferred to backorder</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 text-label-sm font-label-sm">
+<span class="text-outline flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[13px]" data-icon="sync">sync</span> 
+                Last probe: 11m ago
+              </span>
+<button class="text-primary hover:text-primary-fixed flex items-center gap-0.5 font-medium active:scale-95 transition-transform" onclick="toggleLogs('logs-path-4')" type="button">
+<span>View Assertions</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+<div class="hidden border-t border-outline-variant/30 bg-surface-container-lowest p-space-sm font-code-snippet text-code-snippet space-y-1" id="logs-path-4">
+<div class="text-outline flex items-center justify-between">
+<span>PROBE TRACE #PRB-8913</span>
+<span class="text-tertiary">STATUS: LOCK_FREE_OK</span>
+</div>
+<p class="text-on-surface font-mono text-[11px] leading-4">
+              &gt; [0.00s] Acquired distributed Redis lock on SKU: ITM-SEED-04<br/>
+              &gt; [0.01s] Buyer A order committed stock 1 -&gt; 0<br/>
+              &gt; [0.03s] Buyer B queued atomically into backorder supplier pipeline<br/>
+              &gt; [0.05s] Emitted inventory.depleted telemetry event
+            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. SEED ENTITY MATRIX / SNAPSHOT -->
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between px-0.5">
+<div class="flex items-center gap-1.5">
+<span class="text-headline-sm font-headline-sm text-on-surface font-bold tracking-tight">Entity Snapshot</span>
+<span class="text-label-sm font-label-sm text-outline">v2 Seed State</span>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary font-mono">4 Modules Ready</span>
+</div>
+<!-- Bento-style interactive compact chip grid -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- User Profiles -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-space-sm space-y-1 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant">User Profiles</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+</div>
+<div class="text-headline-md font-headline-md text-on-surface font-mono">
+            48 <span class="text-label-sm font-label-sm font-normal text-outline">records</span>
+</div>
+<div class="text-label-sm font-label-sm text-tertiary flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span>
+            100% valid schema
+          </div>
+</div>
+<!-- Auth Tokens -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-space-sm space-y-1 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Auth Tokens</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</div>
+<div class="text-headline-md font-headline-md text-on-surface font-mono">
+            12 <span class="text-label-sm font-label-sm font-normal text-outline">pre-baked</span>
+</div>
+<div class="text-label-sm font-label-sm text-secondary flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span>
+            Active (Non-expiring)
+          </div>
+</div>
+<!-- Catalog Items -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-space-sm space-y-1 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Catalog Items</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+</div>
+<div class="text-headline-md font-headline-md text-on-surface font-mono">
+            120 <span class="text-label-sm font-label-sm font-normal text-outline">SKUs</span>
+</div>
+<div class="text-label-sm font-label-sm text-tertiary flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span>
+            Full taxonomy loaded
+          </div>
+</div>
+<!-- Payment Gateways -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-space-sm space-y-1 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Payment Gateways</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+</div>
+<div class="text-headline-md font-headline-md text-on-surface font-mono">
+            3 <span class="text-label-sm font-label-sm font-normal text-outline">Adapters</span>
+</div>
+<div class="text-label-sm font-label-sm text-tertiary flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span>
+            Mocks Ready &amp; Isolated
+          </div>
+</div>
+</div>
+</div>
+<!-- 4. QUICK ACTION TOOLBAR & EXPORT -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-space-md space-y-space-sm">
+<div class="text-label-sm font-label-sm uppercase tracking-wider text-outline font-semibold">
+        Execution &amp; Verification Ops
+      </div>
+<div class="flex flex-col gap-2">
+<!-- Primary Action Button: Run Path Probes -->
+<button class="w-full h-10 bg-primary-container hover:bg-primary-container/90 text-on-primary-container font-headline-sm text-body-md font-medium rounded-lg flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition-transform" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="play_circle">play_circle</span>
+<span>Run Path Probes</span>
+</button>
+<!-- Secondary Action Button: Re-seed Clean Snapshot -->
+<button class="w-full h-10 bg-surface-container border border-outline-variant/50 text-on-surface font-body-md font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-high active:scale-[0.99] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary" data-icon="sync">sync</span>
+<span>Re-seed Clean Snapshot</span>
+</button>
+</div>
+<!-- Export Verification Report Link -->
+<div class="pt-1 flex items-center justify-center">
+<a class="inline-flex items-center gap-1.5 text-label-md font-label-md text-primary hover:underline hover:text-primary-fixed" href="#export">
+<span class="material-symbols-outlined text-[16px]" data-icon="terminal">terminal</span>
+<span>Export Verification Report (JSON/JUnit)</span>
+</a>
+</div>
+</div>
+<!-- Monospace Environmental Diagnostic Micro-bar -->
+<div class="bg-surface-container-lowest border border-outline-variant/20 rounded p-space-xs text-center text-label-sm font-label-sm text-outline font-mono">
+      FIXTURE_HASH: e7d94b01 • REGION: eu-west-1 • VERIFY_MODE: DETERMINISTIC_MOCK
+    </div>
+</main>
+<!-- BOTTOM NAVIGATION BAR (Shared Component Anchor) -->
+<!-- Active state mapped to 'Scenarios' because this screen verifies test paths & scenarios -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile py-space-xs bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/30 dark:border-outline-variant/30">
+<!-- Item 1: Overview -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-space-md py-space-xs hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150" href="#overview">
+<span class="material-symbols-outlined text-[22px]" data-icon="dashboard">dashboard</span>
+<span class="text-label-sm font-label-sm mt-0.5">Overview</span>
+</a>
+<!-- Item 2: Scenarios (ACTIVE for Core Paths verification screen) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary bg-surface-container-high/60 dark:bg-surface-container-high/60 rounded-lg px-space-md py-space-xs active:scale-95 transition-transform duration-150" href="#scenarios">
+<span class="material-symbols-outlined text-[22px]" data-icon="checklist">checklist</span>
+<span class="text-label-sm font-label-sm mt-0.5 font-medium">Scenarios</span>
+</a>
+<!-- Item 3: Entities -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-space-md py-space-xs hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150" href="#entities">
+<span class="material-symbols-outlined text-[22px]" data-icon="database">database</span>
+<span class="text-label-sm font-label-sm mt-0.5">Entities</span>
+</a>
+<!-- Item 4: Probes -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-space-md py-space-xs hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150" href="#probes">
+<span class="material-symbols-outlined text-[22px]" data-icon="deployed_code">deployed_code</span>
+<span class="text-label-sm font-label-sm mt-0.5">Probes</span>
+</a>
+</nav>
+<!-- Interactive Accordion Toggle Logic -->
+<script>
+    function toggleLogs(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        if (el.classList.contains('hidden')) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      }
+    }
+  </script>
+</body></html>
