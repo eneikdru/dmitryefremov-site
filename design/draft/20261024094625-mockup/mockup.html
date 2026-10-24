@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gateway Ops - Epic 409: Agent Canon Access</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface": "#0f131c",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-tint": "#4cd7f6",
+            "on-primary": "#003640",
+            "surface-container-lowest": "#0a0e16",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "outline": "#869397",
+            "background": "#0f131c",
+            "on-tertiary": "#003824",
+            "outline-variant": "#3d494c",
+            "surface-dim": "#0f131c",
+            "on-tertiary-fixed-variant": "#005236",
+            "secondary": "#d0bcff",
+            "surface-container": "#1c2028",
+            "on-secondary-fixed-variant": "#5516be",
+            "on-error": "#690005",
+            "tertiary-fixed-dim": "#4edea3",
+            "tertiary-container": "#1bbd85",
+            "on-primary-fixed": "#001f26",
+            "inverse-on-surface": "#2c3039",
+            "primary-fixed": "#acedff",
+            "secondary-fixed": "#e9ddff",
+            "on-secondary-fixed": "#23005c",
+            "on-tertiary-container": "#00452e",
+            "on-secondary-container": "#c4abff",
+            "tertiary": "#4edea3",
+            "surface-container-low": "#181c24",
+            "on-surface": "#dfe2ee",
+            "primary": "#4cd7f6",
+            "secondary-fixed-dim": "#d0bcff",
+            "inverse-surface": "#dfe2ee",
+            "surface-container-high": "#262a33",
+            "secondary-container": "#571bc1",
+            "primary-fixed-dim": "#4cd7f6",
+            "on-background": "#dfe2ee",
+            "on-primary-fixed-variant": "#004e5c",
+            "surface-variant": "#31353e",
+            "on-surface-variant": "#bcc9cd",
+            "on-secondary": "#3c0091",
+            "on-primary-container": "#00424f",
+            "on-tertiary-fixed": "#002113",
+            "primary-container": "#06b6d4",
+            "surface-container-highest": "#31353e",
+            "inverse-primary": "#00687a",
+            "on-error-container": "#ffdad6",
+            "surface-bright": "#353942"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-lg": "1.25rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2rem",
+            "space-md": "0.75rem",
+            "gutter-desktop": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "code-lg": ["JetBrains Mono"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "code-md": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "label-caps": ["JetBrains Mono"],
+            "body-sm": ["Inter"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "code-lg": ["0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "headline-xl": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "body-lg": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.011em", "fontWeight": "400" }],
+            "headline-md": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "code-md": ["0.75rem", { "lineHeight": "1.125rem", "letterSpacing": "0em", "fontWeight": "500" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "-0.006em", "fontWeight": "400" }],
+            "label-caps": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    .luminescent-cyan {
+      box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.4), 0 4px 20px -2px rgba(6, 182, 212, 0.15);
+    }
+    .luminescent-violet {
+      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.35), 0 4px 18px -2px rgba(139, 92, 246, 0.12);
+    }
+    .ping-slow {
+      animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-24 selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar Component (from Shared Components JSON) -->
+<header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-space-md h-14 bg-surface-container border-b border-outline-variant">
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center justify-center w-8 h-8 rounded bg-surface-container-high border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-base" data-icon="terminal">terminal</span>
+</div>
+<div class="flex flex-col">
+<span class="text-headline-md font-headline-md font-bold tracking-tight text-on-surface">Gateway Ops</span>
+<div class="flex items-center gap-1.5">
+<span class="relative flex h-1.5 w-1.5">
+<span class="ping-slow absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-tertiary"></span>
+</span>
+<span class="font-code-md text-[0.625rem] text-tertiary tracking-wider uppercase font-semibold">Live Synced</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded font-code-md text-[0.6875rem] font-bold tracking-widest bg-surface-container-highest text-primary border border-primary/30">
+        PROD
+      </span>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-surface-container-high border border-outline-variant text-on-surface-variant hover:text-on-surface active:scale-[0.98] transition-colors duration-150">
+<span class="material-symbols-outlined text-sm" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Main Viewport Content -->
+<main class="mt-14 px-space-md pt-space-md space-y-4 max-w-lg mx-auto">
+<!-- Epic Header / Feature Banner -->
+<section class="rounded-lg bg-surface-container-low border border-outline-variant p-4 space-y-3 relative overflow-hidden luminescent-cyan">
+<div class="absolute -right-12 -top-12 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="hub">hub</span>
+<span class="font-code-md text-code-md text-primary font-bold">EPIC-409 // AGENT RUNTIME</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Status</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-container shadow-[0_0_8px_rgba(6,182,212,0.4)]"></div>
+</label>
+</div>
+</div>
+<div class="space-y-1">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
+          Frontend Route Exposure: Agent Canon Access
+        </h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Binding verified canonical knowledge vector endpoints directly into frontend router contexts for external autonomous model inference.
+        </p>
+</div>
+<div class="pt-2 border-t border-outline-variant/60 flex items-center justify-between">
+<span class="inline-flex items-center gap-1.5 font-code-md text-[0.6875rem] text-tertiary">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+          Ready for Rollout
+        </span>
+<span class="font-code-md text-code-md text-outline">v2.14-rc3</span>
+</div>
+</section>
+<!-- Quick Stats Ribbon (Bento Micro-Grid) -->
+<section class="grid grid-cols-3 gap-2">
+<div class="bg-surface-container p-2.5 rounded border border-outline-variant flex flex-col justify-between">
+<span class="font-label-caps text-[0.625rem] text-outline uppercase tracking-wider">Endpoints</span>
+<div class="mt-1 flex items-baseline gap-1">
+<span class="font-code-lg text-code-lg font-bold text-on-surface">4</span>
+<span class="font-code-md text-[0.6875rem] text-primary">Active</span>
+</div>
+</div>
+<div class="bg-surface-container p-2.5 rounded border border-outline-variant flex flex-col justify-between">
+<span class="font-label-caps text-[0.625rem] text-outline uppercase tracking-wider">Ext Agents</span>
+<div class="mt-1 flex items-baseline gap-1">
+<span class="font-code-lg text-code-lg font-bold text-on-surface">12</span>
+<span class="font-code-md text-[0.6875rem] text-tertiary">Authed</span>
+</div>
+</div>
+<div class="bg-surface-container p-2.5 rounded border border-outline-variant flex flex-col justify-between">
+<span class="font-label-caps text-[0.625rem] text-outline uppercase tracking-wider">Canon Ops</span>
+<div class="mt-1 flex items-baseline gap-1">
+<span class="font-code-lg text-code-lg font-bold text-on-surface">184.2k</span>
+<span class="font-code-md text-[0.625rem] text-outline">/24h</span>
+</div>
+</div>
+</section>
+<!-- Frontend Routing & Endpoint Exposure Section -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="alt_route">alt_route</span>
+<h2 class="font-code-lg text-code-lg font-semibold tracking-wide text-on-surface uppercase">
+            Route Definitions &amp; Dispatch
+          </h2>
+</div>
+<span class="px-1.5 py-0.5 rounded font-code-md text-[0.625rem] bg-surface-container-high text-on-surface-variant border border-outline-variant">
+          READ_ONLY_SCOPE
+        </span>
+</div>
+<!-- Card 1: Semantic Query -->
+<article class="bg-surface-container p-3.5 rounded-lg border border-outline-variant space-y-3 transition-colors hover:border-primary/50">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded font-code-md text-code-md font-bold bg-tertiary-container/30 text-tertiary border border-tertiary/40">
+              GET
+            </span>
+<span class="font-code-lg text-code-lg font-bold text-primary tracking-tight">/api/v1/canon/query</span>
+</div>
+<span class="font-code-md text-[0.625rem] text-outline whitespace-nowrap bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant">
+            120 req/min/agent
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Exposes semantic search &amp; vector retrieval over canonical repository documents.
+        </p>
+<!-- Route Binding Code Inspector Pill -->
+<div class="bg-surface-container-lowest px-2.5 py-1.5 rounded border border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 overflow-x-auto text-nowrap">
+<span class="font-code-md text-[0.625rem] text-outline">BIND:</span>
+<code class="font-code-md text-code-md text-secondary">window.__EXPOSED_ROUTES.canon.query</code>
+</div>
+<button class="text-outline hover:text-on-surface active:scale-95 pl-2" title="Copy Identifier">
+<span class="material-symbols-outlined text-xs" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+<!-- Granular Scope Pills -->
+<div class="flex flex-wrap gap-1.5">
+<span class="font-code-md text-[0.625rem] px-2 py-0.5 rounded bg-secondary-container/20 text-secondary border border-secondary/30">
+            read:canon_core
+          </span>
+<span class="font-code-md text-[0.625rem] px-2 py-0.5 rounded bg-secondary-container/20 text-secondary border border-secondary/30">
+            scope:vector_sim
+          </span>
+</div>
+<!-- Controls / Toggles -->
+<div class="pt-2 border-t border-outline-variant flex items-center justify-between text-xs">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-0 bg-surface-container-lowest h-3.5 w-3.5" type="checkbox"/>
+<span class="font-code-md text-[0.6875rem] text-on-surface">Expose in App Router</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-0 bg-surface-container-lowest h-3.5 w-3.5" type="checkbox"/>
+<span class="font-code-md text-[0.6875rem] text-on-surface-variant">CORS: Agent Origin</span>
+</label>
+</div>
+</article>
+<!-- Card 2: Entities & Knowledge Graph -->
+<article class="bg-surface-container p-3.5 rounded-lg border border-outline-variant space-y-3 transition-colors hover:border-primary/50">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded font-code-md text-code-md font-bold bg-primary-container/20 text-primary border border-primary/40">
+              GET
+            </span>
+<span class="font-code-lg text-code-lg font-bold text-on-surface tracking-tight">/api/v1/canon/entities</span>
+</div>
+<span class="font-code-md text-[0.625rem] text-outline whitespace-nowrap bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant">
+            60 req/min
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Structured knowledge graph nodes &amp; schema entities for contextual grounding.
+        </p>
+<!-- Route Binding Code Inspector Pill -->
+<div class="bg-surface-container-lowest px-2.5 py-1.5 rounded border border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 overflow-x-auto text-nowrap">
+<span class="font-code-md text-[0.625rem] text-outline">BIND:</span>
+<code class="font-code-md text-code-md text-secondary">window.__EXPOSED_ROUTES.canon.entities</code>
+</div>
+<button class="text-outline hover:text-on-surface active:scale-95 pl-2" title="Copy Identifier">
+<span class="material-symbols-outlined text-xs" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+<!-- Scope Pills -->
+<div class="flex flex-wrap gap-1.5">
+<span class="font-code-md text-[0.625rem] px-2 py-0.5 rounded bg-secondary-container/20 text-secondary border border-secondary/30">
+            read:canon_graph
+          </span>
+<span class="font-code-md text-[0.625rem] px-2 py-0.5 rounded bg-secondary-container/20 text-secondary border border-secondary/30">
+            scope:ontology
+          </span>
+</div>
+<div class="pt-2 border-t border-outline-variant flex items-center justify-between">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-0 bg-surface-container-lowest h-3.5 w-3.5" type="checkbox"/>
+<span class="font-code-md text-[0.6875rem] text-on-surface">Exposed to Agent SDK</span>
+</label>
+<span class="font-code-md text-[0.625rem] text-tertiary">Schema: TypeSafe</span>
+</div>
+</article>
+<!-- Card 3: Live SSE Stream -->
+<article class="bg-surface-container p-3.5 rounded-lg border border-outline-variant space-y-3 luminescent-violet">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded font-code-md text-code-md font-bold bg-secondary-container text-secondary border border-secondary">
+              GET / SSE
+            </span>
+<span class="font-code-lg text-code-lg font-bold text-on-surface tracking-tight">/api/v1/canon/stream</span>
+</div>
+<span class="font-code-md text-[0.625rem] text-secondary font-semibold bg-secondary-container/30 px-2 py-0.5 rounded border border-secondary/40">
+            Opt-in Beta
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Server-Sent Events stream of real-time canon updates &amp; revision history.
+        </p>
+<div class="flex items-center justify-between text-xs pt-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="sensors">sensors</span>
+<span class="font-code-md text-code-md text-on-surface">Keepalive: 15s</span>
+</div>
+<span class="font-code-md text-[0.6875rem] text-outline">Protocol: text/event-stream</span>
+</div>
+</article>
+</section>
+<!-- Security & Agent Access Layer (Canon Guard) -->
+<section class="rounded-lg bg-surface-container-low border border-outline-variant p-3.5 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="shield">shield</span>
+<h3 class="font-code-lg text-code-lg font-bold text-on-surface tracking-wide uppercase">
+            Canon Guard Security
+          </h3>
+</div>
+<span class="font-code-md text-[0.625rem] text-tertiary bg-tertiary/10 border border-tertiary/30 px-2 py-0.5 rounded">
+          ACTIVE
+        </span>
+</div>
+<!-- Constraint Card -->
+<div class="bg-surface-container p-2.5 rounded border border-outline-variant flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-base" data-icon="lock">lock</span>
+<div class="flex flex-col">
+<span class="font-code-md text-code-md font-bold text-on-surface">Enforce Read-Only Canon Scope</span>
+<span class="font-body-sm text-[0.6875rem] text-outline">Autonomous entities are strictly isolated from mutation endpoints.</span>
+</div>
+</div>
+<!-- Header Token Validation -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center font-code-md text-code-md">
+<span class="text-outline">Agent Token Header:</span>
+<code class="text-primary font-bold">x-agent-signature</code>
+</div>
+<p class="font-body-sm text-[0.6875rem] text-on-surface-variant">
+          Verified via client-side runtime middleware prior to upstream dispatch.
+        </p>
+</div>
+<!-- Allowed Agent List -->
+<div class="space-y-2 pt-2 border-t border-outline-variant">
+<span class="font-label-caps text-[0.625rem] text-outline uppercase tracking-wider block">
+          Authorized Agent Clusters (3 active)
+        </span>
+<div class="flex flex-wrap gap-1.5">
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded border border-outline-variant text-[0.6875rem] font-code-md text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+            OpenAI-Assistant
+          </div>
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded border border-outline-variant text-[0.6875rem] font-code-md text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+            Anthropic-Tooling
+          </div>
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded border border-outline-variant text-[0.6875rem] font-code-md text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+            Local-Ollama-Node
+          </div>
+</div>
+</div>
+</section>
+<!-- Quick Action Sandbox Bar -->
+<section class="grid grid-cols-2 gap-2 pt-1">
+<button class="flex items-center justify-center gap-2 py-2.5 px-3 rounded bg-primary text-on-primary font-code-md text-code-md font-bold uppercase tracking-wider hover:bg-primary-container active:scale-[0.98] transition-all shadow-[0_0_12px_rgba(6,182,212,0.35)]">
+<span class="material-symbols-outlined text-sm font-bold" data-icon="play_arrow">play_arrow</span>
+        Test Dispatch
+      </button>
+<button class="flex items-center justify-center gap-2 py-2.5 px-3 rounded bg-surface-container-high border border-outline-variant text-on-surface font-code-md text-code-md font-semibold uppercase tracking-wider hover:border-primary/50 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="file_download">file_download</span>
+        Export OpenAPI
+      </button>
+</section>
+</main>
+<!-- BottomNavBar Component (from Shared Components JSON) -->
+<!-- Semantic Active State: 'Routes' is the primary topic of route exposure -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex items-center justify-around h-16 px-space-sm bg-surface-container-lowest border-t border-outline-variant pb-safe shadow-[0_-4px_16px_rgba(0,0,0,0.5)]">
+<!-- Tab 1: Routes (ACTIVE) -->
+<button class="flex flex-col items-center justify-center text-primary font-label-caps active:scale-95 duration-75">
+<span class="material-symbols-outlined text-xl" data-icon="alt_route" data-weight="fill" style="font-variation-settings: 'FILL' 1;">alt_route</span>
+<span class="text-[0.625rem] font-bold uppercase tracking-wider mt-0.5">Routes</span>
+</button>
+<!-- Tab 2: Agents (Inactive) -->
+<button class="flex flex-col items-center justify-center text-outline font-label-caps hover:text-on-surface active:scale-95 duration-75 transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="smart_toy">smart_toy</span>
+<span class="text-[0.625rem] font-bold uppercase tracking-wider mt-0.5">Agents</span>
+</button>
+<!-- Tab 3: Canon (Inactive) -->
+<button class="flex flex-col items-center justify-center text-outline font-label-caps hover:text-on-surface active:scale-95 duration-75 transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="database">database</span>
+<span class="text-[0.625rem] font-bold uppercase tracking-wider mt-0.5">Canon</span>
+</button>
+<!-- Tab 4: Logs (Inactive) -->
+<button class="flex flex-col items-center justify-center text-outline font-label-caps hover:text-on-surface active:scale-95 duration-75 transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="terminal">terminal</span>
+<span class="text-[0.625rem] font-bold uppercase tracking-wider mt-0.5">Logs</span>
+</button>
+</nav>
+<script>
+    // Lightweight developer feedback toggle micro-interaction
+    document.querySelectorAll('input[type="checkbox"]').forEach(toggle => {
+      toggle.addEventListener('change', (e) => {
+        const parent = e.target.closest('article, section');
+        if (parent && !e.target.checked) {
+          parent.style.opacity = '0.7';
+        } else if (parent) {
+          parent.style.opacity = '1';
+        }
+      });
+    });
+  </script>
+</body></html>
