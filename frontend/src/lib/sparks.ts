@@ -48,81 +48,38 @@ export const SPARK_CATEGORIES = [
 ] as const;
 
 export function getInitialSparks(): SparkItem[] {
-  return [
-    {
-      id: 'spk-1',
-      author: '@alexp',
-      authorInitial: 'A',
-      timestamp: '14m ago',
-      tag: '#architecture',
-      type: 'insight',
-      sparksCount: 1400,
-      readTime: '3s',
-      body: '"Most software complexity isn\'t accidental or essential; it\'s social structure fossilized in code."',
-      isFired: false,
-      isBookmarked: false
-    },
-    {
-      id: 'spk-2',
-      author: '@rachel.v',
-      authorInitial: 'R',
-      timestamp: '48m ago',
-      tag: '#psychology',
-      type: 'framework',
-      sparksCount: 890,
-      title: 'Atomic Feedback Loop:',
-      frameworkSteps: [
-        { id: 1, text: 'Trigger' },
-        { id: 2, text: '2. Frictionless action', action: 'Eliminate', isEliminated: true },
-        { id: 3, text: 'Instant dopamine marker.' }
-      ],
-      body: '"Remove step 2. Collapse decision latencies into zero."',
-      isFired: false,
-      isBookmarked: false
-    },
-    {
-      id: 'spk-3',
-      author: '@neuro_dr',
-      authorInitial: 'N',
-      timestamp: '1h ago',
-      tag: '#cognition',
-      type: 'quote',
-      sparksCount: 2100,
-      body: '"Speed of thought is bounded by the speed of retrieval, not processing power."',
-      isFired: true,
-      isBookmarked: false
-    },
-    {
-      id: 'spk-4',
-      author: '@dan_k',
-      authorInitial: 'D',
-      timestamp: '2h ago',
-      tag: '#ux-heuristics',
-      type: 'audio',
-      sparksCount: 640,
-      audioSnippet: {
-        duration: '0:12',
-        transcript: '"The best UX is an invisible state transition."'
-      },
-      isFired: false,
-      isBookmarked: false
-    },
-    {
-      id: 'spk-5',
-      author: '@strat_core',
-      authorInitial: 'S',
-      timestamp: '3h ago',
-      tag: '#strategy',
-      type: 'theorem',
-      sparksCount: 3400,
-      theoremContrast: {
-        linear: 'Rewards consensus and known metrics.',
-        nonLinear: 'Rewards pure asymmetric conviction.'
-      },
-      isFired: false,
-      isBookmarked: false
-    }
-  ];
+  return [];
+}
+
+export async function fetchSparksFromApi(customFetch = fetch): Promise<SparkItem[]> {
+  try {
+    const res = await customFetch('/api/v1/sparks');
+    if (!res.ok) return [];
+    const data = await res.json();
+    const rawList = Array.isArray(data) ? data : (data?.content || []);
+    return rawList.map((spk: any) => {
+      const author = spk.author || '@efremov_mvp';
+      const authorInitial = author.replace(/^@/, '').charAt(0).toUpperCase() || 'D';
+      return {
+        id: String(spk.id || spk.telegramMessageId || `spk-${Math.random()}`),
+        telegramMessageId: spk.telegramMessageId,
+        author,
+        authorInitial,
+        timestamp: spk.publishedAt ? String(spk.publishedAt).slice(0, 16).replace('T', ' ') : 'Запись',
+        tag: spk.tags ? (spk.tags.startsWith('#') ? spk.tags : `#${spk.tags}`) : '#sparks',
+        type: 'insight' as SparkType,
+        sparksCount: 1,
+        readTime: '1s',
+        body: spk.content || '',
+        domain: spk.domain || '',
+        publishedAt: spk.publishedAt ? String(spk.publishedAt).slice(0, 16).replace('T', ' ') : '',
+        isFired: false,
+        isBookmarked: false
+      };
+    });
+  } catch {
+    return [];
+  }
 }
 
 export function filterSparks(sparks: SparkItem[], selectedCategory: string, searchQuery: string = ''): SparkItem[] {
@@ -209,12 +166,12 @@ export function toggleSparkBookmark(sparks: SparkItem[], id: string): SparkItem[
 
 export function calculateTelemetry(sparks: SparkItem[]) {
   const totalCount = sparks.length;
-  const totalSparksAccumulated = sparks.reduce((acc, s) => acc + s.sparksCount, 0);
+  const totalSparksAccumulated = sparks.reduce((acc, s) => acc + (s.sparksCount || 1), 0);
 
   return {
-    sparksPerMinute: 42,
-    throughputWpm: 142,
-    consumedToday: 84 + (totalCount - 5),
+    sparksPerMinute: totalCount > 0 ? Math.min(totalCount, 12) : 0,
+    throughputWpm: totalCount > 0 ? totalCount * 18 : 0,
+    consumedToday: totalCount,
     totalCount,
     totalSparksAccumulated
   };

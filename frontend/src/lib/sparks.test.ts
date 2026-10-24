@@ -11,35 +11,53 @@ import {
 import SparksView from '../components/SparksView.svelte';
 import { mount, unmount } from 'svelte';
 
+const sampleSparksList = [
+  {
+    id: 'spk-1',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
+    timestamp: '14m ago',
+    tag: '#architecture',
+    type: 'insight' as const,
+    sparksCount: 14,
+    readTime: '3s',
+    body: '"Most software complexity isn\'t accidental or essential; it\'s social structure fossilized in code."',
+    isFired: false,
+    isBookmarked: false
+  },
+  {
+    id: 'spk-2',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
+    timestamp: '48m ago',
+    tag: '#psychology',
+    type: 'insight' as const,
+    sparksCount: 8,
+    body: '"Remove step 2. Collapse decision latencies into zero."',
+    isFired: false,
+    isBookmarked: false
+  }
+];
+
 describe('Sparks Domain Model & Logic', () => {
-  it('loads initial sparks dataset correctly', () => {
+  it('loads initial sparks dataset correctly as empty', () => {
     const sparks = getInitialSparks();
-    expect(sparks.length).toBeGreaterThan(0);
-    expect(sparks[0].author).toBe('@alexp');
-    expect(sparks[0].tag).toBe('#architecture');
+    expect(sparks).toHaveLength(0);
   });
 
   it('filters sparks by category', () => {
-    const sparks = getInitialSparks();
-
-    const filteredModels = filterSparks(sparks, '#psychology');
+    const filteredModels = filterSparks(sampleSparksList, '#psychology');
     expect(filteredModels.length).toBe(1);
-    expect(filteredModels[0].author).toBe('@rachel.v');
+    expect(filteredModels[0].id).toBe('spk-2');
 
-    const allSparks = filterSparks(sparks, 'All Sparks');
-    expect(allSparks.length).toBe(sparks.length);
+    const allSparks = filterSparks(sampleSparksList, 'All Sparks');
+    expect(allSparks.length).toBe(sampleSparksList.length);
   });
 
   it('filters sparks by search query', () => {
-    const sparks = getInitialSparks();
-
-    const searchResult = filterSparks(sparks, 'All Sparks', 'complexity');
+    const searchResult = filterSparks(sampleSparksList, 'All Sparks', 'complexity');
     expect(searchResult.length).toBe(1);
     expect(searchResult[0].id).toBe('spk-1');
-
-    const authorSearch = filterSparks(sparks, 'All Sparks', '@dan_k');
-    expect(authorSearch.length).toBe(1);
-    expect(authorSearch[0].id).toBe('spk-4');
   });
 
   it('creates new spark correctly with trimmed length and default tag', () => {
@@ -51,10 +69,9 @@ describe('Sparks Domain Model & Logic', () => {
   });
 
   it('toggles spark fire status and increments/decrements spark count', () => {
-    const sparks = getInitialSparks();
-    const initialCount = sparks[0].sparksCount;
+    const initialCount = sampleSparksList[0].sparksCount;
 
-    const firedList = toggleSparkFire(sparks, 'spk-1');
+    const firedList = toggleSparkFire(sampleSparksList, 'spk-1');
     expect(firedList[0].isFired).toBe(true);
     expect(firedList[0].sparksCount).toBe(initialCount + 1);
 
@@ -64,21 +81,17 @@ describe('Sparks Domain Model & Logic', () => {
   });
 
   it('toggles spark bookmark status', () => {
-    const sparks = getInitialSparks();
-    expect(sparks[0].isBookmarked).toBe(false);
+    expect(sampleSparksList[0].isBookmarked).toBe(false);
 
-    const bookmarkedList = toggleSparkBookmark(sparks, 'spk-1');
+    const bookmarkedList = toggleSparkBookmark(sampleSparksList, 'spk-1');
     expect(bookmarkedList[0].isBookmarked).toBe(true);
   });
 
   it('calculates stream telemetry metrics accurately', () => {
-    const sparks = getInitialSparks();
-    const metrics = calculateTelemetry(sparks);
+    const metrics = calculateTelemetry(sampleSparksList);
 
-    expect(metrics.sparksPerMinute).toBe(42);
-    expect(metrics.throughputWpm).toBe(142);
-    expect(metrics.consumedToday).toBe(84);
-    expect(metrics.totalCount).toBe(5);
+    expect(metrics.totalCount).toBe(2);
+    expect(metrics.consumedToday).toBe(2);
   });
 });
 
@@ -97,13 +110,18 @@ describe('SparksView Svelte Component', () => {
     };
   });
 
-  it('renders Sparks stream header, mode switcher, and stream feed', () => {
-    component = mount(SparksView, { target });
+  it('renders Sparks stream header and localized Russian empty state when empty', () => {
+    component = mount(SparksView, { target, props: { sparks: [] } });
 
     expect(target.textContent).toContain('SPARKS');
-    expect(target.textContent).toContain('42 spk/m');
-    expect(target.textContent).toContain('THROUGHPUT: 142 WPM');
-    expect(target.textContent).toContain('@alexp');
+    expect(target.textContent).toContain('Искры и записи отсутствуют');
+  });
+
+  it('renders Sparks stream header, mode switcher, and stream feed with sample sparks', () => {
+    component = mount(SparksView, { target, props: { sparks: sampleSparksList } });
+
+    expect(target.textContent).toContain('SPARKS');
+    expect(target.textContent).toContain('@efremov_mvp');
     expect(target.textContent).toContain('Most software complexity isn\'t accidental or essential');
   });
 

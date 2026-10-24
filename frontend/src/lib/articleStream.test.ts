@@ -85,6 +85,48 @@ const status = "VERIFIED";
   });
 });
 
+const sampleArticles = [
+  {
+    id: 'high-end-editorial-minimalism',
+    title: 'Эстетика инженерного молчания и редакционный минимализм',
+    topic: 'systems' as const,
+    readTime: '7 min read',
+    publishedAt: '2026-10-10',
+    summary: 'Отказ от визуального шума и отладочных элементов.',
+    contentMarkdown: '# Эстетика инженерного молчания и редакционный минимализм\n\n## Введение\n\nНастоящая архитектура не заявляет о себе громкими терминальными логами.\n\n> "Настоящая архитектура не заявляет о себе громкими терминальными логами"'
+  },
+  {
+    id: 'deontic-operators-in-distributed-systems',
+    title: 'Деонтическая логика и нормативные инварианты в распределенных сервисах',
+    topic: 'deontic' as const,
+    readTime: '9 min read',
+    publishedAt: '2026-10-11',
+    summary: 'Формализация нормативных состояний системы.',
+    contentMarkdown: '# Деонтическая логика и нормативные инварианты\n\n$$\n\\mathcal{O}(A) \\iff \\neg \\mathcal{P}(\\neg A)\n$$'
+  },
+  {
+    id: 'art-02-theory-of-constraints',
+    title: 'Theory of Constraints in Distributed Pipeline Throughput',
+    topic: 'toc' as const,
+    readTime: '12 min read',
+    publishedAt: '2026-02-28',
+    summary: 'Applying Goldratt Theory of Constraints.',
+    contentMarkdown: '# Theory of Constraints\n\nSystem capacity is determined by the bottleneck.'
+  }
+];
+
+const sampleSparks = [
+  {
+    id: 'spark-4096',
+    telegramMessageId: 4096,
+    content: 'Exploring agentic economy and A2A protocols for autonomous agents.',
+    domain: 'Agentic Economy (A2A)',
+    tags: 'a2a,strategy',
+    author: 'Dmitry Efremov',
+    publishedAt: '2026-10-12 18:00'
+  }
+];
+
 describe('ArticleStreamView Component', () => {
   let target: HTMLElement;
   let component: any;
@@ -103,8 +145,15 @@ describe('ArticleStreamView Component', () => {
     };
   });
 
+  it('renders localized Russian empty states when articles and sparks lists are empty', () => {
+    component = mount(ArticleStreamView, { target, props: { articles: [], sparks: [] } });
+
+    expect(target.textContent).toContain('Эссе и публикации отсутствуют');
+    expect(target.textContent).toContain('Записи Telegram отсутствуют');
+  });
+
   it('dispatches essay_view telemetry event on load and on article selection', async () => {
-    component = mount(ArticleStreamView, { target });
+    component = mount(ArticleStreamView, { target, props: { articles: sampleArticles, sparks: sampleSparks, selectedArticleId: sampleArticles[0].id } });
     await new Promise(r => setTimeout(r, 0));
 
     const initialEvents = telemetry.getEvents().filter(e => e.type === 'essay_view');
@@ -124,17 +173,16 @@ describe('ArticleStreamView Component', () => {
   });
 
   it('renders list of available longreads and active article reader with initial realistic Russian essay', () => {
-    component = mount(ArticleStreamView, { target });
+    component = mount(ArticleStreamView, { target, props: { articles: sampleArticles, sparks: sampleSparks, selectedArticleId: sampleArticles[0].id } });
 
     expect(target.textContent).toContain('Articles & Thought Stream');
     expect(target.textContent).toContain('AVAILABLE_LONGREADS');
     expect(target.textContent).toContain('Эстетика инженерного молчания и редакционный минимализм');
     expect(target.textContent).toContain('Деонтическая логика и нормативные инварианты в распределенных сервисах');
-    expect(target.textContent).toContain('Deontic Logic in Autonomous Process Architecture');
   });
 
   it('renders realistic Russian essay content, headings, blockquotes, and lists successfully when navigated to', async () => {
-    component = mount(ArticleStreamView, { target });
+    component = mount(ArticleStreamView, { target, props: { articles: sampleArticles, sparks: sampleSparks, selectedArticleId: sampleArticles[0].id } });
 
     const h1 = target.querySelector('#article-header h1');
     expect(h1).not.toBeNull();
@@ -151,7 +199,6 @@ describe('ArticleStreamView Component', () => {
     expect(quoteBlock).not.toBeNull();
     expect(quoteBlock?.textContent).toContain('Настоящая архитектура не заявляет о себе громкими терминальными логами');
 
-    // Switch to second realistic Russian essay
     const buttons = target.querySelectorAll('button.article-card');
     const secondArticleCard = Array.from(buttons).find(b =>
       b.textContent?.includes('Деонтическая логика и нормативные инварианты')
@@ -169,7 +216,7 @@ describe('ArticleStreamView Component', () => {
   });
 
   it('filters articles when topic filter button is clicked', async () => {
-    component = mount(ArticleStreamView, { target });
+    component = mount(ArticleStreamView, { target, props: { articles: sampleArticles, sparks: sampleSparks, selectedArticleId: sampleArticles[0].id } });
 
     const buttons = target.querySelectorAll('button');
     const tocBtn = Array.from(buttons).find(b => b.textContent?.includes('Theory of Constraints'));
@@ -182,13 +229,13 @@ describe('ArticleStreamView Component', () => {
     expect(target.textContent).toContain('Theory of Constraints in Distributed Pipeline Throughput');
   });
 
-  it('renders default Telegram sparks stream in the UI stream', () => {
-    component = mount(ArticleStreamView, { target });
+  it('renders Telegram sparks stream in the UI stream', () => {
+    component = mount(ArticleStreamView, { target, props: { articles: sampleArticles, sparks: sampleSparks } });
 
     const sparksSection = target.querySelector('#sparks-stream-section');
     expect(sparksSection).not.toBeNull();
     expect(target.textContent).toContain('[TELEGRAM_SPARKS_STREAM]');
-    expect(target.textContent).toContain('Exploring agentic economy and A2A protocols');
+    expect(target.textContent).toContain('Exploring agentic economy');
     expect(target.textContent).toContain('TG_MSG_#4096');
   });
 
@@ -205,7 +252,7 @@ describe('ArticleStreamView Component', () => {
 
     component = mount(ArticleStreamView, {
       target,
-      props: { sparks: [simulatedSpark] }
+      props: { articles: sampleArticles, sparks: [simulatedSpark] }
     });
 
     expect(target.textContent).toContain('Simulated real-time insight from Telegram webhook stream testing');
