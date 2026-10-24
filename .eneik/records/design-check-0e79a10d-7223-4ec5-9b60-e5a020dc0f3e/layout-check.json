@@ -1,0 +1,58 @@
+[
+  {
+    "id": "admin-header",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 56
+  },
+  {
+    "id": "statutory-benchmark-banner",
+    "left": 296,
+    "top": 80,
+    "width": 848,
+    "height": 120
+  },
+  {
+    "id": "admin-metrics-grid",
+    "left": 296,
+    "top": 224,
+    "width": 848,
+    "height": 165
+  },
+  {
+    "id": "dsar-queue-section",
+    "left": 296,
+    "top": 413,
+    "width": 848,
+    "height": 514
+  },
+  {
+    "id": "system-isolation-section",
+    "left": 296,
+    "top": 951,
+    "width": 848,
+    "height": 408
+  },
+  {
+    "id": "admin-telemetry-details",
+    "left": 296,
+    "top": 1383,
+    "width": 848,
+    "height": 1000
+  },
+  {
+    "id": "gqm-telemetry-root",
+    "left": 313,
+    "top": 1436,
+    "width": 814,
+    "height": 930
+  },
+  {
+    "id": "admin-bottom-nav",
+    "left": 0,
+    "top": 836,
+    "width": 1440,
+    "height": 64
+  }
+]
