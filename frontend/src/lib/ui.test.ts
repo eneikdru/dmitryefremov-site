@@ -20,12 +20,16 @@ describe('TelemetryHub Component & CMP Integration', () => {
     };
   });
 
-  it('renders hero title, subtitle, and manifest correctly', () => {
+  it('renders hero title, subtitle, and manifest correctly without admin link or gallery tab', () => {
     component = mount(TelemetryHub, { target });
 
     expect(target.textContent).toContain('Дмитрий Ефремов');
     expect(target.textContent).toContain('Системы, логика мышления и автономные процессы');
     expect(target.textContent).toContain('«Ваш код и ваши решения — это то, кто вы есть на самом деле.»');
+
+    // Confirm studio gallery tab and admin link are absent
+    expect(target.querySelector('#tab-btn-gallery')).toBeNull();
+    expect(target.querySelector('#admin-portal-link')).toBeNull();
   });
 
   it('switches palette theme when theme toggle button is clicked', async () => {

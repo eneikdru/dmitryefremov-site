@@ -1,0 +1,135 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -1025,
+    "width": 1440,
+    "height": 2427
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 176,
+    "top": -991,
+    "width": 127,
+    "height": 26
+  },
+  {
+    "id": "sys-domain",
+    "left": 315,
+    "top": -986,
+    "width": 122,
+    "height": 16
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1129,
+    "top": -993,
+    "width": 135,
+    "height": 30
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": -922,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 209,
+    "top": -889,
+    "width": 208,
+    "height": 208
+  },
+  {
+    "id": "hero-avatar-img",
+    "left": 211,
+    "top": -887,
+    "width": 204,
+    "height": 204
+  },
+  {
+    "id": "hero-title",
+    "left": 449,
+    "top": -863,
+    "width": 782,
+    "height": 48
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 449,
+    "top": -809,
+    "width": 782,
+    "height": 28
+  },
+  {
+    "id": "hero-manifest",
+    "left": 449,
+    "top": -765,
+    "width": 782,
+    "height": 56
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": -594,
+    "width": 702,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 183,
+    "top": -587,
+    "width": 185,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 376,
+    "top": -587,
+    "width": 141,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-sparks",
+    "left": 524,
+    "top": -587,
+    "width": 162,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 694,
+    "top": -587,
+    "width": 177,
+    "height": 36
+  },
+  {
+    "id": "content-view",
+    "left": 176,
+    "top": -504,
+    "width": 1088,
+    "height": 1785
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 1321,
+    "width": 1088,
+    "height": 49
+  },
+  {
+    "id": "cmp-persistent-link",
+    "left": 981,
+    "top": 1354,
+    "width": 122,
+    "height": 16
+  },
+  {
+    "id": "imprint-toggle-btn",
+    "left": 1127,
+    "top": 1354,
+    "width": 137,
+    "height": 16
+  }
+]
