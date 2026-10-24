@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Corpus Search Modal - Command Palette</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed-variant": "#004e5c",
+            "error": "#ffb4ab",
+            "surface-tint": "#c0c1ff",
+            "secondary-fixed": "#e9ddff",
+            "on-tertiary-fixed": "#001f26",
+            "surface-variant": "#31353e",
+            "inverse-surface": "#dfe2ee",
+            "on-secondary-fixed-variant": "#5516be",
+            "primary-fixed-dim": "#c0c1ff",
+            "on-tertiary-container": "#002f38",
+            "tertiary-container": "#009eb9",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#3c0091",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "inverse-primary": "#494bd6",
+            "on-tertiary": "#003640",
+            "on-primary-container": "#0d0096",
+            "secondary": "#d0bcff",
+            "tertiary-fixed": "#acedff",
+            "on-surface": "#dfe2ee",
+            "tertiary-fixed-dim": "#4cd7f6",
+            "inverse-on-surface": "#2c3039",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-container-lowest": "#0a0e16",
+            "on-primary-fixed": "#07006c",
+            "on-secondary-fixed": "#23005c",
+            "on-secondary-container": "#c4abff",
+            "outline": "#908fa0",
+            "on-primary": "#1000a9",
+            "on-error": "#690005",
+            "primary": "#c0c1ff",
+            "surface-bright": "#353942",
+            "primary-fixed": "#e1e0ff",
+            "surface": "#0f131c",
+            "surface-container-highest": "#31353e",
+            "background": "#0f131c",
+            "tertiary": "#4cd7f6",
+            "surface-dim": "#0f131c",
+            "primary-container": "#8083ff",
+            "surface-container": "#1c2028",
+            "outline-variant": "#464554",
+            "error-container": "#93000a",
+            "on-background": "#dfe2ee",
+            "surface-container-low": "#181c24",
+            "surface-container-high": "#262a33",
+            "on-surface-variant": "#c7c4d7",
+            "secondary-container": "#571bc1"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter-mobile": "0.75rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "margin": "2rem",
+            "gutter": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Geist"],
+            "headline-md": ["Geist"],
+            "code-inline": ["JetBrains Mono"],
+            "label-md": ["JetBrains Mono"],
+            "body-md": ["Geist"],
+            "body-sm": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "headline-xl": ["Geist"],
+            "body-lg": ["Geist"],
+            "headline-xl-mobile": ["Geist"],
+            "label-sm": ["JetBrains Mono"],
+            "headline-sm": ["Geist"]
+          },
+          "fontSize": {
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "code-inline": ["12.5px", { "lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    @keyframes pulseCaret {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .custom-caret {
+      animation: pulseCaret 1s infinite;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+<!-- Underlying Corpus Context (Dimmed & Blurred Background) -->
+<div class="fixed inset-0 z-0 flex flex-col pointer-events-none filter blur-sm opacity-25">
+<header class="flex items-center justify-between px-gutter-mobile py-space-sm border-b border-outline-variant/30 bg-surface">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-on-surface-variant">menu</span>
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface">Docs Corpus</span>
+</div>
+<span class="material-symbols-outlined text-primary">search</span>
+</header>
+<div class="p-gutter-mobile flex-1 flex flex-col gap-space-md">
+<div class="h-6 w-32 bg-surface-container-high rounded"></div>
+<div class="h-10 w-3/4 bg-surface-container rounded"></div>
+<div class="h-24 w-full bg-surface-container-low rounded border border-outline-variant/20"></div>
+<div class="h-32 w-full bg-surface-container-low rounded border border-outline-variant/20"></div>
+</div>
+</div>
+<!-- Command Palette Modal Backdrop (Task/Linear Overlay: Navigation Shells Suppressed per Hierarchy) -->
+<div class="fixed inset-0 z-50 flex flex-col bg-surface-container-lowest/80 backdrop-blur-md">
+<!-- Active Modal Container -->
+<main class="flex-1 flex flex-col max-w-lg mx-auto w-full h-full justify-between">
+<!-- Top Half: Search Head, Shortcuts, Filters, and List Content -->
+<div class="flex-1 flex flex-col overflow-y-auto">
+<!-- Search Input Bar Header -->
+<header class="sticky top-0 z-20 bg-surface-container-low/95 backdrop-blur-xl border-b border-outline-variant/30 p-gutter-mobile flex flex-col gap-space-sm shadow-2xl">
+<div class="flex items-center gap-space-sm bg-surface-container-lowest border border-outline-variant/40 rounded-xl px-space-md py-space-sm focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/40 transition-all">
+<span class="material-symbols-outlined text-primary text-[20px]">manage_search</span>
+<div class="flex-1 flex items-center overflow-hidden">
+<span class="font-code-inline text-code-inline text-on-surface font-medium whitespace-nowrap">leader elect</span>
+<span class="inline-block w-[2px] h-4 bg-primary ml-0.5 custom-caret"></span>
+</div>
+<!-- Clear Action -->
+<button aria-label="Clear query" class="flex items-center justify-center text-on-surface-variant hover:text-on-surface p-space-xs rounded active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+</button>
+<!-- Close Action Badge -->
+<button class="flex items-center gap-1 bg-surface-container border border-outline-variant/40 rounded px-1.5 py-0.5 text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="font-label-sm text-label-sm">Esc</span>
+</button>
+</div>
+<!-- Desktop/Tablet Shortcuts Pill Row (Sub-nav meta) -->
+<div class="flex items-center justify-between overflow-x-auto no-scrollbar pt-space-xs text-on-surface-variant">
+<div class="flex items-center gap-space-sm font-label-sm text-label-sm whitespace-nowrap">
+<span class="inline-flex items-center gap-1">
+<kbd class="bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30 text-on-surface font-code-inline">↑↓</kbd>
+<span>Navigate</span>
+</span>
+<span class="inline-flex items-center gap-1">
+<kbd class="bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30 text-on-surface font-code-inline">↵</kbd>
+<span>Open</span>
+</span>
+<span class="inline-flex items-center gap-1">
+<kbd class="bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30 text-on-surface font-code-inline">tab</kbd>
+<span>Autocomplete</span>
+</span>
+<span class="inline-flex items-center gap-1">
+<kbd class="bg-surface-container px-1 py-0.5 rounded border border-outline-variant/30 text-on-surface font-code-inline">⌘P</kbd>
+<span>Recent</span>
+</span>
+</div>
+</div>
+<!-- Category Filter Pills -->
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar pt-space-xs">
+<!-- Active Filter -->
+<button class="flex items-center gap-1.5 px-space-md py-1 rounded-full bg-primary-container/20 border border-primary/40 text-primary font-label-sm text-label-sm font-medium whitespace-nowrap active:scale-95 transition-transform" type="button">
+<span>All</span>
+<span class="px-1.5 py-0.2 bg-primary/20 rounded-full font-code-inline text-[10px]">24</span>
+</button>
+<!-- Inactive Filters -->
+<button class="flex items-center gap-1.5 px-space-md py-1 rounded-full bg-surface-container border border-outline-variant/20 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform" type="button">
+<span>Concepts</span>
+<span class="px-1.5 py-0.2 bg-surface-container-high rounded-full font-code-inline text-[10px]">12</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-1 rounded-full bg-surface-container border border-outline-variant/20 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform" type="button">
+<span>Code References</span>
+<span class="px-1.5 py-0.2 bg-surface-container-high rounded-full font-code-inline text-[10px]">5</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-1 rounded-full bg-surface-container border border-outline-variant/20 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform" type="button">
+<span>Backlinks</span>
+<span class="px-1.5 py-0.2 bg-surface-container-high rounded-full font-code-inline text-[10px]">7</span>
+</button>
+</div>
+</header>
+<!-- Search Results List Canvas -->
+<div class="p-gutter-mobile flex flex-col gap-space-sm">
+<div class="flex items-center justify-between px-space-xs pt-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">SEARCH RESULTS (3)</span>
+<span class="font-code-inline text-label-sm text-outline">ranked by resonance</span>
+</div>
+<!-- Result Item 1 (Selected State with vibrant indigo accent & wiki syntax) -->
+<article class="relative flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container-high/90 border border-primary/50 shadow-[0_0_20px_rgba(192,193,255,0.12)] cursor-pointer">
+<!-- Vibrant Left Rail Indicator -->
+<div class="absolute inset-y-2 left-0 w-1 bg-primary rounded-r"></div>
+<div class="flex items-center justify-between gap-space-sm pl-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span>Consensus</span>
+<span class="text-outline">&gt;</span>
+<span>Raft</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded-full border border-outline-variant/30 text-tertiary">
+<span class="material-symbols-outlined text-[14px]">link</span>
+<span class="font-code-inline text-label-sm">8 incoming</span>
+</div>
+</div>
+<!-- Title with Double Bracket Syntax -->
+<h3 class="pl-space-xs font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center gap-1">
+<span class="text-tertiary font-code-inline text-label-md">[[</span>
+<span class="text-primary font-body-md font-semibold">Leader Election</span>
+<span class="text-on-surface font-body-md">&amp; Term Logic</span>
+<span class="text-tertiary font-code-inline text-label-md">]]</span>
+</h3>
+<!-- Matched Snippet with Highlight Tags -->
+<p class="pl-space-xs font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              When a follower detects 
+              <mark class="bg-primary/20 text-primary-fixed border border-primary/30 rounded px-1 py-0 font-code-inline">election</mark>
+              timeout, it increments term and transitions to candidate, requesting votes from peer nodes...
+            </p>
+<!-- Bottom Metadata row -->
+<div class="pl-space-xs pt-space-xs flex items-center gap-space-sm">
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/30 font-code-inline text-label-sm text-on-surface-variant">Raft-Node.ts</span>
+<span class="text-outline text-label-sm font-label-sm">• Term Invariant §5.2</span>
+</div>
+</article>
+<!-- Result Item 2 (Standard Result) -->
+<article class="flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container/60 border border-outline-variant/20 hover:border-outline-variant/50 transition-colors cursor-pointer">
+<div class="flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span>Consensus</span>
+<span class="text-outline">&gt;</span>
+<span>Raft</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">hub</span>
+<span>3 links</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-medium flex items-center gap-1">
+<span class="text-on-surface-variant font-code-inline text-label-md">[[</span>
+<span class="text-on-surface font-body-md font-medium">Raft Split Vote Recovery</span>
+<span class="text-on-surface-variant font-code-inline text-label-md">]]</span>
+</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Randomized 
+              <mark class="bg-primary/10 text-primary border border-primary/20 rounded px-1 py-0 font-code-inline">election</mark> 
+              timeouts prevent split vote split-brain scenarios by ensuring one node initiates candidancy first.
+            </p>
+</article>
+<!-- Result Item 3 (API / Proof Doc with Tag) -->
+<article class="flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container/60 border border-outline-variant/20 hover:border-outline-variant/50 transition-colors cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<span>Formal Verification</span>
+<span class="text-outline">&gt;</span>
+<span>Invariants</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-secondary-container/40 border border-secondary/30 text-secondary font-code-inline text-[11px]">
+                Specification
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-medium">
+              Election Safety Invariant (Theorem 3.1)
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              At most one <span class="text-primary font-medium">leader</span> can be elected in a given term. Formal proof mapped to state machine safety conditions.
+            </p>
+</article>
+<!-- Quick Command Actions Section -->
+<section class="mt-space-sm flex flex-col gap-space-xs">
+<div class="px-space-xs font-label-sm text-label-sm text-on-surface-variant tracking-wider">
+              QUICK COMMANDS
+            </div>
+<div class="flex flex-col rounded-xl border border-outline-variant/30 bg-surface-container-low overflow-hidden">
+<!-- Action 1 -->
+<button class="flex items-center justify-between px-space-md py-space-sm hover:bg-surface-container-high transition-colors border-b border-outline-variant/20 text-left" type="button">
+<div class="flex items-center gap-space-sm">
+<span class="font-code-inline text-primary font-semibold">&gt;</span>
+<span class="font-body-md text-body-md text-on-surface">Jump to Backlinks Graph</span>
+</div>
+<kbd class="font-code-inline text-label-sm text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded border border-outline-variant/30">⌘G</kbd>
+</button>
+<!-- Action 2 -->
+<button class="flex items-center justify-between px-space-md py-space-sm hover:bg-surface-container-high transition-colors text-left" type="button">
+<div class="flex items-center gap-space-sm">
+<span class="font-code-inline text-primary font-semibold">&gt;</span>
+<span class="font-body-md text-body-md text-on-surface">Copy Markdown Wiki-Link <span class="font-code-inline text-tertiary">[[Leader Election]]</span></span>
+</div>
+<kbd class="font-code-inline text-label-sm text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded border border-outline-variant/30">⌘C</kbd>
+</button>
+</div>
+</section>
+</div>
+</div>
+<!-- Bottom Keyboard Navigation Accessory Strip (Mobile Optimized Navigation Anchor) -->
+<footer class="sticky bottom-0 z-30 bg-surface-container-low border-t border-outline-variant/30 px-gutter-mobile py-space-xs pb-safe backdrop-blur-md">
+<div class="flex items-center justify-between">
+<!-- Prev / Next Micro Navigation Bar -->
+<div class="flex items-center gap-space-xs">
+<button aria-label="Previous Result" class="flex items-center gap-1 px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface font-label-sm text-label-sm active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+<span class="hidden sm:inline">Prev</span>
+</button>
+<button aria-label="Next Result" class="flex items-center gap-1 px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface font-label-sm text-label-sm active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]">arrow_downward</span>
+<span class="hidden sm:inline">Next</span>
+</button>
+<span class="font-code-inline text-label-sm text-on-surface-variant pl-space-xs">1 / 3</span>
+</div>
+<!-- Direct Execution Button -->
+<div class="flex items-center gap-space-sm">
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-surface-container-highest hover:bg-surface-bright text-on-surface font-label-sm text-label-sm border border-outline-variant/40 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-tertiary">polyline</span>
+<span>Jump</span>
+</button>
+<button class="flex items-center gap-1 px-space-md py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-medium hover:bg-primary/90 active:scale-95 transition-all shadow-[0_0_12px_rgba(192,193,255,0.3)]" type="button">
+<span>Open Document</span>
+<span class="font-code-inline text-[12px] opacity-80">↵</span>
+</button>
+</div>
+</div>
+</footer>
+</main>
+</div>
+</body></html>
