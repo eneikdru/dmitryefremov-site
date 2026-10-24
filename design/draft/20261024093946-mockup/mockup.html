@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>API Binding Inspector &amp; Real Payload View</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline": "#86948a",
+            "outline-variant": "#3c4a42",
+            "on-primary-fixed": "#002113",
+            "on-error": "#690005",
+            "primary-container": "#10b981",
+            "surface-container-highest": "#2d3449",
+            "inverse-primary": "#006c49",
+            "on-tertiary-fixed": "#001f26",
+            "on-surface-variant": "#bbcabf",
+            "error-container": "#93000a",
+            "surface-container-low": "#131b2e",
+            "inverse-on-surface": "#283044",
+            "on-secondary-fixed-variant": "#653e00",
+            "surface-dim": "#0b1326",
+            "secondary-fixed": "#ffddb8",
+            "secondary-fixed-dim": "#ffb95f",
+            "on-primary": "#003824",
+            "inverse-surface": "#dae2fd",
+            "primary-fixed-dim": "#4edea3",
+            "surface-container": "#171f33",
+            "tertiary-fixed-dim": "#4cd7f6",
+            "primary-fixed": "#6ffbbe",
+            "on-secondary-container": "#5b3800",
+            "on-tertiary": "#003640",
+            "tertiary-fixed": "#acedff",
+            "secondary-container": "#ee9800",
+            "tertiary-container": "#00b2d0",
+            "on-secondary-fixed": "#2a1700",
+            "surface-tint": "#4edea3",
+            "on-error-container": "#ffdad6",
+            "on-surface": "#dae2fd",
+            "error": "#ffb4ab",
+            "surface": "#0b1326",
+            "tertiary": "#4cd7f6",
+            "on-primary-container": "#00422b",
+            "secondary": "#ffb95f",
+            "primary": "#4edea3",
+            "surface-variant": "#2d3449",
+            "surface-container-high": "#222a3d",
+            "surface-bright": "#31394d",
+            "surface-container-lowest": "#060e20",
+            "on-primary-fixed-variant": "#005236",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "on-secondary": "#472a00",
+            "on-tertiary-container": "#003f4b",
+            "background": "#0b1326",
+            "on-background": "#dae2fd"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "0.75rem",
+            "margin-desktop": "2rem",
+            "space-xl": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "0.75rem",
+            "margin-tablet": "1.5rem",
+            "gutter-tablet": "1rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Geist"],
+            "display-lg": ["Geist"],
+            "label-code-md": ["JetBrains Mono"],
+            "headline-md": ["Geist"],
+            "body-md": ["Geist"],
+            "display-lg-mobile": ["Geist"],
+            "headline-lg": ["Geist"],
+            "body-lg": ["Geist"],
+            "label-code-xs": ["JetBrains Mono"],
+            "label-code-sm": ["JetBrains Mono"],
+            "body-sm": ["Geist"]
+          },
+          "fontSize": {
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "display-lg": ["34px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-code-md": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+            "display-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "400" }],
+            "label-code-xs": ["9px", { "lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "label-code-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #3c4a42;
+      border-radius: 4px;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-28 selection:bg-primary-container selection:text-on-primary">
+<!-- Top Navigation Anchor (Shared Component: TopAppBar) -->
+<header class="sticky top-0 z-40 bg-surface-container-low dark:bg-surface-container-low border-b border-outline-variant/40 dark:border-outline-variant/40" style="box-shadow: inset 0 -1px 0 0 rgba(16,185,129,0.15)">
+<div class="flex justify-between items-center w-full px-4 h-14 max-w-md mx-auto">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<span class="text-headline-sm font-headline-sm text-on-surface dark:text-on-surface tracking-tight">Endpoint Inspector</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-label-code-xs font-label-code-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+          200 OK • 24ms
+        </span>
+<button aria-label="Settings" class="p-1 rounded-lg hover:bg-surface-container-highest transition-colors text-on-surface-variant hover:text-on-surface active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Mobile Screen Content Canvas -->
+<main class="max-w-md mx-auto px-4 pt-4 space-y-4">
+<!-- Section 1: Hero Operational State / Telemetry Indicator -->
+<section class="bg-surface-container-low border border-primary/20 rounded-xl p-space-lg relative overflow-hidden" style="box-shadow: inset 0 1px 1px 0 rgba(16,185,129,0.15);">
+<div class="absolute -right-12 -top-12 w-36 h-36 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center space-x-2">
+<span class="flex h-2 w-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="text-label-code-xs font-label-code-xs text-primary tracking-wider uppercase">[STREAMING • HYDRATED ENGINE]</span>
+</div>
+<span class="text-label-code-xs font-label-code-xs text-on-surface-variant font-medium">WS: wss://edge.runtime.internal/telemetry</span>
+</div>
+<h1 class="text-headline-md font-headline-md text-on-surface mb-1">Live Feed Synchronizer</h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Real-time inspection of dynamic runtime schema binding, enforcing zero-mock contract compliance.</p>
+<div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-outline-variant/30">
+<div class="bg-surface-container-lowest/80 p-2 rounded-lg border border-outline-variant/20">
+<span class="block text-label-code-xs font-label-code-xs text-on-surface-variant">LATENCY</span>
+<span class="text-label-code-md font-label-code-md text-primary font-semibold">18.4ms</span>
+</div>
+<div class="bg-surface-container-lowest/80 p-2 rounded-lg border border-outline-variant/20">
+<span class="block text-label-code-xs font-label-code-xs text-on-surface-variant">SCHEMA</span>
+<span class="text-label-code-md font-label-code-md text-tertiary font-semibold">v4.12 Strict</span>
+</div>
+<div class="bg-surface-container-lowest/80 p-2 rounded-lg border border-outline-variant/20">
+<span class="block text-label-code-xs font-label-code-xs text-on-surface-variant">DRIFT</span>
+<span class="text-label-code-md font-label-code-md text-primary font-semibold">0.00%</span>
+</div>
+</div>
+</section>
+<!-- Section 2: Architecture Status & Placeholder Removal Audit Card -->
+<section class="bg-surface-container border border-outline-variant/40 rounded-xl p-space-lg">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="verified">verified</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Placeholder Removal Audit</h2>
+</div>
+<span class="text-label-code-xs font-label-code-xs px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
+          100% PURGED
+        </span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-lg p-3 mb-3">
+<div class="flex items-center justify-between text-body-sm font-body-sm mb-1.5">
+<span class="text-on-surface-variant">Mock Deprecation Progress</span>
+<span class="font-headline-sm text-primary">12 of 12 Mock Placeholders Deprecated</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full w-full rounded-full transition-all duration-500"></div>
+</div>
+</div>
+<!-- Endpoint Status List -->
+<div class="space-y-2">
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/20">
+<div class="flex items-center space-x-2">
+<span class="px-1.5 py-0.5 rounded bg-surface-bright text-tertiary text-label-code-xs font-label-code-xs">GET</span>
+<span class="text-label-code-sm font-label-code-sm text-on-surface">/user/profile</span>
+</div>
+<div class="flex items-center space-x-1.5 text-primary text-label-code-xs font-label-code-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Bound (Real)</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/20">
+<div class="flex items-center space-x-2">
+<span class="px-1.5 py-0.5 rounded bg-surface-bright text-tertiary text-label-code-xs font-label-code-xs">GET</span>
+<span class="text-label-code-sm font-label-code-sm text-on-surface">/metrics/summary</span>
+</div>
+<div class="flex items-center space-x-1.5 text-primary text-label-code-xs font-label-code-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Bound (Real)</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/20">
+<div class="flex items-center space-x-2">
+<span class="px-1.5 py-0.5 rounded bg-secondary-container/20 text-secondary text-label-code-xs font-label-code-xs">WSS</span>
+<span class="text-label-code-sm font-label-code-sm text-on-surface">/events</span>
+</div>
+<div class="flex items-center space-x-1.5 text-primary text-label-code-xs font-label-code-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>Streaming (Real)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Live JSON Payload & Component Inspector Card -->
+<section class="bg-surface-container border border-outline-variant/40 rounded-xl overflow-hidden shadow-lg">
+<div class="bg-surface-container-high px-4 py-2.5 border-b border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="data_object">data_object</span>
+<span class="text-label-code-sm font-label-code-sm text-on-surface font-semibold">Incoming Ingestion Buffer</span>
+</div>
+<div class="flex items-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-label-code-xs font-label-code-xs text-primary">LIVE INGESTION</span>
+</div>
+</div>
+<!-- JSON Viewer Code Window -->
+<div class="bg-surface-container-lowest p-3 border-b border-outline-variant/20 font-label-code-xs text-label-code-xs text-on-surface-variant overflow-x-auto custom-scrollbar">
+<pre class="leading-relaxed"><code>{
+  <span class="text-outline">"node_id"</span>: <span class="text-primary">"us-east-4a"</span>,
+  <span class="text-outline">"status"</span>: <span class="text-primary">"nominal"</span>,
+  <span class="text-outline">"user"</span>: {
+    <span class="text-outline">"name"</span>: <span class="text-tertiary">"Elena Rostova"</span>,
+    <span class="text-outline">"role"</span>: <span class="text-tertiary">"Principal SecOps"</span>,
+    <span class="text-outline">"avatar"</span>: <span class="text-secondary">"avatar_stream_node_44.png"</span>
+  },
+  <span class="text-outline">"amount"</span>: <span class="text-primary">4819.20</span>,
+  <span class="text-outline">"active_connections"</span>: <span class="text-primary">1284</span>,
+  <span class="text-outline">"sync_ts"</span>: <span class="text-primary">1718892410</span>
+}</code></pre>
+</div>
+<!-- Schema Binding Interconnect Blueprint -->
+<div class="bg-surface-container-low px-4 py-2 border-b border-outline-variant/30 flex items-center justify-between text-label-code-xs font-label-code-xs">
+<span class="text-outline">Schema Wiring Interconnect</span>
+<div class="flex items-center space-x-3 text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>payload.user.avatar → UI.image</span>
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>payload.amount → UI.currency</span>
+</div>
+</div>
+<!-- Rendered Live UI Preview Canvas -->
+<div class="p-4 bg-surface-container-low">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-code-xs font-label-code-xs text-outline uppercase tracking-wider">Hydrated Component Canvas</span>
+<span class="text-label-code-xs font-label-code-xs text-primary px-1.5 py-0.5 rounded bg-primary/10">0ms Stutter</span>
+</div>
+<!-- Rendered Card with Direct Field Mapping Indicators -->
+<div class="bg-surface-container-highest/60 border border-primary/30 rounded-lg p-3 relative space-y-3">
+<!-- Top Row: User Avatar & Node Info -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="relative">
+<img class="w-10 h-10 rounded-full object-cover border border-primary/50" data-alt="Close-up portrait of a female cybersecurity engineer with subtle cyberpunk neon reflections in an ultra-modern dark operations room, hyper-focused, cinematic teal and emerald rim lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD0hK0DWJwDSYuh8aWPhxjoJwt17UhEzyHbGxZJbqy1Y87eeyTn5vXCGB2GvzLTHpLeT_3BhC5C4ZqndCpupAA0YNiNAVOPErNrlxdXwEilIMMC_gJ9oG57d0R3taF1vH2kvIhRK_9sPHfpLJPikAjQ0Htm6jp2EZGHVr2yXERH-SdzyeBxJeGd5zlbtWHOnzg3_6aDfZnM5AMwQ66w8UYDsnr9_7VvTVWQ2MzLz1GbPVtqtl9gJAv_EodAOr_EsUNojLAm2S0KOzY"/>
+<span class="absolute -bottom-1 -right-1 px-1 rounded bg-surface-container-lowest text-[8px] font-label-code-xs text-secondary border border-secondary/40 font-mono">
+                  .avatar
+                </span>
+</div>
+<div>
+<div class="flex items-center space-x-1.5">
+<span class="text-headline-sm font-headline-sm text-on-surface">Elena Rostova</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Principal SecOps • <span class="font-label-code-xs text-primary">us-east-4a</span></span>
+</div>
+</div>
+<div class="text-right">
+<span class="block text-label-code-xs font-label-code-xs text-outline">payload.amount</span>
+<span class="text-headline-md font-headline-md text-primary font-mono tracking-tight">$4,819.20</span>
+</div>
+</div>
+<!-- Bottom Row: Stream Sync Info -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/30 text-label-code-xs font-label-code-xs">
+<div class="flex items-center space-x-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[14px]" data-icon="sensors">sensors</span>
+<span>1,284 Active Sockets</span>
+</div>
+<div class="flex items-center space-x-1 text-outline">
+<span>TS: 1718892410</span>
+<span class="text-primary font-semibold">(Synced)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Data Hydration & Error Fallback Bar -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-3">
+<div class="flex items-start space-x-3">
+<div class="p-1.5 rounded-lg bg-primary/10 text-primary mt-0.5">
+<span class="material-symbols-outlined text-[20px]" data-icon="shield">shield</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h3 class="text-headline-sm font-headline-sm text-on-surface text-[14px]">Zero-Fallback Guard Active</h3>
+<span class="text-label-code-xs font-label-code-xs text-primary font-mono">STRICT_TYPES</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+            Static stubs blocked. Any undefined API contract field triggers immediate compile-time telemetry rejection rather than silent mock rendering.
+          </p>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-label-code-xs font-label-code-xs text-outline">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          Auto-Reconnection Broker: Ready
+        </span>
+<span class="text-primary hover:underline cursor-pointer">Inspect Contract →</span>
+</div>
+</section>
+<!-- Section 5: Mobile Interactive Developer Triggers -->
+<section class="space-y-2 pt-1 pb-4">
+<button class="w-full py-2.5 px-4 rounded-lg bg-primary-container text-on-primary font-headline-sm text-[14px] flex items-center justify-center space-x-2 active:scale-95 transition-transform duration-100 shadow-lg shadow-primary-container/20 hover:brightness-105">
+<span class="material-symbols-outlined text-[18px]" data-icon="bolt">bolt</span>
+<span>Simulate Payload Burst</span>
+</button>
+<button class="w-full py-2 px-4 rounded-lg bg-surface-container-high border border-outline-variant/40 text-on-surface font-headline-sm text-[14px] flex items-center justify-center space-x-2 active:scale-95 transition-transform duration-100 hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-outline text-[18px]" data-icon="terminal">terminal</span>
+<span>Inspect Network Headers</span>
+</button>
+</section>
+</main>
+<!-- Bottom Navigation Shell (Shared Component: BottomNavBar) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-sm pt-space-xs pb-safe max-w-md mx-auto bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-xl border-t border-outline-variant/30 dark:border-outline-variant/30 shadow-2xl shadow-primary/5">
+<!-- Tab 1: Stream (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1.5 transition-all duration-200 hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="sensors">sensors</span>
+<span class="text-label-code-xs font-label-code-xs mt-0.5">Stream</span>
+</a>
+<!-- Tab 2: Metrics (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1.5 transition-all duration-200 hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="query_stats">query_stats</span>
+<span class="text-label-code-xs font-label-code-xs mt-0.5">Metrics</span>
+</a>
+<!-- Tab 3: Payloads (ACTIVE TAB - Exactly maps to 'API Binding Inspector & Real Payload View') -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary bg-primary/10 dark:bg-primary/10 rounded-lg px-3 py-1.5 transition-all duration-200 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="data_object">data_object</span>
+<span class="text-label-code-xs font-label-code-xs mt-0.5">Payloads</span>
+</a>
+<!-- Tab 4: Console (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1.5 transition-all duration-200 hover:text-on-surface dark:hover:text-on-surface active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+<span class="text-label-code-xs font-label-code-xs mt-0.5">Console</span>
+</a>
+</nav>
+</body></html>
