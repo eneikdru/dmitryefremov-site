@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InvariantGuard Telemetry - Black-Box Invariant Verification</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#dae2fd",
+            "secondary-container": "#00a2e6",
+            "surface-container-lowest": "#060e20",
+            "tertiary-container": "#ff7886",
+            "surface-dim": "#0b1326",
+            "on-secondary-fixed": "#001e2f",
+            "on-secondary-container": "#00344e",
+            "inverse-on-surface": "#283044",
+            "on-primary-fixed-variant": "#005236",
+            "primary": "#4edea3",
+            "error-container": "#93000a",
+            "on-tertiary-fixed": "#40000d",
+            "on-secondary": "#00344d",
+            "primary-container": "#10b981",
+            "on-primary-fixed": "#002113",
+            "secondary-fixed-dim": "#89ceff",
+            "primary-fixed": "#6ffbbe",
+            "surface-bright": "#31394d",
+            "primary-fixed-dim": "#4edea3",
+            "on-surface-variant": "#bbcabf",
+            "surface": "#0b1326",
+            "on-surface": "#dae2fd",
+            "tertiary": "#ffb2b7",
+            "surface-container-highest": "#2d3449",
+            "on-tertiary-fixed-variant": "#92002a",
+            "background": "#0b1326",
+            "tertiary-fixed": "#ffdadb",
+            "surface-tint": "#4edea3",
+            "surface-container-high": "#222a3d",
+            "on-tertiary-container": "#780021",
+            "error": "#ffb4ab",
+            "surface-container-low": "#131b2e",
+            "inverse-primary": "#006c49",
+            "inverse-surface": "#dae2fd",
+            "on-primary-container": "#00422b",
+            "surface-container": "#171f33",
+            "on-primary": "#003824",
+            "secondary": "#89ceff",
+            "surface-variant": "#2d3449",
+            "outline-variant": "#3c4a42",
+            "secondary-fixed": "#c9e6ff",
+            "on-tertiary": "#67001b",
+            "outline": "#86948a",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#ffb2b7",
+            "on-secondary-fixed-variant": "#004c6e",
+            "on-error": "#690005"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "2rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "2.5rem",
+            "gutter": "1rem",
+            "margin-tablet": "1.5rem",
+            "space-md": "0.75rem",
+            "margin": "1rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.25rem"
+          },
+          "fontFamily": {
+            "display-lg": ["Geist"],
+            "label-mono-sm": ["JetBrains Mono"],
+            "headline-sm": ["Geist"],
+            "headline-lg": ["Geist"],
+            "headline-xl-mobile": ["Geist"],
+            "label-mono-md": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-xl": ["Geist"],
+            "body-sm": ["Inter"],
+            "code-inline": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "label-mono-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-mono-md": ["13px", { "lineHeight": "16px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-xl": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "code-inline": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    @keyframes pulse-emerald {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.92); }
+    }
+    .status-pulse {
+      animation: pulse-emerald 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen pb-28 select-none">
+<!-- TopAppBar (JSON Anchor Translation) -->
+<header class="sticky top-0 z-40 bg-surface-container-low shadow-[0_2px_8px_rgba(2,6,23,0.5)]">
+<div class="flex justify-between items-center w-full px-space-md py-space-sm max-w-7xl mx-auto">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="shield_lock">shield_lock</span>
+<span class="text-headline-sm font-headline-sm font-semibold tracking-tight text-on-surface">InvariantGuard Telemetry</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-primary bg-surface-container-high/60 transition-all duration-150">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user">verified_user</span>
+</span>
+</div>
+</div>
+</header>
+<!-- Main Mobile Telemetry Canvas -->
+<main class="w-full max-w-xl mx-auto px-space-md pt-space-md space-y-space-md">
+<!-- Target Context & Environment Sub-Header -->
+<section class="bg-surface-container-low rounded-lg p-space-md border border-outline-variant/30 space-y-space-xs">
+<div class="flex items-center justify-between text-label-mono-sm font-label-mono-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+          TARGET RUNTIME
+        </span>
+<span class="text-secondary font-medium">SANDBOX-09-ISOLATED</span>
+</div>
+<div class="text-label-mono-md font-label-mono-md text-on-surface font-semibold tracking-tight">
+        Target: build-v4.12.0-sec-prod
+      </div>
+<div class="flex items-center justify-between text-body-sm text-on-surface-variant pt-1 border-t border-outline-variant/20">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span>Arch: x86_64 / Alpine-Distroless</span>
+</span>
+<span class="text-label-mono-sm font-label-mono-sm text-primary">SHA256:7f90e2..ca8</span>
+</div>
+</section>
+<!-- Live Status Banner Component -->
+<section class="bg-primary-container/10 border border-primary-container/40 rounded-lg p-space-md flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="relative flex items-center justify-center w-3.5 h-3.5">
+<span class="status-pulse absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</div>
+<div>
+<div class="text-label-mono-sm font-label-mono-sm text-primary font-semibold">
+            INVARIANT PRESERVED: 0/0 ADMIN TOOLS EXPOSED
+          </div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">
+            Zero privileged attack surface verified inside container bounds.
+          </div>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="check_circle">check_circle</span>
+</section>
+<!-- Epic Scope Card -->
+<section class="bg-surface-container-low rounded-lg p-space-md border border-outline-variant/30 space-y-space-sm">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-high px-space-xs py-0.5 rounded">
+            EPIC INVARIANT #INV-882
+          </span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface mt-space-xs font-semibold">
+            Complete Administrative Surface Elimination
+          </h2>
+</div>
+<div class="text-right">
+<span class="text-label-mono-sm font-label-mono-sm text-primary font-semibold block">100% Sealed</span>
+<span class="text-label-mono-sm font-label-mono-sm text-on-surface-variant">5/5 Passed</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded p-space-sm border border-outline-variant/20">
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+<span class="text-on-surface font-semibold">Formal Hypothesis:</span> Target runtime must operate strictly as an opaque black box. No administrative toolsets, su/sudo utilities, debug consoles, or privileged CLI binaries may reside in or execute within the running container perimeter.
+        </p>
+</div>
+<div class="flex items-center justify-between text-label-mono-sm font-label-mono-sm text-on-surface-variant pt-space-xs">
+<span>Assurance Framework: <strong class="text-on-surface font-medium">NIST SP 800-53 (AC-6 / CM-7)</strong></span>
+<span>Duration: <strong class="text-primary font-medium">41ms</strong></span>
+</div>
+</section>
+<!-- Negative Assertion & Absence Verification Suite (Test Cases) -->
+<section class="space-y-space-xs">
+<div class="flex items-center justify-between px-space-xs pt-space-xs">
+<h3 class="text-label-mono-sm font-label-mono-sm text-on-surface-variant uppercase tracking-wider font-semibold">
+          Absence Verification Matrix
+        </h3>
+<span class="text-label-mono-sm font-label-mono-sm text-primary">5 Invariant Assertions Active</span>
+</div>
+<!-- Probe 01 -->
+<article class="bg-surface-container-low rounded-lg p-space-md border border-outline-variant/30 space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-label-mono-sm font-label-mono-sm text-on-surface-variant">PROBE-01</span>
+<span class="font-headline-sm text-body-md font-semibold text-on-surface">Host Admin Binaries Absence Check</span>
+</div>
+<span class="inline-flex items-center gap-1 text-label-mono-sm font-label-mono-sm text-primary bg-primary-container/10 border border-primary-container/30 px-space-xs py-0.5 rounded">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+            PASSED
+          </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+          Scanned paths: <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">/usr/sbin/admin-cli</code>, <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">/bin/maintenance</code>, <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">sysadminctl</code>
+</p>
+<div class="bg-surface-container-lowest rounded p-space-xs border border-outline-variant/20 flex items-center justify-between text-label-mono-sm font-label-mono-sm">
+<span class="text-on-surface-variant">assert_binaries_absent()</span>
+<span class="text-primary font-medium">Exit code 127: Not Found (0 traces)</span>
+</div>
+</article>
+<!-- Probe 02 -->
+<article class="bg-surface-container-low rounded-lg p-space-md border border-outline-variant/30 space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-label-mono-sm font-label-mono-sm text-on-surface-variant">PROBE-02</span>
+<span class="font-headline-sm text-body-md font-semibold text-on-surface">Port &amp; Admin Socket Listening Probe</span>
+</div>
+<span class="inline-flex items-center gap-1 text-label-mono-sm font-label-mono-sm text-primary bg-primary-container/10 border border-primary-container/30 px-space-xs py-0.5 rounded">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+            PASSED
+          </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+          Target descriptors: <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">8080/admin</code>, <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">9099/debug-rpc</code>, <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">unix:///var/run/admin.sock</code>
+</p>
+<div class="bg-surface-container-lowest rounded p-space-xs border border-outline-variant/20 flex items-center justify-between text-label-mono-sm font-label-mono-sm">
+<span class="text-on-surface-variant">assert_socket_closed_or_unbound()</span>
+<span class="text-primary font-medium">Connection Refused: No listener</span>
+</div>
+</article>
+<!-- Probe 03 -->
+<article class="bg-surface-container-low rounded-lg p-space-md border border-outline-variant/30 space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-label-mono-sm font-label-mono-sm text-on-surface-variant">PROBE-03</span>
+<span class="font-headline-sm text-body-md font-semibold text-on-surface">Privileged Maintenance Route Sweep</span>
+</div>
+<span class="inline-flex items-center gap-1 text-label-mono-sm font-label-mono-sm text-primary bg-primary-container/10 border border-primary-container/30 px-space-xs py-0.5 rounded">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+            PASSED
+          </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+          Injected requests: <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">GET /internal/debug/pprof</code>, <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">GET /__admin/schema-dump</code>
+</p>
+<div class="bg-surface-container-lowest rounded p-space-xs border border-outline-variant/20 flex items-center justify-between text-label-mono-sm font-label-mono-sm">
+<span class="text-on-surface-variant">assert_status_code_404_or_blackholed()</span>
+<span class="text-primary font-medium">404 Resource Blackholed</span>
+</div>
+</article>
+<!-- Probe 04 -->
+<article class="bg-surface-container-low rounded-lg p-space-md border border-outline-variant/30 space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-label-mono-sm font-label-mono-sm text-on-surface-variant">PROBE-04</span>
+<span class="font-headline-sm text-body-md font-semibold text-on-surface">Privilege Escalation &amp; Env Sanitization</span>
+</div>
+<span class="inline-flex items-center gap-1 text-label-mono-sm font-label-mono-sm text-primary bg-primary-container/10 border border-primary-container/30 px-space-xs py-0.5 rounded">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+            PASSED
+          </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+          Inspecting process runtime for keys: <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">ADMIN_SECRET_KEY</code>, <code class="text-label-mono-sm font-label-mono-sm text-secondary bg-surface-container-lowest px-1 py-0.5 rounded">DEBUG_ROOT_TOKEN</code>
+</p>
+<div class="bg-surface-container-lowest rounded p-space-xs border border-outline-variant/20 flex items-center justify-between text-label-mono-sm font-label-mono-sm">
+<span class="text-on-surface-variant">assert_env_stripped()</span>
+<span class="text-primary font-medium">0 Privileged Keys Found</span>
+</div>
+</article>
+<!-- Probe 05 -->
+<article class="bg-surface-container-low rounded-lg p-space-md border border-outline-variant/30 space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-label-mono-sm font-label-mono-sm text-on-surface-variant">PROBE-05</span>
+<span class="font-headline-sm text-body-md font-semibold text-on-surface">Interactive Shell / TTY Spawn Prevention</span>
+</div>
+<span class="inline-flex items-center gap-1 text-label-mono-sm font-label-mono-sm text-primary bg-primary-container/10 border border-primary-container/30 px-space-xs py-0.5 rounded">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+            PASSED
+          </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+          Simulating pseudo-terminal fork via PTY payload injection over worker thread.
+        </p>
+<div class="bg-surface-container-lowest rounded p-space-xs border border-outline-variant/20 flex items-center justify-between text-label-mono-sm font-label-mono-sm">
+<span class="text-on-surface-variant">assert_interactive_exec_denied()</span>
+<span class="text-primary font-medium">Permission Denied (Exec Forbidden)</span>
+</div>
+</article>
+</section>
+<!-- Raw Probe Console Drawer -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant/30 overflow-hidden">
+<div class="bg-surface-container-low px-space-md py-space-xs border-b border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-space-xs text-label-mono-sm font-label-mono-sm text-on-surface">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span>LIVE TELEMETRY STREAM</span>
+</div>
+<span class="text-label-mono-sm font-label-mono-sm text-on-surface-variant">TTY-OUTPUT (RAW)</span>
+</div>
+<div class="p-space-md font-code-inline text-code-inline text-on-surface-variant space-y-1 overflow-x-auto bg-[#040814]">
+<div class="text-on-surface-variant/80"><span class="text-secondary">[INIT]</span> Target isolation container sandbox mounted (rw=false)</div>
+<div class="text-on-surface-variant/80"><span class="text-primary">[PROBE 14:02:11]</span> Scanning filesystem for /sbin/admin-cli ... <span class="text-primary font-semibold">[NOT FOUND]</span></div>
+<div class="text-on-surface-variant/80"><span class="text-primary">[PROBE 14:02:12]</span> Testing localhost:9099 TCP handshake ... <span class="text-primary font-semibold">[REFUSED]</span></div>
+<div class="text-on-surface-variant/80"><span class="text-primary">[PROBE 14:02:12]</span> Invariant sweep /internal/debug/pprof ... <span class="text-primary font-semibold">[HTTP 404]</span></div>
+<div class="text-primary font-semibold pt-1 border-t border-outline-variant/20"><span class="text-primary">[ASSERTION]</span> Invariant Verified: Target is zero-admin black box.</div>
+</div>
+</section>
+<!-- Bottom Actions Control Panel -->
+<section class="space-y-space-xs pt-space-xs">
+<button class="w-full bg-primary text-on-primary font-headline-sm font-semibold py-space-sm px-space-md rounded-lg flex items-center justify-center gap-space-xs active:scale-[0.98] transition-all duration-150 shadow-[0_0_12px_rgba(16,185,129,0.25)] hover:bg-[#34D399]">
+<span class="material-symbols-outlined text-lg" data-icon="refresh">refresh</span>
+<span>Re-Execute Invariant Probes</span>
+</button>
+<button class="w-full bg-surface-container-high text-on-surface border border-outline-variant/30 font-headline-sm font-medium py-space-sm px-space-md rounded-lg flex items-center justify-center gap-space-xs active:scale-[0.98] transition-all duration-150 hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-lg text-secondary" data-icon="assignment_turned_in">assignment_turned_in</span>
+<span class="text-body-md font-medium">Download Attestation Proof (JSON-LD)</span>
+</button>
+<div class="text-center text-label-mono-sm font-label-mono-sm text-on-surface-variant pt-1">
+        Cryptographically signed by InvariantGuard KeyID: <span class="text-on-surface">0x8B71C0F</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (JSON Anchor Translation & Semantic Shell) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-sm py-space-xs pb-safe bg-surface-container-lowest border-t border-outline-variant/20">
+<!-- Invariants (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-space-sm py-space-xs hover:bg-surface-container-low hover:text-on-surface active:scale-[0.97] transition-transform duration-100" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="rule">rule</span>
+<span class="text-label-mono-sm font-label-mono-sm mt-0.5">Invariants</span>
+</a>
+<!-- Probes (Active: The current screen is probe assertions and negative verification execution) -->
+<a class="flex flex-col items-center justify-center text-primary bg-surface-container-high/60 rounded-lg px-space-sm py-space-xs active:scale-[0.97] transition-transform duration-100" href="#">
+<span class="material-symbols-outlined text-xl text-primary" data-icon="bug_report">bug_report</span>
+<span class="text-label-mono-sm font-label-mono-sm font-semibold mt-0.5">Probes</span>
+</a>
+<!-- Telemetry (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-space-sm py-space-xs hover:bg-surface-container-low hover:text-on-surface active:scale-[0.97] transition-transform duration-100" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="terminal">terminal</span>
+<span class="text-label-mono-sm font-label-mono-sm mt-0.5">Telemetry</span>
+</a>
+<!-- Export (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-space-sm py-space-xs hover:bg-surface-container-low hover:text-on-surface active:scale-[0.97] transition-transform duration-100" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="assignment_turned_in">assignment_turned_in</span>
+<span class="text-label-mono-sm font-label-mono-sm mt-0.5">Export</span>
+</a>
+</nav>
+</body></html>
