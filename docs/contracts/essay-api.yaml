@@ -33,11 +33,13 @@ paths:
             maximum: 100
       responses:
         '200':
-          description: Successfully retrieved essay list
+          description: Successfully retrieved essay list or an empty state representation.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EssayPage'
+                oneOf:
+                  - $ref: '#/components/schemas/EssayPage'
+                  - $ref: '#/components/schemas/EmptyStatePayload'
         '400':
           description: Invalid request parameters
           content:
@@ -158,6 +160,31 @@ components:
         totalPages:
           type: integer
           example: 1
+
+    EmptyStatePayload:
+      type: object
+      required:
+        - isEmpty
+        - messageTitle
+        - messageBody
+      properties:
+        isEmpty:
+          type: boolean
+          example: true
+          description: Flag explicitly signaling that no data was found
+        messageTitle:
+          type: string
+          example: "Записей пока нет"
+          description: Localized empty state title (in Russian, per requirements)
+        messageBody:
+          type: string
+          example: "Здесь будут отображаться новые записи и короткие заметки."
+          description: Localized empty state body text (in Russian)
+        actionLabel:
+          type: string
+          nullable: true
+          example: "Вернуться назад"
+          description: Optional label for an action button
 
     ErrorResponse:
       type: object

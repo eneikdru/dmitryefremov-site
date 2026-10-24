@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: Spark API Contract
+  description: Shared API specification for Dmitry Efremov's Sparks. Defines endpoints for retrieving short-form thoughts and messages ingested from Telegram.
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/sparks:
+    get:
+      summary: List sparks
+      description: Retrieves a paginated list of published sparks, ordered by publication date descending. If no sparks are found, it returns an explicit Empty State payload.
+      operationId: listSparks
+      parameters:
+        - name: domain
+          in: query
+          description: Filter sparks by domain
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          description: Filter sparks by tags
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successfully retrieved spark list or an empty state representation.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SparkPage'
+                  - $ref: '#/components/schemas/EmptyStatePayload'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/sparks/{id}:
+    get:
+      summary: Get spark by ID
+      description: Retrieves a single spark by its ID.
+      operationId: getSparkById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique numeric ID of the spark
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Spark found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spark'
+        '404':
+          description: Spark not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Spark:
+      type: object
+      required:
+        - id
+        - content
+        - publishedAt
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        telegramMessageId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Original message ID from the Telegram channel
+          example: 1042
+        telegramChatId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Original chat ID from the Telegram channel
+          example: -100123456789
+        content:
+          type: string
+          description: The main content of the spark, typically Markdown or plain text
+          example: "Understanding bounded contexts is essential for autonomous services."
+        domain:
+          type: string
+          nullable: true
+          description: Associated knowledge domain
+          example: "AUTONOMOUS_ENGINEERING"
+        tags:
+          type: string
+          nullable: true
+          description: Comma-separated tags
+          example: "architecture, ddd"
+        author:
+          type: string
+          nullable: true
+          description: Author of the spark
+          example: "Dmitry Efremov"
+        publishedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the spark was published
+          example: "2026-10-15T18:00:00Z"
+        createdAt:
+          type: string
+          format: date-time
+          description: Record creation timestamp
+          example: "2026-10-15T18:05:00Z"
+
+    SparkPage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Spark'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 1
+        totalPages:
+          type: integer
+          example: 1
+
+    EmptyStatePayload:
+      type: object
+      required:
+        - isEmpty
+        - messageTitle
+        - messageBody
+      properties:
+        isEmpty:
+          type: boolean
+          example: true
+          description: Flag explicitly signaling that no data was found
+        messageTitle:
+          type: string
+          example: "Записей пока нет"
+          description: Localized empty state title (in Russian, per requirements)
+        messageBody:
+          type: string
+          example: "Здесь будут отображаться новые записи и короткие заметки."
+          description: Localized empty state body text (in Russian)
+        actionLabel:
+          type: string
+          nullable: true
+          example: "Вернуться назад"
+          description: Optional label for an action button
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: "Spark with id '1' was not found"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-15T18:35:00Z"
