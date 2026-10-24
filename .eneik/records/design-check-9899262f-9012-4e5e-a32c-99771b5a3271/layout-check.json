@@ -1,0 +1,142 @@
+[
+  {
+    "id": "agent-canon-header",
+    "left": 464,
+    "top": 521,
+    "width": 512,
+    "height": 69
+  },
+  {
+    "id": "epic-header-card",
+    "left": 464,
+    "top": 614,
+    "width": 512,
+    "height": 210
+  },
+  {
+    "id": "epic-title",
+    "left": 481,
+    "top": 677,
+    "width": 478,
+    "height": 56
+  },
+  {
+    "id": "epic-description",
+    "left": 481,
+    "top": 737,
+    "width": 478,
+    "height": 32
+  },
+  {
+    "id": "stats-ribbon",
+    "left": 464,
+    "top": 848,
+    "width": 512,
+    "height": 61
+  },
+  {
+    "id": "format-delegation-card",
+    "left": 464,
+    "top": 933,
+    "width": 512,
+    "height": 93
+  },
+  {
+    "id": "format-delegation-title",
+    "left": 501,
+    "top": 950,
+    "width": 248,
+    "height": 16
+  },
+  {
+    "id": "format-select-path",
+    "left": 479,
+    "top": 981,
+    "width": 335,
+    "height": 30
+  },
+  {
+    "id": "btn-fetch-format",
+    "left": 822,
+    "top": 981,
+    "width": 139,
+    "height": 30
+  },
+  {
+    "id": "route-definitions-section",
+    "left": 464,
+    "top": 1050,
+    "width": 512,
+    "height": 673
+  },
+  {
+    "id": "route-definitions-title",
+    "left": 486,
+    "top": 1052,
+    "width": 210,
+    "height": 16
+  },
+  {
+    "id": "route-card-query",
+    "left": 464,
+    "top": 1083,
+    "width": 512,
+    "height": 216
+  },
+  {
+    "id": "route-card-entities",
+    "left": 464,
+    "top": 1311,
+    "width": 512,
+    "height": 200
+  },
+  {
+    "id": "route-card-stream",
+    "left": 464,
+    "top": 1523,
+    "width": 512,
+    "height": 200
+  },
+  {
+    "id": "security-guard-card",
+    "left": 464,
+    "top": 1747,
+    "width": 512,
+    "height": 239
+  },
+  {
+    "id": "security-guard-title",
+    "left": 501,
+    "top": 1764,
+    "width": 150,
+    "height": 16
+  },
+  {
+    "id": "sandbox-actions-grid",
+    "left": 464,
+    "top": 2009,
+    "width": 512,
+    "height": 46
+  },
+  {
+    "id": "btn-test-dispatch",
+    "left": 464,
+    "top": 2013,
+    "width": 252,
+    "height": 42
+  },
+  {
+    "id": "btn-export-openapi",
+    "left": 724,
+    "top": 2013,
+    "width": 252,
+    "height": 42
+  },
+  {
+    "id": "agent-bottom-nav",
+    "left": 464,
+    "top": 2079,
+    "width": 512,
+    "height": 56
+  }
+]
