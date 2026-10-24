@@ -11,9 +11,9 @@
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -209,14 +209,6 @@
             <span>⚡ SPARKS (TIER 3)</span>
           </button>
           <button
-            id="tab-btn-gallery"
-            type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'gallery' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
-            on:click={() => (activeTab = 'gallery')}
-          >
-            <span>📸 СТУДИЯ & СЕТАП</span>
-          </button>
-          <button
             id="tab-btn-contact"
             type="button"
             class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
@@ -241,110 +233,6 @@
           <div class="space-y-6">
             <SparksView {theme} />
           </div>
-        {:else if activeTab === 'gallery'}
-          <!-- Studio & Workspace Gallery -->
-          <div class="space-y-6">
-            <div class="border-b pb-4 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
-              <h2 class="text-2xl font-bold tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
-                Студийное пространство & Процесс записи
-              </h2>
-              <p class="text-sm font-mono mt-1 {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
-                Кадры в 4K UHD из подкаста «Системы и реальность», рабочее пространство и звукозаписывающий сетап.
-              </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <!-- Studio Card 1 -->
-              <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
-                <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
-                  <ResponsivePicture
-                    assetKey="podcast_studio_cover"
-                    alt="4K студийный кадр записи подкаста Системы и реальность"
-                    imgClass="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Основной студийный план</h3>
-                  <p class="text-xs font-mono text-[#94a3b8] mt-1">Запись эпизода: философия сознания и обратная связь среды</p>
-                </div>
-              </div>
-
-              <!-- Studio Card 2 -->
-              <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
-                <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
-                  <ResponsivePicture
-                    assetKey="podcast_session_01"
-                    alt="Студийная сессия Дмитрия Ефремова"
-                    imgClass="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Разбор онтологических моделей</h3>
-                  <p class="text-xs font-mono text-[#94a3b8] mt-1">Фокус на строгих правилах и формуле Баркан</p>
-                </div>
-              </div>
-
-              <!-- Studio Card 3 -->
-              <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
-                <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
-                  <ResponsivePicture
-                    assetKey="podcast_session_02"
-                    alt="Анализ системных ограничений"
-                    imgClass="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Инженерная прагматика</h3>
-                  <p class="text-xs font-mono text-[#94a3b8] mt-1">Теория ограничений и построение автономных фабрик</p>
-                </div>
-              </div>
-
-              <!-- Studio Card 4 -->
-              <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
-                <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
-                  <ResponsivePicture
-                    assetKey="podcast_session_03"
-                    alt="Кадр диалога и аргументации"
-                    imgClass="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Диалектика и контраргументы</h3>
-                  <p class="text-xs font-mono text-[#94a3b8] mt-1">Фальсификация гипотез и проверка фактов</p>
-                </div>
-              </div>
-
-              <!-- Workspace Card 5 -->
-              <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
-                <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
-                  <ResponsivePicture
-                    assetKey="office_workspace"
-                    alt="Рабочее инженерное пространство"
-                    imgClass="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Инженерная рабочая станция</h3>
-                  <p class="text-xs font-mono text-[#94a3b8] mt-1">Оригинальное пространство из архива Framer</p>
-                </div>
-              </div>
-
-              <!-- Audio Setup Card 6 -->
-              <div class="rounded-xl overflow-hidden border {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'} space-y-3 p-4">
-                <div class="aspect-video rounded-lg overflow-hidden border border-[#38bdf8]/30">
-                  <ResponsivePicture
-                    assetKey="office_detail"
-                    alt="Профессиональный аудиосетап"
-                    imgClass="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Аудиоинженерный сетап</h3>
-                  <p class="text-xs font-mono text-[#94a3b8] mt-1">Студийный тракт записи подкаста и видеоэссе</p>
-                </div>
-              </div>
-            </div>
-          </div>
         {:else if activeTab === 'contact'}
           <div class="space-y-6">
             <TelemetryContactTerminalView />
@@ -358,13 +246,6 @@
           <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Все права защищены.</span>
         </div>
         <div class="flex items-center gap-6">
-          <a
-            id="admin-portal-link"
-            href="/admin"
-            class="underline hover:text-current transition-colors cursor-pointer"
-          >
-            Admin Ops (/admin)
-          </a>
           <button
             id="cmp-persistent-link"
             type="button"

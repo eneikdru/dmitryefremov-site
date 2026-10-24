@@ -133,4 +133,14 @@ describe('TelemetryHub Component & CMP Integration', () => {
     expect(reOpenedOverlay).not.toBeNull();
     expect(target.textContent).toContain('TRACKERS_BLOCKED');
   });
+
+  it('ensures no /admin link or Studio tab exists in public view', () => {
+    component = mount(TelemetryHub, { target });
+
+    // Assert admin portal link and studio gallery tab do not exist on the public facade
+    expect(target.querySelector('#admin-portal-link')).toBeNull();
+    expect(target.querySelector('#tab-btn-gallery')).toBeNull();
+    expect(target.textContent).not.toContain('Admin Ops (/admin)');
+    expect(target.textContent).not.toContain('Студийное пространство');
+  });
 });
