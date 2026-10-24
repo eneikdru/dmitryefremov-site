@@ -93,6 +93,38 @@ if command -v psql >/dev/null 2>&1; then
         -c "SELECT COUNT(*) FROM direct_messages;" | grep -q "1" || {
             echo "[FAIL] Validation query failed: direct_messages record missing or corrupt"; exit 1;
         }
+    PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql \
+        -h "${POSTGRES_HOST:-db}" \
+        -p "${POSTGRES_PORT:-5432}" \
+        -U "${POSTGRES_USER:-postgres}" \
+        -d "${POSTGRES_DB:-test_db}" \
+        -c "SELECT COUNT(*) FROM canon_items;" | grep -q "1" || {
+            echo "[FAIL] Validation query failed: canon_items record missing or corrupt"; exit 1;
+        }
+    PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql \
+        -h "${POSTGRES_HOST:-db}" \
+        -p "${POSTGRES_PORT:-5432}" \
+        -U "${POSTGRES_USER:-postgres}" \
+        -d "${POSTGRES_DB:-test_db}" \
+        -c "SELECT COUNT(*) FROM canon_cross_references;" | grep -q "1" || {
+            echo "[FAIL] Validation query failed: canon_cross_references record missing or corrupt"; exit 1;
+        }
+    PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql \
+        -h "${POSTGRES_HOST:-db}" \
+        -p "${POSTGRES_PORT:-5432}" \
+        -U "${POSTGRES_USER:-postgres}" \
+        -d "${POSTGRES_DB:-test_db}" \
+        -c "SELECT COUNT(*) FROM published_essays;" | grep -q "1" || {
+            echo "[FAIL] Validation query failed: published_essays record missing or corrupt"; exit 1;
+        }
+    PGPASSWORD="${POSTGRES_PASSWORD:-postgres}" psql \
+        -h "${POSTGRES_HOST:-db}" \
+        -p "${POSTGRES_PORT:-5432}" \
+        -U "${POSTGRES_USER:-postgres}" \
+        -d "${POSTGRES_DB:-test_db}" \
+        -c "SELECT COUNT(*) FROM podcast_episodes;" | grep -q "1" || {
+            echo "[FAIL] Validation query failed: podcast_episodes record missing or corrupt"; exit 1;
+        }
 else
     echo "[INFO] psql binary not present; verifying dump file snapshot integrity directly..."
     grep -q "publication_schedule" "${DUMP_FILES[0]}" || {
@@ -112,6 +144,30 @@ else
     }
     grep -q "AI Assistant" "${DUMP_FILES[0]}" || {
         echo "[FAIL] Validation failed: direct_messages content corrupt/missing"; exit 1;
+    }
+    grep -q "canon_items" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: canon_items missing from backup snapshot"; exit 1;
+    }
+    grep -q "Canon Core Concept" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: canon_items content corrupt/missing"; exit 1;
+    }
+    grep -q "canon_cross_references" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: canon_cross_references missing from backup snapshot"; exit 1;
+    }
+    grep -q "EXPANDS" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: canon_cross_references content corrupt/missing"; exit 1;
+    }
+    grep -q "published_essays" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: published_essays missing from backup snapshot"; exit 1;
+    }
+    grep -q "Extended Mind Essay" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: published_essays content corrupt/missing"; exit 1;
+    }
+    grep -q "podcast_episodes" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: podcast_episodes missing from backup snapshot"; exit 1;
+    }
+    grep -q "Podcast Episode 1" "${DUMP_FILES[0]}" || {
+        echo "[FAIL] Validation failed: podcast_episodes content corrupt/missing"; exit 1;
     }
 fi
 echo "[PASS] Data recovery verified: pre-backup state perfectly matches recovered instance without corruption."

@@ -43,6 +43,14 @@ else
         echo "INSERT INTO service_orders (id, client_name, service_type, status) VALUES ('22222222-2222-2222-2222-222222222222', 'Client Agent', 'MVP', 'NEW');"
         echo "CREATE TABLE IF NOT EXISTS direct_messages (id UUID PRIMARY KEY, sender_name TEXT, message_text TEXT, created_at TEXT);"
         echo "INSERT INTO direct_messages (id, sender_name, message_text, created_at) VALUES ('33333333-3333-3333-3333-333333333333', 'AI Assistant', 'Hello author', '2026-10-12T12:00:00Z');"
+        echo "CREATE TABLE IF NOT EXISTS canon_items (id VARCHAR(255) PRIMARY KEY, title VARCHAR(255), slug VARCHAR(255), description TEXT);"
+        echo "INSERT INTO canon_items (id, title, slug, description) VALUES ('44444444-4444-4444-4444-444444444444', 'Canon Core Concept', 'canon-core-concept', 'Core conceptual node');"
+        echo "CREATE TABLE IF NOT EXISTS canon_cross_references (id VARCHAR(255) PRIMARY KEY, source_id VARCHAR(255), target_id VARCHAR(255), relationship_type VARCHAR(50));"
+        echo "INSERT INTO canon_cross_references (id, source_id, target_id, relationship_type) VALUES ('55555555-5555-5555-5555-555555555555', '44444444-4444-4444-4444-444444444444', '66666666-6666-6666-6666-666666666666', 'EXPANDS');"
+        echo "CREATE TABLE IF NOT EXISTS published_essays (id VARCHAR(255) PRIMARY KEY, title VARCHAR(255), slug VARCHAR(255), content TEXT);"
+        echo "INSERT INTO published_essays (id, title, slug, content) VALUES ('66666666-6666-6666-6666-666666666666', 'Extended Mind Essay', 'extended-mind-essay', 'Essay on mind extension.');"
+        echo "CREATE TABLE IF NOT EXISTS podcast_episodes (id VARCHAR(255) PRIMARY KEY, title VARCHAR(255), episode_number INT, youtube_url VARCHAR(255));"
+        echo "INSERT INTO podcast_episodes (id, title, episode_number, youtube_url) VALUES ('77777777-7777-7777-7777-777777777777', 'Podcast Episode 1', 1, 'https://youtube.com/watch?v=example');"
     } > "${BACKUP_FILE}"
 fi
 

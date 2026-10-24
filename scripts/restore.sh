@@ -48,6 +48,10 @@ else
     grep -q "publication_schedule" "${BACKUP_FILE}" || true
     grep -q "service_orders" "${BACKUP_FILE}" || true
     grep -q "direct_messages" "${BACKUP_FILE}" || true
+    grep -q "canon_items" "${BACKUP_FILE}" || true
+    grep -q "canon_cross_references" "${BACKUP_FILE}" || true
+    grep -q "published_essays" "${BACKUP_FILE}" || true
+    grep -q "podcast_episodes" "${BACKUP_FILE}" || true
 fi
 
 echo "[INFO] Database restore process completed successfully."
