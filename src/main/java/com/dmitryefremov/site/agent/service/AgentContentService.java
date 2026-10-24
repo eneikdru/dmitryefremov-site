@@ -3,12 +3,24 @@ package com.dmitryefremov.site.agent.service;
 import com.dmitryefremov.site.agent.domain.AgentApiToken;
 import com.dmitryefremov.site.agent.domain.ContentAuditLog;
 import com.dmitryefremov.site.agent.dto.ArticleUpdateRequestDto;
+import com.dmitryefremov.site.agent.dto.ConceptUpdateRequestDto;
+import com.dmitryefremov.site.agent.dto.EssayUpdateRequestDto;
 import com.dmitryefremov.site.agent.dto.PodcastUpdateRequestDto;
 import com.dmitryefremov.site.agent.repository.AgentApiTokenRepository;
 import com.dmitryefremov.site.agent.repository.ContentAuditLogRepository;
 import com.dmitryefremov.site.article.domain.Article;
 import com.dmitryefremov.site.article.dto.ArticleDto;
 import com.dmitryefremov.site.article.repository.ArticleRepository;
+import com.dmitryefremov.site.canon.domain.CanonDomain;
+import com.dmitryefremov.site.canon.domain.CanonItem;
+import com.dmitryefremov.site.canon.domain.CanonType;
+import com.dmitryefremov.site.canon.dto.CanonItemDto;
+import com.dmitryefremov.site.canon.repository.CanonItemRepository;
+import com.dmitryefremov.site.essay.domain.Essay;
+import com.dmitryefremov.site.essay.domain.PublishedEssay;
+import com.dmitryefremov.site.essay.dto.EssayDto;
+import com.dmitryefremov.site.essay.repository.EssayRepository;
+import com.dmitryefremov.site.essay.repository.PublishedEssayRepository;
 import com.dmitryefremov.site.podcast.domain.PodcastEpisode;
 import com.dmitryefremov.site.podcast.domain.PodcastQuote;
 import com.dmitryefremov.site.podcast.domain.PodcastTimecode;
@@ -16,6 +28,7 @@ import com.dmitryefremov.site.podcast.dto.PodcastEpisodeDto;
 import com.dmitryefremov.site.podcast.dto.PodcastQuoteDto;
 import com.dmitryefremov.site.podcast.dto.PodcastTimecodeDto;
 import com.dmitryefremov.site.podcast.repository.PodcastEpisodeRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,6 +53,9 @@ public class AgentContentService {
     private final ContentAuditLogRepository auditLogRepository;
     private final ArticleRepository articleRepository;
     private final PodcastEpisodeRepository podcastEpisodeRepository;
+    private final PublishedEssayRepository publishedEssayRepository;
+    private final EssayRepository essayRepository;
+    private final CanonItemRepository canonItemRepository;
     private final JdbcTemplate jdbcTemplate;
 
     public AgentContentService(
@@ -47,12 +63,18 @@ public class AgentContentService {
             ContentAuditLogRepository auditLogRepository,
             ArticleRepository articleRepository,
             PodcastEpisodeRepository podcastEpisodeRepository,
+            PublishedEssayRepository publishedEssayRepository,
+            EssayRepository essayRepository,
+            @Qualifier("siteCanonItemRepository") CanonItemRepository canonItemRepository,
             JdbcTemplate jdbcTemplate
     ) {
         this.tokenRepository = tokenRepository;
         this.auditLogRepository = auditLogRepository;
         this.articleRepository = articleRepository;
         this.podcastEpisodeRepository = podcastEpisodeRepository;
+        this.publishedEssayRepository = publishedEssayRepository;
+        this.essayRepository = essayRepository;
+        this.canonItemRepository = canonItemRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -105,13 +127,19 @@ public class AgentContentService {
     public Map<String, Object> getAllContentAsJson() {
         List<Article> articles = articleRepository.findAll(Sort.by(Sort.Direction.DESC, "publishedAt"));
         List<PodcastEpisode> episodes = podcastEpisodeRepository.findAll(Sort.by(Sort.Direction.DESC, "publishedAt"));
+        List<PublishedEssay> essays = publishedEssayRepository.findAll(Sort.by(Sort.Direction.DESC, "publishedAt"));
+        List<CanonItem> canonItems = canonItemRepository.findAll(Sort.by(Sort.Direction.DESC, "publishedAt"));
 
         List<ArticleDto> articleDtos = articles.stream().map(this::mapArticleToDto).toList();
         List<PodcastEpisodeDto> episodeDtos = episodes.stream().map(this::mapPodcastToDto).toList();
+        List<EssayDto> essayDtos = essays.stream().map(this::mapEssayToDto).toList();
+        List<CanonItemDto> canonDtos = canonItems.stream().map(this::mapConceptToDto).toList();
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("articles", articleDtos);
         response.put("podcasts", episodeDtos);
+        response.put("essays", essayDtos);
+        response.put("concepts", canonDtos);
         return response;
     }
 
@@ -148,6 +176,17 @@ public class AgentContentService {
                     episode.getDescription() != null ? episode.getDescription() : "",
                     pubDate,
                     "podcast-" + episode.getId()
+            ));
+        }
+
+        for (PublishedEssay essay : publishedEssayRepository.findAll(Sort.by(Sort.Direction.DESC, "publishedAt"))) {
+            OffsetDateTime pubDate = essay.getPublishedAt() != null ? essay.getPublishedAt() : essay.getCreatedAt();
+            entries.add(new FeedEntry(
+                    essay.getTitle(),
+                    BASE_URL + "/essays/" + essay.getSlug(),
+                    essay.getSummary() != null ? essay.getSummary() : "",
+                    pubDate,
+                    "essay-" + essay.getId()
             ));
         }
 
@@ -441,6 +480,248 @@ public class AgentContentService {
         return updatePodcastJson(slug, dto, agent);
     }
 
+    @Transactional
+    public EssayDto updateEssayJson(String slug, EssayUpdateRequestDto dto, AgentApiToken agent) {
+        if (dto == null) {
+            throw new IllegalArgumentException("Payload cannot be empty");
+        }
+        Optional<PublishedEssay> publishedOpt = publishedEssayRepository.findBySlug(slug);
+        PublishedEssay publishedEssay;
+        String action;
+        if (publishedOpt.isPresent()) {
+            publishedEssay = publishedOpt.get();
+            action = "UPDATE";
+        } else {
+            publishedEssay = new PublishedEssay();
+            publishedEssay.setSlug(slug);
+            action = "CREATE";
+        }
+
+        if (dto.title() != null && !dto.title().isBlank()) {
+            publishedEssay.setTitle(dto.title());
+        } else if (action.equals("CREATE")) {
+            throw new IllegalArgumentException("Title is required for creating an essay");
+        }
+
+        if (dto.summary() != null) {
+            publishedEssay.setSummary(dto.summary());
+        }
+
+        if (dto.content() != null) {
+            publishedEssay.setContent(dto.content());
+        } else if (action.equals("CREATE")) {
+            throw new IllegalArgumentException("Content is required for creating an essay");
+        }
+
+        if (dto.curatedBy() != null) {
+            publishedEssay.setCuratedBy(dto.curatedBy());
+        } else if (publishedEssay.getCuratedBy() == null) {
+            publishedEssay.setCuratedBy("Dmitry Efremov");
+        }
+
+        if (dto.publishedAt() != null) {
+            publishedEssay.setPublishedAt(dto.publishedAt());
+        } else if (publishedEssay.getPublishedAt() == null) {
+            publishedEssay.setPublishedAt(OffsetDateTime.now());
+        }
+
+        PublishedEssay savedPublished = publishedEssayRepository.save(publishedEssay);
+
+        // Also keep draft/internal essays table synchronized
+        Optional<Essay> essayOpt = essayRepository.findBySlug(slug);
+        Essay essay = essayOpt.orElseGet(() -> {
+            Essay newE = new Essay();
+            newE.setSlug(slug);
+            return newE;
+        });
+        essay.setTitle(savedPublished.getTitle());
+        essay.setSummary(savedPublished.getSummary());
+        essay.setContent(savedPublished.getContent());
+        essay.setPublishedAt(savedPublished.getPublishedAt());
+        essayRepository.save(essay);
+
+        auditLogRepository.save(new ContentAuditLog(agent, "ESSAY", savedPublished.getId(), action));
+        return mapEssayToDto(savedPublished);
+    }
+
+    @Transactional
+    public EssayDto updateEssayMarkdown(String slug, String markdown, AgentApiToken agent) {
+        if (markdown == null || markdown.isBlank()) {
+            throw new IllegalArgumentException("Markdown payload cannot be empty");
+        }
+
+        Matcher matcher = FRONTMATTER_PATTERN.matcher(markdown);
+        String title = null;
+        String summary = null;
+        String curatedBy = null;
+        OffsetDateTime publishedAt = null;
+        String body = markdown;
+
+        if (matcher.matches()) {
+            String frontmatter = matcher.group(1);
+            body = matcher.group(2).trim();
+
+            for (String line : frontmatter.split("\n")) {
+                line = line.trim();
+                if (line.startsWith("title:")) {
+                    title = unquote(line.substring(6).trim());
+                } else if (line.startsWith("summary:")) {
+                    summary = unquote(line.substring(8).trim());
+                } else if (line.startsWith("curatedBy:") || line.startsWith("curated_by:")) {
+                    curatedBy = unquote(line.substring(line.indexOf(':') + 1).trim());
+                } else if (line.startsWith("publishedAt:") || line.startsWith("published_at:")) {
+                    String pubStr = unquote(line.substring(line.indexOf(':') + 1).trim());
+                    try {
+                        publishedAt = OffsetDateTime.parse(pubStr);
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        }
+
+        if (title == null || title.isBlank()) {
+            for (String line : body.split("\n")) {
+                if (line.trim().startsWith("# ")) {
+                    title = line.trim().substring(2).trim();
+                    break;
+                }
+            }
+        }
+
+        EssayUpdateRequestDto dto = new EssayUpdateRequestDto(
+                title != null ? title : slug,
+                summary,
+                body,
+                curatedBy,
+                publishedAt
+        );
+
+        return updateEssayJson(slug, dto, agent);
+    }
+
+    @Transactional
+    public CanonItemDto updateConceptJson(String slug, ConceptUpdateRequestDto dto, AgentApiToken agent) {
+        if (dto == null) {
+            throw new IllegalArgumentException("Payload cannot be empty");
+        }
+        Optional<CanonItem> conceptOpt = canonItemRepository.findBySlug(slug);
+        CanonItem concept;
+        String action;
+        if (conceptOpt.isPresent()) {
+            concept = conceptOpt.get();
+            action = "UPDATE";
+        } else {
+            concept = new CanonItem();
+            concept.setSlug(slug);
+            action = "CREATE";
+        }
+
+        if (dto.title() != null && !dto.title().isBlank()) {
+            concept.setTitle(dto.title());
+        } else if (action.equals("CREATE")) {
+            throw new IllegalArgumentException("Title is required for creating a concept");
+        }
+
+        if (dto.type() != null) {
+            concept.setType(dto.type());
+        } else if (concept.getType() == null) {
+            concept.setType(CanonType.ONTOLOGY);
+        }
+
+        if (dto.domain() != null) {
+            concept.setDomain(dto.domain());
+        } else if (concept.getDomain() == null) {
+            concept.setDomain(CanonDomain.AUTONOMOUS_ENGINEERING);
+        }
+
+        if (dto.summary() != null) {
+            concept.setSummary(dto.summary());
+        }
+
+        if (dto.content() != null) {
+            concept.setContent(dto.content());
+        } else if (action.equals("CREATE")) {
+            throw new IllegalArgumentException("Content is required for creating a concept");
+        }
+
+        if (dto.publishedAt() != null) {
+            concept.setPublishedAt(dto.publishedAt());
+        } else if (concept.getPublishedAt() == null) {
+            concept.setPublishedAt(OffsetDateTime.now());
+        }
+
+        CanonItem saved = canonItemRepository.save(concept);
+        auditLogRepository.save(new ContentAuditLog(agent, "CONCEPT", saved.getId(), action));
+        return mapConceptToDto(saved);
+    }
+
+    @Transactional
+    public CanonItemDto updateConceptMarkdown(String slug, String markdown, AgentApiToken agent) {
+        if (markdown == null || markdown.isBlank()) {
+            throw new IllegalArgumentException("Markdown payload cannot be empty");
+        }
+
+        Matcher matcher = FRONTMATTER_PATTERN.matcher(markdown);
+        String title = null;
+        CanonType type = null;
+        CanonDomain domain = null;
+        String summary = null;
+        OffsetDateTime publishedAt = null;
+        String body = markdown;
+
+        if (matcher.matches()) {
+            String frontmatter = matcher.group(1);
+            body = matcher.group(2).trim();
+
+            for (String line : frontmatter.split("\n")) {
+                line = line.trim();
+                if (line.startsWith("title:")) {
+                    title = unquote(line.substring(6).trim());
+                } else if (line.startsWith("type:")) {
+                    String typeStr = unquote(line.substring(5).trim());
+                    try {
+                        type = CanonType.valueOf(typeStr.toUpperCase());
+                    } catch (Exception ignored) {
+                    }
+                } else if (line.startsWith("domain:")) {
+                    String domainStr = unquote(line.substring(7).trim());
+                    try {
+                        domain = CanonDomain.valueOf(domainStr.toUpperCase());
+                    } catch (Exception ignored) {
+                    }
+                } else if (line.startsWith("summary:")) {
+                    summary = unquote(line.substring(8).trim());
+                } else if (line.startsWith("publishedAt:") || line.startsWith("published_at:")) {
+                    String pubStr = unquote(line.substring(line.indexOf(':') + 1).trim());
+                    try {
+                        publishedAt = OffsetDateTime.parse(pubStr);
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        }
+
+        if (title == null || title.isBlank()) {
+            for (String line : body.split("\n")) {
+                if (line.trim().startsWith("# ")) {
+                    title = line.trim().substring(2).trim();
+                    break;
+                }
+            }
+        }
+
+        ConceptUpdateRequestDto dto = new ConceptUpdateRequestDto(
+                title != null ? title : slug,
+                type != null ? type : CanonType.ONTOLOGY,
+                domain != null ? domain : CanonDomain.AUTONOMOUS_ENGINEERING,
+                summary,
+                body,
+                publishedAt
+        );
+
+        return updateConceptJson(slug, dto, agent);
+    }
+
     private ArticleDto mapArticleToDto(Article entity) {
         return new ArticleDto(
                 entity.getId(),
@@ -480,6 +761,35 @@ public class AgentContentService {
                 entity.getCreatedAt(),
                 timecodes,
                 quotes
+        );
+    }
+
+    private EssayDto mapEssayToDto(PublishedEssay entity) {
+        return new EssayDto(
+                entity.getId(),
+                entity.getSlug(),
+                entity.getTitle(),
+                entity.getSummary(),
+                entity.getContent(),
+                entity.getPublishedAt(),
+                entity.getCreatedAt()
+        );
+    }
+
+    private CanonItemDto mapConceptToDto(CanonItem entity) {
+        return new CanonItemDto(
+                entity.getId(),
+                entity.getSlug(),
+                entity.getTitle(),
+                entity.getType(),
+                entity.getDomain(),
+                entity.getSummary(),
+                entity.getContent(),
+                entity.getPublishedAt(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt(),
+                List.of(),
+                List.of()
         );
     }
 
