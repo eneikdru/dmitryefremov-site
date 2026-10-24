@@ -10,8 +10,7 @@
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
-  import AgentCanonView from './AgentCanonView.svelte';
-  import { isMachineReadablePath } from '../lib/agentCanon';
+  import CanonGatewayView from './CanonGatewayView.svelte';
 
   export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' = 'podcast';
 
@@ -25,6 +24,18 @@
   function updateRoute() {
     if (typeof window !== 'undefined') {
       currentPath = window.location.pathname;
+      const hash = window.location.hash.toLowerCase();
+      if (
+        currentPath === '/canon-gateway' ||
+        currentPath === '/canon' ||
+        currentPath === '/llms.txt' ||
+        currentPath === '/.well-known/llms.txt' ||
+        hash === '#/canon-gateway' ||
+        hash === '#canon-gateway' ||
+        hash === '#canon'
+      ) {
+        activeTab = 'canon';
+      }
     }
   }
 
@@ -71,10 +82,6 @@
 
 {#if currentPath === '/admin' || (typeof window !== 'undefined' && window.location.hash === '#/admin')}
   <AdminDashboardView {theme} />
-{:else if currentPath === '/agent-canon' || (typeof window !== 'undefined' && window.location.hash === '#/agent-canon') || isMachineReadablePath(currentPath)}
-  <div class="min-h-screen py-8 px-4 transition-colors duration-200 {theme === 'dark' ? 'bg-[#0f131c] text-[#dfe2ee]' : 'bg-[#fafafa] text-[#0f172a]'}">
-    <AgentCanonView {theme} />
-  </div>
 {:else}
   <SeoMeta
     title="Дмитрий Ефремов — Архитектура систем, философия сознания и автономные процессы"
@@ -228,7 +235,7 @@
             class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'canon')}
           >
-            <span>🤖 AGENT CANON</span>
+            <span>🤖 КАНОН & AI API</span>
           </button>
         </nav>
       </header>
@@ -253,7 +260,7 @@
           </div>
         {:else if activeTab === 'canon'}
           <div class="space-y-6">
-            <AgentCanonView {theme} />
+            <CanonGatewayView {theme} />
           </div>
         {/if}
       </section>
