@@ -38,6 +38,10 @@ test('generate design gate verification artifacts for sparks UI', async () => {
     await desktopPage.goto('http://localhost:4173');
     await desktopPage.waitForSelector('#telemetry-hub-root');
 
+    if (await desktopPage.locator('#cmp-decline-btn').isVisible()) {
+      await desktopPage.click('#cmp-decline-btn');
+    }
+
     // Click on [⚡ SPARKS (TIER 3)] tab
     await desktopPage.click('#tab-btn-sparks');
     await desktopPage.waitForTimeout(500);
@@ -94,6 +98,10 @@ test('generate design gate verification artifacts for sparks UI', async () => {
     const mobilePage = await mobileContext.newPage();
     await mobilePage.goto('http://localhost:4173');
     await mobilePage.waitForSelector('#telemetry-hub-root');
+
+    if (await mobilePage.locator('#cmp-decline-btn').isVisible()) {
+      await mobilePage.click('#cmp-decline-btn');
+    }
 
     await mobilePage.click('#tab-btn-sparks');
     await mobilePage.waitForTimeout(500);

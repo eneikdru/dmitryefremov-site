@@ -1,0 +1,100 @@
+[
+  {
+    "id": "canon-gateway-header",
+    "left": 176,
+    "top": 521,
+    "width": 1088,
+    "height": 80
+  },
+  {
+    "id": "gateway-header-title",
+    "left": 248,
+    "top": 538,
+    "width": 583,
+    "height": 28
+  },
+  {
+    "id": "ingress-gateway-card",
+    "left": 176,
+    "top": 625,
+    "width": 1088,
+    "height": 213
+  },
+  {
+    "id": "ingress-card-title",
+    "left": 197,
+    "top": 665,
+    "width": 296,
+    "height": 28
+  },
+  {
+    "id": "base-endpoint-box",
+    "left": 197,
+    "top": 709,
+    "width": 1046,
+    "height": 59
+  },
+  {
+    "id": "filter-pills-bar",
+    "left": 176,
+    "top": 862,
+    "width": 1088,
+    "height": 30
+  },
+  {
+    "id": "routes-list-section",
+    "left": 176,
+    "top": 916,
+    "width": 1088,
+    "height": 1152
+  },
+  {
+    "id": "route-lore-summary",
+    "left": 176,
+    "top": 916,
+    "width": 1088,
+    "height": 159
+  },
+  {
+    "id": "route-wellknown-json",
+    "left": 176,
+    "top": 1091,
+    "width": 1088,
+    "height": 633
+  },
+  {
+    "id": "route-agent-orders",
+    "left": 176,
+    "top": 1739,
+    "width": 1088,
+    "height": 157
+  },
+  {
+    "id": "route-events-stream",
+    "left": 176,
+    "top": 1912,
+    "width": 1088,
+    "height": 157
+  },
+  {
+    "id": "security-auth-card",
+    "left": 176,
+    "top": 2092,
+    "width": 1088,
+    "height": 381
+  },
+  {
+    "id": "security-card-title",
+    "left": 197,
+    "top": 2113,
+    "width": 210,
+    "height": 20
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 2513,
+    "width": 1088,
+    "height": 49
+  }
+]

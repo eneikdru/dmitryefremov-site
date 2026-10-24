@@ -1,7 +1,37 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Core Identity and Essay Reader Verification', () => {
-  // Assuming the server is running based on the existing playwright config
+  test.beforeEach(async ({ page }) => {
+    const mockEssays = [
+      {
+        id: '1',
+        slug: 'deterministic-state-determinism',
+        title: 'Deterministic State Determinism in Autonomous Loops',
+        summary: 'Replayability condition in autonomous state loops.',
+        contentMarkdown: '# Replayability Condition\n\nState determinism across transitions.',
+        authorName: 'Дмитрий Ефремов',
+        topic: 'deontic',
+        readTime: '6 мин',
+        publishedAt: '2026-10-18'
+      }
+    ];
+
+    await page.route('**/api/v1/essays', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(mockEssays)
+      });
+    });
+
+    await page.route('**/api/v1/articles', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(mockEssays)
+      });
+    });
+  });
 
   test('no debug logs on facade and essay reader renders correctly', async ({ page }) => {
     const logs: string[] = [];
@@ -13,13 +43,17 @@ test.describe('Core Identity and Essay Reader Verification', () => {
 
     await page.goto('/');
 
+    if (await page.locator('#cmp-decline-btn').isVisible()) {
+      await page.click('#cmp-decline-btn');
+    }
+
     // Switch to Article Stream tab
     await page.click('#tab-btn-article');
 
-    // Click on the third article
+    // Click on the article
     await page.locator('text=Deterministic State Determinism').first().click();
 
-    // Verify Essay reader fetches and renders content (based on trace)
+    // Verify Essay reader fetches and renders content
     await expect(page.locator('text=Deterministic State Determinism in Autonomous Loops').first()).toBeVisible();
     await expect(page.locator('text=Replayability Condition').first()).toBeVisible();
 
@@ -27,13 +61,11 @@ test.describe('Core Identity and Essay Reader Verification', () => {
     await page.click('#tab-btn-contact');
     await expect(page.locator('text=Telegram Channel').first()).toBeVisible();
 
-    // Check no debug logs at the very end to capture all interactions
+    // Check no debug logs
     expect(logs.length).toBe(0);
   });
 
   test('visual layout bounding boxes match specifications', async ({ browser }) => {
-    // Instead of using screenshots which cannot be committed, we verify visual layout
-    // characteristics (e.g., elements are visible, have dimensions, and are placed correctly).
     const contextDesktop = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const pageDesktop = await contextDesktop.newPage();
     await pageDesktop.goto('/');
@@ -42,7 +74,7 @@ test.describe('Core Identity and Essay Reader Verification', () => {
 
     const desktopAvatarBox = await pageDesktop.locator('#hero-avatar-img').boundingBox();
     expect(desktopAvatarBox).not.toBeNull();
-    if(desktopAvatarBox) {
+    if (desktopAvatarBox) {
       expect(desktopAvatarBox.width).toBeGreaterThan(100);
       expect(desktopAvatarBox.height).toBeGreaterThan(100);
     }
@@ -57,7 +89,7 @@ test.describe('Core Identity and Essay Reader Verification', () => {
 
     const mobileAvatarBox = await pageMobile.locator('#hero-avatar-img').boundingBox();
     expect(mobileAvatarBox).not.toBeNull();
-    if(mobileAvatarBox) {
+    if (mobileAvatarBox) {
       expect(mobileAvatarBox.width).toBeGreaterThan(80);
       expect(mobileAvatarBox.height).toBeGreaterThan(80);
     }

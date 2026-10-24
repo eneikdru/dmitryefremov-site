@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability', () => {
-  test('seeded podcast catalog is accessible and controls are fully keyboard operable', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     // Inject HTMLMediaElement mock to allow synthetic audio playback in headless Chromium
     await page.addInitScript(() => {
       Object.defineProperty(window.HTMLMediaElement.prototype, 'paused', {
@@ -19,8 +19,58 @@ test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability
       };
     });
 
+    // Mock API route for seeded podcast episodes
+    await page.route('**/api/v1/podcasts', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([
+          {
+            id: 1,
+            slug: 'ruth-barcan-marcus',
+            philosopher: 'Рут Баркан Маркус',
+            title: 'Рут Баркан Маркус — Формула Баркан и деонтическая модальная логика',
+            thesis: 'Инвариантность квантификации в модальных контекстах.',
+            description: 'Разбор модальной логики и формулы Баркан.',
+            audioUrl: '/audio/ep1.mp3',
+            youtubeUrl: 'https://youtube.com/@dmitrii.efremov',
+            telegramUrl: 'https://t.me/efremov_mvp',
+            durationSeconds: 1200,
+            publishedAt: '2026-10-18',
+            timecodes: [
+              { id: 101, timeOffsetSeconds: 0, title: 'Введение в деонтическую логику' },
+              { id: 102, timeOffsetSeconds: 340, title: 'Формула Баркан и квантификация' },
+              { id: 103, timeOffsetSeconds: 920, title: 'Модальные инварианты' }
+            ]
+          },
+          {
+            id: 2,
+            slug: 'paul-thagard',
+            philosopher: 'Пол Таггард',
+            title: 'Пол Таггард — Когнитивная когерентность',
+            thesis: 'Вычислительная теория сознания и когерентность гипотез.',
+            description: 'Разбор когнитивных архитектур.',
+            audioUrl: '/audio/ep2.mp3',
+            youtubeUrl: 'https://youtube.com/@dmitrii.efremov',
+            telegramUrl: 'https://t.me/efremov_mvp',
+            durationSeconds: 1500,
+            publishedAt: '2026-10-19',
+            timecodes: [
+              { id: 201, timeOffsetSeconds: 0, title: 'Когерентность гипотез' }
+            ]
+          }
+        ])
+      });
+    });
+  });
+
+  test('seeded podcast catalog is accessible and controls are fully keyboard operable', async ({ page }) => {
     // 1. Navigate to main page (Podcast Media Hub tab is active by default)
     await page.goto('/');
+
+    if (await page.locator('#cmp-decline-btn').isVisible()) {
+      await page.click('#cmp-decline-btn');
+    }
 
     // Ensure Podcast player container is rendered
     await page.waitForSelector('#podcast-player-container');

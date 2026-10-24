@@ -159,7 +159,6 @@
       <button
         type="button"
         on:click={copyBaseEndpoint}
-        aria-label="Copy Base Endpoint"
         class="px-3 py-1.5 bg-[#262a33] hover:bg-[#31353e] text-[#00f2fe] text-xs font-mono rounded border border-[#3a494b]/40 transition-colors cursor-pointer shrink-0"
       >
         {copySuccess ? 'Скопировано!' : 'Copy URL'}
@@ -231,7 +230,7 @@
             <span class="px-2 py-0.5 rounded bg-[#31353e] text-[#b9cacb] border border-[#3a494b]/40">
               {route.scope}
             </span>
-            <span class="px-2 py-0.5 rounded {routeStatusMap[route.id] ? 'bg-[#00f2fe]/10 text-[#00f2fe] border border-[#00f2fe]/30' : 'bg-[#31353e] text-[#849495] border border-[#3a494b]/20'}">
+            <span class="px-2 py-0.5 rounded {routeStatusMap[route.id] ? 'bg-[#00f2fe]/10 text-[#00f2fe] border border-[#00f2fe]/30' : 'bg-[#31353e] text-[#b9cacb] border border-[#3a494b]/20'}">
               {routeStatusMap[route.id] ? 'Active' : 'Paused'}
             </span>
           </div>
