@@ -49,7 +49,7 @@ public class ArticleService {
     }
 
     public Optional<ArticleDto> getArticleBySlug(String slug) {
-        return articleRepository.findBySlug(slug)
+        return articleRepository.findBySlugAndPublishedAtNotNull(slug)
                 .map(this::mapToDto);
     }
 

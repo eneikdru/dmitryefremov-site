@@ -39,7 +39,7 @@ public class PodcastEpisodeService {
         }
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<PodcastEpisode> episodePage = podcastEpisodeRepository.findAllByOrderByPublishedAtDesc(pageable);
+        Page<PodcastEpisode> episodePage = podcastEpisodeRepository.findAllByPublishedAtNotNullOrderByPublishedAtDesc(pageable);
 
         List<PodcastEpisodeDto> dtos = episodePage.getContent().stream()
                 .map(this::mapToDto)
@@ -55,8 +55,12 @@ public class PodcastEpisodeService {
     }
 
     public Optional<PodcastEpisodeDto> getEpisodeBySlug(String slug) {
-        return podcastEpisodeRepository.findBySlug(slug)
+        return podcastEpisodeRepository.findBySlugAndPublishedAtNotNull(slug)
                 .map(this::mapToDto);
+    }
+
+    public long getPublishedEpisodeCount() {
+        return podcastEpisodeRepository.countByPublishedAtNotNull();
     }
 
     public PodcastEpisodeDto mapToDto(PodcastEpisode entity) {

@@ -116,4 +116,25 @@ class ArticleRepositoryTest {
         // Seeded articles + newly saved published articles
         assertThat(page.getTotalElements()).isGreaterThanOrEqualTo(7);
     }
+
+    @Test
+    void testFindBySlugAndPublishedAtNotNullExcludesDrafts() {
+        OffsetDateTime now = OffsetDateTime.of(2026, 10, 9, 15, 0, 0, 0, ZoneOffset.UTC);
+
+        Article draft = new Article("draft-teleprompter-article", "Draft Article", "Summary", "Raw script content", null);
+        Article published = new Article("published-article-slug", "Published Article", "Summary", "Published content", now);
+
+        articleRepository.save(draft);
+        articleRepository.save(published);
+        articleRepository.flush();
+
+        Optional<Article> foundDraft = articleRepository.findBySlugAndPublishedAtNotNull("draft-teleprompter-article");
+        assertThat(foundDraft).isEmpty();
+
+        Optional<Article> foundPublished = articleRepository.findBySlugAndPublishedAtNotNull("published-article-slug");
+        assertThat(foundPublished).isPresent();
+
+        long publishedCount = articleRepository.countByPublishedAtNotNull();
+        assertThat(publishedCount).isGreaterThan(0);
+    }
 }
