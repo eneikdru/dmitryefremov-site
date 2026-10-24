@@ -147,7 +147,7 @@
               <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Strictly Necessary</span>
               <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/30">Always Active</span>
             </div>
-            <span class="text-[10px] font-mono {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">[LOCKED]</span>
+            <span class="text-[10px] font-mono {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#94a3b8]'}">[LOCKED]</span>
           </div>
           <p class="text-[11px] leading-normal {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
             Required for secure navigation, session integrity, and layout persistence. Cannot be disabled.
@@ -234,7 +234,7 @@
           id="cmp-accept-btn"
           type="button"
           on:click={handleAccept}
-          class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#0284c7] border-[#38bdf8] text-white hover:bg-[#0369a1]' : 'bg-[#0284c7] border-[#0284c7] text-white hover:bg-[#0369a1]'}"
+          class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#0369a1] border-[#38bdf8] text-white hover:bg-[#075985]' : 'bg-[#0369a1] border-[#0369a1] text-white hover:bg-[#075985]'}"
         >
           [ACCEPT_TRACKERS]
         </button>
@@ -250,7 +250,7 @@
         >
           Save Custom Category Preferences
         </button>
-        <span class="text-[10px] font-mono uppercase tracking-wider {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">
+        <span class="text-[10px] font-mono uppercase tracking-wider {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
           Powered by TrustGuard CMP • Privacy Architecture v4.8
         </span>
       </div>

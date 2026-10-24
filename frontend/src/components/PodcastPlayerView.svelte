@@ -191,33 +191,35 @@
         <span>ВЫБЕРИТЕ ВЫПУСК</span>
       </div>
 
-      <div class="space-y-3" role="list" aria-label="Podcast Episodes Catalog">
+      <ul class="space-y-3" aria-label="Podcast Episodes Catalog">
         {#each episodes as ep}
-          <button
-            type="button"
-            id="episode-card-{ep.id}"
-            class="episode-card w-full p-4 rounded-xl border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#34d399] {selectedEpisodeId === ep.id ? 'bg-[#12151e] border-[#34d399] shadow-lg' : 'bg-[#090a0f] border-[#1f2433] hover:border-[#38bdf8]/50 hover:bg-[#12151e]/50'}"
-            on:click={() => handleSelectEpisode(ep.id)}
-          >
-            <div class="flex justify-between items-center text-xs font-mono mb-2">
-              <span class="px-2 py-0.5 rounded bg-[#1f2433] text-[#34d399] uppercase font-bold text-[11px]">
-                {ep.philosopher}
-              </span>
-              <span class="text-[#64748b]">{formatTime(ep.durationSeconds)}</span>
-            </div>
-            <h3 class="font-bold text-white text-sm mb-1.5 hover:text-[#34d399] transition-colors leading-snug">
-              {ep.title}
-            </h3>
-            <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
-              {ep.thesis}
-            </p>
-            <div class="mt-3 text-[11px] font-mono text-[#64748b] flex justify-between items-center">
-              <span>{ep.timecodes.length} таймкодов</span>
-              <span class="text-[#34d399] font-medium">{selectedEpisodeId === ep.id ? '● АКТИВЕН' : 'СЛУШАТЬ →'}</span>
-            </div>
-          </button>
+          <li role="listitem">
+            <button
+              type="button"
+              id="episode-card-{ep.id}"
+              class="episode-card w-full p-4 rounded-xl border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#34d399] {selectedEpisodeId === ep.id ? 'bg-[#12151e] border-[#34d399] shadow-lg' : 'bg-[#090a0f] border-[#1f2433] hover:border-[#38bdf8]/50 hover:bg-[#12151e]/50'}"
+              on:click={() => handleSelectEpisode(ep.id)}
+            >
+              <div class="flex justify-between items-center text-xs font-mono mb-2">
+                <span class="px-2 py-0.5 rounded bg-[#1f2433] text-[#34d399] uppercase font-bold text-[11px]">
+                  {ep.philosopher}
+                </span>
+                <span class="text-[#94a3b8]">{formatTime(ep.durationSeconds)}</span>
+              </div>
+              <h3 class="font-bold text-white text-sm mb-1.5 hover:text-[#34d399] transition-colors leading-snug">
+                {ep.title}
+              </h3>
+              <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
+                {ep.thesis}
+              </p>
+              <div class="mt-3 text-[11px] font-mono text-[#94a3b8] flex justify-between items-center">
+                <span>{ep.timecodes.length} таймкодов</span>
+                <span class="text-[#34d399] font-medium">{selectedEpisodeId === ep.id ? '● АКТИВЕН' : 'СЛУШАТЬ →'}</span>
+              </div>
+            </button>
+          </li>
         {/each}
-      </div>
+      </ul>
     </div>
 
     <!-- Active Audio Player & Waveform Section -->
@@ -271,7 +273,7 @@
             <!-- Time Display -->
             <div id="time-display" class="font-mono text-sm flex items-center gap-2 text-[#cbd5e1]">
               <span id="current-time-val" class="text-[#34d399] font-bold text-base">{formatTime(currentTime)}</span>
-              <span class="text-[#64748b]">/</span>
+              <span class="text-[#94a3b8]">/</span>
               <span id="duration-val" class="text-[#94a3b8]">{formatTime(currentEpisode.durationSeconds)}</span>
             </div>
 
@@ -285,7 +287,7 @@
 
           <!-- Waveform Visualization -->
           <div class="space-y-1.5">
-            <div class="flex justify-between items-center text-[11px] font-mono text-[#64748b]">
+            <div class="flex justify-between items-center text-[11px] font-mono text-[#94a3b8]">
               <span>ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ</span>
               <span>КЛИКНИТЕ ДЛЯ ПЕРЕМОТКИ</span>
             </div>
@@ -349,7 +351,7 @@
                       {/if}
                     </div>
                     {#if tc.description}
-                      <p class="text-[11px] text-[#64748b] mt-0.5 line-clamp-1">{tc.description}</p>
+                      <p class="text-[11px] text-[#94a3b8] mt-0.5 line-clamp-1">{tc.description}</p>
                     {/if}
                   </div>
                 </button>
