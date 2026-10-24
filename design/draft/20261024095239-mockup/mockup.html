@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GraphQA // Suite #204 - Vector Traversal Inspector</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary": "#003824",
+            "primary": "#d0bcff",
+            "surface-container-high": "#222a3d",
+            "surface-tint": "#d0bcff",
+            "on-surface-variant": "#cbc3d7",
+            "error-container": "#93000a",
+            "secondary-fixed-dim": "#4cd7f6",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary": "#003640",
+            "on-error-container": "#ffdad6",
+            "surface-container-highest": "#2d3449",
+            "on-secondary-fixed": "#001f26",
+            "on-background": "#dae2fd",
+            "surface-bright": "#31394d",
+            "primary-fixed-dim": "#d0bcff",
+            "surface-container": "#171f33",
+            "inverse-primary": "#6d3bd7",
+            "surface-container-low": "#131b2e",
+            "on-secondary-container": "#00424e",
+            "inverse-on-surface": "#283044",
+            "surface-container-lowest": "#060e20",
+            "on-primary-container": "#340080",
+            "background": "#0b1326",
+            "tertiary-fixed": "#6ffbbe",
+            "on-error": "#690005",
+            "surface-variant": "#2d3449",
+            "error": "#ffb4ab",
+            "primary-container": "#a078ff",
+            "outline-variant": "#494454",
+            "tertiary": "#4edea3",
+            "on-primary-fixed-variant": "#5516be",
+            "surface-dim": "#0b1326",
+            "surface": "#0b1326",
+            "secondary-fixed": "#acedff",
+            "on-tertiary-container": "#00311f",
+            "tertiary-fixed-dim": "#4edea3",
+            "secondary": "#4cd7f6",
+            "on-primary": "#3c0091",
+            "on-primary-fixed": "#23005c",
+            "tertiary-container": "#00a572",
+            "inverse-surface": "#dae2fd",
+            "on-secondary-fixed-variant": "#004e5c",
+            "outline": "#958ea0",
+            "on-surface": "#dae2fd",
+            "secondary-container": "#03b5d3",
+            "primary-fixed": "#e9ddff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "space-lg": "1rem",
+            "space-md": "0.75rem",
+            "space-sm": "0.5rem",
+            "margin-desktop": "2rem",
+            "gutter": "1rem",
+            "gutter-desktop": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-tablet": "1.5rem",
+            "space-xl": "1.5rem"
+          },
+          "fontFamily": {
+            "label-sm": ["JetBrains Mono"],
+            "headline-md": ["Geist"],
+            "code-sm": ["JetBrains Mono"],
+            "body-md": ["Geist"],
+            "label-md": ["JetBrains Mono"],
+            "body-lg": ["Geist"],
+            "code-lg": ["JetBrains Mono"],
+            "headline-xl": ["Geist"],
+            "headline-lg": ["Geist"],
+            "body-sm": ["Geist"],
+            "code-md": ["JetBrains Mono"],
+            "headline-xl-mobile": ["Geist"]
+          },
+          "fontSize": {
+            "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.06em", "fontWeight": "500" }],
+            "headline-md": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "code-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0", "fontWeight": "400" }],
+            "body-md": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-md": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-lg": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "code-lg": ["13px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "code-md": ["12px", { "lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-xl-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #2d3449;
+      border-radius: 4px;
+    }
+    .glow-cyan {
+      box-shadow: 0 0 16px -2px rgba(76, 215, 246, 0.25);
+    }
+    .glow-violet {
+      box-shadow: 0 0 16px -2px rgba(208, 188, 255, 0.2);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md select-none pb-28">
+<!-- TopAppBar: Anchored Shared Component -->
+<header class="bg-surface-container-lowest sticky top-0 z-40 w-full flex justify-between items-center px-margin py-space-sm shadow-sm backdrop-blur-md bg-opacity-95">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<span class="text-headline-md font-headline-md text-primary tracking-tight font-bold">GraphQA Vector Engine</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm px-space-xs py-0.5 rounded bg-surface-container-high text-secondary border border-outline-variant/30 flex items-center gap-1">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+        v3.4-prod
+      </span>
+<button class="p-1 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+</header>
+<!-- Suite Meta Context Banner -->
+<section class="px-margin pt-space-md pb-space-sm border-b border-outline-variant/20 bg-surface-container-low/60">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-primary font-headline-md font-semibold tracking-tight">GraphQA // Suite #204</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">| rev: 8d9a</span>
+</div>
+<span class="font-code-sm text-code-sm px-space-sm py-0.5 rounded bg-tertiary/10 text-tertiary border border-tertiary/30 font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+          PASSING (4/4 Hops)
+        </span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-1">
+<div class="flex items-center gap-1 text-code-sm font-code-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="dns" style="font-size: 14px;">dns</span>
+<span class="text-on-surface font-mono">staging-vector-cluster-01</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm bg-surface-container-highest px-space-xs py-0.5 rounded text-secondary-fixed-dim">dim: 1536</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">HNSW Index</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Scrollable Testing Canvas -->
+<main class="flex-1 px-margin py-space-md flex flex-col gap-space-md max-w-md mx-auto w-full">
+<!-- Query Execution & Parameter Panel -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-space-md flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Natural Language Test Query</span>
+<div class="flex items-center gap-1 font-code-sm text-code-sm text-secondary">
+<span class="material-symbols-outlined" data-icon="speed" style="font-size: 14px;">speed</span>
+<span>42ms</span>
+</div>
+</div>
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded p-space-sm text-code-sm font-code-sm text-on-surface focus:outline-none focus:border-secondary resize-none" readonly="" rows="2">Find regulatory compliance dependencies for cross-border fintech payments</textarea>
+</div>
+<!-- Controls & Metrics Grid -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs items-center">
+<!-- Cosine Metric Dial Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded p-space-xs px-space-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">COSINE SIMILARITY</span>
+<div class="flex items-baseline gap-1">
+<span class="font-code-md text-code-md font-semibold text-tertiary">0.88</span>
+<span class="font-code-sm text-code-sm text-outline">/ min 0.75</span>
+</div>
+</div>
+<div class="w-7 h-7 rounded-full border border-tertiary/40 flex items-center justify-center bg-tertiary/10">
+<span class="material-symbols-outlined text-tertiary" data-icon="check" style="font-size: 15px;">check</span>
+</div>
+</div>
+<!-- Run Flow Execution Button -->
+<button class="h-full bg-primary hover:bg-primary-container text-on-primary-container font-code-md text-code-md font-semibold py-space-sm px-space-md rounded flex items-center justify-center gap-1 active:scale-[0.98] transition-all glow-violet">
+<span class="material-symbols-outlined" data-icon="play_arrow" style="font-size: 16px;">play_arrow</span>
+<span>Run Flow</span>
+</button>
+</div>
+</section>
+<!-- Main Section: Traversal Hop Timeline -->
+<section class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between px-space-xs">
+<h2 class="text-headline-md font-headline-md text-on-surface flex items-center gap-space-xs">
+<span>Traversal Hop Timeline</span>
+<span class="font-code-sm text-code-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">4 Nodes</span>
+</h2>
+<span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase">AST Synchronized</span>
+</div>
+<!-- Timeline Container -->
+<div class="relative pl-6 flex flex-col gap-space-md mt-space-xs">
+<!-- Connecting Vertical Laser Line -->
+<div class="absolute left-[11px] top-4 bottom-5 w-[1.5px] bg-gradient-to-b from-secondary via-primary to-tertiary border-l border-dashed border-outline-variant/50"></div>
+<!-- Hop 0 (Source) -->
+<div class="relative bg-surface-container-low border border-outline-variant/30 rounded-lg p-space-sm flex flex-col gap-1 transition-all">
+<div class="absolute -left-[27px] top-3 w-4 h-4 rounded-full bg-surface-container-lowest border-2 border-secondary flex items-center justify-center glow-cyan">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-code-sm text-code-sm px-1.5 py-0.2 rounded bg-surface-container-highest text-secondary font-semibold">Hop 0</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">[Entity: PaymentGateway]</span>
+</div>
+<span class="font-code-sm text-code-sm text-outline">SOURCE</span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs pt-1 border-t border-outline-variant/20 mt-1">
+<div class="font-code-sm text-code-sm text-on-surface-variant">
+              Type: <span class="text-primary font-mono">TransactionCore</span>
+</div>
+<div class="font-code-sm text-code-sm text-right text-on-surface-variant">
+              Vector: <span class="text-secondary font-mono">#vec-8912</span>
+</div>
+</div>
+</div>
+<!-- Hop 1 -->
+<div class="relative bg-surface-container-low border border-outline-variant/30 rounded-lg p-space-sm flex flex-col gap-1">
+<div class="absolute -left-[27px] top-3 w-4 h-4 rounded-full bg-surface-container-lowest border-2 border-primary flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-code-sm text-code-sm px-1.5 py-0.2 rounded bg-surface-container-highest text-primary font-semibold">Hop 1</span>
+<span class="font-code-sm text-code-sm text-secondary font-mono">:REGULATED_BY</span>
+</div>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary/10 text-tertiary border border-tertiary/20">Verified</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface font-medium pt-0.5">
+            [Jurisdiction: <span class="text-primary">CrossBorderEU</span>]
+          </div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 text-code-sm font-code-sm text-on-surface-variant">
+<span>Distance: <span class="text-on-surface font-mono">0.12</span></span>
+<span>Edge Weight: <span class="text-secondary font-mono">0.94</span></span>
+</div>
+</div>
+<!-- Hop 2 -->
+<div class="relative bg-surface-container-low border border-outline-variant/30 rounded-lg p-space-sm flex flex-col gap-1">
+<div class="absolute -left-[27px] top-3 w-4 h-4 rounded-full bg-surface-container-lowest border-2 border-primary flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-code-sm text-code-sm px-1.5 py-0.2 rounded bg-surface-container-highest text-primary font-semibold">Hop 2</span>
+<span class="font-code-sm text-code-sm text-secondary font-mono">:REQUIRES_COMPLIANCE</span>
+</div>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary/10 text-tertiary border border-tertiary/20">Verified</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface font-medium pt-0.5">
+            [Policy: <span class="text-primary">AMLD6-Framework</span>]
+          </div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 text-code-sm font-code-sm">
+<span class="text-on-surface-variant">Semantic Hop Align</span>
+<span class="text-tertiary font-mono font-medium">Cosine Match: 0.91</span>
+</div>
+</div>
+<!-- Hop 3 (Destination / Target) -->
+<div class="relative bg-surface-container border border-tertiary/50 rounded-lg p-space-sm flex flex-col gap-1 shadow-sm glow-cyan">
+<div class="absolute -left-[27px] top-3 w-4 h-4 rounded-full bg-tertiary border-2 border-background flex items-center justify-center">
+<span class="material-symbols-outlined text-background font-bold" data-icon="done" style="font-size: 11px;">done</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-code-sm text-code-sm px-1.5 py-0.2 rounded bg-tertiary text-on-tertiary font-semibold">Hop 3 Target</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">[AuditRule: SEC-CB-702]</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-tertiary/20 text-tertiary border border-tertiary/40 font-bold tracking-wider">SUCCESS</span>
+</div>
+<div class="flex items-center justify-between pt-1.5 border-t border-outline-variant/20 mt-1">
+<div class="flex items-center gap-1 font-code-sm text-code-sm text-on-surface-variant">
+<span>Confidence:</span>
+<span class="text-tertiary font-bold font-mono">96.4%</span>
+</div>
+<span class="font-code-sm text-code-sm text-secondary font-mono flex items-center gap-1">
+<span class="material-symbols-outlined" data-icon="link" style="font-size: 14px;">link</span>
+              Semantic Link Valid
+            </span>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Step Inspector Card -->
+<section class="bg-surface-container-low border border-outline-variant/40 rounded-lg p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-xs border-b border-outline-variant/20">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary" data-icon="fact_check">fact_check</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Step Verification Matrix</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline uppercase font-mono">Deterministic Assertions</span>
+</div>
+<!-- Validation Checks List -->
+<div class="flex flex-col gap-space-xs pt-1">
+<!-- Check 1 -->
+<div class="flex items-center justify-between p-space-xs px-space-sm rounded bg-surface-container-lowest/70 border border-outline-variant/20">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary" data-icon="check_circle" style="font-size: 16px;">check_circle</span>
+<span class="font-code-sm text-code-sm text-on-surface">Vector Cosine Alignment (0.912 &gt; 0.75 threshold)</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">PASS</span>
+</div>
+<!-- Check 2 -->
+<div class="flex items-center justify-between p-space-xs px-space-sm rounded bg-surface-container-lowest/70 border border-outline-variant/20">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary" data-icon="check_circle" style="font-size: 16px;">check_circle</span>
+<span class="font-code-sm text-code-sm text-on-surface">Bi-directional Edge Schema Integrity</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">PASS</span>
+</div>
+<!-- Check 3 -->
+<div class="flex items-center justify-between p-space-xs px-space-sm rounded bg-surface-container-lowest/70 border border-outline-variant/20">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary" data-icon="check_circle" style="font-size: 16px;">check_circle</span>
+<span class="font-code-sm text-code-sm text-on-surface">Disambiguation Entity Resolution Confidence (98.2%)</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">PASS</span>
+</div>
+<!-- Check 4 -->
+<div class="flex items-center justify-between p-space-xs px-space-sm rounded bg-surface-container-lowest/70 border border-outline-variant/20">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary" data-icon="check_circle" style="font-size: 16px;">check_circle</span>
+<span class="font-code-sm text-code-sm text-on-surface">Zero-hop Fallback &amp; Cycle Prevention</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">PASSED</span>
+</div>
+</div>
+</section>
+<!-- Quick Action Floating Dock / Utility Card -->
+<section class="bg-surface-container-high/80 border border-outline-variant/40 rounded-lg p-space-sm flex flex-col gap-space-xs backdrop-blur-sm">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">QUICK VERIFICATION ACTIONS</span>
+<span class="font-code-sm text-code-sm text-secondary">JSON Ready</span>
+</div>
+<div class="grid grid-cols-3 gap-space-xs pt-1">
+<!-- Action 1 -->
+<button class="bg-surface-container-lowest hover:bg-surface-container border border-outline-variant/40 rounded p-space-xs flex flex-col items-center justify-center gap-1 text-center active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-secondary" data-icon="code" style="font-size: 18px;">code</span>
+<span class="font-label-sm text-label-sm text-on-surface leading-tight">Export Trace JSON</span>
+</button>
+<!-- Action 2 -->
+<button class="bg-surface-container-lowest hover:bg-surface-container border border-outline-variant/40 rounded p-space-xs flex flex-col items-center justify-center gap-1 text-center active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="replay" style="font-size: 18px;">replay</span>
+<span class="font-label-sm text-label-sm text-on-surface leading-tight">Re-run Assertions</span>
+</button>
+<!-- Action 3 -->
+<button class="bg-surface-container-lowest hover:bg-surface-container border border-outline-variant/40 rounded p-space-xs flex flex-col items-center justify-center gap-1 text-center active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-tertiary" data-icon="playlist_add_check" style="font-size: 18px;">playlist_add_check</span>
+<span class="font-label-sm text-label-sm text-on-surface leading-tight">Add to Regression Suite</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar: Anchored Shared Component -->
+<!-- Contextual Active: 'Verify' tab is selected because this is a verification/inspector suite -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin py-space-xs bg-surface-container-lowest/90 backdrop-blur-md">
+<!-- Item 0: Runner -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-space-md py-space-xs hover:bg-surface-container hover:text-on-surface active:scale-[0.96] transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+<span class="text-label-sm font-label-sm mt-0.5">Runner</span>
+</button>
+<!-- Item 1: Hops -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-space-md py-space-xs hover:bg-surface-container hover:text-on-surface active:scale-[0.96] transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="timeline">timeline</span>
+<span class="text-label-sm font-label-sm mt-0.5">Hops</span>
+</button>
+<!-- Item 2: Vectors -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-space-md py-space-xs hover:bg-surface-container hover:text-on-surface active:scale-[0.96] transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="data_array">data_array</span>
+<span class="text-label-sm font-label-sm mt-0.5">Vectors</span>
+</button>
+<!-- Item 3: Verify (ACTIVE) -->
+<button class="flex flex-col items-center justify-center text-secondary bg-surface-container-high/60 rounded px-space-md py-space-xs active:scale-[0.96] transition-all duration-150">
+<span class="material-symbols-outlined text-secondary" data-icon="fact_check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">fact_check</span>
+<span class="text-label-sm font-label-sm mt-0.5 font-semibold">Verify</span>
+</button>
+</nav>
+</body></html>
