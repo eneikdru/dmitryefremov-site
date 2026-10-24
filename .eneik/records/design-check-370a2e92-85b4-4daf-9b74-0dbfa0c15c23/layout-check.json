@@ -1,0 +1,149 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -6,
+    "width": 1440,
+    "height": 1860
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 97,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 425,
+    "width": 1028,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-canon",
+    "left": 183,
+    "top": 432,
+    "width": 155,
+    "height": 36
+  },
+  {
+    "id": "canon-view-root",
+    "left": 176,
+    "top": 515,
+    "width": 1088,
+    "height": 1218
+  },
+  {
+    "id": "canon-filter-domain-all",
+    "left": 193,
+    "top": 653,
+    "width": 105,
+    "height": 30
+  },
+  {
+    "id": "canon-filter-domain-auto-eng",
+    "left": 304,
+    "top": 653,
+    "width": 184,
+    "height": 30
+  },
+  {
+    "id": "canon-filter-domain-agentic-econ",
+    "left": 495,
+    "top": 653,
+    "width": 177,
+    "height": 30
+  },
+  {
+    "id": "canon-filter-domain-biz-strat",
+    "left": 678,
+    "top": 653,
+    "width": 220,
+    "height": 30
+  },
+  {
+    "id": "canon-filter-domain-phil-mind",
+    "left": 904,
+    "top": 653,
+    "width": 156,
+    "height": 30
+  },
+  {
+    "id": "canon-filter-type-all",
+    "left": 193,
+    "top": 726,
+    "width": 87,
+    "height": 26
+  },
+  {
+    "id": "canon-filter-type-manifesto",
+    "left": 286,
+    "top": 726,
+    "width": 87,
+    "height": 26
+  },
+  {
+    "id": "canon-filter-type-glossary",
+    "left": 379,
+    "top": 726,
+    "width": 116,
+    "height": 26
+  },
+  {
+    "id": "canon-filter-type-ontology",
+    "left": 500,
+    "top": 726,
+    "width": 80,
+    "height": 26
+  },
+  {
+    "id": "canon-navigation-list",
+    "left": 176,
+    "top": 793,
+    "width": 347,
+    "height": 940
+  },
+  {
+    "id": "canon-item-architecture-of-autonomous-systems",
+    "left": 176,
+    "top": 821,
+    "width": 347,
+    "height": 137
+  },
+  {
+    "id": "canon-reader-main",
+    "left": 547,
+    "top": 793,
+    "width": 717,
+    "height": 940
+  },
+  {
+    "id": "canon-reader-article",
+    "left": 547,
+    "top": 793,
+    "width": 717,
+    "height": 940
+  },
+  {
+    "id": "canon-content-body",
+    "left": 572,
+    "top": 1033,
+    "width": 667,
+    "height": 480
+  },
+  {
+    "id": "canon-cross-references",
+    "left": 572,
+    "top": 1537,
+    "width": 667,
+    "height": 171
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 1773,
+    "width": 1088,
+    "height": 49
+  }
+]

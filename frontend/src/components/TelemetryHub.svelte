@@ -5,14 +5,15 @@
   import ArticleStreamView from './ArticleStreamView.svelte';
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import SparksView from './SparksView.svelte';
+  import CanonView from './CanonView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = 'podcast';
+  export let initialTab: 'canon' | 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = 'canon';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = initialTab;
+  let activeTab: 'canon' | 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -178,6 +179,14 @@
         <!-- Navigation Bar for Public Portal -->
         <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
           <button
+            id="tab-btn-canon"
+            type="button"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            on:click={() => (activeTab = 'canon')}
+          >
+            <span>📜 CANON (TIER 1)</span>
+          </button>
+          <button
             id="tab-btn-podcast"
             type="button"
             class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
@@ -223,7 +232,11 @@
 
       <!-- Main Content Area -->
       <section id="content-view" class="space-y-8">
-        {#if activeTab === 'podcast'}
+        {#if activeTab === 'canon'}
+          <div class="space-y-6">
+            <CanonView {theme} />
+          </div>
+        {:else if activeTab === 'podcast'}
           <div class="space-y-6">
             <PodcastPlayerView />
           </div>
