@@ -135,4 +135,20 @@ describe('TelemetryHub Component & CMP Integration', () => {
     expect(reOpenedOverlay).not.toBeNull();
     expect(target.textContent).toContain('TRACKERS_BLOCKED');
   });
+
+  it('ensures no links to /admin or studio tabs exist on the public view', () => {
+    component = mount(TelemetryHub, { target });
+
+    const adminLink = target.querySelector('#admin-portal-link');
+    expect(adminLink).toBeNull();
+
+    const adminHrefLinks = Array.from(target.querySelectorAll('a')).filter(a => a.getAttribute('href') === '/admin');
+    expect(adminHrefLinks.length).toBe(0);
+
+    const studioTabBtn = target.querySelector('#tab-btn-gallery');
+    expect(studioTabBtn).toBeNull();
+
+    expect(target.textContent).not.toContain('СТУДИЯ & СЕТАП');
+    expect(target.textContent).not.toContain('Admin Ops');
+  });
 });
