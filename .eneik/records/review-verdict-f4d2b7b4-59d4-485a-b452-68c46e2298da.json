@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "The PR modifies the top-level root .gitignore file which is explicitly forbidden by the boundaries. Additionally, it commits multiple stray .png media files (e.g. design/draft/.../mockup.png) outside the .eneik/records/ directory.",
+      "concerns": []
+    }
+  ]
+}
