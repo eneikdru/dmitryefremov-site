@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Privacy &amp; Consent Center - Epic Compliance</title>
+<!-- Google Fonts: Space Grotesk, Inter, JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-low": "#eff4ff",
+            "on-tertiary-container": "#ffeadd",
+            "secondary-container": "#92c1fe",
+            "surface-container": "#e6eeff",
+            "error": "#ba1a1a",
+            "on-surface": "#0d1c2e",
+            "on-secondary-container": "#144f84",
+            "surface-variant": "#d5e3fc",
+            "tertiary": "#814400",
+            "on-tertiary-fixed-variant": "#6e3900",
+            "outline-variant": "#bdc9c2",
+            "secondary-fixed": "#d2e4ff",
+            "surface-container-highest": "#d5e3fc",
+            "on-secondary-fixed-variant": "#07497d",
+            "surface-container-lowest": "#ffffff",
+            "surface-bright": "#f8f9ff",
+            "on-primary-container": "#a8ffdf",
+            "on-error-container": "#93000a",
+            "outline": "#6e7a74",
+            "inverse-surface": "#233144",
+            "on-primary-fixed-variant": "#00513e",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "inverse-primary": "#7cd8b8",
+            "secondary-fixed-dim": "#a0c9ff",
+            "tertiary-fixed-dim": "#ffb77d",
+            "tertiary-container": "#a45800",
+            "on-secondary-fixed": "#001c37",
+            "surface-container-high": "#dce9ff",
+            "primary-fixed": "#98f4d3",
+            "primary": "#005f49",
+            "tertiary-fixed": "#ffdcc3",
+            "on-error": "#ffffff",
+            "surface-dim": "#ccdbf3",
+            "inverse-on-surface": "#eaf1ff",
+            "error-container": "#ffdad6",
+            "surface-tint": "#006c53",
+            "background": "#f8f9ff",
+            "on-primary-fixed": "#002117",
+            "primary-container": "#0d7a5f",
+            "on-tertiary-fixed": "#2f1500",
+            "on-surface-variant": "#3e4944",
+            "primary-fixed-dim": "#7cd8b8",
+            "surface": "#f8f9ff",
+            "on-primary": "#ffffff",
+            "on-background": "#0d1c2e",
+            "secondary": "#2d6197"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2rem",
+            "gutter-sm": "0.75rem",
+            "gutter": "1rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin-tablet": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Space Grotesk"],
+            "label-md": ["Inter"],
+            "headline-lg": ["Space Grotesk"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "code-badge": ["JetBrains Mono"],
+            "label-sm": ["Inter"],
+            "headline-lg-mobile": ["Space Grotesk"],
+            "body-sm": ["Inter"],
+            "headline-sm": ["Space Grotesk"]
+          },
+          "fontSize": {
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "code-badge": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md selection:bg-primary-container selection:text-on-primary-container pb-44">
+<!-- Shared Component: TopAppBar -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest shadow-sm border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-margin py-space-sm max-w-xl mx-auto">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="shield">shield</span>
+<div>
+<h1 class="text-headline-sm font-headline-sm text-on-surface leading-tight">Privacy &amp; Consent</h1>
+<div class="flex items-center gap-space-xs mt-0.5">
+<span class="inline-flex items-center gap-1 font-code-badge text-code-badge bg-emerald-50 text-emerald-800 border border-emerald-300 rounded px-1.5 py-0.5 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+              GDPR &amp; CCPA Compliant
+            </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Legal Information" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150" type="button">
+<span class="material-symbols-outlined text-xl" data-icon="info">info</span>
+</button>
+<button aria-label="Close" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150" type="button">
+<span class="material-symbols-outlined text-xl" data-icon="close">close</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas Mobile Container -->
+<main class="w-full max-w-xl mx-auto px-margin pt-space-md space-y-space-md">
+<!-- Governance Status Banner (Epic Mandate) -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant shadow-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-primary-container"></div>
+<div class="flex items-start justify-between gap-space-sm">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="gavel">gavel</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Tracking Governance Active</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Zero tracking cookies, pixel trackers, or third-party telemetry scripts are fired prior to affirmative consent verification.
+          </p>
+</div>
+</div>
+<div class="mt-space-sm pt-space-xs border-t border-slate-100 flex items-center justify-between font-code-badge text-code-badge text-slate-500">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="fingerprint">fingerprint</span>
+          AUDIT ID: #CMP-8942-EU
+        </span>
+<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] uppercase font-semibold">Pre-Consent Halt Active</span>
+</div>
+</section>
+<!-- Bento Overview Matrix: Blocked Trackers & Data Surface -->
+<section class="grid grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Hold Status</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="lock_clock">lock_clock</span>
+</div>
+<div class="mt-2">
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">34</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Partners quarantined</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Global Signal</span>
+<span class="material-symbols-outlined text-secondary text-base" data-icon="sensors">sensors</span>
+</div>
+<div class="mt-2">
+<div class="inline-flex items-center font-code-badge text-code-badge bg-blue-50 text-blue-800 border border-blue-200 px-2 py-0.5 rounded">
+            GPC: RESPECTED
+          </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5">Do Not Sell enforced</p>
+</div>
+</div>
+<!-- Full-width Bento Tile: Data Telemetry Scope -->
+<div class="col-span-2 bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center justify-between pb-2 border-b border-slate-100">
+<span class="font-label-md text-label-md text-on-surface">Data Interception Scope</span>
+<span class="font-code-badge text-code-badge text-slate-500 uppercase">3 Vectors Protected</span>
+</div>
+<div class="grid grid-cols-3 gap-2 pt-space-sm text-center">
+<div class="bg-surface-container-low p-2 rounded-lg border border-slate-200">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="perm_device_information">perm_device_information</span>
+<div class="font-label-sm text-label-sm text-on-surface font-semibold mt-1">Device ID</div>
+<div class="font-code-badge text-[10px] text-slate-500">BLOCKED</div>
+</div>
+<div class="bg-surface-container-low p-2 rounded-lg border border-slate-200">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="visibility_off">visibility_off</span>
+<div class="font-label-sm text-label-sm text-on-surface font-semibold mt-1">IP Masking</div>
+<div class="font-code-badge text-[10px] text-primary font-semibold">ENFORCED</div>
+</div>
+<div class="bg-surface-container-low p-2 rounded-lg border border-slate-200">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="insights">insights</span>
+<div class="font-label-sm text-label-sm text-on-surface font-semibold mt-1">Behavioral</div>
+<div class="font-code-badge text-[10px] text-slate-500">OPT-IN ONLY</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Granular Consent Preferences Hierarchy -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between px-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Consent Preferences</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tap to configure</span>
+</div>
+<!-- Item 1: Strictly Necessary (Locked & Active) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="p-space-md flex items-start justify-between gap-space-sm">
+<div class="flex-1 pr-2">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Strictly Necessary</span>
+<span class="font-code-badge text-code-badge bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.5 rounded">Always Active</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Required for core authentication, session validation, cryptographic security, and load balancing. Cannot be deactivated under statutory mandate.
+            </p>
+<div class="flex items-center gap-space-md mt-2 text-primary font-label-sm text-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="cookie">cookie</span>
+                4 essential cookies
+              </span>
+<span class="font-code-badge text-code-badge text-slate-500">RETENTION: SESSION</span>
+</div>
+</div>
+<!-- Locked Toggle Button -->
+<div class="flex flex-col items-center pt-1" title="Statutory Requirement - Always Active">
+<div class="w-[52px] h-[30px] rounded-full bg-slate-200 p-1 flex items-center justify-end cursor-not-allowed border border-slate-300">
+<div class="w-[22px] h-[22px] rounded-full bg-white shadow-sm flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 2: Analytics & Performance Metrics (Opt-in) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden transition-all duration-150">
+<div class="p-space-md flex items-start justify-between gap-space-sm">
+<div class="flex-1 pr-2">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Analytics &amp; Metrics</span>
+<span class="font-code-badge text-code-badge bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">12 scripts</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Aggregates anonymous interaction telemetry, UI friction tracking, and crash diagnostics to enhance service responsiveness.
+            </p>
+<div class="mt-2 flex items-center gap-space-md font-label-sm text-label-sm">
+<button class="text-primary hover:underline font-label-sm flex items-center gap-0.5" type="button">
+                View 12 Analytics Partners
+                <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Accessible Toggle Component (Inactive by Default) -->
+<label aria-label="Toggle Analytics" class="relative inline-flex items-center cursor-pointer pt-1">
+<input class="sr-only peer" id="analytics-toggle" type="checkbox"/>
+<div class="w-[52px] h-[30px] bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[4px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-[22px] after:w-[22px] after:transition-all peer-checked:bg-primary-container peer-checked:after:bg-white"></div>
+</label>
+</div>
+</div>
+<!-- Item 3: Functional & Personalization (Opt-in) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="p-space-md flex items-start justify-between gap-space-sm">
+<div class="flex-1 pr-2">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Functional &amp; Preferences</span>
+<span class="font-code-badge text-code-badge bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">6 services</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Enables persistence of currency, interface density, localized settings, and non-essential multimedia players.
+            </p>
+<div class="mt-2 flex items-center gap-space-md font-label-sm text-label-sm">
+<button class="text-primary hover:underline font-label-sm flex items-center gap-0.5" type="button">
+                View 6 Functional Services
+                <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Accessible Toggle Component (Inactive by Default) -->
+<label aria-label="Toggle Functional Preferences" class="relative inline-flex items-center cursor-pointer pt-1">
+<input class="sr-only peer" id="functional-toggle" type="checkbox"/>
+<div class="w-[52px] h-[30px] bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[4px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-[22px] after:w-[22px] after:transition-all peer-checked:bg-primary-container peer-checked:after:bg-white"></div>
+</label>
+</div>
+</div>
+<!-- Item 4: Marketing & Cross-Context Behavioral Advertising (Explicit Opt-in) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="p-space-md flex items-start justify-between gap-space-sm">
+<div class="flex-1 pr-2">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Targeted Advertising</span>
+<span class="font-code-badge text-code-badge bg-amber-50 text-amber-900 border border-amber-200 px-1.5 py-0.5 rounded uppercase">Cross-Site</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Facilitates cross-site behavioral profiling, conversion attribution, retargeting syndication, and ad relevance measurement.
+            </p>
+<div class="mt-2 flex items-center gap-space-md font-label-sm text-label-sm">
+<button class="text-primary hover:underline font-label-sm flex items-center gap-0.5" type="button">
+                View 16 Ad Partners
+                <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Accessible Toggle Component (Inactive by Default) -->
+<label aria-label="Toggle Targeted Advertising" class="relative inline-flex items-center cursor-pointer pt-1">
+<input class="sr-only peer" id="marketing-toggle" type="checkbox"/>
+<div class="w-[52px] h-[30px] bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[4px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-[22px] after:w-[22px] after:transition-all peer-checked:bg-primary-container peer-checked:after:bg-white"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Statutory Rights & CCPA / CPRA Dedicated Card -->
+<section class="bg-surface-container-low rounded-xl p-space-md border border-slate-200 space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="policy">policy</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Statutory Privacy Rights</span>
+</div>
+<span class="font-code-badge text-code-badge bg-blue-100 text-blue-900 px-2 py-0.5 rounded font-semibold">CCPA / CPRA</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        California, Virginia, Colorado and European residents have statutory rights to restrict processing, opt-out of cross-context behavioral sales, or request immediate record erasure.
+      </p>
+<div class="bg-surface-container-lowest rounded-lg p-space-sm border border-slate-200 flex items-center justify-between">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Do Not Sell or Share My Info</div>
+<div class="font-body-sm text-[11px] text-on-surface-variant">Enforces universal restriction across all programmatic ad networks</div>
+</div>
+<label aria-label="Do Not Sell Personal Information" class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="dns-toggle" type="checkbox"/>
+<div class="w-[46px] h-[26px] bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-[20px] after:w-[20px] after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</section>
+<!-- Legal Disclosures & Timestamped Proof Links -->
+<section class="pt-space-xs pb-space-lg text-center space-y-space-xs">
+<div class="flex flex-wrap items-center justify-center gap-x-space-md gap-y-1 font-label-sm text-label-sm text-slate-600">
+<a class="hover:text-primary underline transition-colors" href="#privacy-policy">Full Privacy Notice</a>
+<span>•</span>
+<a class="hover:text-primary underline transition-colors" href="#cookie-policy">Cookie Policy</a>
+<span>•</span>
+<a class="hover:text-primary underline transition-colors flex items-center gap-1" href="#consent-proof">
+<span class="material-symbols-outlined text-xs" data-icon="download">download</span>
+          Download Consent Proof
+        </a>
+</div>
+<p class="font-code-badge text-[10px] text-slate-400">
+        CMP Engine v4.2.1 • Compliant with IAB TCF v2.2 &amp; ISO/IEC 27701
+      </p>
+</section>
+</main>
+<!-- Sticky Compliant Action Trigger Dock (Level 3 Elevation) -->
+<aside class="fixed bottom-14 left-0 w-full z-40 bg-surface-container-lowest border-t border-outline-variant shadow-[0_-4px_12px_rgba(15,23,42,0.06)] px-margin py-3">
+<div class="max-w-xl mx-auto flex flex-col gap-2">
+<div class="grid grid-cols-2 gap-2">
+<!-- Reject Non-Essential (Strict Non-Obscured Compliant Secondary Action) -->
+<button class="h-11 px-3 rounded-lg border-2 border-slate-300 bg-surface-container-lowest text-slate-700 font-label-md text-label-md font-semibold hover:bg-slate-100 hover:border-slate-400 active:scale-[0.98] transition-all flex items-center justify-center text-center" type="button">
+          Reject Non-Essential
+        </button>
+<!-- Accept All (Clear Affirmative Primary Action) -->
+<button class="h-11 px-3 rounded-lg bg-primary-container text-white font-label-md text-label-md font-semibold hover:bg-primary active:scale-[0.98] transition-all flex items-center justify-center text-center shadow-sm" type="button">
+          Accept All
+        </button>
+</div>
+<!-- Save My Choices (Granular Save) -->
+<button class="w-full py-1.5 text-center text-slate-600 font-label-md text-label-md hover:text-primary underline transition-colors" type="button">
+        Save Preferences
+      </button>
+</div>
+</aside>
+<!-- Shared Component: BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin py-space-xs bg-surface-container-lowest shadow-[0_-4px_12px_rgba(15,23,42,0.06)] border-t border-outline-variant">
+<!-- Tab 1: Overview (Active based on screen intent) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-space-sm py-space-xs active:scale-95 transition-transform duration-100" href="#overview">
+<span class="material-symbols-outlined text-xl" data-icon="verified_user">verified_user</span>
+<span class="text-label-sm font-label-sm mt-0.5">Overview</span>
+</a>
+<!-- Tab 2: Purposes -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary px-space-sm py-space-xs active:scale-95 transition-transform duration-100" href="#purposes">
+<span class="material-symbols-outlined text-xl" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm mt-0.5">Purposes</span>
+</a>
+<!-- Tab 3: Vendors -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary px-space-sm py-space-xs active:scale-95 transition-transform duration-100" href="#vendors">
+<span class="material-symbols-outlined text-xl" data-icon="apartment">apartment</span>
+<span class="text-label-sm font-label-sm mt-0.5">Vendors</span>
+</a>
+<!-- Tab 4: Rights -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary px-space-sm py-space-xs active:scale-95 transition-transform duration-100" href="#rights">
+<span class="material-symbols-outlined text-xl" data-icon="policy">policy</span>
+<span class="text-label-sm font-label-sm mt-0.5">Rights</span>
+</a>
+</nav>
+<!-- Lightweight Micro-Interaction Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          if (button.textContent.includes('Accept All')) {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+              if (cb.id !== 'dns-toggle') cb.checked = true;
+            });
+          } else if (button.textContent.includes('Reject Non-Essential')) {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+              if (cb.id !== 'dns-toggle') cb.checked = false;
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body></html>
