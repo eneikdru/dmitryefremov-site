@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Privacy &amp; Consent - Granular Preferences</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#131b2e",
+            "tertiary": "#1d2b3d",
+            "surface-tint": "#4059aa",
+            "on-secondary-fixed": "#002114",
+            "tertiary-fixed": "#d5e3fc",
+            "surface-container": "#eaedff",
+            "secondary-fixed": "#85f8c4",
+            "primary-container": "#1e3a8a",
+            "on-secondary-fixed-variant": "#005137",
+            "surface-variant": "#dae2fd",
+            "secondary": "#006c4a",
+            "on-secondary": "#ffffff",
+            "secondary-fixed-dim": "#68dba9",
+            "on-surface": "#131b2e",
+            "on-tertiary-fixed-variant": "#3a485b",
+            "surface-dim": "#d2d9f4",
+            "on-primary-container": "#90a8ff",
+            "inverse-primary": "#b6c4ff",
+            "secondary-container": "#82f5c1",
+            "error": "#ba1a1a",
+            "surface-container-low": "#f2f3ff",
+            "surface-container-highest": "#dae2fd",
+            "outline": "#757682",
+            "inverse-surface": "#283044",
+            "on-tertiary-fixed": "#0d1c2e",
+            "on-secondary-container": "#00714e",
+            "on-primary": "#ffffff",
+            "surface-container-high": "#e2e7ff",
+            "on-tertiary-container": "#9eadc4",
+            "on-error-container": "#93000a",
+            "surface": "#faf8ff",
+            "background": "#faf8ff",
+            "on-primary-fixed-variant": "#264191",
+            "tertiary-fixed-dim": "#b9c7df",
+            "surface-bright": "#faf8ff",
+            "on-surface-variant": "#444651",
+            "tertiary-container": "#334154",
+            "primary-fixed-dim": "#b6c4ff",
+            "on-error": "#ffffff",
+            "on-primary-fixed": "#00164e",
+            "outline-variant": "#c5c5d3",
+            "primary": "#00236f",
+            "surface-container-lowest": "#ffffff",
+            "primary-fixed": "#dce1ff",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "error-container": "#ffdad6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-md": "0.75rem",
+            "gutter": "1rem",
+            "margin-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "space-lg": "1.25rem",
+            "gutter-sm": "0.75rem",
+            "margin-sm": "0.75rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "label-lg": ["JetBrains Mono"],
+            "headline-lg-mobile": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["JetBrains Mono"],
+            "label-md": ["JetBrains Mono"],
+            "body-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-sm": ["Inter"]
+          },
+          "fontSize": {
+            "label-lg": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+            "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+            "body-lg": ["15px", {"lineHeight": "22px", "fontWeight": "400"}],
+            "body-md": ["13px", {"lineHeight": "19px", "fontWeight": "400"}],
+            "label-sm": ["10px", {"lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+            "label-md": ["11px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+            "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+            "headline-lg": ["30px", {"lineHeight": "38px", "fontWeight": "700"}],
+            "headline-sm": ["16px", {"lineHeight": "24px", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Hide scrollbars for slick mobile view */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md flex justify-center min-h-screen">
+<!-- Mobile Canvas Frame (max-w-md strictly structured for institutional compliance UX) -->
+<div class="w-full max-w-md bg-background flex flex-col relative min-h-screen pb-48">
+<!-- TopAppBar (from Shared Components JSON: docked top, full width, exact tokens) -->
+<header class="bg-surface dark:bg-on-background flex justify-between items-center w-full px-margin h-14 sticky top-0 z-40">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Close" class="w-10 h-10 flex items-center justify-center text-primary dark:text-inverse-primary hover:bg-surface-container-high dark:hover:bg-tertiary-container rounded-lg active:scale-95 transition-all duration-150" type="button">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+</button>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface dark:text-inverse-on-surface leading-tight">Consent Preferences</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Manage purpose-based tracking permissions</span>
+</div>
+</div>
+<button aria-label="Audit Log History" class="w-10 h-10 flex items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-high dark:hover:bg-tertiary-container rounded-lg active:scale-95 transition-all duration-150" type="button">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</button>
+</header>
+<!-- Main Content Flow -->
+<main class="px-margin pt-space-md space-y-space-md">
+<!-- Institutional Verified Compliance Banner / Header Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-xs mb-space-xs border-b border-surface-container">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Transparency Center</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-space-xs py-0.5 rounded border border-secondary">
+            Consent Version 2.4 - Validated
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Audit-certified under IAB Europe Transparency and Consent Framework (TCF v2.2) and ISO/IEC 27701. Your rights to object, revoke, or restrict processing are cryptographically logged with instant effect across services.
+        </p>
+<div class="mt-space-sm flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant pt-space-xs border-t border-surface-container">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            CMP-ID: #894-EU-GDPR
+          </span>
+<span class="text-primary-container font-semibold">Updated: Today, 08:30 UTC</span>
+</div>
+</section>
+<!-- Quick Action Pill Summary Strip -->
+<div class="flex items-center justify-between px-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Consent Domains (4 Categories)</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">1 OF 4 ACTIVE</span>
+</div>
+<!-- Granular Category Cards Container -->
+<div class="space-y-space-md">
+<!-- 1. Strictly Necessary Trackers (Locked / Immutable State) -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md transition-all shadow-sm">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-low flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Strictly Necessary Trackers</h3>
+</div>
+<div class="mt-1">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm bg-secondary-container text-on-secondary-container px-space-xs py-0.5 rounded border border-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    Always Active / Required
+                  </span>
+</div>
+</div>
+</div>
+<!-- Locked Switch Control -->
+<div class="flex flex-col items-end shrink-0">
+<div class="w-12 h-7 bg-surface-container-high rounded-full p-0.5 flex items-center justify-end cursor-not-allowed border border-outline-variant" title="Required system cookies cannot be toggled off">
+<div class="w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[12px]" data-icon="lock">lock</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-medium mt-1">Immutable</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-sm">
+            Essential for app security, session auth, and payment processing. Cannot be disabled.
+          </p>
+<!-- Cookie Disclosure Panel -->
+<div class="mt-space-md bg-surface-container-low rounded-lg p-space-sm border border-outline-variant/60">
+<div class="flex items-center justify-between text-on-surface">
+<div class="flex items-center gap-space-xs font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="cookie">cookie</span>
+                4 Active Core Cookies
+              </div>
+<span class="font-label-sm text-label-sm text-outline">TCF Spec §1.2</span>
+</div>
+<div class="mt-space-xs space-y-1 font-label-sm text-label-sm text-on-surface-variant border-t border-outline-variant/40 pt-space-xs">
+<div class="flex justify-between items-center py-0.5">
+<span class="font-mono text-on-surface">__cf_bm</span>
+<span class="bg-surface px-1.5 py-0.2 rounded border border-outline-variant">Cloudflare Security • 30m</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span class="font-mono text-on-surface">auth_session_token</span>
+<span class="bg-surface px-1.5 py-0.2 rounded border border-outline-variant">Secure Session • HttpOnly</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span class="font-mono text-on-surface">stripe_mid</span>
+<span class="bg-surface px-1.5 py-0.2 rounded border border-outline-variant">Fraud Prevention • 1yr</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span class="font-mono text-on-surface">consent_state_v2</span>
+<span class="bg-surface px-1.5 py-0.2 rounded border border-outline-variant">CMP Record • 180d</span>
+</div>
+</div>
+</div>
+</article>
+<!-- 2. Performance & Analytics (Toggle Switch OFF) -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md transition-all shadow-sm">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-low flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]" data-icon="analytics">analytics</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Performance &amp; Analytics</h3>
+<div class="mt-1 flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-outline border border-outline-variant px-1.5 py-0.2 rounded bg-surface">
+                    Legal Basis: Consent
+                  </span>
+</div>
+</div>
+</div>
+<!-- Binary Interactive Toggle (OFF State) -->
+<div class="flex flex-col items-end shrink-0">
+<button aria-checked="false" class="w-12 h-7 bg-outline-variant rounded-full p-0.5 flex items-center transition-colors duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary" id="toggle-analytics" onclick="toggleSwitch('toggle-analytics', 'status-analytics')" role="switch" type="button">
+<div class="thumb w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm transition-transform duration-200 transform translate-x-0"></div>
+</button>
+<span class="font-label-sm text-label-sm text-outline font-medium mt-1" id="status-analytics">Disabled</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-sm">
+            Measures crash rates, page load speeds, and aggregated user flows to improve app stability. (Google Analytics 4, Mixpanel).
+          </p>
+<!-- Accordion Vendor Preview Container -->
+<div class="mt-space-md border border-outline-variant/60 rounded-lg overflow-hidden">
+<button class="w-full bg-surface-container-low px-space-sm py-2 flex items-center justify-between text-left hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-analytics', 'icon-analytics')" type="button">
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="hub">hub</span>
+<span>Accordion preview: <strong class="text-primary-container">12 Partners</strong></span>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline transition-transform duration-200" data-icon="expand_more" id="icon-analytics">expand_more</span>
+</button>
+<div class="hidden p-space-sm bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm space-y-1.5 border-t border-outline-variant/40" id="acc-analytics">
+<div class="flex justify-between items-center py-0.5">
+<span>Google LLC (GA4)</span>
+<span class="text-outline font-mono">Retention: 14mo</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span>Mixpanel Inc.</span>
+<span class="text-outline font-mono">Retention: 90d</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span>Datadog Real-User Mon.</span>
+<span class="text-outline font-mono">Retention: 30d</span>
+</div>
+<div class="pt-1 flex justify-end">
+<span class="text-primary font-semibold underline text-xs cursor-pointer">+9 other certified audit vendors</span>
+</div>
+</div>
+</div>
+</article>
+<!-- 3. Functional & Personalization (Toggle Switch OFF) -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md transition-all shadow-sm">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-low flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings_suggest">settings_suggest</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Functional &amp; Personalization</h3>
+<div class="mt-1 flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-outline border border-outline-variant px-1.5 py-0.2 rounded bg-surface">
+                    Legal Basis: Legitimate Interest / Opt-in
+                  </span>
+</div>
+</div>
+</div>
+<!-- Binary Interactive Toggle (OFF State) -->
+<div class="flex flex-col items-end shrink-0">
+<button aria-checked="false" class="w-12 h-7 bg-outline-variant rounded-full p-0.5 flex items-center transition-colors duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary" id="toggle-functional" onclick="toggleSwitch('toggle-functional', 'status-functional')" role="switch" type="button">
+<div class="thumb w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm transition-transform duration-200 transform translate-x-0"></div>
+</button>
+<span class="font-label-sm text-label-sm text-outline font-medium mt-1" id="status-functional">Disabled</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-sm">
+            Remembers your language, dark mode preference, and saved filter states.
+          </p>
+<!-- Accordion Vendor Preview Container -->
+<div class="mt-space-md border border-outline-variant/60 rounded-lg overflow-hidden">
+<button class="w-full bg-surface-container-low px-space-sm py-2 flex items-center justify-between text-left hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-functional', 'icon-functional')" type="button">
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="tune">tune</span>
+<span>Accordion preview: <strong class="text-primary-container">3 Partners</strong></span>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline transition-transform duration-200" data-icon="expand_more" id="icon-functional">expand_more</span>
+</button>
+<div class="hidden p-space-sm bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm space-y-1.5 border-t border-outline-variant/40" id="acc-functional">
+<div class="flex justify-between items-center py-0.5">
+<span>Internal Client Cache</span>
+<span class="text-outline font-mono">LocalStorage • Local</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span>Algolia Search UI</span>
+<span class="text-outline font-mono">Retention: Session</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span>LaunchDarkly Features</span>
+<span class="text-outline font-mono">Retention: 30d</span>
+</div>
+</div>
+</div>
+</article>
+<!-- 4. Targeting & Advertising (Toggle Switch OFF) -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md transition-all shadow-sm">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-low flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]" data-icon="campaign">campaign</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Targeting &amp; Advertising</h3>
+<div class="mt-1 flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-error border border-error-container px-1.5 py-0.2 rounded bg-surface">
+                    Explicit Consent Required
+                  </span>
+</div>
+</div>
+</div>
+<!-- Binary Interactive Toggle (OFF State) -->
+<div class="flex flex-col items-end shrink-0">
+<button aria-checked="false" class="w-12 h-7 bg-outline-variant rounded-full p-0.5 flex items-center transition-colors duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary" id="toggle-targeting" onclick="toggleSwitch('toggle-targeting', 'status-targeting')" role="switch" type="button">
+<div class="thumb w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm transition-transform duration-200 transform translate-x-0"></div>
+</button>
+<span class="font-label-sm text-label-sm text-outline font-medium mt-1" id="status-targeting">Disabled</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-sm">
+            Shares pseudonymous identifiers with ad networks for relevant campaign attribution. (Meta Pixel, Adjust).
+          </p>
+<!-- Accordion Vendor Preview Container -->
+<div class="mt-space-md border border-outline-variant/60 rounded-lg overflow-hidden">
+<button class="w-full bg-surface-container-low px-space-sm py-2 flex items-center justify-between text-left hover:bg-surface-container-high transition-colors" onclick="toggleAccordion('acc-targeting', 'icon-targeting')" type="button">
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="group_work">group_work</span>
+<span>Accordion preview: <strong class="text-primary-container">27 Partners</strong></span>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline transition-transform duration-200" data-icon="expand_more" id="icon-targeting">expand_more</span>
+</button>
+<div class="hidden p-space-sm bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm space-y-1.5 border-t border-outline-variant/40" id="acc-targeting">
+<div class="flex justify-between items-center py-0.5">
+<span>Meta Platforms Ireland (Pixel)</span>
+<span class="text-outline font-mono">Retention: 90d</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span>Adjust GmbH (Attribution)</span>
+<span class="text-outline font-mono">Retention: 60d</span>
+</div>
+<div class="flex justify-between items-center py-0.5">
+<span>The Trade Desk Inc.</span>
+<span class="text-outline font-mono">Retention: 365d</span>
+</div>
+<div class="pt-1 flex justify-end">
+<span class="text-primary font-semibold underline text-xs cursor-pointer">+24 other ad exchange partners</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Regulatory Notice / Legal Footnote -->
+<div class="p-space-sm rounded-lg bg-surface-container-high/40 text-on-surface-variant font-label-sm text-label-sm leading-relaxed border border-outline-variant/40">
+<div class="flex items-start gap-1.5">
+<span class="material-symbols-outlined text-outline text-[16px] shrink-0 mt-0.5" data-icon="info">info</span>
+<span>You can revoke or modify your consent permissions at any time via Settings &gt; Privacy. Changes will take effect immediately and propagate across connected edge nodes within 300ms.</span>
+</div>
+</div>
+</main>
+<!-- Docked Action Bar: Positioned directly above bottom navigation shell -->
+<div class="fixed bottom-16 left-0 w-full z-40 bg-surface-container-lowest/95 backdrop-blur-md px-margin py-space-sm border-t border-outline-variant shadow-[0_-4px_16px_-2px_rgba(15,23,42,0.06)] flex justify-center">
+<div class="w-full max-w-md flex items-center gap-space-sm">
+<!-- Prominent Save Preferences Button -->
+<button class="flex-1 h-12 bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-headline-sm font-semibold rounded-lg shadow-sm flex items-center justify-center gap-space-xs active:scale-[0.98] transition-all" onclick="saveConsentFeedback()" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="check_circle">check_circle</span>
+<span>Save Preferences</span>
+</button>
+<!-- Equal Weight / Accept All Button -->
+<button class="flex-1 h-12 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface border border-outline-variant font-headline-sm text-headline-sm font-semibold rounded-lg flex items-center justify-center gap-space-xs active:scale-[0.98] transition-all" onclick="acceptAllToggles()" type="button">
+<span>Accept All Purposes</span>
+</button>
+</div>
+</div>
+<!-- BottomNavBar (from Shared Components JSON: Destination Count: 4, docked full-width bottom-0, Active tab: Categories) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-space-xs bg-surface-container-lowest dark:bg-on-background shadow-[0_-4px_16px_-2px_rgba(15,23,42,0.04)] border-t border-outline-variant">
+<!-- Tab 1: Overview (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-space-md py-space-xs hover:text-on-surface dark:hover:text-inverse-on-surface active:scale-95 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm text-label-sm mt-0.5">Overview</span>
+</a>
+<!-- Tab 2: Categories (ACTIVE TAB per page intent) -->
+<a class="flex flex-col items-center justify-center bg-surface-container-high dark:bg-tertiary-container text-primary dark:text-on-primary-container rounded-lg px-space-md py-space-xs active:scale-95 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="tune" style="font-variation-settings: 'FILL' 1;">tune</span>
+<span class="font-label-sm text-label-sm font-bold mt-0.5">Categories</span>
+</a>
+<!-- Tab 3: Vendors (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-space-md py-space-xs hover:text-on-surface dark:hover:text-inverse-on-surface active:scale-95 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="apartment">apartment</span>
+<span class="font-label-sm text-label-sm mt-0.5">Vendors</span>
+</a>
+<!-- Tab 4: Audit Log (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-space-md py-space-xs hover:text-on-surface dark:hover:text-inverse-on-surface active:scale-95 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-sm text-label-sm mt-0.5">Audit Log</span>
+</a>
+</nav>
+<!-- Interactive Feedback Toast Notification -->
+<div class="fixed top-16 left-1/2 -translate-x-1/2 bg-on-background text-on-primary px-space-md py-space-xs rounded-full shadow-lg font-label-md text-label-md opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-2" id="toast">
+<span class="material-symbols-outlined text-secondary-fixed text-[18px]" data-icon="check_circle">check_circle</span>
+<span id="toast-message">Preferences stored securely</span>
+</div>
+</div>
+<!-- Vanilla Micro-Interactions Script -->
+<script>
+    function toggleSwitch(toggleId, statusId) {
+      const button = document.getElementById(toggleId);
+      const thumb = button.querySelector('.thumb');
+      const status = document.getElementById(statusId);
+      const isChecked = button.getAttribute('aria-checked') === 'true';
+
+      if (isChecked) {
+        button.setAttribute('aria-checked', 'false');
+        button.classList.remove('bg-primary-container');
+        button.classList.add('bg-outline-variant');
+        thumb.classList.remove('translate-x-5');
+        thumb.classList.add('translate-x-0');
+        status.textContent = 'Disabled';
+        status.classList.remove('text-primary');
+        status.classList.add('text-outline');
+      } else {
+        button.setAttribute('aria-checked', 'true');
+        button.classList.remove('bg-outline-variant');
+        button.classList.add('bg-primary-container');
+        thumb.classList.remove('translate-x-0');
+        thumb.classList.add('translate-x-5');
+        status.textContent = 'Active';
+        status.classList.remove('text-outline');
+        status.classList.add('text-primary');
+      }
+    }
+
+    function toggleAccordion(panelId, iconId) {
+      const panel = document.getElementById(panelId);
+      const icon = document.getElementById(iconId);
+      if (panel.classList.contains('hidden')) {
+        panel.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+      } else {
+        panel.classList.add('hidden');
+        icon.classList.remove('rotate-180');
+      }
+    }
+
+    function acceptAllToggles() {
+      const toggles = [
+        { id: 'toggle-analytics', status: 'status-analytics' },
+        { id: 'toggle-functional', status: 'status-functional' },
+        { id: 'toggle-targeting', status: 'status-targeting' }
+      ];
+
+      toggles.forEach(item => {
+        const btn = document.getElementById(item.id);
+        if (btn.getAttribute('aria-checked') === 'false') {
+          toggleSwitch(item.id, item.status);
+        }
+      });
+
+      showToast('All 4 categories activated');
+    }
+
+    function saveConsentFeedback() {
+      showToast('Consent preferences saved & logged');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const messageElem = document.getElementById('toast-message');
+      messageElem.textContent = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2400);
+    }
+  </script>
+</body></html>
