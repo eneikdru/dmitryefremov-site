@@ -9,6 +9,7 @@
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
+  import CanonSearchModal, { type CanonNode } from './CanonSearchModal.svelte';
 
   export let initialTab: 'podcast' | 'article' | 'sparks' | 'gallery' | 'contact' = 'podcast';
 
@@ -91,6 +92,15 @@
           </div>
 
           <div class="flex items-center gap-3">
+            <!-- Cmd+K Canon Search Trigger -->
+            <CanonSearchModal
+              onSelectNode={(node) => {
+                if (node.targetTab) {
+                  activeTab = node.targetTab;
+                }
+              }}
+            />
+
             <!-- Theme Toggle -->
             <button
               id="theme-toggle-btn"

@@ -125,6 +125,50 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     });
   });
 
+  describe('Graph Navigations and Cmd+K Search Telemetry Tracking', () => {
+    it('dispatches graph_navigation event when a cross-link is clicked', () => {
+      const evt = telemetry.trackGraphNavigation('concept-deontic-01', 'podcast-ep-03', 'cross_link');
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('graph_navigation');
+      expect(evt?.payload.source_node_id).toBe('concept-deontic-01');
+      expect(evt?.payload.target_node_id).toBe('podcast-ep-03');
+      expect(evt?.payload.relation_type).toBe('cross_link');
+
+      const events = telemetry.getEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toEqual(evt);
+    });
+
+    it('uses fallback relation_type cross_link if omitted in graph navigation tracking', () => {
+      const evt = telemetry.trackGraphNavigation('essay-01', 'spark-4096');
+
+      expect(evt?.payload.relation_type).toBe('cross_link');
+    });
+
+    it('dispatches search_utilization event on Cmd+K search execution', () => {
+      const evt = telemetry.trackSearchExecution('деонтическая логика', 5, 'art-01-deontic-logic');
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('search_utilization');
+      expect(evt?.payload.query).toBe('деонтическая логика');
+      expect(evt?.payload.result_count).toBe(5);
+      expect(evt?.payload.selected_node_id).toBe('art-01-deontic-logic');
+
+      const events = telemetry.getEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toEqual(evt);
+    });
+
+    it('handles search execution with zero results and no selection', () => {
+      const evt = telemetry.trackSearchExecution('unknown term', 0);
+
+      expect(evt?.payload.query).toBe('unknown term');
+      expect(evt?.payload.result_count).toBe(0);
+      expect(evt?.payload.selected_node_id).toBeNull();
+    });
+  });
+
   describe('GQM Telemetry Instrumentation (Dwell Time & Form Conversions)', () => {
     it('dispatches canon_dwell_heartbeat telemetry events with correct payload', () => {
       const evt = telemetry.trackCanonDwellHeartbeat(15000, 'canon_reader', 75, true);

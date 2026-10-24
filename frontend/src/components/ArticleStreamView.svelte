@@ -413,6 +413,42 @@ All non-deterministic sources (timestamps, random number generators, network res
           aria-label="Article content scroll area"
         >
           {@html parsedContent.html}
+
+          <!-- Cross-Links Section -->
+          <div id="article-cross-links-container" class="mt-6 pt-4 border-t border-[#1f2433] font-sans">
+            <div class="text-xs font-mono text-[#38bdf8] mb-2 flex items-center gap-1.5">
+              <span>🔗 ОПОРНЫЕ ПОНЯТИЯ И КРЕСТ-ССЫЛКИ (CROSS-LINKS)</span>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs font-mono">
+              <button
+                type="button"
+                on:click={() => {
+                  telemetry.trackGraphNavigation(selectedArticle.id, 'concept-deontic-01', 'cross_link_click');
+                }}
+                class="px-2.5 py-1 rounded bg-[#090a0f] border border-[#1f2433] hover:border-[#38bdf8] text-[#38bdf8] focus:outline-none focus:ring-2 focus:ring-[#38bdf8] cursor-pointer transition-colors"
+              >
+                Понятие: Деонтическая логика ↗
+              </button>
+              <button
+                type="button"
+                on:click={() => {
+                  telemetry.trackGraphNavigation(selectedArticle.id, 'podcast-ep-01', 'cross_link_click');
+                }}
+                class="px-2.5 py-1 rounded bg-[#090a0f] border border-[#1f2433] hover:border-[#a855f7] text-[#c084fc] focus:outline-none focus:ring-2 focus:ring-[#c084fc] cursor-pointer transition-colors"
+              >
+                Выпуск подкаста #1 ↗
+              </button>
+              <button
+                type="button"
+                on:click={() => {
+                  telemetry.trackGraphNavigation(selectedArticle.id, 'spark-4096', 'cross_link_click');
+                }}
+                class="px-2.5 py-1 rounded bg-[#090a0f] border border-[#1f2433] hover:border-[#f59e0b] text-[#fbbf24] focus:outline-none focus:ring-2 focus:ring-[#fbbf24] cursor-pointer transition-colors"
+              >
+                Искра: Agentic Economy #4096 ↗
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Telemetry Event Log -->

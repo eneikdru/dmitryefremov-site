@@ -1,0 +1,65 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 2433
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 176,
+    "top": 37,
+    "width": 127,
+    "height": 26
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 109,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-title",
+    "left": 449,
+    "top": 168,
+    "width": 782,
+    "height": 48
+  },
+  {
+    "id": "cmdk-search-trigger",
+    "left": 864,
+    "top": 32,
+    "width": 254,
+    "height": 36
+  },
+  {
+    "id": "cmdk-modal-dialog",
+    "left": 384,
+    "top": 96,
+    "width": 672,
+    "height": 489
+  },
+  {
+    "id": "cmdk-search-input",
+    "left": 433,
+    "top": 117,
+    "width": 554,
+    "height": 20
+  },
+  {
+    "id": "cmdk-results-list",
+    "left": 385,
+    "top": 158,
+    "width": 670,
+    "height": 384
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 2352,
+    "width": 1088,
+    "height": 49
+  }
+]

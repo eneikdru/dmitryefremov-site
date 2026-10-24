@@ -13,7 +13,9 @@ export interface TelemetryEvent {
     | 'canon_dwell_heartbeat'
     | 'form_field_focused'
     | 'form_validation_passed'
-    | 'canon_submit_converted';
+    | 'canon_submit_converted'
+    | 'graph_navigation'
+    | 'search_utilization';
   timestamp: string;
   payload: Record<string, unknown>;
 }
@@ -78,6 +80,42 @@ class TelemetryService {
       payload: {
         articleId,
         title: title ?? articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackGraphNavigation(sourceNodeId: string, targetNodeId: string, relationType?: string): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'graph_navigation',
+      timestamp: new Date().toISOString(),
+      payload: {
+        source_node_id: sourceNodeId,
+        target_node_id: targetNodeId,
+        relation_type: relationType ?? 'cross_link'
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackSearchExecution(query: string, resultCount: number = 0, selectedNodeId?: string): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'search_utilization',
+      timestamp: new Date().toISOString(),
+      payload: {
+        query,
+        result_count: resultCount,
+        selected_node_id: selectedNodeId ?? null
       }
     };
     this.recordEvent(event);
