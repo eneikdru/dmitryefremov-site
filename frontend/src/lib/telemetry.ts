@@ -13,9 +13,23 @@ export interface TelemetryEvent {
     | 'canon_dwell_heartbeat'
     | 'form_field_focused'
     | 'form_validation_passed'
-    | 'canon_submit_converted';
+    | 'canon_submit_converted'
+    | 'graph_navigation'
+    | 'search_utilization';
   timestamp: string;
   payload: Record<string, unknown>;
+}
+
+export interface GraphNavigationPayload {
+  sourceNodeId: string;
+  targetNodeId: string;
+  linkType?: string;
+}
+
+export interface SearchUtilizationPayload {
+  query: string;
+  resultCount: number;
+  selectedResultId?: string;
 }
 
 export interface EssayViewPayload {
@@ -78,6 +92,42 @@ class TelemetryService {
       payload: {
         articleId,
         title: title ?? articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackGraphNavigation(sourceNodeId: string, targetNodeId: string, linkType: string = 'cross_link'): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'graph_navigation',
+      timestamp: new Date().toISOString(),
+      payload: {
+        sourceNodeId,
+        targetNodeId,
+        linkType
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackSearchUtilization(query: string, resultCount: number, selectedResultId?: string): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'search_utilization',
+      timestamp: new Date().toISOString(),
+      payload: {
+        query,
+        resultCount,
+        selectedResultId: selectedResultId ?? null
       }
     };
     this.recordEvent(event);

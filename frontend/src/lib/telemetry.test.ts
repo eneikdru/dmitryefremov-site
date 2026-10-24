@@ -177,6 +177,34 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     });
   });
 
+  describe('Canon Graph Navigation & Search Telemetry', () => {
+    it('dispatches graph_navigation telemetry event when cross-linking between nodes', () => {
+      const evt = telemetry.trackGraphNavigation('concept-canon-core', 'podcast-ep-42', 'cross_link');
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('graph_navigation');
+      expect(evt?.payload).toEqual({
+        sourceNodeId: 'concept-canon-core',
+        targetNodeId: 'podcast-ep-42',
+        linkType: 'cross_link'
+      });
+      const events = telemetry.getEvents();
+      expect(events).toContainEqual(evt);
+    });
+
+    it('dispatches search_utilization telemetry event when Cmd+K search is executed', () => {
+      const evt = telemetry.trackSearchUtilization('JWT auth spec', 5, 'node-jwt-sec');
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('search_utilization');
+      expect(evt?.payload).toEqual({
+        query: 'JWT auth spec',
+        resultCount: 5,
+        selectedResultId: 'node-jwt-sec'
+      });
+      const events = telemetry.getEvents();
+      expect(events).toContainEqual(evt);
+    });
+  });
+
   describe('GQM Event Firing Exact-Once Measurement Verification', () => {
     it('fires correct GQM metric event exactly once per simulated user engagement action', () => {
       const dispatchedEvents: TelemetryEvent[] = [];
