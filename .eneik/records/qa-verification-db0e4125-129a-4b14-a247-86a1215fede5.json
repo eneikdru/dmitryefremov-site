@@ -1,0 +1,13 @@
+{
+  "testsRun": 303,
+  "testsPassed": 303,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given a live environment with an empty database, when accessing the public site, then correct Russian empty states are displayed without any placeholder content",
+    "Given a live environment with published and draft content, when accessing the site, then only published items are visible and drafts are isolated",
+    "Given automated accessibility checks, when run on the rendered site, then all UI views meet WCAG 2.1 AA standards for contrast, focus, and operability"
+  ],
+  "coverageDeltaPercent": 0.0,
+  "verdict": "pass",
+  "notes": "Automated end-to-end and component test suite execution across Spring Boot backend and Svelte frontend verified live data integration, empty state handling, draft isolation, and WCAG accessibility standards."
+}
