@@ -6,15 +6,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TelegramSparkMapperTest {
 
     private TelegramSparkMapper mapper;
+    private Clock fixedClock;
 
     @BeforeEach
     void setUp() {
-        mapper = new TelegramSparkMapper(new ObjectMapper());
+        fixedClock = Clock.fixed(Instant.ofEpochSecond(1760300000L), ZoneOffset.UTC);
+        mapper = new TelegramSparkMapper(new ObjectMapper(), fixedClock);
     }
 
     @Test
@@ -84,5 +90,56 @@ class TelegramSparkMapperTest {
         assertThat(spark.getDomain()).isEqualTo("Philosophy of Mind");
         assertThat(spark.getTags()).isEqualTo("philosophy,mind");
         assertThat(spark.getAuthor()).isEqualTo("@efremov_mvp");
+    }
+
+    @Test
+    void testMapEditedChannelPostWithCyrillicHashtagsAndChatTitleAuthorFallback() {
+        String jsonPayload = """
+                {
+                  "update_id": 999111,
+                  "edited_channel_post": {
+                    "message_id": 512,
+                    "chat": {
+                      "id": -100555,
+                      "title": "Ефремов MVP Channel",
+                      "type": "channel"
+                    },
+                    "edit_date": 1760305000,
+                    "caption": "Новый тезис про архитектуру систем и AI. #архитектура #ии_агенты"
+                  }
+                }
+                """;
+
+        Spark spark = mapper.mapTelegramPayload(jsonPayload);
+
+        assertThat(spark.getTelegramMessageId()).isEqualTo(512L);
+        assertThat(spark.getTelegramChatId()).isEqualTo(-100555L);
+        assertThat(spark.getContent()).contains("Новый тезис про архитектуру");
+        assertThat(spark.getAuthor()).isEqualTo("Ефремов MVP Channel");
+        assertThat(spark.getTags()).isEqualTo("архитектура,ии_агенты");
+        assertThat(spark.getPublishedAt().toEpochSecond()).isEqualTo(1760305000L);
+    }
+
+    @Test
+    void testMapMissingDateUsesFixedClock() {
+        String jsonPayload = """
+                {
+                  "update_id": 888222,
+                  "edited_message": {
+                    "message_id": 1024,
+                    "chat": {
+                      "id": 777
+                    },
+                    "text": "Pragmatic business strategy and MVP execution."
+                  }
+                }
+                """;
+
+        Spark spark = mapper.mapTelegramPayload(jsonPayload);
+
+        assertThat(spark.getTelegramMessageId()).isEqualTo(1024L);
+        assertThat(spark.getTelegramChatId()).isEqualTo(777L);
+        assertThat(spark.getDomain()).isEqualTo("Pragmatic Business Strategy");
+        assertThat(spark.getPublishedAt().toEpochSecond()).isEqualTo(1760300000L);
     }
 }
