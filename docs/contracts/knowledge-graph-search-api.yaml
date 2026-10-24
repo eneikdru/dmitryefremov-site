@@ -1,0 +1,532 @@
+openapi: 3.0.3
+info:
+  title: Knowledge Graph and Instant Search API Contract
+  description: API specification for Dmitry Efremov's unified concept graph and instant multi-domain search (Cmd+K). Defines endpoints, request parameters, structured DTOs, cross-reference edge navigation, and machine-readable representations (llms.txt, ai-agent.json, Markdown/JSON) for human readers and AI agents.
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/search:
+    get:
+      summary: Instant multi-domain search
+      description: Performs instant keyboard-driven search across the entire corpus (podcasts, essays, sparks, and Canon concepts). Supports semantic search by node meaning as well as keyword substring matching, returning structured multi-domain results grouped by content type or domain.
+      operationId: instantSearch
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query string (e.g. concept title, topic, or semantic keywords)
+          schema:
+            type: string
+            minLength: 1
+        - name: type
+          in: query
+          required: false
+          description: Optional filter by content type (CANON_CONCEPT, PODCAST, ESSAY, SPARK, or ALL)
+          schema:
+            $ref: '#/components/schemas/SearchResultType'
+            default: ALL
+        - name: domain
+          in: query
+          required: false
+          description: Optional filter by knowledge domain
+          schema:
+            $ref: '#/components/schemas/DomainType'
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of search result items returned per group/type
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+        - name: page
+          in: query
+          required: false
+          description: Page index (0-indexed) for paginated search results
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        '200':
+          description: Search executed successfully, returning multi-domain search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Invalid query parameters or empty query string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/graph:
+    get:
+      summary: Get knowledge graph nodes and edges
+      description: Retrieves nodes and cross-reference edges from the database-backed concept graph for visualization and navigation.
+      operationId: getKnowledgeGraph
+      parameters:
+        - name: domain
+          in: query
+          required: false
+          description: Optional domain filter for graph subgraph
+          schema:
+            $ref: '#/components/schemas/DomainType'
+        - name: nodeType
+          in: query
+          required: false
+          description: Optional filter by node entity type
+          schema:
+            $ref: '#/components/schemas/SearchResultType'
+        - name: depth
+          in: query
+          required: false
+          description: Traversal depth starting from anchor concepts
+          schema:
+            type: integer
+            default: 2
+            minimum: 1
+            maximum: 5
+      responses:
+        '200':
+          description: Graph nodes and edges retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphData'
+        '400':
+          description: Invalid request query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/graph/nodes/{nodeId}:
+    get:
+      summary: Get detailed concept graph node by ID
+      description: Retrieves full details for a graph node (Canon concept, podcast episode, essay, or spark), including cross-references, incoming/outgoing edges, permalink, and AI agent links.
+      operationId: getGraphNodeById
+      parameters:
+        - name: nodeId
+          in: path
+          required: true
+          description: Unique identifier string or ID of the graph node
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Concept graph node found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphNodeDetail'
+        '404':
+          description: Graph node not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/graph/nodes/{nodeId}/neighbors:
+    get:
+      summary: Get adjacent neighbor nodes in concept graph
+      description: Retrieves neighboring connected nodes (e.g. podcast episodes explaining a concept, essays elaborating a manifesto, sparks referencing a term).
+      operationId: getGraphNodeNeighbors
+      parameters:
+        - name: nodeId
+          in: path
+          required: true
+          description: Graph node identifier
+          schema:
+            type: string
+        - name: relationshipType
+          in: query
+          required: false
+          description: Optional filter by relationship edge type
+          schema:
+            $ref: '#/components/schemas/RelationshipType'
+      responses:
+        '200':
+          description: Neighbor nodes retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphNeighborsResponse'
+        '404':
+          description: Node not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/nodes/{slug}/machine-readable:
+    get:
+      summary: Get machine-readable representation of a concept node
+      description: Provides machine-readable representations (llms.txt, ai-agent.json, raw Markdown/JSON) for external AI agents and human readers.
+      operationId: getMachineReadableNode
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Permalink slug of the node
+          schema:
+            type: string
+        - name: format
+          in: query
+          required: false
+          description: Desired machine-readable representation format
+          schema:
+            type: string
+            enum: [json, markdown, llms-txt, ai-agent-json]
+            default: json
+      responses:
+        '200':
+          description: Machine-readable payload retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MachineReadableNode'
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Node slug not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    SearchResultType:
+      type: string
+      enum:
+        - ALL
+        - CANON_CONCEPT
+        - PODCAST
+        - ESSAY
+        - SPARK
+
+    DomainType:
+      type: string
+      enum:
+        - AUTONOMOUS_ENGINEERING
+        - AGENTIC_ECONOMY
+        - PRAGMATIC_BUSINESS_STRATEGY
+        - PHILOSOPHY_OF_MIND
+
+    RelationshipType:
+      type: string
+      enum:
+        - REFERENCES
+        - SUPERSEDES
+        - RELATED
+        - DEPENDS_ON
+        - EXTENDS
+        - DISCUSSES
+        - EXPLAINS
+        - ELABORATES
+
+    SearchResultItem:
+      type: object
+      required:
+        - id
+        - entityId
+        - type
+        - domain
+        - slug
+        - title
+        - summary
+        - score
+        - permalink
+      properties:
+        id:
+          type: string
+          description: Composite unique node ID in search index (e.g. "canon:12", "podcast:42")
+          example: "canon:1"
+        entityId:
+          type: integer
+          format: int64
+          description: Underlying database primary key ID
+          example: 1
+        type:
+          $ref: '#/components/schemas/SearchResultType'
+        domain:
+          $ref: '#/components/schemas/DomainType'
+        slug:
+          type: string
+          example: "architecture-of-autonomous-systems"
+        title:
+          type: string
+          example: "The Architecture of Autonomous Systems"
+        summary:
+          type: string
+          example: "Evergreen principles for engineering self-governing software agents."
+        score:
+          type: number
+          format: double
+          description: Relevance score for semantic or exact match
+          example: 0.95
+        permalink:
+          type: string
+          format: uri
+          example: "https://dmitryefremov.site/canon/architecture-of-autonomous-systems"
+        highlightedSnippet:
+          type: string
+          nullable: true
+          example: "Autonomous engineering requires <mark>deterministic verification</mark>."
+
+    SearchResultGroup:
+      type: object
+      required:
+        - type
+        - totalHits
+        - items
+      properties:
+        type:
+          $ref: '#/components/schemas/SearchResultType'
+        totalHits:
+          type: integer
+          example: 3
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResultItem'
+
+    SearchResponse:
+      type: object
+      required:
+        - query
+        - totalHits
+        - groups
+        - results
+      properties:
+        query:
+          type: string
+          example: "deontic logic"
+        totalHits:
+          type: integer
+          example: 5
+        groups:
+          type: array
+          description: Multi-domain search results grouped by content type
+          items:
+            $ref: '#/components/schemas/SearchResultGroup'
+        results:
+          type: array
+          description: Flattened, relevance-ranked multi-domain result list
+          items:
+            $ref: '#/components/schemas/SearchResultItem'
+
+    GraphNode:
+      type: object
+      required:
+        - id
+        - entityId
+        - slug
+        - title
+        - type
+        - domain
+        - permalink
+      properties:
+        id:
+          type: string
+          example: "canon:1"
+        entityId:
+          type: integer
+          format: int64
+          example: 1
+        slug:
+          type: string
+          example: "architecture-of-autonomous-systems"
+        title:
+          type: string
+          example: "The Architecture of Autonomous Systems"
+        type:
+          $ref: '#/components/schemas/SearchResultType'
+        domain:
+          $ref: '#/components/schemas/DomainType'
+        summary:
+          type: string
+          nullable: true
+          example: "Evergreen principles for engineering self-governing software agents."
+        permalink:
+          type: string
+          format: uri
+          example: "https://dmitryefremov.site/canon/architecture-of-autonomous-systems"
+
+    GraphEdge:
+      type: object
+      required:
+        - id
+        - sourceNodeId
+        - targetNodeId
+        - relationshipType
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 101
+        sourceNodeId:
+          type: string
+          example: "canon:1"
+        targetNodeId:
+          type: string
+          example: "podcast:42"
+        relationshipType:
+          $ref: '#/components/schemas/RelationshipType'
+        description:
+          type: string
+          nullable: true
+          example: "Canonical podcast episode discussing autonomous systems architecture"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-10-24T09:42:00Z"
+
+    GraphData:
+      type: object
+      required:
+        - nodes
+        - edges
+        - totalNodes
+        - totalEdges
+      properties:
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphNode'
+        edges:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphEdge'
+        totalNodes:
+          type: integer
+          example: 12
+        totalEdges:
+          type: integer
+          example: 18
+
+    GraphNodeDetail:
+      type: object
+      required:
+        - node
+        - incomingEdges
+        - outgoingEdges
+        - machineReadableUrls
+      properties:
+        node:
+          $ref: '#/components/schemas/GraphNode'
+        incomingEdges:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphEdge'
+        outgoingEdges:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphEdge'
+        machineReadableUrls:
+          type: object
+          required:
+            - markdownUrl
+            - aiAgentJsonUrl
+            - llmsTxtUrl
+          properties:
+            markdownUrl:
+              type: string
+              format: uri
+              example: "https://dmitryefremov.site/api/v1/nodes/architecture-of-autonomous-systems/machine-readable?format=markdown"
+            aiAgentJsonUrl:
+              type: string
+              format: uri
+              example: "https://dmitryefremov.site/api/v1/nodes/architecture-of-autonomous-systems/machine-readable?format=ai-agent-json"
+            llmsTxtUrl:
+              type: string
+              format: uri
+              example: "https://dmitryefremov.site/api/v1/nodes/architecture-of-autonomous-systems/machine-readable?format=llms-txt"
+
+    GraphNeighborsResponse:
+      type: object
+      required:
+        - nodeId
+        - totalNeighbors
+        - neighbors
+      properties:
+        nodeId:
+          type: string
+          example: "canon:1"
+        totalNeighbors:
+          type: integer
+          example: 3
+        neighbors:
+          type: array
+          items:
+            type: object
+            required:
+              - edge
+              - node
+            properties:
+              edge:
+                $ref: '#/components/schemas/GraphEdge'
+              node:
+                $ref: '#/components/schemas/GraphNode'
+
+    MachineReadableNode:
+      type: object
+      required:
+        - slug
+        - title
+        - type
+        - domain
+        - contentMarkdown
+        - permalink
+      properties:
+        slug:
+          type: string
+          example: "architecture-of-autonomous-systems"
+        title:
+          type: string
+          example: "The Architecture of Autonomous Systems"
+        type:
+          $ref: '#/components/schemas/SearchResultType'
+        domain:
+          $ref: '#/components/schemas/DomainType'
+        contentMarkdown:
+          type: string
+          description: Clean Markdown content of the node
+          example: "# The Architecture of Autonomous Systems\n\nAutonomous engineering requires deterministic verification..."
+        permalink:
+          type: string
+          format: uri
+          example: "https://dmitryefremov.site/canon/architecture-of-autonomous-systems"
+        llmsTxtSnippet:
+          type: string
+          nullable: true
+          example: "Title: The Architecture of Autonomous Systems\nSlug: architecture-of-autonomous-systems\nDomain: AUTONOMOUS_ENGINEERING\nType: CANON_CONCEPT"
+        crossReferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphEdge'
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Query parameter 'q' must not be empty"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-24T10:00:00Z"
