@@ -39,6 +39,55 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     expect(events[0]).toEqual(evt25);
   });
 
+  describe('Graph Cross-Links & Cmd+K Search Telemetry Events', () => {
+    it('dispatches cross_link_click telemetry event when cross-linking between nodes', () => {
+      const dispatchedEvents: TelemetryEvent[] = [];
+      const unsubscribe = telemetry.subscribe((evt) => dispatchedEvents.push(evt));
+
+      const evt = telemetry.trackCrossLinkClick(
+        'essay-deontic-logic',
+        'podcast-ep-01',
+        'podcast',
+        'Выпуск 01: Системы и реальность'
+      );
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('cross_link_click');
+      expect(evt?.payload).toEqual({
+        source_node_id: 'essay-deontic-logic',
+        target_node_id: 'podcast-ep-01',
+        target_node_type: 'podcast',
+        label: 'Выпуск 01: Системы и реальность'
+      });
+
+      expect(dispatchedEvents).toHaveLength(1);
+      expect(dispatchedEvents[0]).toEqual(evt);
+
+      unsubscribe();
+    });
+
+    it('dispatches search_utilization telemetry event on Cmd+K search invocation', () => {
+      const dispatchedEvents: TelemetryEvent[] = [];
+      const unsubscribe = telemetry.subscribe((evt) => dispatchedEvents.push(evt));
+
+      const evt = telemetry.trackSearchUtilization('деонтическая', 'cmd_k', 3, 'concept-deontic-logic');
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('search_utilization');
+      expect(evt?.payload).toEqual({
+        query: 'деонтическая',
+        trigger_method: 'cmd_k',
+        results_count: 3,
+        selected_result_id: 'concept-deontic-logic'
+      });
+
+      expect(dispatchedEvents).toHaveLength(1);
+      expect(dispatchedEvents[0]).toEqual(evt);
+
+      unsubscribe();
+    });
+  });
+
   describe('Contact Link Analytics Event Dispatching', () => {
     it('dispatches correct analytics payload when a contact link is clicked', () => {
       const dispatchedEvents: TelemetryEvent[] = [];
@@ -171,41 +220,6 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
       expect(evt?.payload.total_dwell_ms).toBe(45000);
       expect(evt?.payload.converted).toBe(true);
       expect(evt?.payload.client_name).toBe('Dmitry Efremov');
-
-      const events = telemetry.getEvents();
-      expect(events).toContainEqual(evt);
-    });
-  });
-
-  describe('Graph Navigation & Cmd+K Search Telemetry Events', () => {
-    it('dispatches graph_navigation telemetry event when cross-links between nodes are clicked', () => {
-      const evt = telemetry.trackGraphNavigation(
-        'concept_deontic_logic',
-        'podcast_episode_01',
-        'cross_link',
-        'Деонтическая логика -> Выпуск 01'
-      );
-
-      expect(evt).not.toBeNull();
-      expect(evt?.type).toBe('graph_navigation');
-      expect(evt?.payload.source_node_id).toBe('concept_deontic_logic');
-      expect(evt?.payload.target_node_id).toBe('podcast_episode_01');
-      expect(evt?.payload.relation_type).toBe('cross_link');
-      expect(evt?.payload.label).toBe('Деонтическая логика -> Выпуск 01');
-
-      const events = telemetry.getEvents();
-      expect(events).toContainEqual(evt);
-    });
-
-    it('dispatches search_utilization telemetry event when Cmd+K search is executed', () => {
-      const evt = telemetry.trackSearchUtilization('state_machine', 14, 18, 'cmd_k');
-
-      expect(evt).not.toBeNull();
-      expect(evt?.type).toBe('search_utilization');
-      expect(evt?.payload.query).toBe('state_machine');
-      expect(evt?.payload.results_count).toBe(14);
-      expect(evt?.payload.latency_ms).toBe(18);
-      expect(evt?.payload.trigger_source).toBe('cmd_k');
 
       const events = telemetry.getEvents();
       expect(events).toContainEqual(evt);
