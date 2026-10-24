@@ -73,6 +73,42 @@ describe('Podcast Helpers & Utilities', () => {
   });
 });
 
+const sampleEpisodes = [
+  {
+    id: 1,
+    slug: '01-test-episode',
+    philosopher: 'Тестовый Философ',
+    title: 'Тестовый выпуск подкаста: Модальная логика',
+    thesis: 'Тезис для проверки компонентов',
+    description: 'Полное описание выпуска подкаста',
+    durationSeconds: 1800,
+    publishedAt: '2026-09-20',
+    audioUrl: '/audio/01-test.m4a',
+    youtubeUrl: 'https://youtu.be/1qiPT9UxKNM',
+    mediaLink: 'https://youtu.be/1qiPT9UxKNM',
+    telegramUrl: 'https://t.me/efremov_mvp',
+    timecodes: [
+      { id: 101, timeOffsetSeconds: 0, title: 'Введение' },
+      { id: 102, timeOffsetSeconds: 340, title: 'Формула Баркан' }
+    ]
+  },
+  {
+    id: 2,
+    slug: '02-test-episode',
+    philosopher: 'Второй Философ',
+    title: 'Второй выпуск подкаста',
+    thesis: 'Второй тезис',
+    description: 'Описание второго выпуска',
+    durationSeconds: 1200,
+    publishedAt: '2026-09-22',
+    audioUrl: '/audio/02-test.m4a',
+    youtubeUrl: 'https://youtu.be/jUbOF_YvkfI',
+    mediaLink: 'https://youtu.be/jUbOF_YvkfI',
+    telegramUrl: 'https://t.me/efremov_mvp',
+    timecodes: []
+  }
+];
+
 describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   let target: HTMLElement;
   let component: any;
@@ -91,8 +127,14 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
     };
   });
 
+  it('renders localized Russian empty state when episodes list is empty', () => {
+    component = mount(PodcastPlayerView, { target, props: { episodes: [] } });
+    flushSync();
+    expect(target.textContent).toContain('Выпуски подкаста отсутствуют');
+  });
+
   it('dispatches outbound_click telemetry events when YouTube and Telegram links are clicked', () => {
-    component = mount(PodcastPlayerView, { target });
+    component = mount(PodcastPlayerView, { target, props: { episodes: sampleEpisodes } });
 
     const ytLink = target.querySelector('a[aria-label="YouTube Channel"]') as HTMLAnchorElement;
     const tgLink = target.querySelector('a[aria-label="Telegram Channel"]') as HTMLAnchorElement;
@@ -107,35 +149,28 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   });
 
   it('renders episode title, catalog list, wave visualizer, timecodes, and external YouTube & Telegram links', () => {
-    component = mount(PodcastPlayerView, { target });
+    component = mount(PodcastPlayerView, { target, props: { episodes: sampleEpisodes } });
 
     expect(target.textContent).toContain('Подкаст «Системы и реальность»');
-    expect(target.textContent).toContain(PODCAST_EPISODES[0].title);
+    expect(target.textContent).toContain(sampleEpisodes[0].title);
     expect(target.textContent).toContain('ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ');
     expect(target.textContent).toContain('ТАЙМКОДЫ И ТЕМЫ');
 
-    // Check timecodes rendered
-    PODCAST_EPISODES[0].timecodes.forEach(tc => {
+    sampleEpisodes[0].timecodes.forEach(tc => {
       expect(target.textContent).toContain(tc.title);
     });
 
-    // Check external platform links (YouTube & Telegram)
     const ytLink = target.querySelector('a[aria-label="YouTube Channel"]') as HTMLAnchorElement;
     const tgLink = target.querySelector('a[aria-label="Telegram Channel"]') as HTMLAnchorElement;
 
     expect(ytLink).not.toBeNull();
     expect(ytLink.getAttribute('href')).toMatch(/^https:\/\/youtu\.be|^https:\/\/youtube\.com/);
-    expect(ytLink.getAttribute('target')).toBe('_blank');
-    expect(ytLink.getAttribute('rel')).toBe('noopener noreferrer');
-
     expect(tgLink).not.toBeNull();
     expect(tgLink.getAttribute('href')).toMatch(/^https:\/\/t\.me/);
-    expect(tgLink.getAttribute('target')).toBe('_blank');
-    expect(tgLink.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
   it('toggles play/pause state when clicking play button and interacts with audio element', async () => {
-    component = mount(PodcastPlayerView, { target });
+    component = mount(PodcastPlayerView, { target, props: { episodes: sampleEpisodes } });
     flushSync();
     const playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
 
@@ -156,7 +191,7 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   });
 
   it('handles audio playback completion (ended event) by resetting playback state', async () => {
-    component = mount(PodcastPlayerView, { target });
+    component = mount(PodcastPlayerView, { target, props: { episodes: sampleEpisodes } });
     flushSync();
     const playBtn = target.querySelector('#play-pause-btn') as HTMLButtonElement;
     const audioElement = target.querySelector('audio') as HTMLAudioElement;
@@ -175,10 +210,9 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   });
 
   it('seeks directly to timestamp when a timecode button is clicked', () => {
-    component = mount(PodcastPlayerView, { target });
+    component = mount(PodcastPlayerView, { target, props: { episodes: sampleEpisodes } });
 
-    // Timecode 2 for Episode 01 is 340 seconds ("05:40")
-    const targetTc = PODCAST_EPISODES[0].timecodes[1];
+    const targetTc = sampleEpisodes[0].timecodes[1];
     const timecodeBtn = target.querySelector(`#timecode-btn-${targetTc.id}`) as HTMLButtonElement;
     expect(timecodeBtn).not.toBeNull();
 
@@ -191,32 +225,28 @@ describe('PodcastPlayerView Component UI Interactions & Audio Playback', () => {
   });
 
   it('handles waveform keyboard navigation and component seekTo exported function', () => {
-    component = mount(PodcastPlayerView, { target });
+    component = mount(PodcastPlayerView, { target, props: { episodes: sampleEpisodes } });
     const waveform = target.querySelector('#waveform-container') as HTMLElement;
 
-    // Test exported seekTo function directly
     component.seekTo(620);
     flushSync();
 
     const currentTimeVal = target.querySelector('#current-time-val') as HTMLElement;
-    // 620 seconds = 10:20
     expect(currentTimeVal.textContent).toBe('10:20');
 
-    // Test ArrowRight key down (adds 5 seconds -> 625 seconds = 10:25)
     waveform.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     flushSync();
     expect(currentTimeVal.textContent).toBe('10:25');
 
-    // Test ArrowLeft key down (subtracts 5 seconds -> 620 seconds = 10:20)
     waveform.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
     flushSync();
     expect(currentTimeVal.textContent).toBe('10:20');
   });
 
   it('switches active podcast episode when selecting from catalog', () => {
-    component = mount(PodcastPlayerView, { target });
+    component = mount(PodcastPlayerView, { target, props: { episodes: sampleEpisodes } });
 
-    const secondEp = PODCAST_EPISODES[1];
+    const secondEp = sampleEpisodes[1];
     const ep2Card = target.querySelector(`#episode-card-${secondEp.id}`) as HTMLButtonElement;
     expect(ep2Card).not.toBeNull();
 

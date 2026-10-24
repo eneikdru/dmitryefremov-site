@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import {
     getInitialSparks,
+    fetchSparksFromApi,
     filterSparks,
     createSpark,
     toggleSparkFire,
@@ -12,9 +14,18 @@
   } from '../lib/sparks';
 
   export let theme: 'dark' | 'light' = 'dark';
+  export let sparks: SparkItem[] = [];
 
-  let sparks: SparkItem[] = getInitialSparks();
   let streamMode: StreamMode = 'HYPER';
+
+  onMount(async () => {
+    if (!sparks || sparks.length === 0) {
+      const fetched = await fetchSparksFromApi();
+      if (fetched && fetched.length > 0) {
+        sparks = fetched;
+      }
+    }
+  });
   let selectedCategory: string = 'All Sparks';
   let searchQuery: string = '';
   let isSearchVisible: boolean = false;
@@ -206,8 +217,8 @@
     <!-- Main Feed Stream Cards Stack -->
     <main class="w-full flex flex-col space-y-3 pr-2.5" id="sparkFeed" aria-label="Sparks Stream Feed">
       {#if filteredSparks.length === 0}
-        <div class="p-8 text-center rounded-xl border border-dashed font-mono text-sm opacity-70">
-          No sparks found matching current filters.
+        <div id="sparks-feed-empty-state" class="p-8 text-center rounded-xl border border-dashed border-[#514532]/30 font-mono text-sm text-[#d6c4ac]">
+          Искры и записи отсутствуют
         </div>
       {:else}
         {#each filteredSparks as spark (spark.id)}
