@@ -14,24 +14,24 @@ export interface TelemetryEvent {
     | 'form_field_focused'
     | 'form_validation_passed'
     | 'canon_submit_converted'
-    | 'graph_navigation'
+    | 'cross_link_click'
     | 'search_utilization';
   timestamp: string;
   payload: Record<string, unknown>;
 }
 
-export interface GraphNavigationPayload {
+export interface CrossLinkClickPayload {
   sourceNodeId: string;
   targetNodeId: string;
-  relationType?: string;
+  targetNodeType?: string;
   label?: string;
 }
 
 export interface SearchUtilizationPayload {
   query: string;
-  resultsCount: number;
-  latencyMs?: number;
-  triggerSource?: string;
+  triggerMethod?: string;
+  resultsCount?: number;
+  selectedResultId?: string;
 }
 
 export interface EssayViewPayload {
@@ -100,36 +100,26 @@ class TelemetryService {
     return event;
   }
 
-  public trackGraphNavigation(
-    sourceNodeId: string,
-    targetNodeId: string,
-    relationType: string = 'cross_link',
-    label?: string
-  ): TelemetryEvent | null {
+  public trackCrossLinkClick(sourceNodeId: string, targetNodeId: string, targetNodeType: string = 'concept', label?: string): TelemetryEvent | null {
     this.verifyPrivacyCompliance();
     if (!isTelemetryAllowed()) {
       return null;
     }
     const event: TelemetryEvent = {
-      type: 'graph_navigation',
+      type: 'cross_link_click',
       timestamp: new Date().toISOString(),
       payload: {
         source_node_id: sourceNodeId,
         target_node_id: targetNodeId,
-        relation_type: relationType,
-        label: label ?? `${sourceNodeId} -> ${targetNodeId}`
+        target_node_type: targetNodeType,
+        label: label ?? targetNodeId
       }
     };
     this.recordEvent(event);
     return event;
   }
 
-  public trackSearchUtilization(
-    query: string,
-    resultsCount: number = 0,
-    latencyMs: number = 0,
-    triggerSource: string = 'cmd_k'
-  ): TelemetryEvent | null {
+  public trackSearchUtilization(query: string, triggerMethod: string = 'cmd_k', resultsCount: number = 0, selectedResultId?: string): TelemetryEvent | null {
     this.verifyPrivacyCompliance();
     if (!isTelemetryAllowed()) {
       return null;
@@ -139,9 +129,9 @@ class TelemetryService {
       timestamp: new Date().toISOString(),
       payload: {
         query,
+        trigger_method: triggerMethod,
         results_count: resultsCount,
-        latency_ms: latencyMs,
-        trigger_source: triggerSource
+        selected_result_id: selectedResultId ?? null
       }
     };
     this.recordEvent(event);
