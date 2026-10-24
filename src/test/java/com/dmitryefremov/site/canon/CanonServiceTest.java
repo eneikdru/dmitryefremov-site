@@ -3,9 +3,11 @@ package com.dmitryefremov.site.canon;
 import com.dmitryefremov.site.canon.domain.*;
 import com.dmitryefremov.site.canon.dto.CanonCrossReferenceDto;
 import com.dmitryefremov.site.canon.dto.CanonItemDto;
+import com.dmitryefremov.site.canon.dto.CanonMediaLinkDto;
 import com.dmitryefremov.site.canon.dto.CanonPageDto;
 import com.dmitryefremov.site.canon.repository.CanonCrossReferenceRepository;
 import com.dmitryefremov.site.canon.repository.CanonItemRepository;
+import com.dmitryefremov.site.canon.repository.CanonMediaLinkRepository;
 import com.dmitryefremov.site.canon.service.CanonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,13 +42,16 @@ class CanonServiceTest {
     @Mock
     private CanonCrossReferenceRepository canonCrossReferenceRepository;
 
+    @Mock
+    private CanonMediaLinkRepository canonMediaLinkRepository;
+
     private Clock clock;
     private CanonService canonService;
 
     @BeforeEach
     void setUp() {
         clock = Clock.fixed(Instant.parse("2026-10-12T20:00:00Z"), ZoneId.of("UTC"));
-        canonService = new CanonService(canonItemRepository, canonCrossReferenceRepository, clock);
+        canonService = new CanonService(canonItemRepository, canonCrossReferenceRepository, canonMediaLinkRepository, clock);
     }
 
     @Test
@@ -121,5 +126,25 @@ class CanonServiceTest {
         assertThatThrownBy(() -> canonService.addCrossReference("same-item", "same-item", CanonRelationshipType.REFERENCES, "Self ref"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Canon item cannot reference itself");
+    }
+
+    @Test
+    void testAddMediaLink() {
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        CanonItem item = new CanonItem("canon-slug", "Canon Title", CanonType.MANIFESTO, CanonDomain.AUTONOMOUS_ENGINEERING, "Summary", "Content", now, clock);
+        ReflectionTestUtils.setField(item, "id", 100L);
+
+        when(canonItemRepository.findBySlug("canon-slug")).thenReturn(Optional.of(item));
+        when(canonMediaLinkRepository.findByCanonItemIdAndMediaTypeAndMediaIdAndRelationshipType(eq(100L), eq(MediaType.PODCAST), eq(5L), eq("EXPLORED_IN")))
+                .thenReturn(Optional.empty());
+        when(canonMediaLinkRepository.save(any(CanonMediaLink.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        CanonMediaLinkDto result = canonService.addMediaLink("canon-slug", MediaType.PODCAST, 5L, "EXPLORED_IN", "Podcast breakdown");
+
+        assertThat(result.getCanonSlug()).isEqualTo("canon-slug");
+        assertThat(result.getMediaType()).isEqualTo(MediaType.PODCAST);
+        assertThat(result.getMediaId()).isEqualTo(5L);
+        assertThat(result.getRelationshipType()).isEqualTo("EXPLORED_IN");
+        assertThat(result.getDescription()).isEqualTo("Podcast breakdown");
     }
 }

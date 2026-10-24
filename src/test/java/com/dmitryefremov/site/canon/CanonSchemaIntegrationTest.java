@@ -3,6 +3,7 @@ package com.dmitryefremov.site.canon;
 import com.dmitryefremov.site.canon.domain.*;
 import com.dmitryefremov.site.canon.repository.CanonCrossReferenceRepository;
 import com.dmitryefremov.site.canon.repository.CanonItemRepository;
+import com.dmitryefremov.site.canon.repository.CanonMediaLinkRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -27,6 +28,9 @@ class CanonSchemaIntegrationTest {
     private CanonCrossReferenceRepository canonCrossReferenceRepository;
 
     @Autowired
+    private CanonMediaLinkRepository canonMediaLinkRepository;
+
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Test
@@ -39,9 +43,14 @@ class CanonSchemaIntegrationTest {
                 "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'CANON_CROSS_REFERENCES'",
                 Integer.class
         );
+        Integer mediaLinksTable = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables WHERE UPPER(table_name) = 'CANON_MEDIA_LINKS'",
+                Integer.class
+        );
 
         assertThat(itemsTable).isGreaterThan(0);
         assertThat(xrefTable).isGreaterThan(0);
+        assertThat(mediaLinksTable).isGreaterThan(0);
     }
 
     @Test
@@ -97,6 +106,42 @@ class CanonSchemaIntegrationTest {
         assertThat(fetched.getDomain()).isEqualTo(CanonDomain.AGENTIC_ECONOMY);
         assertThat(fetched.getOutgoingReferences()).hasSize(1);
         assertThat(fetched.getOutgoingReferences().get(0).getTarget().getSlug()).isEqualTo("quantized-agent-transactions");
+    }
+
+    @Test
+    void testSaveAndRetrieveCanonMediaLink() {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 12, 12, 0, 0, 0, ZoneOffset.UTC);
+
+        CanonItem item = new CanonItem(
+                "extended-mind-infrastructure-test",
+                "Extended Mind Infrastructure Test",
+                CanonType.GLOSSARY_TERM,
+                CanonDomain.AUTONOMOUS_ENGINEERING,
+                "Summary",
+                "Content",
+                publishedAt
+        );
+
+        canonItemRepository.save(item);
+        canonItemRepository.flush();
+
+        CanonMediaLink mediaLink = new CanonMediaLink(item, MediaType.PODCAST, 42L, "DISCUSSED_IN", "Episode 42 deep dive");
+        item.addMediaLink(mediaLink);
+
+        canonMediaLinkRepository.save(mediaLink);
+        canonItemRepository.flush();
+
+        Optional<CanonItem> fetchedOpt = canonItemRepository.findBySlug("extended-mind-infrastructure-test");
+        assertThat(fetchedOpt).isPresent();
+        CanonItem fetched = fetchedOpt.get();
+        assertThat(fetched.getMediaLinks()).hasSize(1);
+        assertThat(fetched.getMediaLinks().get(0).getMediaType()).isEqualTo(MediaType.PODCAST);
+        assertThat(fetched.getMediaLinks().get(0).getMediaId()).isEqualTo(42L);
+        assertThat(fetched.getMediaLinks().get(0).getRelationshipType()).isEqualTo("DISCUSSED_IN");
+
+        List<CanonMediaLink> foundLinks = canonMediaLinkRepository.findByMediaTypeAndMediaId(MediaType.PODCAST, 42L);
+        assertThat(foundLinks).hasSize(1);
+        assertThat(foundLinks.get(0).getCanonItem().getSlug()).isEqualTo("extended-mind-infrastructure-test");
     }
 
     @Test

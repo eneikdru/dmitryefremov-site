@@ -3,9 +3,11 @@ package com.dmitryefremov.site.canon.service;
 import com.dmitryefremov.site.canon.domain.*;
 import com.dmitryefremov.site.canon.dto.CanonCrossReferenceDto;
 import com.dmitryefremov.site.canon.dto.CanonItemDto;
+import com.dmitryefremov.site.canon.dto.CanonMediaLinkDto;
 import com.dmitryefremov.site.canon.dto.CanonPageDto;
 import com.dmitryefremov.site.canon.repository.CanonCrossReferenceRepository;
 import com.dmitryefremov.site.canon.repository.CanonItemRepository;
+import com.dmitryefremov.site.canon.repository.CanonMediaLinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -27,13 +29,16 @@ public class CanonService {
 
     private final CanonItemRepository canonItemRepository;
     private final CanonCrossReferenceRepository canonCrossReferenceRepository;
+    private final CanonMediaLinkRepository canonMediaLinkRepository;
     private final Clock clock;
 
     public CanonService(@Qualifier("siteCanonItemRepository") CanonItemRepository canonItemRepository,
                         @Qualifier("siteCanonCrossReferenceRepository") CanonCrossReferenceRepository canonCrossReferenceRepository,
+                        @Qualifier("siteCanonMediaLinkRepository") CanonMediaLinkRepository canonMediaLinkRepository,
                         @Autowired(required = false) Clock clock) {
         this.canonItemRepository = canonItemRepository;
         this.canonCrossReferenceRepository = canonCrossReferenceRepository;
+        this.canonMediaLinkRepository = canonMediaLinkRepository;
         this.clock = clock != null ? clock : Clock.systemUTC();
     }
 
@@ -150,6 +155,41 @@ public class CanonService {
         return mapToRefDto(saved);
     }
 
+    @Transactional
+    public CanonMediaLinkDto addMediaLink(String canonSlug, MediaType mediaType, Long mediaId, String relationshipType, String description) {
+        if (canonSlug == null || canonSlug.isBlank()) {
+            throw new IllegalArgumentException("Canon slug must not be empty");
+        }
+        if (mediaType == null) {
+            throw new IllegalArgumentException("Media type must not be null");
+        }
+        if (mediaId == null) {
+            throw new IllegalArgumentException("Media ID must not be null");
+        }
+
+        CanonItem canonItem = canonItemRepository.findBySlug(canonSlug)
+                .orElseThrow(() -> new IllegalArgumentException("Canon item with slug '" + canonSlug + "' not found"));
+
+        String relType = (relationshipType != null && !relationshipType.isBlank()) ? relationshipType : "REFERENCES";
+
+        Optional<CanonMediaLink> existing = Optional.empty();
+        if (canonItem.getId() != null) {
+            existing = canonMediaLinkRepository
+                    .findByCanonItemIdAndMediaTypeAndMediaIdAndRelationshipType(
+                            canonItem.getId(), mediaType, mediaId, relType);
+        }
+
+        if (existing.isPresent()) {
+            return mapToMediaLinkDto(existing.get());
+        }
+
+        CanonMediaLink link = new CanonMediaLink(canonItem, mediaType, mediaId, relType, description, clock);
+        canonItem.addMediaLink(link);
+
+        CanonMediaLink saved = canonMediaLinkRepository.save(link);
+        return mapToMediaLinkDto(saved);
+    }
+
     public CanonItemDto mapToDto(CanonItem entity) {
         return new CanonItemDto(
                 entity.getId(),
@@ -188,7 +228,24 @@ public class CanonService {
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
                 outgoing,
-                incoming
+                incoming,
+                entity.getMediaLinks().stream()
+                        .map(this::mapToMediaLinkDto)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    public CanonMediaLinkDto mapToMediaLinkDto(CanonMediaLink link) {
+        return new CanonMediaLinkDto(
+                link.getId(),
+                link.getCanonItem() != null ? link.getCanonItem().getId() : null,
+                link.getCanonItem() != null ? link.getCanonItem().getSlug() : null,
+                link.getCanonItem() != null ? link.getCanonItem().getTitle() : null,
+                link.getMediaType(),
+                link.getMediaId(),
+                link.getRelationshipType(),
+                link.getDescription(),
+                link.getCreatedAt()
         );
     }
 

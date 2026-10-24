@@ -54,6 +54,9 @@ public class CanonItem {
     @OneToMany(mappedBy = "target", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CanonCrossReference> incomingReferences = new ArrayList<>();
 
+    @OneToMany(mappedBy = "canonItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CanonMediaLink> mediaLinks = new ArrayList<>();
+
     public CanonItem() {
         this.createdAt = OffsetDateTime.now(Clock.systemUTC());
     }
@@ -151,6 +154,20 @@ public class CanonItem {
 
     public List<CanonCrossReference> getIncomingReferences() {
         return incomingReferences;
+    }
+
+    public List<CanonMediaLink> getMediaLinks() {
+        return mediaLinks;
+    }
+
+    public void addMediaLink(CanonMediaLink link) {
+        mediaLinks.add(link);
+        link.setCanonItem(this);
+    }
+
+    public void removeMediaLink(CanonMediaLink link) {
+        mediaLinks.remove(link);
+        link.setCanonItem(null);
     }
 
     public void addOutgoingReference(CanonCrossReference reference) {
