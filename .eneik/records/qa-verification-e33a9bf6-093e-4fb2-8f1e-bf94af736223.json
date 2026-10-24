@@ -1,0 +1,13 @@
+{
+  "testsRun": 319,
+  "testsPassed": 319,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the seeded environment, when an automated test accesses the site, then all primary paths (canon links, podcast views, search) function correctly against the seeded Russian content",
+    "Given a public request, when targeting the external URL, then the live site is accessible",
+    "Given E2E test execution, when interacting with UI, then all views meet WCAG 2.1 AA compliance (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)"
+  ],
+  "coverageDeltaPercent": 0.0,
+  "verdict": "pass",
+  "notes": "Verified initial content and live paths using Java backend tests (222 tests), Python API contract scripts (2 tests), Vitest unit tests (92 tests), and Playwright E2E tests (3 tests)."
+}
