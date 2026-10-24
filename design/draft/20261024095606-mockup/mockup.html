@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Aethel — Public Experience</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with custom configuration -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary": "#5654a8",
+            "on-secondary-fixed": "#100563",
+            "inverse-on-surface": "#eff1f3",
+            "secondary-container": "#a7a5ff",
+            "secondary-fixed": "#e2dfff",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "background": "#f7f9fb",
+            "on-tertiary-fixed": "#002114",
+            "surface-bright": "#f7f9fb",
+            "on-tertiary-container": "#24a375",
+            "surface-container-high": "#e6e8ea",
+            "surface-container": "#eceef0",
+            "primary-fixed-dim": "#bcc7de",
+            "on-surface": "#191c1e",
+            "primary": "#091426",
+            "primary-fixed": "#d8e3fb",
+            "surface-container-lowest": "#ffffff",
+            "tertiary": "#00190e",
+            "primary-container": "#1e293b",
+            "on-surface-variant": "#45474c",
+            "tertiary-fixed-dim": "#68dba9",
+            "on-primary-fixed": "#111c2d",
+            "on-tertiary-fixed-variant": "#005137",
+            "surface-variant": "#e0e3e5",
+            "surface-container-low": "#f2f4f6",
+            "on-primary-container": "#8590a6",
+            "tertiary-container": "#00301f",
+            "on-secondary": "#ffffff",
+            "surface-dim": "#d8dadc",
+            "on-error": "#ffffff",
+            "inverse-surface": "#2d3133",
+            "outline": "#75777d",
+            "tertiary-fixed": "#85f8c4",
+            "on-secondary-fixed-variant": "#3e3c8f",
+            "on-secondary-container": "#393689",
+            "surface": "#f7f9fb",
+            "on-tertiary": "#ffffff",
+            "outline-variant": "#c5c6cd",
+            "on-primary-fixed-variant": "#3c475a",
+            "on-background": "#191c1e",
+            "surface-container-highest": "#e0e3e5",
+            "secondary-fixed-dim": "#c3c0ff",
+            "inverse-primary": "#bcc7de",
+            "surface-tint": "#545f73",
+            "on-error-container": "#93000a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2.5rem",
+            "gutter": "1rem",
+            "gutter-mobile": "0.75rem",
+            "margin": "1.5rem",
+            "margin-mobile": "1.25rem"
+          },
+          "fontFamily": {
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-md": ["JetBrains Mono"],
+            "label-sm": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "body-lg": ["17px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-block;
+      user-select: none;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Subtle custom ambient occlusion shadow for level 1 cards */
+    .shadow-ambient {
+      box-shadow: 0 1px 3px rgba(30, 41, 59, 0.03), 0 6px 16px rgba(30, 41, 59, 0.02);
+    }
+    .shadow-ambient-md {
+      box-shadow: 0 12px 32px -4px rgba(30, 41, 59, 0.06);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-full bg-background text-on-surface antialiased flex flex-col items-center justify-start selection:bg-primary selection:text-on-primary">
+<!-- Mobile Screen Container Shell -->
+<div class="relative w-full max-w-md min-h-screen bg-background flex flex-col pb-24 border-x border-surface-container">
+<!-- TopAppBar (Shared Component Implementation) -->
+<header class="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-margin-mobile h-14 bg-surface max-w-md mx-auto">
+<!-- Leading Minimalist Monogram / Brand Icon -->
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm select-none shadow-sm">
+          A
+        </div>
+<span class="font-headline-md text-headline-md tracking-tight font-semibold text-primary">
+          Aethel
+        </span>
+</div>
+<!-- Trailing Action: Clean Notifications Entry -->
+<div class="flex items-center gap-space-xs">
+<button aria-label="Notifications" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="Profile" class="w-9 h-9 rounded-full bg-surface-container-high overflow-hidden border border-surface-container flex items-center justify-center text-primary font-label-sm text-label-sm active:scale-[0.98] transition-transform" type="button">
+<img class="w-full h-full object-cover" data-alt="A refined minimalist portrait avatar of a creative director in soft natural monochrome studio lighting with clean neutral background tones, modern Japanese editorial portrait photography aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO3ytyunalVVVT9FVeEmzbDBsjreVOhN3ekW41tSIrLcmc3QRS-WllzvaPjgzVAQxxVJR0E2ZGCdm9HiJKTJc-wCKj_L41uje2odrZDS_RS09AtUwsH7B29A7JZ6EX9kClGOvru5H0uigrwaEQIgfDz03rY9J0LCUs-tltZGc5wWrexiYatvcVc01XYvyIQMGwpC9bQ8w8YX1ZsQGpchHVD71Fr6VMG_FnItGGSJRDU78enIteHLC4o7rVCJ_l981w2N_bgJGNJewN"/>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas (Scrollable facade content) -->
+<main class="w-full px-margin-mobile pt-20 flex flex-col gap-space-lg">
+<!-- Facade Assurance Banner (Zero Internal Tooling, Private & Clean) -->
+<section class="w-full rounded-lg bg-surface-container-lowest border border-surface-container px-space-md py-space-sm shadow-ambient flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-2 h-2 rounded-full bg-on-tertiary-container animate-pulse"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+            Public Experience Mode
+          </span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">
+          Streamlined &amp; Secure
+        </span>
+</section>
+<!-- Primary Customer Overview Hero Bento Card -->
+<section class="w-full rounded-xl bg-surface-container-lowest border border-surface-container shadow-ambient p-space-lg flex flex-col gap-space-md relative overflow-hidden">
+<!-- Status Indicator Pill -->
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-surface-container-low border border-surface-container">
+<span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Live &amp; Verified</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Q3 Portfolio</span>
+</div>
+<!-- Hero Editorial Text -->
+<div class="flex flex-col gap-space-xs">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">
+            Welcome to your Sanctuary
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Every balance, vault asset, and verified exchange consolidated into a single, distraction-free panoramic view.
+          </p>
+</div>
+<!-- Metrics Overview Panel -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<div class="p-space-md rounded-lg bg-surface-container-low/70 flex flex-col gap-1 border border-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Value</span>
+<span class="font-headline-md text-headline-md text-primary font-semibold tracking-tight">$84,920.00</span>
+<div class="flex items-center gap-1 text-on-tertiary-container pt-0.5">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span class="font-label-sm text-label-sm font-semibold">+3.84%</span>
+</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low/70 flex flex-col gap-1 border border-surface-container/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Clearance</span>
+<span class="font-headline-md text-headline-md text-primary font-semibold tracking-tight">Instant</span>
+<div class="flex items-center gap-1 text-on-surface-variant pt-0.5">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+<span class="font-label-sm text-label-sm">Protected</span>
+</div>
+</div>
+</div>
+<!-- Action Row -->
+<div class="pt-space-xs flex items-center gap-space-sm">
+<button class="flex-1 bg-primary text-on-primary py-space-sm px-space-md rounded-lg font-headline-sm text-headline-sm text-center font-medium shadow-sm hover:opacity-95 active:scale-[0.98] transition-all" type="button">
+            Allocate Capital
+          </button>
+<button aria-label="Statement History" class="w-11 h-11 flex items-center justify-center rounded-lg border border-surface-container text-primary bg-surface-container-lowest hover:bg-surface-container-low active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+</button>
+</div>
+</section>
+<!-- Quick Action Facade Tiles -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between px-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Priority Access</span>
+<span class="font-label-sm text-label-sm text-primary font-medium cursor-pointer">Reorder</span>
+</div>
+<div class="grid grid-cols-4 gap-space-sm">
+<!-- Tile 1 -->
+<div class="flex flex-col items-center justify-center p-space-sm rounded-lg bg-surface-container-lowest border border-surface-container shadow-ambient hover:bg-surface-container-low cursor-pointer transition-colors group">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium text-center">Vault</span>
+</div>
+<!-- Tile 2 -->
+<div class="flex flex-col items-center justify-center p-space-sm rounded-lg bg-surface-container-lowest border border-surface-container shadow-ambient hover:bg-surface-container-low cursor-pointer transition-colors group">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="auto_graph">auto_graph</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium text-center">Insights</span>
+</div>
+<!-- Tile 3 -->
+<div class="flex flex-col items-center justify-center p-space-sm rounded-lg bg-surface-container-lowest border border-surface-container shadow-ambient hover:bg-surface-container-low cursor-pointer transition-colors group">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="swap_horiz">swap_horiz</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium text-center">Transfer</span>
+</div>
+<!-- Tile 4 -->
+<div class="flex flex-col items-center justify-center p-space-sm rounded-lg bg-surface-container-lowest border border-surface-container shadow-ambient hover:bg-surface-container-low cursor-pointer transition-colors group">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="forum">forum</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium text-center">Concierge</span>
+</div>
+</div>
+</section>
+<!-- Customer Hub / Recent Curations (Zero Dev Banners or IDs) -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between px-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Curated Activity</span>
+<button class="font-label-sm text-label-sm text-primary font-medium hover:underline" type="button">View All</button>
+</div>
+<div class="flex flex-col gap-space-xs">
+<!-- Item 1 -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest border border-surface-container shadow-ambient flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-primary">Quarterly Yield Credited</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Archival Sovereign Reserve</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-headline-sm text-headline-sm text-on-tertiary-container font-semibold">+$1,240.50</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Today</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest border border-surface-container shadow-ambient flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-primary">Identity Attestation</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tier 1 Sovereign Clearance</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Synchronized</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2d ago</span>
+</div>
+</div>
+<!-- Item 3: Curated Visual Card -->
+<div class="rounded-xl bg-surface-container-lowest border border-surface-container shadow-ambient overflow-hidden flex flex-col">
+<div class="h-32 w-full relative overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A tranquil architectural art gallery corner featuring smooth cast concrete walls and warm directional morning sunlight casting serene linear geometric shadows, contemporary Japanese architectural simplicity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBToGMW9Xs6d0dqjuSlxdAqMDtQQrFzYUQrmmmbDwBE8E9aWnfXaBIQBeErblE6UgcSnady8Q8O5uAAYcZPKJtnz5by1VyGdy0wu6R1jXo_F7v5PaScXgYDZz2aN0Y8OIE9g-VCGoV3H_DF51isoK0ui5qovEJlqmiLFDzJrj0fajLq9w-zidYgDzTfuDbLtPv2T7paUoaqpniByX2uISqGYvxfRCSMY1eto3Ig91YtdUsxkSqaHkvOLN5dreslbPKb-2WuCaMsUDml"/>
+<div class="absolute top-space-sm left-space-sm">
+<span class="px-space-sm py-0.5 rounded-full bg-primary/80 backdrop-blur-md text-on-primary font-label-sm text-label-sm">
+                  Exclusive Briefing
+                </span>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-primary">2025 Sovereign Allocation Outlook</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Synthesized macroeconomic viewpoints, focused specifically on private asset resilience and digital autonomy.
+              </p>
+<div class="pt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">4 Min Read</span>
+<span class="font-body-sm text-body-sm text-primary font-medium flex items-center gap-1">
+                  Read Analysis
+                  <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust & Facade Assurance Stamp -->
+<section class="py-space-md flex flex-col items-center justify-center gap-1 text-center">
+<div class="flex items-center gap-1.5 text-on-surface-variant/80">
+<span class="material-symbols-outlined text-sm" data-icon="shield">shield</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">End-to-End Encrypted Client Session</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant/60">
+          Aethel Facade Framework v4.2 • Distraction-Free Public Release
+        </p>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component Implementation) -->
+<!-- Destination: Discover is the primary active top-level view of this mockup -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around h-16 px-gutter-mobile pb-safe bg-surface-container-lowest max-w-md mx-auto shadow-ambient border-t border-surface-container">
+<!-- Tab 1: Discover (ACTIVE) -->
+<a class="flex flex-col items-center justify-center gap-1 text-primary font-medium hover:text-primary transition-colors active:scale-95 duration-150" href="#discover">
+<span class="material-symbols-outlined material-symbols-fill" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label-sm text-label-sm">Discover</span>
+</a>
+<!-- Tab 2: Activity (INACTIVE) -->
+<a class="flex flex-col items-center justify-center gap-1 text-on-surface-variant font-normal hover:text-primary transition-colors active:scale-95 duration-150" href="#activity">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-sm text-label-sm">Activity</span>
+</a>
+<!-- Tab 3: Saved (INACTIVE) -->
+<a class="flex flex-col items-center justify-center gap-1 text-on-surface-variant font-normal hover:text-primary transition-colors active:scale-95 duration-150" href="#saved">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+<span class="font-label-sm text-label-sm">Saved</span>
+</a>
+<!-- Tab 4: Account (INACTIVE) -->
+<a class="flex flex-col items-center justify-center gap-1 text-on-surface-variant font-normal hover:text-primary transition-colors active:scale-95 duration-150" href="#account">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Account</span>
+</a>
+</nav>
+</div>
+</body></html>
