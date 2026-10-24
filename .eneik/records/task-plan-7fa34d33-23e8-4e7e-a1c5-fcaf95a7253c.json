@@ -1,0 +1,616 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Production Data Binding and Mock Eradication",
+      "jtbd": "When I browse the site as a visitor, I want to see only real, published content from the author, so that I experience their actual thoughts without placeholder data.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Mock Data Leakage Rate",
+      "tocConstraintRef": "Frontend Data Source Coupling",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The frontend fetches all list and detail views exclusively from the live backend APIs.",
+        "R2: All mock data, hardcoded test items, fake profiles, and placeholder texts are completely removed from the frontend codebase.",
+        "R3: When an API returns no data, the UI displays a proper, localized Russian empty state message rather than a generic or fake placeholder.",
+        "R4: The site dynamically displays the actual count of published podcast episodes, sourced from the API.",
+        "R5: The system strictly filters content to ensure raw teleprompter drafts are never exposed to the public UI.",
+        "R6: COMPLETENESS FLOOR EXCLUSION: The standard 'Content management and publishing' chain (draft -> edit -> approve -> publish -> unpublish) is excluded from this epic because the brief explicitly states content is ingested via external systems (Telegram, Headless API) and not through a CMS built here."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Define API contract for production data binding",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing data binding for this epic, I want a shared contract, so that the frontend and backend teams can build in parallel.",
+          "acceptanceCriteria": "Given a need for dynamic content\nWhen defining the endpoints\nThen the contract specifies exact DTOs for podcasts, essays, sparks, and empty state payloads",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "API Contract Synchronization",
+          "sixSigmaMetric": "Contract Ambiguity Defects",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        },
+        {
+          "title": "Backend content filtering and API delivery",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing data fetching for this epic, I want to ensure only published content is served, so that drafts are isolated from the public.",
+          "acceptanceCriteria": "Given an incoming request for content\nWhen retrieving records from the database\nThen raw teleprompter drafts are excluded from the result set\nGiven a request for episode counts\nWhen aggregated\nThen the exact live count is returned",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Database Query Filtering",
+          "sixSigmaMetric": "Draft Exposure Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        },
+        {
+          "title": "Frontend mock eradication and dynamic rendering",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the frontend views for this epic, I want to bind directly to APIs and remove all static placeholders, so that only real data is visible.",
+          "acceptanceCriteria": "Given the frontend views\nWhen loading the podcast, essay, or canon screens\nThen the data is sourced entirely from API responses\nGiven a completely empty database\nWhen rendering the screen\nThen a localized Russian empty state is displayed\nGiven all rendered screens\nWhen inspected for accessibility\nThen they meet WCAG 2.1 AA (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "UI Component State Management",
+          "sixSigmaMetric": "Hardcoded Literal Defect Rate",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R6"
+          ]
+        },
+        {
+          "title": "End-to-End verification of live data integration",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify the system end-to-end, so that no mock data leaks and empty states are correct.",
+          "acceptanceCriteria": "Given a live environment with an empty database\nWhen accessing the public site\nThen the correct Russian empty states are displayed without any placeholder content\nGiven a live environment with published and draft content\nWhen accessing the site\nThen only published items are visible and drafts are isolated\nGiven automated accessibility checks\nWhen run on the rendered site\nThen all UI views meet WCAG 2.1 AA standards for contrast, focus, and operability",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Test Data Provisioning",
+          "sixSigmaMetric": "E2E Test Pass Rate",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "ee20c34e-6ae8-48ca-be2d-48f2d7297c21",
+      "sourceIndex": 0,
+      "title": "Sovereign Canon and Ontology Architecture",
+      "jtbd": "When a visitor explores the site, I want to read the Evergreen manifestos and ontology across structured domains, so that I understand the core architectural philosophy.",
+      "kanoClass": "Performance",
+      "cynefinDomain": "complex",
+      "sixSigmaMetric": "Search Query Latency (ms)",
+      "tocConstraintRef": "Global Keyboard Event Management",
+      "requirements": [
+        "R1: The Canon concept is presented as a primary entity with bidirectional cross-links to podcast episodes, essays, and short notes (sparks).",
+        "R2: The site features an instant search accessible via Cmd+K / Ctrl+K, allowing keyboard-driven, semantic search across the entire content corpus without page reloads.",
+        "R3: Every content node provides a permanent human-readable URL.",
+        "R4: Every content node provides machine-readable formats (llms.txt, ai-agent.json, Markdown/JSON) exposing semantic relationships to AI agents.",
+        "R5: The relationship graph of concepts and content is stored in and served from the backend database, not hardcoded in the frontend.",
+        "R6: The UI allows the author to quickly search and retrieve their own concepts for frictionless note-taking and reference.",
+        "R7: COMPLETENESS FLOOR EXCLUSION: Standard editorial chains for managing this graph (drafting, publishing) are excluded as this epic focuses purely on the architecture and frontend navigation of the graph; content ingestion is handled by other epics."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Schema design for bidirectional concept graph",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the graph for this epic, I want to define the persistent schema, so that semantic relationships can be efficiently queried.",
+          "acceptanceCriteria": "Given the need to store relationships\nWhen defining the schema migrations\nThen tables and foreign keys are created to represent bidirectional links between canon nodes and media",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Relational Graph Traversal Performance",
+          "sixSigmaMetric": "Query Execution Time",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R5",
+            "R7"
+          ]
+        },
+        {
+          "title": "Define shared API contract for knowledge graph and search",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the graph and search for this epic, I want a shared contract, so that the frontend search interface and backend can integrate seamlessly.",
+          "acceptanceCriteria": "Given the instant search requirement\nWhen defining the search endpoint contract\nThen the schema specifies request parameters for queries and structured JSON responses for multi-domain results",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Search Payload Specification",
+          "sixSigmaMetric": "Contract Ambiguity Defects",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R4",
+            "R7"
+          ]
+        },
+        {
+          "title": "Backend implementation of graph resolution and instant search",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the graph for this epic, I want backend services to resolve links and power fast search, so that the frontend has actionable data.",
+          "acceptanceCriteria": "Given a search query\nWhen executed against the corpus\nThen semantic results are returned instantly across all content types",
+          "leanValue": "essential",
+          "cynefinDomain": "complex",
+          "tocConstraintRef": "Search Algorithm Latency",
+          "sixSigmaMetric": "Search Query Latency (ms)",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R4",
+            "R5",
+            "R6",
+            "R7"
+          ]
+        },
+        {
+          "title": "Frontend graph navigation and Cmd+K search interface",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the UI for this epic, I want to build cross-links and a keyboard-driven search modal, so that visitors can traverse the knowledge corpus fluidly.",
+          "acceptanceCriteria": "Given a content node view\nWhen rendered\nThen bidirectional cross-links to related canon and media are clearly visible and clickable\nGiven the user presses Cmd+K\nWhen the modal opens\nThen they can type to search the entire corpus without a page reload\nGiven the cross-links and search UI\nWhen interacted with\nThen they meet WCAG 2.1 AA requirements (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Global Keyboard Event Management",
+          "sixSigmaMetric": "Search Interaction Time",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R6",
+            "R7"
+          ]
+        },
+        {
+          "title": "Frontend exposition of machine-readable endpoints",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing AI access for this epic, I want to expose endpoints in the frontend routing, so that external agents can read the canon.",
+          "acceptanceCriteria": "Given an AI agent accessing the site\nWhen requesting the llms.txt or JSON paths\nThen the frontend delegates or serves the machine-readable formats correctly",
+          "leanValue": "valuable",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Frontend Route Configuration",
+          "sixSigmaMetric": "Agent Parsing Error Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R4",
+            "R7"
+          ]
+        },
+        {
+          "title": "E2E verification of graph navigation and instant search",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify the graph traversal and search flows, so that semantic links function accurately.",
+          "acceptanceCriteria": "Given a populated test database\nWhen navigating from a podcast to a canon concept and back\nThen the correct pages load with permanent URLs\nGiven the Cmd+K modal\nWhen searching for a known keyword\nThen the correct nodes appear instantly\nGiven E2E test execution\nWhen verifying UI elements\nThen all interactions confirm WCAG 2.1 AA compliance (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "E2E Test Stability",
+          "sixSigmaMetric": "E2E Test Pass Rate",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6",
+            "R7"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Black-Box Public Facade",
+      "jtbd": "When I visit the public site, I want to experience a clean reading environment, so that I am focused on ideas without being distracted by internal tools.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Administrative Link Leakage Count",
+      "tocConstraintRef": "Frontend Pruning Verification",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The 'Studio and Setup' tab and all associated workspace/studio imagery are completely removed from the public frontend.",
+        "R2: All links to the /admin path and references to factory internals (internal orchestrators, system tags) are removed from the public footer and navigation.",
+        "R3: The visual design adheres strictly to the Modern Swiss Editorial aesthetic, avoiding popups and ensuring a clean monochromatic presentation.",
+        "R4: COMPLETENESS FLOOR EXCLUSION: Standard client portal chains (sign in, manage state) are intentionally excluded because the public facade is purely a reader view without user accounts."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Prune administrative links and studio components",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the facade for this epic, I want to remove internal tools and studio references, so that the public UI is distraction-free.",
+          "acceptanceCriteria": "Given the public site navigation\nWhen rendered\nThen no links to /admin or internal tools exist in the header, footer, or body\nGiven the main view\nWhen inspected\nThen the Studio tab and setup imagery are entirely absent\nGiven the updated public views\nWhen inspected for accessibility\nThen they meet WCAG 2.1 AA standards (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Component Dependency Cleanup",
+          "sixSigmaMetric": "Residual Internal Code Traces",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Verification of public facade isolation",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify the absence of administrative tools, so that the black-box invariant is maintained.",
+          "acceptanceCriteria": "Given a full public build\nWhen crawling the live site\nThen no routes or links pointing to /admin or containing system tags are reachable\nGiven the UI\nWhen visually inspected\nThen the layout adheres to the strict monochromatic design without popups\nGiven automated accessibility checks\nWhen run on the public facade\nThen all UI views meet WCAG 2.1 AA compliance (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "E2E Crawler Coverage",
+          "sixSigmaMetric": "E2E Test Pass Rate",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "69e36127-e778-4851-83e6-37a2d16cedf7",
+      "sourceIndex": 0,
+      "title": "Platform Telemetry and Measurement",
+      "jtbd": "When operating the site, I want to measure visitor engagement with my content and external links, so that I know if the site successfully drives interest in my work.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Event Tracking Accuracy",
+      "tocConstraintRef": "Telemetry Integration Stability",
+      "requirements": [
+        "R1: The system captures the goal: 'Is the site successfully conveying the author's extended mind and engaging readers with the Canon?'",
+        "R2: The system measures Q1: 'Are visitors traversing the knowledge graph by clicking cross-links between essays, podcasts, and canon nodes?'",
+        "R3: The system measures Q2: 'Are visitors utilizing the Cmd+K search to find specific concepts?'",
+        "R4: The telemetry is strictly limited to these core behavioral questions, ignoring vanity metrics."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Implement targeted frontend telemetry events",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing telemetry for this epic, I want to track specific graph navigations and search usage, so that engagement with the Canon can be measured.",
+          "acceptanceCriteria": "Given a user on a content node\nWhen they click a cross-link to another node\nThen a specific event is dispatched to the analytics provider\nGiven a user\nWhen they invoke and execute a Cmd+K search\nThen a search utilization event is dispatched\nGiven the UI elements triggering telemetry (e.g. cross-links, Cmd+K modal)\nWhen interacted with\nThen they meet WCAG 2.1 AA (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)",
+          "leanValue": "valuable",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Telemetry Integration Stability",
+          "sixSigmaMetric": "Event Tracking Accuracy",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Verification of telemetry precision",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify that telemetry accurately answers the GQM questions without noise, so that data is reliable.",
+          "acceptanceCriteria": "Given a test session\nWhen simulating user graph traversal and search\nThen the mocked analytics backend receives exactly the expected events and no extraneous data",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Telemetry E2E Mocking",
+          "sixSigmaMetric": "E2E Test Pass Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "c19ada93-abd4-4f81-9271-55359d5de80d",
+      "sourceIndex": 0,
+      "title": "Privacy Consent Management",
+      "jtbd": "When a visitor arrives on the site, I want to be asked for consent before any non-essential trackers load, so that my privacy preferences are respected and the site complies with ePrivacy regulations.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Tracking Leakage Before Consent",
+      "tocConstraintRef": "Consent Script Execution Order",
+      "requirements": [
+        "R1: A consent banner appears before any non-essential telemetry or tracker is loaded.",
+        "R2: The user can refuse tracking just as easily as accepting it, with a single click.",
+        "R3: The user's consent choice is recorded and can be revoked later.",
+        "R4: The consent mechanism uses an established, compliant consent platform rather than a custom widget."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Integrate established consent management platform",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing consent for this epic, I want to integrate a compliant platform, so that tracking only occurs legally.",
+          "acceptanceCriteria": "Given a new visitor\nWhen they land on the site\nThen a consent platform UI is shown allowing easy opt-in or opt-out\nGiven an opt-out choice\nWhen made\nThen the choice is persisted and no telemetry loads\nGiven the consent platform UI\nWhen rendered\nThen it meets WCAG 2.1 AA (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Consent Script Execution Order",
+          "sixSigmaMetric": "Tracking Leakage Before Consent",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Verification of consent enforcement",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify that no trackers fire before consent, so that privacy is maintained.",
+          "acceptanceCriteria": "Given a fresh browser session\nWhen navigating the site before interacting with the consent banner\nThen network inspection confirms no tracking scripts or telemetry payloads are transmitted\nGiven explicit opt-in\nWhen provided\nThen telemetry functions correctly",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Network Traffic Assertion",
+          "sixSigmaMetric": "E2E Test Pass Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "bb19579b-628f-4eaf-900d-94e6eeea2e20",
+      "sourceIndex": 0,
+      "title": "Initial Content and Acceptance",
+      "jtbd": "When receiving the delivered system, I want to see it populated with realistic content, so that I can verify all paths and features work end-to-end.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Data Completeness Ratio",
+      "tocConstraintRef": "Live Environment Acceptance",
+      "requirements": [
+        "R1: The deployed site is accessible to the client from an external URL.",
+        "R2: The database is pre-populated with real, initial Russian-language content for at least one podcast, essay, spark, and canon node to demonstrate the knowledge graph.",
+        "R3: The provisioned content successfully exercises all primary paths, including cross-linking and instant search."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Create realistic initial Russian content seed data",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing initial content for this epic, I want to create authentic seed records, so that the knowledge graph can be demonstrated on a fresh install.",
+          "acceptanceCriteria": "Given a new database deployment\nWhen the application starts\nThen Flyway scripts populate authentic Russian-language canon nodes, essays, podcasts, and sparks with interconnected graph relationships",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Seed Data Authenticity",
+          "sixSigmaMetric": "Data Completeness Ratio",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "title": "Verification of initial content and live paths",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify the seed data, so that all core paths are exercisable.",
+          "acceptanceCriteria": "Given the seeded environment\nWhen an automated test accesses the site\nThen all primary paths (canon links, podcast views, search) function correctly against the seeded Russian content\nGiven a public request\nWhen targeting the external URL\nThen the live site is accessible\nGiven E2E test execution\nWhen interacting with UI\nThen all views meet WCAG 2.1 AA compliance (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Live Environment Acceptance",
+          "sixSigmaMetric": "E2E Test Pass Rate",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "0b02652b-2f5d-4812-8a9f-0955154176e2",
+      "sourceIndex": 0,
+      "title": "Data Protection and Recovery",
+      "jtbd": "When the database experiences a failure, I want to be able to restore the system state from a backup, so that I do not lose my published content.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Backup Success Rate",
+      "tocConstraintRef": "Disaster Recovery Drill",
+      "requirements": [
+        "R1: The database containing the author's published work and relationship graph is backed up regularly on an automated schedule.",
+        "R2: A full backup restoration process is documented and has been practically verified to ensure availability after an incident."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Configure automated database backups and recovery docs",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing backups for this epic, I want automated routines and documentation, so that data loss can be rapidly mitigated.",
+          "acceptanceCriteria": "Given a production environment\nWhen configured\nThen automated database dumps run on a predefined schedule and are securely stored\nGiven a failure scenario\nWhen consulted\nThen a step-by-step restoration document is available in the repository",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Infrastructure Cron Configuration",
+          "sixSigmaMetric": "Backup Success Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        },
+        {
+          "title": "Practical verification of backup restoration",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify the restore process, so that the backups are proven to be viable.",
+          "acceptanceCriteria": "Given an automated test environment\nWhen a backup dump is restored into a clean database\nThen all previously stored data, including the content graph, is intact and queryable without corruption",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Disaster Recovery Drill",
+          "sixSigmaMetric": "Data Integrity Post-Restore",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "85434eb3-253e-4b33-9b48-421bda48531b",
+      "sourceIndex": 0,
+      "title": "Headless Content Management API for AI Agents",
+      "jtbd": "When operating the site, I want external AI agents to autonomously manage content via secure headless APIs, so that materials are updated dynamically without exposing the codebase or infrastructure.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "API Ingestion Error Rate",
+      "tocConstraintRef": "Headless Content Intake",
+      "requirements": [
+        "R1: The system exposes a secure headless API allowing the author or an authorized AI agent to publish new essays or canon concepts.",
+        "R2: Content ingested via the headless API appears on the live site automatically, without requiring any manual redeployment or file changes.",
+        "R3: The API operates strictly at the content layer; it provides no access to infrastructure, code, or administrative controls.",
+        "R4: COMPLETENESS FLOOR: This covers the 'author -> publish -> update' chain explicitly required by the brief for the headless ingestion mechanism."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Define contract for headless content ingestion",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the headless API for this epic, I want a well-defined contract, so that AI agents know exactly how to structure content payloads.",
+          "acceptanceCriteria": "Given the need for automated ingestion\nWhen designing the API\nThen the specification defines POST endpoints for essays and concepts accepting markdown and metadata",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "API Payload Definition",
+          "sixSigmaMetric": "Contract Ambiguity Defects",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Backend implementation of secure content ingestion API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the headless API for this epic, I want to securely accept and persist content, so that authorized agents can update the site.",
+          "acceptanceCriteria": "Given a valid content payload from an authorized agent\nWhen processed by the API\nThen the new essay or concept is successfully persisted in the database and immediately available\nGiven an unauthorized or structurally invalid payload\nWhen submitted\nThen the API rejects it cleanly without side effects",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Database Write Performance",
+          "sixSigmaMetric": "API Ingestion Error Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Verification of headless ingestion flow",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify that ingested content appears automatically, so that the end-to-end publishing loop works.",
+          "acceptanceCriteria": "Given a test environment\nWhen a mock AI agent POSTs a valid new concept\nThen a subsequent GET request confirms the concept is immediately returned in the live data feed\nGiven an unauthenticated request\nWhen attempting to POST\nThen a 401/403 is returned",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "E2E Security Isolation",
+          "sixSigmaMetric": "E2E Test Pass Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "9659d51b-a112-4fdc-912c-0b6612fb9553",
+      "sourceIndex": 0,
+      "title": "Real Thought Stream and Insights Sync",
+      "jtbd": "When a visitor browses the fast stream, I want to see real-time insights synchronized from Telegram, so that I can consume quantized thoughts directly.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Sync Latency (ms)",
+      "tocConstraintRef": "Telegram Webhook Reliability",
+      "requirements": [
+        "R1: The system ingests short notes/sparks directly from a specified Telegram channel (@efremov_mvp) using a TelegramSparkMapper or similar pipeline.",
+        "R2: Ingested Telegram notes appear on the public site automatically as 'sparks', without manual intervention.",
+        "R3: The ingestion pipeline correctly maps text and any relevant metadata into the established graph schema.",
+        "R4: COMPLETENESS FLOOR: This satisfies the 'editor -> draft -> publish' chain specifically adapted for the requested Telegram pipeline."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Define Telegram integration data mapping",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing Telegram sync for this epic, I want to map the incoming payload, so that raw Telegram data aligns with the internal 'spark' schema.",
+          "acceptanceCriteria": "Given a Telegram webhook payload\nWhen parsed\nThen the text, timestamp, and message ID correctly map to the spark entity structure",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Payload Mapping Validation",
+          "sixSigmaMetric": "Parsing Error Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Backend implementation of Telegram webhook and ingestion",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing Telegram sync for this epic, I want to expose a webhook, so that new messages are automatically received and saved.",
+          "acceptanceCriteria": "Given a valid incoming message from the target channel\nWhen received via webhook\nThen the message is saved as a new spark in the database\nGiven an invalid or unauthorized webhook payload\nWhen received\nThen the request is rejected securely",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Webhook Processing Resiliency",
+          "sixSigmaMetric": "Message Dropped Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Verification of Telegram ingestion end-to-end flow",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing testing for this epic, I want to verify that a Telegram message successfully becomes a live spark, so that the pipeline is proven.",
+          "acceptanceCriteria": "Given a test environment\nWhen a mocked Telegram webhook payload is injected\nThen the site immediately reflects the new spark on the public views without manual refresh",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "E2E Integration Validation",
+          "sixSigmaMetric": "E2E Test Pass Rate",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    }
+  ]
+}
