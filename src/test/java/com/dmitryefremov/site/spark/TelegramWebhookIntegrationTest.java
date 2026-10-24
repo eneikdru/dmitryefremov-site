@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = "app.telegram.webhook-secret=test-secret-token-123")
 @AutoConfigureMockMvc
 @Transactional
 class TelegramWebhookIntegrationTest {
@@ -61,6 +61,7 @@ class TelegramWebhookIntegrationTest {
                 """;
 
         mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token-123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(channelPostPayload))
                 .andExpect(status().isOk())
@@ -111,6 +112,7 @@ class TelegramWebhookIntegrationTest {
                 """;
 
         mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token-123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(messagePayload))
                 .andExpect(status().isOk())
@@ -154,11 +156,13 @@ class TelegramWebhookIntegrationTest {
                 """;
 
         mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token-123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(initialPayload))
                 .andExpect(status().isOk());
 
         mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token-123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedPayload))
                 .andExpect(status().isOk());
@@ -168,5 +172,65 @@ class TelegramWebhookIntegrationTest {
         assertThat(sparkOpt).isPresent();
         assertThat(sparkOpt.get().getContent()).contains("Final updated autonomous engineering insight");
         assertThat(sparkOpt.get().getTags()).isEqualTo("engineering,architecture");
+    }
+
+    @Test
+    void testInvalidWebhookPayloadReturnsBadRequest() throws Exception {
+        String invalidPayload = """
+                {
+                  "update_id": 99999,
+                  "message": {
+                    "message_id": 7777
+                  }
+                }
+                """;
+
+        mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token-123")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidPayload))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Telegram update message or post contains no text or caption content"));
+    }
+
+    @Test
+    void testMalformedJsonPayloadReturnsBadRequest() throws Exception {
+        mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "test-secret-token-123")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{invalid_json_body"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400));
+    }
+
+    @Test
+    void testUnauthorizedWebhookRequestRejectedWhenSecretTokenMissingOrInvalid() throws Exception {
+        String payload = """
+                {
+                  "update_id": 12345,
+                  "message": {
+                    "message_id": 99,
+                    "text": "Unauthorized text message"
+                  }
+                }
+                """;
+
+        // Missing header
+        mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.status").value(401))
+                .andExpect(jsonPath("$.message").value("Unauthorized or invalid Telegram webhook secret token"));
+
+        // Invalid header
+        mockMvc.perform(post("/api/v1/telegram/webhook")
+                        .header("X-Telegram-Bot-Api-Secret-Token", "wrong-secret-token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.status").value(401))
+                .andExpect(jsonPath("$.message").value("Unauthorized or invalid Telegram webhook secret token"));
     }
 }

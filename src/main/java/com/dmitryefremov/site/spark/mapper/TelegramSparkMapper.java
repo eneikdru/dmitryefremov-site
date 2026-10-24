@@ -34,8 +34,14 @@ public class TelegramSparkMapper {
     }
 
     public Spark mapTelegramPayload(String rawJsonPayload) {
+        if (rawJsonPayload == null || rawJsonPayload.isBlank()) {
+            throw new IllegalArgumentException("Raw JSON payload cannot be null or empty");
+        }
         try {
             JsonNode root = objectMapper.readTree(rawJsonPayload);
+            if (root == null || !root.isObject()) {
+                throw new IllegalArgumentException("Payload must be a valid JSON object");
+            }
             JsonNode message = root.has("channel_post") ? root.get("channel_post") :
                              root.has("message") ? root.get("message") :
                              root.has("edited_channel_post") ? root.get("edited_channel_post") :
@@ -53,6 +59,10 @@ public class TelegramSparkMapper {
                 content = message.get("text").asText();
             } else if (message.has("caption")) {
                 content = message.get("caption").asText();
+            }
+
+            if (content.isBlank()) {
+                throw new IllegalArgumentException("Telegram update message or post contains no text or caption content");
             }
 
             OffsetDateTime publishedAt = OffsetDateTime.now(clock);
@@ -88,6 +98,8 @@ public class TelegramSparkMapper {
             String tags = extractTagsFromContent(content);
 
             return new Spark(messageId, chatId, content, domain, tags, author, publishedAt);
+        } catch (IllegalArgumentException e) {
+            throw e;
         } catch (Exception e) {
             throw new IllegalArgumentException("Failed to parse Telegram payload: " + e.getMessage(), e);
         }

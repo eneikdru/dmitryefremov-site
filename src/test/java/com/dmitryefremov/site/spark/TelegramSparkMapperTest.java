@@ -142,4 +142,24 @@ class TelegramSparkMapperTest {
         assertThat(spark.getDomain()).isEqualTo("Pragmatic Business Strategy");
         assertThat(spark.getPublishedAt().toEpochSecond()).isEqualTo(1760300000L);
     }
+
+    @Test
+    void testMapNullOrBlankPayloadThrowsIllegalArgumentException() {
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> mapper.mapTelegramPayload(null));
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> mapper.mapTelegramPayload("   "));
+    }
+
+    @Test
+    void testMapPayloadWithoutTextOrCaptionThrowsIllegalArgumentException() {
+        String jsonPayload = """
+                {
+                  "update_id": 111,
+                  "message": {
+                    "message_id": 999,
+                    "chat": { "id": 123 }
+                  }
+                }
+                """;
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> mapper.mapTelegramPayload(jsonPayload));
+    }
 }
