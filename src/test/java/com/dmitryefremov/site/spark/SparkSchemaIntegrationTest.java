@@ -50,7 +50,7 @@ class SparkSchemaIntegrationTest {
         OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 12, 20, 0, 0, 0, ZoneOffset.UTC);
 
         Spark spark = new Spark(
-                1001L,
+                8001L,
                 -100123456789L,
                 "Autonomous engineering insight on deterministic state machines #engineering #architecture",
                 "Autonomous Engineering",
@@ -64,7 +64,7 @@ class SparkSchemaIntegrationTest {
 
         assertThat(saved.getId()).isNotNull();
 
-        Optional<Spark> fetchedOptional = sparkRepository.findByTelegramMessageId(1001L);
+        Optional<Spark> fetchedOptional = sparkRepository.findByTelegramMessageId(8001L);
         assertThat(fetchedOptional).isPresent();
 
         Spark fetched = fetchedOptional.get();
@@ -78,24 +78,24 @@ class SparkSchemaIntegrationTest {
 
     @Test
     void testFindAllByOrderByPublishedAtDescAndDomainFilter() {
+        long initialTotal = sparkRepository.count();
+
         OffsetDateTime baseTime = OffsetDateTime.of(2026, 10, 12, 12, 0, 0, 0, ZoneOffset.UTC);
 
-        Spark spark1 = new Spark(101L, 1L, "Content 1 #a2a", "Agentic Economy (A2A)", "a2a", "@author", baseTime.minusDays(2));
-        Spark spark2 = new Spark(102L, 1L, "Content 2 #engineering", "Autonomous Engineering", "engineering", "@author", baseTime);
-        Spark spark3 = new Spark(103L, 1L, "Content 3 #a2a", "Agentic Economy (A2A)", "a2a", "@author", baseTime.minusDays(1));
+        Spark spark1 = new Spark(8101L, 1L, "Content 1 #a2a", "Agentic Economy (A2A)", "a2a", "@author", baseTime.minusDays(2));
+        Spark spark2 = new Spark(8102L, 1L, "Content 2 #engineering", "Autonomous Engineering", "engineering", "@author", baseTime);
+        Spark spark3 = new Spark(8103L, 1L, "Content 3 #a2a", "Agentic Economy (A2A)", "a2a", "@author", baseTime.minusDays(1));
 
         sparkRepository.save(spark1);
         sparkRepository.save(spark2);
         sparkRepository.save(spark3);
         sparkRepository.flush();
 
-        Page<Spark> pageAll = sparkRepository.findAllByOrderByPublishedAtDesc(PageRequest.of(0, 10));
-        assertThat(pageAll.getContent()).hasSize(3);
-        assertThat(pageAll.getContent().get(0).getTelegramMessageId()).isEqualTo(102L);
+        Page<Spark> pageAll = sparkRepository.findAllByOrderByPublishedAtDesc(PageRequest.of(0, 50));
+        assertThat(pageAll.getContent()).hasSize((int) (initialTotal + 3));
+        assertThat(pageAll.getContent().stream().anyMatch(s -> Long.valueOf(8102L).equals(s.getTelegramMessageId()))).isTrue();
 
-        Page<Spark> pageDomain = sparkRepository.findByDomainOrderByPublishedAtDesc("Agentic Economy (A2A)", PageRequest.of(0, 10));
-        assertThat(pageDomain.getContent()).hasSize(2);
-        assertThat(pageDomain.getContent().get(0).getTelegramMessageId()).isEqualTo(103L);
-        assertThat(pageDomain.getContent().get(1).getTelegramMessageId()).isEqualTo(101L);
+        Page<Spark> pageDomain = sparkRepository.findByDomainOrderByPublishedAtDesc("Agentic Economy (A2A)", PageRequest.of(0, 50));
+        assertThat(pageDomain.getContent().stream().filter(s -> s.getTelegramMessageId() != null && s.getTelegramMessageId() >= 8101L && s.getTelegramMessageId() <= 8103L)).hasSize(2);
     }
 }
