@@ -50,6 +50,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create essay
+      description: Ingests a new essay accepting raw Markdown body content and metadata.
+      operationId: createEssay
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Essay'
+      responses:
+        '201':
+          description: Essay created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Essay'
+        '400':
+          description: Invalid request body or payload validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /api/v1/essays/{slug}:
     get:

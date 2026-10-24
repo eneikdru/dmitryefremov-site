@@ -17,9 +17,11 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(EssayController.class)
@@ -116,5 +118,64 @@ class EssayControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status", is(400)))
                 .andExpect(jsonPath("$.message", is("Page size must be between 1 and 100")));
+    }
+
+    @Test
+    void testCreateEssayReturns201Created() throws Exception {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 24, 12, 0, 0, 0, ZoneOffset.UTC);
+        String markdown = "# Headless Ingested Essay\n\nContent body here.";
+
+        EssayDto created = new EssayDto(
+                10L,
+                "ingested-essay-1",
+                "Ingested Essay",
+                "Ingested Summary",
+                markdown,
+                publishedAt,
+                publishedAt
+        );
+
+        when(essayService.createEssay(any(EssayDto.class))).thenReturn(created);
+
+        String jsonPayload = """
+                {
+                  "slug": "ingested-essay-1",
+                  "title": "Ingested Essay",
+                  "summary": "Ingested Summary",
+                  "content": "# Headless Ingested Essay\\n\\nContent body here."
+                }
+                """;
+
+        mockMvc.perform(post("/api/v1/essays")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPayload)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(10)))
+                .andExpect(jsonPath("$.slug", is("ingested-essay-1")))
+                .andExpect(jsonPath("$.title", is("Ingested Essay")))
+                .andExpect(jsonPath("$.content", is(markdown)));
+    }
+
+    @Test
+    void testCreateEssayMissingTitleReturns400() throws Exception {
+        when(essayService.createEssay(any(EssayDto.class)))
+                .thenThrow(new IllegalArgumentException("Essay title is required"));
+
+        String jsonPayload = """
+                {
+                  "slug": "ingested-essay-1",
+                  "content": "# Headless Ingested Essay"
+                }
+                """;
+
+        mockMvc.perform(post("/api/v1/essays")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPayload)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.message", is("Essay title is required")));
     }
 }

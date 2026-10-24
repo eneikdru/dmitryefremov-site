@@ -53,6 +53,34 @@ public class EssayService {
                 .map(this::mapToDto);
     }
 
+    @Transactional
+    public EssayDto createEssay(EssayDto dto) {
+        if (dto.getSlug() == null || dto.getSlug().isBlank()) {
+            throw new IllegalArgumentException("Essay slug is required");
+        }
+        if (dto.getTitle() == null || dto.getTitle().isBlank()) {
+            throw new IllegalArgumentException("Essay title is required");
+        }
+        if (dto.getContent() == null || dto.getContent().isBlank()) {
+            throw new IllegalArgumentException("Essay content is required");
+        }
+        if (publishedEssayRepository.findBySlug(dto.getSlug()).isPresent()) {
+            throw new IllegalArgumentException("Essay with slug '" + dto.getSlug() + "' already exists");
+        }
+
+        PublishedEssay entity = new PublishedEssay(
+                dto.getSlug(),
+                dto.getTitle(),
+                dto.getSummary(),
+                dto.getContent(),
+                "Dmitry Efremov",
+                dto.getPublishedAt() != null ? dto.getPublishedAt() : java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC)
+        );
+
+        PublishedEssay saved = publishedEssayRepository.save(entity);
+        return mapToDto(saved);
+    }
+
     public EssayDto mapToDto(PublishedEssay entity) {
         return new EssayDto(
                 entity.getId(),

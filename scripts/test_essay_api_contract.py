@@ -44,6 +44,7 @@ def main():
     paths = spec.get("paths", {})
     assert "/api/v1/essays" in paths, "Missing /api/v1/essays endpoint"
     assert "get" in paths["/api/v1/essays"], "Missing GET operation on /api/v1/essays"
+    assert "post" in paths["/api/v1/essays"], "Missing POST operation on /api/v1/essays for content ingestion"
 
     assert "/api/v1/essays/{slug}" in paths, "Missing /api/v1/essays/{slug} endpoint"
     assert "get" in paths["/api/v1/essays/{slug}"], "Missing GET operation on /api/v1/essays/{slug}"

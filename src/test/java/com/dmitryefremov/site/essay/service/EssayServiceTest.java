@@ -102,4 +102,55 @@ class EssayServiceTest {
 
         assertThat(result).isEmpty();
     }
+
+    @Test
+    void testCreateEssaySuccess() {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 24, 12, 0, 0, 0, ZoneOffset.UTC);
+        EssayDto input = new EssayDto(null, "new-essay", "New Essay", "Summary", "Markdown Content", publishedAt, null);
+
+        PublishedEssay saved = new PublishedEssay("new-essay", "New Essay", "Summary", "Markdown Content", "Dmitry Efremov", publishedAt);
+        saved.setId(100L);
+
+        when(publishedEssayRepository.findBySlug("new-essay")).thenReturn(Optional.empty());
+        when(publishedEssayRepository.save(any(PublishedEssay.class))).thenReturn(saved);
+
+        EssayDto result = essayService.createEssay(input);
+
+        assertThat(result.getId()).isEqualTo(100L);
+        assertThat(result.getSlug()).isEqualTo("new-essay");
+        assertThat(result.getTitle()).isEqualTo("New Essay");
+        assertThat(result.getSummary()).isEqualTo("Summary");
+        assertThat(result.getContent()).isEqualTo("Markdown Content");
+    }
+
+    @Test
+    void testCreateEssayDuplicateSlugThrowsException() {
+        OffsetDateTime publishedAt = OffsetDateTime.of(2026, 10, 24, 12, 0, 0, 0, ZoneOffset.UTC);
+        EssayDto input = new EssayDto(null, "existing-slug", "Title", "Summary", "Content", publishedAt, null);
+
+        PublishedEssay existing = new PublishedEssay("existing-slug", "Existing", "Summary", "Content", "Dmitry Efremov", publishedAt);
+        when(publishedEssayRepository.findBySlug("existing-slug")).thenReturn(Optional.of(existing));
+
+        assertThatThrownBy(() -> essayService.createEssay(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Essay with slug 'existing-slug' already exists");
+    }
+
+    @Test
+    void testCreateEssayMissingRequiredFieldsThrowsException() {
+        EssayDto missingSlug = new EssayDto(null, "", "Title", "Summary", "Content", null, null);
+        assertThatThrownBy(() -> essayService.createEssay(missingSlug))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Essay slug is required");
+
+        EssayDto missingTitle = new EssayDto(null, "slug", "", "Summary", "Content", null, null);
+        assertThatThrownBy(() -> essayService.createEssay(missingTitle))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Essay title is required");
+
+        EssayDto missingContent = new EssayDto(null, "slug", "Title", "Summary", "", null, null);
+        assertThatThrownBy(() -> essayService.createEssay(missingContent))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Essay content is required");
+    }
 }

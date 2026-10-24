@@ -1,5 +1,6 @@
 package com.dmitryefremov.site.essay.controller;
 
+import com.dmitryefremov.site.essay.dto.EssayDto;
 import com.dmitryefremov.site.essay.dto.EssayPageDto;
 import com.dmitryefremov.site.essay.service.EssayService;
 import com.dmitryefremov.site.podcast.dto.ErrorResponseDto;
@@ -45,6 +46,12 @@ public class EssayController {
                     );
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
                 });
+    }
+
+    @PostMapping
+    public ResponseEntity<EssayDto> createEssay(@RequestBody EssayDto dto) {
+        EssayDto created = essayService.createEssay(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
