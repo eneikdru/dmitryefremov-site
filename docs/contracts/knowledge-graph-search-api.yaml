@@ -1,0 +1,441 @@
+openapi: 3.0.3
+info:
+  title: Knowledge Graph & Instant Multi-Domain Search API Contract
+  description: API specification for unified concept knowledge graph and instant multi-domain search across Canon concepts, Podcast episodes, Essays, and Sparks.
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/search:
+    get:
+      summary: Instant multi-domain search
+      description: Performs instant semantic and keyword search across Canon concepts, podcasts, essays, and sparks. Powered by shortcut key (Cmd+K / Ctrl+K).
+      operationId: searchContent
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search term or natural language semantic query
+          schema:
+            type: string
+            minLength: 1
+        - name: domains
+          in: query
+          required: false
+          description: Filter search results by content domain/type
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/SearchDomain'
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of search results to return
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          description: Result offset for pagination
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        '200':
+          description: Successfully executed instant search across domains
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Invalid query parameters or empty search term
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/graph/nodes:
+    get:
+      summary: List knowledge graph nodes
+      description: Retrieves a paginated list of knowledge graph nodes (Canon items, Podcasts, Essays, Sparks).
+      operationId: listGraphNodes
+      parameters:
+        - name: domain
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/SearchDomain'
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successfully retrieved graph nodes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphNodePage'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/graph/nodes/{slug}:
+    get:
+      summary: Get knowledge graph node details
+      description: Retrieves complete details of a specific knowledge graph node including its links, cross-references, and machine-readable URLs.
+      operationId: getGraphNodeBySlug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Unique URL identifier slug of the node
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Graph node found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphNodeDetail'
+        '404':
+          description: Graph node not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/graph/links:
+    get:
+      summary: List knowledge graph links
+      description: Retrieves cross-references and concept-media links connecting graph nodes.
+      operationId: listGraphLinks
+      parameters:
+        - name: sourceSlug
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: targetSlug
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: relationshipType
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successfully retrieved graph links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphLinkPage'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /llms.txt:
+    get:
+      summary: AI Agent Index (llms.txt)
+      description: Plaintext machine-readable index of Canon concepts and connected media entities for AI agents.
+      operationId: getLlmsTxtIndex
+      responses:
+        '200':
+          description: Successfully generated llms.txt index
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /ai-agent.json:
+    get:
+      summary: AI Agent Graph Schema (ai-agent.json)
+      description: Machine-readable JSON representation of the entire concept graph and node relationships for external AI agents.
+      operationId: getAiAgentGraphJson
+      responses:
+        '200':
+          description: Successfully generated ai-agent.json representation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiAgentGraphRepresentation'
+
+components:
+  schemas:
+    SearchDomain:
+      type: string
+      enum:
+        - CANON
+        - PODCAST
+        - ESSAY
+        - SPARK
+
+    SearchResultItem:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - domain
+        - url
+        - relevanceScore
+      properties:
+        id:
+          type: integer
+          format: int64
+        slug:
+          type: string
+        title:
+          type: string
+        domain:
+          $ref: '#/components/schemas/SearchDomain'
+        summary:
+          type: string
+          nullable: true
+        snippet:
+          type: string
+          nullable: true
+        url:
+          type: string
+        relevanceScore:
+          type: number
+          format: double
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+        connectedConceptCount:
+          type: integer
+          default: 0
+
+    SearchResponse:
+      type: object
+      required:
+        - query
+        - totalResults
+        - items
+      properties:
+        query:
+          type: string
+        totalResults:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResultItem'
+
+    GraphNode:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - domain
+        - canonicalUrl
+      properties:
+        id:
+          type: integer
+          format: int64
+        slug:
+          type: string
+        title:
+          type: string
+        domain:
+          $ref: '#/components/schemas/SearchDomain'
+        summary:
+          type: string
+          nullable: true
+        canonicalUrl:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    GraphLink:
+      type: object
+      required:
+        - id
+        - sourceSlug
+        - targetSlug
+        - relationshipType
+      properties:
+        id:
+          type: integer
+          format: int64
+        sourceSlug:
+          type: string
+        sourceTitle:
+          type: string
+        targetSlug:
+          type: string
+        targetTitle:
+          type: string
+        relationshipType:
+          type: string
+        description:
+          type: string
+          nullable: true
+
+    GraphNodeDetail:
+      type: object
+      required:
+        - node
+        - outgoingLinks
+        - incomingLinks
+      properties:
+        node:
+          $ref: '#/components/schemas/GraphNode'
+        content:
+          type: string
+          nullable: true
+        outgoingLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphLink'
+        incomingLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphLink'
+        machineReadableUrls:
+          type: object
+          properties:
+            llmsTxt:
+              type: string
+            aiAgentJson:
+              type: string
+            markdownUrl:
+              type: string
+
+    GraphNodePage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphNode'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+
+    GraphLinkPage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphLink'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+
+    AiAgentGraphRepresentation:
+      type: object
+      required:
+        - version
+        - generatedAt
+        - nodeCount
+        - edgeCount
+        - nodes
+        - edges
+      properties:
+        version:
+          type: string
+        generatedAt:
+          type: string
+          format: date-time
+        nodeCount:
+          type: integer
+        edgeCount:
+          type: integer
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphNode'
+        edges:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphLink'
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time

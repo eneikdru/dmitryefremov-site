@@ -34,32 +34,58 @@ public class TelegramSparkMapper {
     }
 
     public Spark mapTelegramPayload(String rawJsonPayload) {
+        if (rawJsonPayload == null || rawJsonPayload.isBlank()) {
+            throw new IllegalArgumentException("Payload cannot be empty");
+        }
+
         try {
             JsonNode root = objectMapper.readTree(rawJsonPayload);
+            if (root == null || !root.isObject()) {
+                throw new IllegalArgumentException("Invalid Telegram payload: JSON root must be an object");
+            }
+
+            if (!root.has("update_id") || root.get("update_id").isNull()) {
+                throw new IllegalArgumentException("Invalid Telegram payload: missing update_id");
+            }
+
             JsonNode message = root.has("channel_post") ? root.get("channel_post") :
                              root.has("message") ? root.get("message") :
                              root.has("edited_channel_post") ? root.get("edited_channel_post") :
-                             root.has("edited_message") ? root.get("edited_message") : root;
+                             root.has("edited_message") ? root.get("edited_message") : null;
 
-            Long messageId = message.has("message_id") ? message.get("message_id").asLong() : null;
+            if (message == null || !message.isObject()) {
+                throw new IllegalArgumentException("Invalid Telegram payload: missing message or channel_post data");
+            }
+
+            Long messageId = message.has("message_id") && !message.get("message_id").isNull()
+                    ? message.get("message_id").asLong()
+                    : null;
+
+            if (messageId == null) {
+                throw new IllegalArgumentException("Invalid Telegram payload: missing message_id");
+            }
 
             Long chatId = null;
-            if (message.has("chat") && message.get("chat").has("id")) {
+            if (message.has("chat") && message.get("chat").has("id") && !message.get("chat").get("id").isNull()) {
                 chatId = message.get("chat").get("id").asLong();
             }
 
             String content = "";
-            if (message.has("text")) {
+            if (message.has("text") && !message.get("text").isNull()) {
                 content = message.get("text").asText();
-            } else if (message.has("caption")) {
+            } else if (message.has("caption") && !message.get("caption").isNull()) {
                 content = message.get("caption").asText();
             }
 
+            if (content == null || content.isBlank()) {
+                throw new IllegalArgumentException("Invalid Telegram payload: message content is empty");
+            }
+
             OffsetDateTime publishedAt = OffsetDateTime.now(clock);
-            if (message.has("date")) {
+            if (message.has("date") && !message.get("date").isNull()) {
                 long epochSecond = message.get("date").asLong();
                 publishedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochSecond), ZoneOffset.UTC);
-            } else if (message.has("edit_date")) {
+            } else if (message.has("edit_date") && !message.get("edit_date").isNull()) {
                 long epochSecond = message.get("edit_date").asLong();
                 publishedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochSecond), ZoneOffset.UTC);
             }
@@ -88,6 +114,8 @@ public class TelegramSparkMapper {
             String tags = extractTagsFromContent(content);
 
             return new Spark(messageId, chatId, content, domain, tags, author, publishedAt);
+        } catch (IllegalArgumentException e) {
+            throw e;
         } catch (Exception e) {
             throw new IllegalArgumentException("Failed to parse Telegram payload: " + e.getMessage(), e);
         }
