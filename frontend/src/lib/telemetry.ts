@@ -13,9 +13,25 @@ export interface TelemetryEvent {
     | 'canon_dwell_heartbeat'
     | 'form_field_focused'
     | 'form_validation_passed'
-    | 'canon_submit_converted';
+    | 'canon_submit_converted'
+    | 'cross_link_click'
+    | 'search_utilization';
   timestamp: string;
   payload: Record<string, unknown>;
+}
+
+export interface CrossLinkClickPayload {
+  sourceNodeId: string;
+  targetNodeId: string;
+  targetNodeType?: string;
+  label?: string;
+}
+
+export interface SearchUtilizationPayload {
+  query: string;
+  triggerMethod?: string;
+  resultsCount?: number;
+  selectedResultId?: string;
 }
 
 export interface EssayViewPayload {
@@ -78,6 +94,44 @@ class TelemetryService {
       payload: {
         articleId,
         title: title ?? articleId
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackCrossLinkClick(sourceNodeId: string, targetNodeId: string, targetNodeType: string = 'concept', label?: string): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'cross_link_click',
+      timestamp: new Date().toISOString(),
+      payload: {
+        source_node_id: sourceNodeId,
+        target_node_id: targetNodeId,
+        target_node_type: targetNodeType,
+        label: label ?? targetNodeId
+      }
+    };
+    this.recordEvent(event);
+    return event;
+  }
+
+  public trackSearchUtilization(query: string, triggerMethod: string = 'cmd_k', resultsCount: number = 0, selectedResultId?: string): TelemetryEvent | null {
+    this.verifyPrivacyCompliance();
+    if (!isTelemetryAllowed()) {
+      return null;
+    }
+    const event: TelemetryEvent = {
+      type: 'search_utilization',
+      timestamp: new Date().toISOString(),
+      payload: {
+        query,
+        trigger_method: triggerMethod,
+        results_count: resultsCount,
+        selected_result_id: selectedResultId ?? null
       }
     };
     this.recordEvent(event);
