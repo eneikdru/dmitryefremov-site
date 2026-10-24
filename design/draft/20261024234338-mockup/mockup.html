@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Official Directory - Contact & Identity</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-fixed": "#e2dfff",
+            "on-primary-container": "#8590a6",
+            "background": "#f8f9ff",
+            "tertiary": "#001815",
+            "tertiary-fixed-dim": "#6bd8cb",
+            "on-primary-fixed": "#111c2d",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "surface": "#f8f9ff",
+            "outline-variant": "#c5c6cd",
+            "tertiary-container": "#002f2a",
+            "on-tertiary-fixed": "#00201d",
+            "secondary-container": "#8f8bff",
+            "inverse-surface": "#213145",
+            "primary": "#091426",
+            "on-secondary-fixed": "#0f0069",
+            "outline": "#75777d",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed-variant": "#3b35a7",
+            "on-secondary": "#ffffff",
+            "primary-fixed-dim": "#bcc7de",
+            "primary-container": "#1e293b",
+            "on-background": "#0b1c30",
+            "inverse-primary": "#bcc7de",
+            "on-surface-variant": "#45474c",
+            "surface-container-low": "#eff4ff",
+            "surface-dim": "#cbdbf5",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "primary-fixed": "#d8e3fb",
+            "secondary-fixed-dim": "#c3c0ff",
+            "on-error": "#ffffff",
+            "secondary": "#544fc0",
+            "on-primary-fixed-variant": "#3c475a",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-container": "#28a094",
+            "inverse-on-surface": "#eaf1ff",
+            "on-surface": "#0b1c30",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-high": "#dce9ff",
+            "on-tertiary-fixed-variant": "#005049",
+            "surface-tint": "#545f73",
+            "tertiary-fixed": "#89f5e7",
+            "on-secondary-container": "#231791",
+            "surface-variant": "#d3e4fe",
+            "surface-bright": "#f8f9ff",
+            "surface-container": "#e5eeff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "gutter": "1rem",
+            "margin-lg": "2rem",
+            "space-xl": "2.25rem",
+            "margin-sm": "1rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "gutter-sm": "0.75rem",
+            "margin": "1.25rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Inter"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "label-lg": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }],
+            "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .focus-ring-accessible:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #544fc0;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-24 selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TOP APP BAR (from Shared Component JSON) -->
+<header class="bg-surface border-b border-outline-variant shadow-sm docked full-width top-0 sticky z-40">
+<div class="flex justify-between items-center w-full px-margin py-space-sm h-14">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Official Directory</span>
+</div>
+<div class="flex items-center gap-2">
+<!-- Live Status Pill -->
+<div aria-label="System status: Available" class="hidden xs:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-low border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">< 2h SLA</span>
+</div>
+<!-- Trailing Accessibility Action -->
+<button aria-label="Accessibility options and text sizing" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors active:scale-95 text-primary focus-ring-accessible" type="button">
+<span class="material-symbols-outlined text-[22px]">accessibility_new</span>
+</button>
+</div>
+</div>
+</header>
+<!-- SLA & Response Banner (High trust cue) -->
+<aside aria-label="Response Time Guarantee" class="bg-surface-container px-margin py-space-xs border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">schedule</span>
+<p class="font-label-sm text-label-sm text-on-surface">Official Dispatch Queue: <strong class="font-semibold text-primary">Active</strong> (Avg response: 1 hr 42 min)</p>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Live Monitor</span>
+</aside>
+<!-- MAIN CANVAS -->
+<main class="max-w-xl mx-auto px-margin pt-space-lg space-y-space-lg">
+<!-- 1. IDENTITY & CREDENTIALS HEADER -->
+<section aria-labelledby="identity-heading" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center font-headline-md text-headline-md font-bold shadow-inner">
+<span>OD</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary" id="identity-heading">GovConnect Central</h1>
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;" title="Verified Public Authority">verified_user</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Auth Registry ID: <span class="font-mono text-primary font-semibold">DIR-99402-A</span></p>
+</div>
+</div>
+<!-- Emergency / Press Toggle Switch -->
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">emergency</span> Press / Urgent
+          </span>
+<label aria-label="Switch to high-priority press inquiry mode" class="relative inline-flex items-center cursor-pointer mt-1">
+<input class="sr-only peer" id="urgent-toggle" onchange="toggleUrgentMode(this)" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-error"></div>
+</label>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        The verified public inquiries and institutional routing interface. WCAG AAA accessible, monitored under federal transparent record standards.
+      </p>
+<!-- Security / Encryption Badge -->
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px] text-secondary">lock</span>
+          256-Bit E2E Encrypted Channel
+        </span>
+<span class="text-secondary font-medium">Domain Verified (.gov)</span>
+</div>
+</section>
+<!-- 2. DIRECT ACTION CHANNELS (Bento Cards) -->
+<section aria-labelledby="direct-channels-heading" class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-primary" id="direct-channels-heading">Direct Priority Channels</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Available Now</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+<!-- Hotline Card -->
+<a class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md shadow-sm hover:border-secondary transition-all active:scale-[0.98] flex items-center justify-between focus-ring-accessible" href="tel:18005550199">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary group-hover:bg-secondary-fixed group-hover:text-on-secondary-fixed transition-colors">
+<span class="material-symbols-outlined text-[20px]">phone_in_talk</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Direct Toll-Free</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">1-800-555-0199</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px] group-hover:text-secondary group-hover:translate-x-0.5 transition-transform">call</span>
+</a>
+<!-- Fast Email Card with Copy Trigger -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md shadow-sm flex items-center justify-between focus-within:border-secondary">
+<div class="flex items-center gap-3 overflow-hidden">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">alternate_email</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-primary truncate">Official Inquiries</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate" id="email-address-text">contact@directory.gov</p>
+</div>
+</div>
+<button aria-label="Copy official email address" class="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg hover:bg-surface-container-high text-secondary active:scale-90 transition-all focus-ring-accessible" onclick="copyEmail(this)" type="button">
+<span class="material-symbols-outlined text-[20px]" id="copy-icon">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Headquarters Physical Geo Badge -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Headquarters & Archives</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Federal Plaza, Suite 400 • Washington, DC</p>
+</div>
+</div>
+<a aria-label="View Headquarters on map" class="px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold flex items-center gap-1 active:scale-95 transition-all focus-ring-accessible" href="#map-locator">
+<span>Map</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- 3. INTERACTIVE WCAG-COMPLIANT CONTACT FORM -->
+<section aria-labelledby="form-heading" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md sm:p-space-lg shadow-sm space-y-space-md">
+<div class="border-b border-outline-variant pb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-primary" id="form-heading">Official Inquiry Dispatch</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Fields with asterisks (<span class="text-error font-bold">*</span>) are mandatory under verification protocols.</p>
+</div>
+<!-- Inquiry Type Filter Chips -->
+<fieldset class="space-y-space-xs">
+<legend class="font-label-md text-label-md text-primary">Select Inquiry Type <span class="text-error">*</span></legend>
+<div aria-required="true" class="flex flex-wrap gap-2 pt-1" role="radiogroup">
+<label class="cursor-pointer">
+<input checked="" class="sr-only peer" name="inquiry_type" type="radio" value="General Inquiry"/>
+<span class="inline-flex items-center px-3.5 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary transition-colors focus-ring-accessible">
+              General Inquiry
+            </span>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="inquiry_type" type="radio" value="Partnership"/>
+<span class="inline-flex items-center px-3.5 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary transition-colors focus-ring-accessible">
+              Partnership
+            </span>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="inquiry_type" type="radio" value="Support"/>
+<span class="inline-flex items-center px-3.5 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary transition-colors focus-ring-accessible">
+              Support
+            </span>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="inquiry_type" type="radio" value="Media"/>
+<span class="inline-flex items-center px-3.5 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary transition-colors focus-ring-accessible">
+              Media & Press
+            </span>
+</label>
+</div>
+</fieldset>
+<form class="space-y-space-md" id="contact-form" novalidate="" onsubmit="handleSubmit(event)">
+<!-- Full Name Input -->
+<div class="space-y-space-xs">
+<label class="block font-label-md text-label-md text-primary" for="full-name">
+            Full Legal or Representative Name <span aria-hidden="true" class="text-error">*</span>
+</label>
+<div class="relative">
+<input aria-describedby="name-helper" aria-required="true" class="w-full min-h-[48px] px-space-md bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg text-on-surface font-body-md text-body-md focus:border-secondary focus:border-2 focus:ring-0 focus-ring-accessible transition-all" id="full-name" name="full_name" placeholder="e.g. Jordan Vance" required="" type="text"/>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="name-helper">Provide name as registered on institutional credentials.</p>
+</div>
+<!-- Verified Email Address with Live Validation Cue -->
+<div class="space-y-space-xs">
+<label class="block font-label-md text-label-md text-primary" for="work-email">
+            Official Email Address <span aria-hidden="true" class="text-error">*</span>
+</label>
+<div class="relative">
+<input aria-describedby="email-feedback" aria-required="true" class="w-full min-h-[48px] pl-space-md pr-11 bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg text-on-surface font-body-md text-body-md focus:border-secondary focus:border-2 focus:ring-0 focus-ring-accessible transition-all" id="work-email" name="email" oninput="validateEmailField(this)" placeholder="name@organization.gov or .org" required="" type="email"/>
+<span class="hidden absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-emerald-600 text-[20px]" id="email-valid-icon" style="font-variation-settings: 'FILL' 1;">
+              check_circle
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1" id="email-feedback">
+<span class="material-symbols-outlined text-[15px]">info</span>
+            Confirmation receipt will be dispatched immediately.
+          </p>
+</div>
+<!-- Subject Line -->
+<div class="space-y-space-xs">
+<label class="block font-label-md text-label-md text-primary" for="subject-line">
+            Subject Matter <span aria-hidden="true" class="text-error">*</span>
+</label>
+<input aria-required="true" class="w-full min-h-[48px] px-space-md bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg text-on-surface font-body-md text-body-md focus:border-secondary focus:border-2 focus:ring-0 focus-ring-accessible transition-all" id="subject-line" name="subject" placeholder="Concise description of inquiry" required="" type="text"/>
+</div>
+<!-- Preferred Contact Method Toggle -->
+<fieldset class="space-y-space-xs pt-1">
+<legend class="font-label-md text-label-md text-primary">Preferred Communication Method</legend>
+<div class="grid grid-cols-2 gap-2 mt-1">
+<label class="flex items-center gap-2 p-2.5 rounded-lg border border-outline-variant cursor-pointer hover:bg-surface-container transition-colors has-[:checked]:border-secondary has-[:checked]:bg-secondary-fixed/30">
+<input checked="" class="w-5 h-5 text-secondary border-outline focus:ring-secondary" name="preferred_method" type="radio" value="Email"/>
+<span class="font-label-md text-label-md text-primary">Email Dispatch</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded-lg border border-outline-variant cursor-pointer hover:bg-surface-container transition-colors has-[:checked]:border-secondary has-[:checked]:bg-secondary-fixed/30">
+<input class="w-5 h-5 text-secondary border-outline focus:ring-secondary" name="preferred_method" type="radio" value="Phone"/>
+<span class="font-label-md text-label-md text-primary">Secure Call</span>
+</label>
+</div>
+</fieldset>
+<!-- Message Textarea with Live Character Counter -->
+<div class="space-y-space-xs">
+<div class="flex justify-between items-center">
+<label class="block font-label-md text-label-md text-primary" for="message-body">
+              Detailed Briefing <span aria-hidden="true" class="text-error">*</span>
+</label>
+<span aria-live="polite" class="font-label-sm text-label-sm text-on-surface-variant" id="char-counter">
+              0 / 1000 characters
+            </span>
+</div>
+<textarea aria-required="true" class="w-full p-space-md bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg text-on-surface font-body-md text-body-md focus:border-secondary focus:border-2 focus:ring-0 focus-ring-accessible transition-all resize-y" id="message-body" maxlength="1000" name="message" oninput="updateCharCount(this)" placeholder="Please detail your request or statutory inquiry here..." required="" rows="4"></textarea>
+</div>
+<!-- Security Affirmation Checkbox -->
+<div class="flex items-start gap-3 pt-1">
+<div class="flex items-center h-6">
+<input aria-required="true" class="w-5 h-5 rounded text-secondary border-outline focus:ring-secondary" id="compliance-check" name="compliance" required="" type="checkbox"/>
+</div>
+<label class="font-body-sm text-body-sm text-on-surface-variant cursor-pointer" for="compliance-check">
+            I certify that this submission contains no classified national security data and complies with public disclosure standards.
+          </label>
+</div>
+<!-- High-Contrast Tactile Send Button -->
+<button class="w-full min-h-[52px] bg-primary-container text-on-primary rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-2 hover:bg-primary active:scale-[0.98] transition-all shadow-md focus-ring-accessible" id="submit-btn" type="submit">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span>Send Message</span>
+</button>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">
+          Guaranteed SLA acknowledgment within <strong class="text-primary font-semibold">120 minutes</strong> during normal session cycles.
+        </p>
+</form>
+</section>
+<!-- 4. VERIFIED SOCIAL & DIRECTORY HANDLES -->
+<section aria-labelledby="verified-channels-heading" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary" id="verified-channels-heading">Official External Feeds</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Authenticated and signed identity credentials</p>
+</div>
+<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-secondary-fixed text-on-secondary-fixed uppercase tracking-wider">Verified</span>
+</div>
+<div class="space-y-2">
+<!-- LinkedIn -->
+<a aria-label="Official LinkedIn — Verified Enterprise (opens in new tab)" class="group flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-secondary hover:bg-surface-container-low transition-all focus-ring-accessible" href="https://linkedin.com" rel="noopener noreferrer" target="_blank">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary font-bold text-[14px]">
+              in
+            </div>
+<div>
+<p class="font-label-md text-label-md text-primary flex items-center gap-1">
+                Official LinkedIn
+                <span class="material-symbols-outlined text-secondary text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">linkedin.com/company/official-directory</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-secondary text-[18px]">open_in_new</span>
+</a>
+<!-- Mastodon / Public Fediverse -->
+<a aria-label="Official Fediverse Mastodon Account (opens in new tab)" class="group flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-secondary hover:bg-surface-container-low transition-all focus-ring-accessible" href="https://mastodon.social" rel="noopener noreferrer" target="_blank">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary font-bold text-[14px]">
+              M
+            </div>
+<div>
+<p class="font-label-md text-label-md text-primary flex items-center gap-1">
+                Public Records Fediverse
+                <span class="material-symbols-outlined text-secondary text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">@directory@gov.social</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-secondary text-[18px]">open_in_new</span>
+</a>
+<!-- GitHub / Open Code -->
+<a aria-label="Official GitHub Repository (opens in new tab)" class="group flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-secondary hover:bg-surface-container-low transition-all focus-ring-accessible" href="https://github.com" rel="noopener noreferrer" target="_blank">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary font-bold text-[14px]">
+              GH
+            </div>
+<div>
+<p class="font-label-md text-label-md text-primary flex items-center gap-1">
+                Transparency Repositories
+                <span class="material-symbols-outlined text-secondary text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">github.com/official-directory</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-secondary text-[18px]">open_in_new</span>
+</a>
+</div>
+</section>
+<!-- 5. ACCESSIBILITY COMMITMENT BADGE -->
+<section class="p-space-md rounded-xl bg-surface-container border border-outline-variant flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[24px] shrink-0 mt-0.5">verified</span>
+<div class="space-y-1">
+<h3 class="font-label-lg text-label-lg text-primary">Accessibility & Assistive Tech Guarantee</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          This portal conforms with Section 508 and WCAG 2.1 Level AAA guidelines. If you require telephone teletype (TTY) or telecommunications relay service (TRS), dial <strong>711</strong>.
+        </p>
+</div>
+</section>
+</main>
+<!-- BOTTOM NAVIGATION BAR (from Shared Component JSON) -->
+<!-- Contextual State: This is the official Contact & Brand identity destination -> 'Contact' is active -->
+<nav aria-label="Primary Navigation" class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-space-xs h-16 bg-surface-container-lowest border-t border-outline-variant shadow-md">
+<!-- Item 0: Contact (ACTIVE) -->
+<a aria-current="page" class="flex flex-col items-center justify-center bg-secondary-fixed text-on-secondary-fixed rounded-lg px-space-md py-space-xs font-semibold active:scale-95 transition-transform duration-150 min-h-[48px] focus-ring-accessible" href="#contact">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">contact_mail</span>
+<span class="font-label-sm text-label-sm">Contact</span>
+</a>
+<!-- Item 1: Directory (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-space-md py-space-xs hover:bg-surface-container-high transition-colors active:scale-95 transition-transform duration-150 min-h-[48px] focus-ring-accessible" href="#directory">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+<span class="font-label-sm text-label-sm">Directory</span>
+</a>
+<!-- Item 2: Offices (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-space-md py-space-xs hover:bg-surface-container-high transition-colors active:scale-95 transition-transform duration-150 min-h-[48px] focus-ring-accessible" href="#offices">
+<span class="material-symbols-outlined text-[20px]">business</span>
+<span class="font-label-sm text-label-sm">Offices</span>
+</a>
+<!-- Item 3: Help (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-space-md py-space-xs hover:bg-surface-container-high transition-colors active:scale-95 transition-transform duration-150 min-h-[48px] focus-ring-accessible" href="#help">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+<span class="font-label-sm text-label-sm">Help</span>
+</a>
+</nav>
+<!-- Interactive Logic Scripts -->
+<script>
+    // Live Character Counter
+    function updateCharCount(textarea) {
+      const counter = document.getElementById('char-counter');
+      const currentLength = textarea.value.length;
+      counter.textContent = `${currentLength} / 1000 characters`;
+      if (currentLength >= 950) {
+        counter.classList.add('text-error', 'font-bold');
+      } else {
+        counter.classList.remove('text-error', 'font-bold');
+      }
+    }
+
+    // Live Email Validation Feedback
+    function validateEmailField(input) {
+      const validIcon = document.getElementById('email-valid-icon');
+      const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+      if (isValid) {
+        validIcon.classList.remove('hidden');
+        input.classList.remove('border-error');
+        input.classList.add('border-emerald-600');
+      } else {
+        validIcon.classList.add('hidden');
+        input.classList.remove('border-emerald-600');
+      }
+    }
+
+    // One-Tap Copy Email Action
+    function copyEmail(button) {
+      const email = document.getElementById('email-address-text').textContent;
+      navigator.clipboard.writeText(email).then(() => {
+        const icon = document.getElementById('copy-icon');
+        icon.textContent = 'check';
+        icon.classList.add('text-emerald-600');
+        setTimeout(() => {
+          icon.textContent = 'content_copy';
+          icon.classList.remove('text-emerald-600');
+        }, 2000);
+      }).catch(err => {
+        console.error('Copy failed:', err);
+      });
+    }
+
+    // Urgent Press Mode Switcher
+    function toggleUrgentMode(checkbox) {
+      const subjectInput = document.getElementById('subject-line');
+      const sendBtn = document.getElementById('submit-btn');
+      if (checkbox.checked) {
+        subjectInput.value = "[URGENT / MEDIA EXPEDITE] ";
+        subjectInput.focus();
+        sendBtn.classList.remove('bg-primary-container');
+        sendBtn.classList.add('bg-error');
+      } else {
+        if (subjectInput.value.startsWith("[URGENT / MEDIA EXPEDITE] ")) {
+          subjectInput.value = subjectInput.value.replace("[URGENT / MEDIA EXPEDITE] ", "");
+        }
+        sendBtn.classList.remove('bg-error');
+        sendBtn.classList.add('bg-primary-container');
+      }
+    }
+
+    // Form Submission Feedback
+    function handleSubmit(event) {
+      event.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span><span>Encrypting & Dispatching...</span>`;
+      
+      setTimeout(() => {
+        btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">task_alt</span><span>Dispatched • Ticket #REC-8041</span>`;
+        btn.classList.remove('bg-primary-container', 'bg-error');
+        btn.classList.add('bg-emerald-700');
+      }, 1200);
+    }
+  </script>
+</body></html>
