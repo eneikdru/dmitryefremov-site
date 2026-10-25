@@ -86,17 +86,6 @@
     }
   }
 
-  const DEFAULT_FALLBACK_ARTICLES: Article[] = [
-    {
-      id: 'deontic-process-autonomy',
-      title: 'Деонтическая логика в автономии',
-      topic: 'deontic',
-      readTime: '6 min read',
-      publishedAt: '2026-03-12',
-      summary: 'Формализация нормативных ограничений и модальных операторов должествования.',
-      contentMarkdown: '# Деонтическая логика\n\nМодальные операторы O(p) и P(p) в автономных системах.'
-    }
-  ];
 
   onMount(async () => {
     if (articles.length === 0) {
@@ -104,7 +93,7 @@
       if (fetchedEssays && fetchedEssays.length > 0) {
         articles = fetchedEssays;
       } else {
-        articles = DEFAULT_FALLBACK_ARTICLES;
+        articles = [];
       }
     }
     if (sparks.length === 0) {
