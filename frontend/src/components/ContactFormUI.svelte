@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  export let apiEndpoint: string = '/api/intake';
+  export let apiEndpoint: string = '/api/v1/contact';
 
   let selectedTopic: string = 'Project Inquiry';
   let fullName: string = '';
@@ -49,12 +49,10 @@
 
     try {
       const payload = {
-        clientType: 'HUMAN',
-        clientName: fullName.trim(),
-        clientEmail: emailAddr.trim(),
-        companyName: organization.trim() || null,
-        wishlistPayload: `[Topic: ${selectedTopic}] [Preferred Reply: ${replyChannel}]\n\n${messageText.trim()}`,
-        source: 'WEB_PORTAL'
+        senderName: fullName.trim(),
+        senderEmail: emailAddr.trim(),
+        subject: organization.trim() ? `[${selectedTopic}] ${organization.trim()}` : `[${selectedTopic}] Contact Message`,
+        content: `[Preferred Reply: ${replyChannel}]\n\n${messageText.trim()}`
       };
 
       const response = await fetch(apiEndpoint, {
@@ -64,6 +62,21 @@
         },
         body: JSON.stringify(payload)
       });
+      if (!response.ok && apiEndpoint === '/api/v1/contact') {
+        // Fallback to intake endpoint if backend contact endpoint is not available
+        await fetch('/api/intake', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientType: 'HUMAN',
+            clientName: fullName.trim(),
+            clientEmail: emailAddr.trim(),
+            companyName: organization.trim() || null,
+            wishlistPayload: `[Topic: ${selectedTopic}] [Preferred Reply: ${replyChannel}]\n\n${messageText.trim()}`,
+            source: 'WEB_PORTAL'
+          })
+        }).catch(() => {});
+      }
 
       if (response.ok) {
         responseData = await response.json().catch(() => ({ status: 'COMPLETED' }));
