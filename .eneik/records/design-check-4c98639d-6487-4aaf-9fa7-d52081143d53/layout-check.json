@@ -1,0 +1,30 @@
+[
+  {
+    "id": "concept-search-input",
+    "left": 55,
+    "top": 186,
+    "width": 223.9375,
+    "height": 24
+  },
+  {
+    "id": "semantic-radar",
+    "left": 57,
+    "top": 316.5,
+    "width": 214.109375,
+    "height": 48
+  },
+  {
+    "id": "dynamic-trajectories-title",
+    "left": 20,
+    "top": 670.5,
+    "width": 167.8125,
+    "height": 24
+  },
+  {
+    "id": "navigator-tab",
+    "left": 186.03125,
+    "top": 83.5,
+    "width": 119.015625,
+    "height": 36
+  }
+]

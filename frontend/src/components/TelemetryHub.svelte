@@ -11,18 +11,64 @@
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
   import CanonGatewayView from './CanonGatewayView.svelte';
+  import ConceptualNavigator from './ConceptualNavigator.svelte';
   import TelemetryHudView from './TelemetryHudView.svelte';
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'navigator' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'navigator' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
   let isSearchModalOpen: boolean = false;
   let currentPath: string = typeof window !== 'undefined' ? window.location.pathname : '/';
   let podcastCount: number = 0;
+
+  const mockManifestos = [
+    {
+      id: 'hacker-manifesto',
+      title: 'A Hacker Manifesto',
+      author: 'McKenzie Wark',
+      description: 'An aggressive poetic disruption seizing telecommunications architecture...',
+      year: '2004',
+      category: 'MANIFESTO',
+      citations: 140,
+      tags: ['Information Asymmetry', 'Abstraction', 'Vectoralist Class'],
+      isPrimary: true,
+      excerpt: '“Information wants to be free, but everywhere it is in chains. A hacker is not merely one who breaches code, but anyone who produces new abstractions from existing reality.”'
+    },
+    {
+      id: 'cyberfeminist',
+      title: 'A Cyberfeminist Manifesto for the 21st Century',
+      author: 'VNS Matrix (Virginia Barratt, Julianne Pierce, Francesca da Rimini, Josephine Starrs)',
+      description: 'An aggressive poetic disruption seizing telecommunications architecture as an immunological space against patriarchal matrix monopoly.',
+      year: '1991',
+      category: 'CYBERFEMINISM',
+      citations: 342,
+      tags: ['#wetware', '#techno-subversion']
+    },
+    {
+      id: 'speculative-realism',
+      title: 'Speculative Realism & Post-Kantian Correlationalism',
+      author: 'Goldsmiths Research Consortium',
+      description: 'Dismantling anthropocentric consensus through independent object agency and mathematical ungrounding beyond subjective consciousness.',
+      year: '2007',
+      category: 'ONTOLOGY',
+      citations: 189,
+      tags: ['#object-oriented', '#non-human']
+    }
+  ];
+
+  const mockFilters = [
+    { name: 'All', count: 42 },
+    { name: 'Cybernetics', count: 12 },
+    { name: 'Accelerationism', count: 8 },
+    { name: 'Post-Humanism', count: 14 },
+    { name: 'Digital Commons', count: 7 },
+    { name: 'Solipsism', count: 3 }
+  ];
+
 
   function updateRoute() {
     if (typeof window !== 'undefined') {
@@ -31,13 +77,16 @@
       if (
         currentPath === '/canon-gateway' ||
         currentPath === '/canon' ||
+        currentPath === '/navigator' ||
         currentPath === '/llms.txt' ||
         currentPath === '/.well-known/llms.txt' ||
         hash === '#/canon-gateway' ||
         hash === '#canon-gateway' ||
-        hash === '#canon'
+        hash === '#/navigator' ||
+        hash === '#canon' ||
+        hash === '#navigator'
       ) {
-        activeTab = 'canon';
+        activeTab = (typeof window !== 'undefined' && (window.location.pathname.includes('navigator') || window.location.hash.includes('navigator'))) ? 'navigator' : 'canon';
       } else if (
         currentPath === '/telemetry-hud' ||
         hash === '#/telemetry-hud' ||
@@ -261,6 +310,14 @@
           >
             <span>🤖 КАНОН & AI API</span>
           </button>
+        <button
+            id="tab-btn-navigator"
+            type="button"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'navigator' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            on:click={() => (activeTab = 'navigator')}
+          >
+            <span>🧭 НАВИГАТОР</span>
+          </button>
         </nav>
       </header>
 
@@ -285,6 +342,10 @@
         {:else if activeTab === 'canon'}
           <div class="space-y-6">
             <CanonGatewayView {theme} />
+          </div>
+        {:else if activeTab === "navigator"}
+          <div class="space-y-6">
+            <ConceptualNavigator {theme} manifestos={mockManifestos} filters={mockFilters} />
           </div>
         {/if}
       </section>
@@ -345,7 +406,7 @@
         bind:isOpen={isSearchModalOpen}
         {theme}
         onSelectNode={(node) => {
-          if (node.type === 'concept') activeTab = 'canon';
+          if (node.type === 'concept') activeTab = (typeof window !== 'undefined' && (window.location.pathname.includes('navigator') || window.location.hash.includes('navigator'))) ? 'navigator' : 'canon';
           else if (node.type === 'podcast') activeTab = 'podcast';
           else if (node.type === 'essay') activeTab = 'article';
           else if (node.type === 'spark') activeTab = 'sparks';
