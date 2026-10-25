@@ -130,6 +130,18 @@
   function handleOutboundClick(destination: string, label: string, platform: string) {
     telemetry.trackOutboundClick(destination, label, platform);
   }
+
+  function handleListenPodcast() {
+    activeTab = 'podcast';
+    if (typeof document !== 'undefined') {
+      setTimeout(() => {
+        const el = document.getElementById('podcast-player-root') || document.getElementById('content-view') || document.getElementById('nav-tabs');
+        if (el && typeof el.scrollIntoView === 'function') {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 50);
+    }
+  }
 </script>
 
 {#if currentPath === '/admin' || currentPath === '/inbox' || (typeof window !== 'undefined' && (window.location.hash === '#/admin' || window.location.hash === '#/inbox' || window.location.hash === '#inbox'))}
@@ -159,7 +171,7 @@
             <div class="flex items-center gap-2.5 font-mono text-xs tracking-wider uppercase font-semibold {theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}">
               <span class="text-white font-bold tracking-widest">ДМИТРИЙ ЕФРЕМОВ</span>
               <span class="opacity-30">•</span>
-              <span class="hidden sm:inline">AUTONOMOUS SYSTEMS ARCHITECTURE</span>
+              <span class="hidden sm:inline">{t($currentLanguage).topbar_architecture}</span>
             </div>
           </div>
 
@@ -225,9 +237,9 @@
         <section id="hero-section" class="p-8 sm:p-10 lg:p-12 rounded-xl border transition-all relative {theme === 'dark' ? 'bg-[#0d1118] border-white/[0.09] shadow-2xl' : 'bg-white border-slate-300 shadow-sm'}">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-            <!-- Author Studio Portrait: Pure, Elegant Architectural Framing -->
-            <div class="lg:col-span-4 flex justify-center lg:justify-start">
-              <div id="hero-avatar-container" class="relative w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72 rounded-2xl overflow-hidden border border-white/10 bg-black/40 shadow-2xl">
+            <!-- Author Studio Portrait: Monumental Architectural Framing (Large Aspect 3:4) -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-start">
+              <div id="hero-avatar-container" class="relative w-full max-w-[400px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/15 bg-black/40 shadow-2xl">
                 <ResponsivePicture
                   id="hero-avatar-img"
                   assetKey="dmitry_efremov_studio"
@@ -239,10 +251,10 @@
             </div>
 
             <!-- Monumental Typographic Manifest & Core Thesis -->
-            <div class="lg:col-span-8 space-y-6 text-center lg:text-left">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div class="space-y-3">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded font-mono text-xs uppercase tracking-widest font-bold border {theme === 'dark' ? 'bg-amber-400/10 text-amber-300 border-amber-400/30' : 'bg-amber-50 text-amber-900 border-amber-300'}">
-                  <span>АВТОНОМНЫЕ СИСТЕМЫ И ДЕЙСТВИЕ</span>
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-mono text-xs uppercase tracking-widest font-bold border {theme === 'dark' ? 'bg-amber-400/10 text-amber-300 border-amber-400/30' : 'bg-amber-50 text-amber-900 border-amber-300'}">
+                  <span>{t($currentLanguage).hero_badge}</span>
                 </div>
 
                 <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight uppercase leading-[0.95] {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
@@ -259,14 +271,21 @@
                 {t($currentLanguage).hero_manifest}
               </blockquote>
 
+              <!-- Bio Narrative: Eneik Production System Scope -->
+              <p class="text-sm font-mono text-slate-300 leading-relaxed max-w-2xl">
+                {t($currentLanguage).hero_bio_1}
+              </p>
+
               <!-- Tactile Mechanical Action Console -->
               <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2 text-xs font-mono font-bold uppercase tracking-wider">
                 <button
                   type="button"
-                  on:click={() => (activeTab = 'podcast')}
-                  class="px-5 py-2.5 rounded-lg transition-all cursor-pointer bg-amber-400 text-black hover:bg-amber-300 shadow-md"
+                  id="hero-listen-podcast-btn"
+                  on:click={handleListenPodcast}
+                  class="px-5 py-3 rounded-lg transition-all cursor-pointer bg-amber-400 text-black hover:bg-amber-300 shadow-md font-bold flex items-center gap-2"
                 >
-                  СЛУШАТЬ ПОДКАСТ
+                  <span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                  <span>{t($currentLanguage).hero_btn_podcast}</span>
                 </button>
 
                 <a
@@ -274,7 +293,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   on:click={() => handleOutboundClick('https://t.me/efremov_mvp', 'Telegram @efremov_mvp', 'Telegram')}
-                  class="px-4 py-2.5 rounded-lg border transition-all flex items-center gap-2 {theme === 'dark' ? 'bg-[#12161f] text-white border-white/10 hover:border-white/30 hover:bg-[#181e2b]' : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50'}"
+                  class="px-4 py-3 rounded-lg border transition-all flex items-center gap-2 {theme === 'dark' ? 'bg-[#12161f] text-white border-white/10 hover:border-white/30 hover:bg-[#181e2b]' : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50'}"
                 >
                   <span>Telegram @efremov_mvp</span>
                 </a>
@@ -284,20 +303,30 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   on:click={() => handleOutboundClick('https://www.youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
-                  class="px-4 py-2.5 rounded-lg border transition-all flex items-center gap-2 {theme === 'dark' ? 'bg-[#12161f] text-white border-white/10 hover:border-red-500/50 hover:bg-[#181e2b]' : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50'}"
+                  class="px-4 py-3 rounded-lg border transition-all flex items-center gap-2 {theme === 'dark' ? 'bg-[#12161f] text-white border-white/10 hover:border-red-500/50 hover:bg-[#181e2b]' : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50'}"
                 >
                   <span>YouTube</span>
                 </a>
 
                 <button
                   type="button"
-                  on:click={() => (activeTab = 'contact')}
-                  class="px-4 py-2.5 rounded-lg border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#12161f] text-slate-300 border-white/10 hover:text-white hover:border-white/30' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}"
+                  on:click={() => {
+                    activeTab = 'contact';
+                    if (typeof document !== 'undefined') {
+                      setTimeout(() => {
+                        const el = document.getElementById('content-view') || document.getElementById('nav-tabs');
+                        if (el && typeof el.scrollIntoView === 'function') {
+                          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }, 50);
+                    }
+                  }}
+                  class="px-4 py-3 rounded-lg border transition-all cursor-pointer font-bold {theme === 'dark' ? 'bg-[#12161f] text-slate-300 border-white/10 hover:text-white hover:border-white/30' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}"
                 >
-                  {$currentLanguage === 'ru' ? 'Прямая связь & Заявки' : ($currentLanguage === 'ka' ? 'პირდაპირი კავშირი და განაცხადები' : 'Direct Contact & Inquiries')}
+                  <span>{t($currentLanguage).hero_btn_contact}</span>
                 </button>
               </div>
-</div>
+            </div>
           </div>
         </section>
 

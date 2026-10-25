@@ -7,7 +7,7 @@
     return match ? `https://www.youtube-nocookie.com/embed/${match[1]}?rel=0` : null;
   }
   import { telemetry } from '../lib/telemetry';
-  import { currentLanguage } from '../lib/i18n';
+  import { currentLanguage, t } from '../lib/i18n';
   import {
     PODCAST_EPISODES,
     fetchPodcastsFromApi,
@@ -210,11 +210,11 @@
       <!-- Episode Catalog Rail -->
       <div id="podcast-episodes-section" class="lg:col-span-5 space-y-3">
         <div class="font-mono text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">
-          КАТАЛОГ ВЫПУСКОВ
+          {t($currentLanguage).catalog_title}
         </div>
 
         <div class="space-y-3" role="list" aria-label="Podcast Episodes Catalog">
-          {#each episodes as ep}
+          {#each localizedEpisodes as ep}
             <button
               type="button"
               id="episode-card-{ep.id}"
@@ -222,7 +222,7 @@
               on:click={() => handleSelectEpisode(ep.id)}
             >
               <div class="flex justify-between items-center text-xs font-mono mb-2">
-                <span class="font-bold text-amber-400 uppercase tracking-widest">ВЫПУСК</span>
+                <span class="font-bold text-amber-400 uppercase tracking-widest">{t($currentLanguage).catalog_badge}</span>
                 <span class="text-slate-400">{formatTime(ep.durationSeconds)}</span>
               </div>
               <h3 class="font-bold text-white text-base mb-2 hover:text-amber-300 transition-colors leading-snug">
@@ -234,7 +234,7 @@
               <div class="mt-4 text-xs font-mono flex justify-between items-center border-t border-white/[0.06] pt-3">
                 <span class="text-slate-500">{ep.publishedAt}</span>
                 <span class="font-bold uppercase tracking-wider {selectedEpisodeId === ep.id ? 'text-amber-400' : 'text-slate-400'}">
-                  {selectedEpisodeId === ep.id ? 'АКТИВЕН' : 'СЛУШАТЬ →'}
+                  {selectedEpisodeId === ep.id ? t($currentLanguage).catalog_active : t($currentLanguage).catalog_listen}
                 </span>
               </div>
             </button>
@@ -251,7 +251,7 @@
               <div class="space-y-2">
                 <div class="flex items-center justify-between gap-2">
                   <span class="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">
-                    ВЫПУСК
+                    {t($currentLanguage).catalog_badge}
                   </span>
                   <span class="text-xs font-mono text-slate-400">{currentEpisode.publishedAt}</span>
                 </div>

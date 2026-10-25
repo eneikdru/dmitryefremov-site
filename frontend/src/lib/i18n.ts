@@ -22,7 +22,7 @@ export function setLanguage(lang: Language) {
 }
 
 export interface Translations {
-  // Navigation
+  // Navigation & Topbar
   nav_podcast: string;
   nav_article: string;
   nav_sparks: string;
@@ -32,10 +32,12 @@ export interface Translations {
   search_cmd_k: string;
   theme_dark: string;
   theme_light: string;
+  topbar_architecture: string;
 
   // Hero Section
   hero_name: string;
   hero_role: string;
+  hero_badge: string;
   hero_tagline: string;
   hero_bio_1: string;
   hero_bio_2: string;
@@ -43,6 +45,22 @@ export interface Translations {
   hero_stat_releases: string;
   hero_stat_invariants: string;
   hero_stat_compliance: string;
+  hero_btn_podcast: string;
+  hero_btn_contact: string;
+
+  // Catalog & Media
+  catalog_title: string;
+  catalog_badge: string;
+  catalog_active: string;
+  catalog_listen: string;
+
+  // Articles & Topics
+  articles_title: string;
+  articles_all_topics: string;
+  articles_deontic: string;
+  articles_toc: string;
+  articles_autonomous: string;
+  articles_systems: string;
 
   // Contact
   contact_title: string;
@@ -100,16 +118,32 @@ export const DICTIONARY: Record<Language, Translations> = {
     search_cmd_k: 'Cmd+K',
     theme_dark: 'Тёмная',
     theme_light: 'Светлая',
+    topbar_architecture: 'АРХИТЕКТУРА ENEIK PRODUCTION SYSTEM',
 
     hero_name: 'Дмитрий Ефремов',
-    hero_role: 'Системный философ & Архитектор автономных ИИ-агентов',
+    hero_role: 'Архитектор Eneik Production System & Мыслитель',
+    hero_badge: 'ENEIK PRODUCTION SYSTEM • АВТОНОМНЫЕ СИСТЕМЫ И ДЕЙСТВИЕ',
     hero_tagline: 'Системы, логика мышления и автономные процессы',
-    hero_bio_1: 'Исследую пересечение аналитической философии (модальная логика, онтология, теория познания) и прикладной инженерии распределенных агентских систем.',
-    hero_bio_2: 'Создаю архитектуры, где ИИ-агенты действуют строго в границах инвариантов, исключая галлюцинации и смысловой дрейф через деонтические фильтры и критерий фальсифицируемости Поппера.',
+    hero_bio_1: 'Архитектор Eneik Production System (Brand-OS), исследователь онтологии решений и автор подкаста «Системы и Реальность».',
+    hero_bio_2: 'Исследую пересечение аналитической философии (модальная логика, онтология, теория познания) и прикладной инженерии распределенных агентских систем высокой надежности.',
     hero_manifest: '«Ваш код и ваши решения — это то, кто вы есть на самом деле.»',
     hero_stat_releases: 'Верифицированные выпуски',
     hero_stat_invariants: 'Деонтические инварианты',
     hero_stat_compliance: 'Zero-Cookie Стандарт',
+    hero_btn_podcast: 'СЛУШАТЬ ПОДКАСТ',
+    hero_btn_contact: 'ПРЯМАЯ СВЯЗЬ & ЗАЯВКИ',
+
+    catalog_title: 'КАТАЛОГ ВЫПУСКОВ',
+    catalog_badge: 'ВЫПУСК',
+    catalog_active: 'АКТИВЕН',
+    catalog_listen: 'СЛУШАТЬ →',
+
+    articles_title: 'Эссе и статьи',
+    articles_all_topics: 'Все темы',
+    articles_deontic: 'Деонтическая логика',
+    articles_toc: 'Теория ограничений (TOC)',
+    articles_autonomous: 'Автономные агенты',
+    articles_systems: 'Системная инженерия',
 
     contact_title: 'ТЕРМИНАЛ ПРЯМОЙ СВЯЗИ',
     contact_subtitle: 'Отправка сообщений напрямую в защищённый журнал связи автора без сторонних трекеров.',
@@ -163,16 +197,32 @@ export const DICTIONARY: Record<Language, Translations> = {
     search_cmd_k: 'Cmd+K',
     theme_dark: 'Dark',
     theme_light: 'Light',
+    topbar_architecture: 'ENEIK PRODUCTION SYSTEM ARCHITECTURE',
 
     hero_name: 'Dmitry Efremov',
-    hero_role: 'Systems Philosopher & Autonomous AI Agent Architect',
+    hero_role: 'Eneik Production System Architect & Thinker',
+    hero_badge: 'ENEIK PRODUCTION SYSTEM • AUTONOMOUS SYSTEMS & ACTION',
     hero_tagline: 'Systems, logic of thought, and autonomous processes',
-    hero_bio_1: 'Researching the intersection of analytical philosophy (modal logic, ontology, epistemology) and applied engineering of distributed agent systems.',
-    hero_bio_2: 'Designing architectures where AI agents operate strictly within invariants, eliminating hallucinations and semantic drift through deontic filters and Popperian falsification gates.',
+    hero_bio_1: 'Architect of Eneik Production System (Brand-OS), researcher of ontology of decisions and creator of "Systems & Reality" podcast.',
+    hero_bio_2: 'Researching the intersection of analytical philosophy (modal logic, ontology, epistemology) and applied engineering of high-reliability distributed agent architectures.',
     hero_manifest: '«Your code and your decisions are who you truly are.»',
     hero_stat_releases: 'Verified Episodes',
     hero_stat_invariants: 'Deontic Invariants',
     hero_stat_compliance: 'Zero-Cookie Standard',
+    hero_btn_podcast: 'LISTEN TO PODCAST',
+    hero_btn_contact: 'DIRECT CONTACT & INQUIRIES',
+
+    catalog_title: 'EPISODES CATALOG',
+    catalog_badge: 'EPISODE',
+    catalog_active: 'ACTIVE',
+    catalog_listen: 'LISTEN →',
+
+    articles_title: 'Essays & Articles',
+    articles_all_topics: 'All Topics',
+    articles_deontic: 'Deontic Logic',
+    articles_toc: 'Theory of Constraints (TOC)',
+    articles_autonomous: 'Autonomous Agents',
+    articles_systems: 'Systems Engineering',
 
     contact_title: 'DIRECT CONTACT TERMINAL',
     contact_subtitle: 'Direct message dispatch into the author’s secure communication journal with zero third-party trackers.',
@@ -226,16 +276,32 @@ export const DICTIONARY: Record<Language, Translations> = {
     search_cmd_k: 'Cmd+K',
     theme_dark: 'მუქი',
     theme_light: 'ნათელი',
+    topbar_architecture: 'ENEIK PRODUCTION SYSTEM არქიტექტურა',
 
     hero_name: 'დიმიტრი ეფრემოვი',
-    hero_role: 'სისტემური ფილოსოფოსი და ავტონომიური AI აგენტების არქიტექტორი',
+    hero_role: 'Eneik Production System-ის არქიტექტორი და მოაზროვნე',
+    hero_badge: 'ENEIK PRODUCTION SYSTEM • ავტონომიური სისტემები და მოქმედება',
     hero_tagline: 'სისტემები, აზროვნების ლოგიკა და ავტონომიური პროცესები',
-    hero_bio_1: 'ვიკვლევ ანალიტიკური ფილოსოფიის (მოდალური ლოგიკა, ონტოლოგია, შემეცნების თეორია) და განაწილებული აგენტური სისტემების გამოყენებითი ინჟინერიის გადაკვეთას.',
-    hero_bio_2: 'ვქმნი არქიტექტურებს, სადაც AI აგენტები მოქმედებენ მკაცრად ინვარიანტების ფარგლებში, დეონტური ფილტრებითა და პოპერის ფალსიფიცირებადობის კრიტერიუმით ჰალუცინაციებისა და სემანტიკური დრეიფის გამორიცხვით.',
+    hero_bio_1: 'Eneik Production System-ის (Brand-OS) არქიტექტორი, გადაწყვეტილებათა ონტოლოგიის მკვლევარი და პოდკასტის «სისტემები და რეალობა» ავტორი.',
+    hero_bio_2: 'ვიკვლევ ანალიტიკური ფილოსოფიის (მოდალური ლოგიკა, ონტოლოგია, შემეცნების თეორია) და მაღალი საიმედოობის განაწილებული აგენტური სისტემების საინჟინრო გადაკვეთას.',
     hero_manifest: '«თქვენი კოდი და თქვენი გადაწყვეტილებები — ეს არის ის, რაც სინამდვილეში ხართ.»',
     hero_stat_releases: 'ვერიფიცირებული გამოშვებები',
     hero_stat_invariants: 'დეონტური ინვარიანტები',
     hero_stat_compliance: 'Zero-Cookie სტანდარტი',
+    hero_btn_podcast: 'პოდკასტის მოსმენა',
+    hero_btn_contact: 'პირდაპირი კავშირი და განაცხადები',
+
+    catalog_title: 'გამოშვებების კატალოგი',
+    catalog_badge: 'გამოშვება',
+    catalog_active: 'აქტიური',
+    catalog_listen: 'მოსმენა →',
+
+    articles_title: 'ესეები და სტატიები',
+    articles_all_topics: 'ყველა თემა',
+    articles_deontic: 'დეონტური ლოგიკა',
+    articles_toc: 'შეზღუდვების თეორია (TOC)',
+    articles_autonomous: 'ავტონომიური აგენტები',
+    articles_systems: 'სისტემური ინჟინერია',
 
     contact_title: 'პირდაპირი კავშირის ტერმინალი',
     contact_subtitle: 'შეტყობინებების გაგზავნა პირდაპირ ავტორის დაცულ ჟურნალში მესამე მხარის თრექერების გარეშე.',

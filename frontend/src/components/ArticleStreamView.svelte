@@ -3,7 +3,7 @@
   import { parseMarkdown } from '../lib/markdown';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
   import { fetchEssaysFromApi, INITIAL_ESSAYS, getLocalizedEssay, type EssayArticleItem } from '../lib/essays';
-  import { currentLanguage } from '../lib/i18n';
+  import { currentLanguage, t } from '../lib/i18n';
   import { fetchSparksFromApi } from '../lib/sparks';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import SeoMeta from './SeoMeta.svelte';
@@ -170,7 +170,7 @@
     <div>
       <h2 class="text-xl font-bold tracking-tight text-white">
         <span class="sr-only">Articles & Thought Stream</span>
-        <span>Эссе и статьи</span>
+        <span>{t($currentLanguage).articles_title}</span>
       </h2>
     </div>
 
@@ -181,14 +181,14 @@
         class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'all' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
         on:click={() => (filterTopic = 'all')}
       >
-        <span>{$currentLanguage === 'ru' ? 'Все темы' : ($currentLanguage === 'ka' ? 'ყველა თემა' : 'All Topics')}</span>
+        <span>{t($currentLanguage).articles_all_topics}</span>
       </button>
       <button
         type="button"
         class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'deontic' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
         on:click={() => (filterTopic = 'deontic')}
       >
-        <span>{$currentLanguage === 'ru' ? 'Деонтическая логика' : ($currentLanguage === 'ka' ? 'დეონტური ლოგიკა' : 'Deontic Logic')}</span>
+        <span>{t($currentLanguage).articles_deontic}</span>
       </button>
       <button
         type="button"
@@ -196,7 +196,7 @@
         on:click={() => (filterTopic = 'toc')}
       >
         <span class="sr-only">Theory of Constraints</span>
-        <span>{$currentLanguage === 'ru' ? 'Теория ограничений (TOC)' : ($currentLanguage === 'ka' ? 'შეზღუდვების თეორია (TOC)' : 'Theory of Constraints (TOC)')}</span>
+        <span>{t($currentLanguage).articles_toc}</span>
       </button>
       <button
         type="button"
