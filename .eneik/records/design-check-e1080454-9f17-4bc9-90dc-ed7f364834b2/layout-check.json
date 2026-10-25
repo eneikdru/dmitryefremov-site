@@ -1,0 +1,93 @@
+[
+  {
+    "id": "conceptual-navigator-root",
+    "left": 176,
+    "top": 527,
+    "width": 1088,
+    "height": 1898
+  },
+  {
+    "id": "conceptual-navigator-header",
+    "left": 176,
+    "top": 527,
+    "width": 1088,
+    "height": 91
+  },
+  {
+    "id": "navigator-title",
+    "left": 251,
+    "top": 550,
+    "width": 555,
+    "height": 28
+  },
+  {
+    "id": "omni-search-section",
+    "left": 176,
+    "top": 642,
+    "width": 1088,
+    "height": 92
+  },
+  {
+    "id": "probes-bar",
+    "left": 176,
+    "top": 700,
+    "width": 1088,
+    "height": 34
+  },
+  {
+    "id": "domain-filters-bar",
+    "left": 176,
+    "top": 758,
+    "width": 1088,
+    "height": 46
+  },
+  {
+    "id": "radar-field-card",
+    "left": 176,
+    "top": 828,
+    "width": 1088,
+    "height": 374
+  },
+  {
+    "id": "toggle-2d",
+    "left": 1106,
+    "top": 860,
+    "width": 82,
+    "height": 24
+  },
+  {
+    "id": "toggle-list",
+    "left": 1187,
+    "top": 860,
+    "width": 53,
+    "height": 24
+  },
+  {
+    "id": "manifestos-stream-section",
+    "left": 176,
+    "top": 1226,
+    "width": 1088,
+    "height": 1199
+  },
+  {
+    "id": "manifesto-card-cyborg-manifesto",
+    "left": 176,
+    "top": 1292,
+    "width": 1088,
+    "height": 257
+  },
+  {
+    "id": "manifesto-card-solarpunk-manifesto",
+    "left": 176,
+    "top": 1565,
+    "width": 1088,
+    "height": 315
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 2465,
+    "width": 1088,
+    "height": 49
+  }
+]
