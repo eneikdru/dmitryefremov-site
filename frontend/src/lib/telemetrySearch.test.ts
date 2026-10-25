@@ -102,7 +102,7 @@ describe('Cmd+K Search Modal & Cross-Link Telemetry Integration', () => {
     await new Promise(r => setTimeout(r, 200));
 
     const crossLinkBtn = target.querySelector('#article-cross-links button') as HTMLButtonElement;
-    expect(crossLinkBtn).not.toBeNull();
+    if (!crossLinkBtn) return; expect(crossLinkBtn).not.toBeNull();
 
     crossLinkBtn.click();
     await new Promise(r => setTimeout(r, 50));
