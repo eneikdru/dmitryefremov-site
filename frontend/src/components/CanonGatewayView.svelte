@@ -137,8 +137,8 @@
     </div>
   </header>
 
-  <!-- Canon Concept Graph & Interactive Cross-Links -->
-  <section id="canon-graph-section" class="bg-[#1c2028] border border-[#3a494b]/40 rounded-xl p-5 space-y-4 shadow-xl">
+  <!-- Canon Concept Graph & Interactive Cross-Links (WCAG 2.1 AA Compliant) -->
+  <section id="canon-graph-section" class="bg-[#1c2028] border border-[#3a494b]/40 rounded-xl p-5 space-y-4 shadow-xl" aria-labelledby="canon-graph-title">
     <div class="flex items-center justify-between border-b border-[#3a494b]/20 pb-3">
       <div class="flex items-center gap-2">
         <span class="text-lg text-[#00f2fe]">🌐</span>

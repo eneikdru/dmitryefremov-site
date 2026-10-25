@@ -183,6 +183,7 @@
           on:input={handleSearchInput}
           on:keydown={handleListKeydown}
           placeholder="Поиск по Канону, эссе, подкастам (Cmd+K / Ctrl+K)..."
+          aria-label="Поиск по Канону, эссе, подкастам"
           class="w-full bg-transparent border-0 focus:outline-none focus:ring-2 focus:ring-[#00f0ff] rounded px-2 py-1 text-sm font-mono placeholder:text-[#849495] {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}"
           autocomplete="off"
         />

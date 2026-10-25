@@ -1,0 +1,198 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 2892
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 176,
+    "top": 37,
+    "width": 127,
+    "height": 26
+  },
+  {
+    "id": "cmd-k-trigger-btn",
+    "left": 980,
+    "top": 32,
+    "width": 137,
+    "height": 36
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1129,
+    "top": 35,
+    "width": 135,
+    "height": 30
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 109,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 209,
+    "top": 142,
+    "width": 208,
+    "height": 208
+  },
+  {
+    "id": "hero-avatar-img",
+    "left": 211,
+    "top": 144,
+    "width": 204,
+    "height": 204
+  },
+  {
+    "id": "hero-title",
+    "left": 449,
+    "top": 168,
+    "width": 782,
+    "height": 48
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 437,
+    "width": 865,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 183,
+    "top": 444,
+    "width": 185,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 376,
+    "top": 444,
+    "width": 141,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-sparks",
+    "left": 524,
+    "top": 444,
+    "width": 162,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 694,
+    "top": 444,
+    "width": 177,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-canon",
+    "left": 879,
+    "top": 444,
+    "width": 155,
+    "height": 36
+  },
+  {
+    "id": "canon-gateway-root",
+    "left": 176,
+    "top": 527,
+    "width": 1088,
+    "height": 2244
+  },
+  {
+    "id": "canon-gateway-header",
+    "left": 176,
+    "top": 527,
+    "width": 1088,
+    "height": 80
+  },
+  {
+    "id": "canon-graph-section",
+    "left": 176,
+    "top": 631,
+    "width": 1088,
+    "height": 268
+  },
+  {
+    "id": "crosslink-to-podcast-1",
+    "left": 210,
+    "top": 839,
+    "width": 102,
+    "height": 26
+  },
+  {
+    "id": "crosslink-to-essay-1",
+    "left": 318,
+    "top": 839,
+    "width": 72,
+    "height": 26
+  },
+  {
+    "id": "crosslink-to-podcast-2",
+    "left": 563,
+    "top": 839,
+    "width": 102,
+    "height": 26
+  },
+  {
+    "id": "crosslink-to-spark-1",
+    "left": 671,
+    "top": 839,
+    "width": 78,
+    "height": 26
+  },
+  {
+    "id": "ingress-gateway-card",
+    "left": 176,
+    "top": 923,
+    "width": 1088,
+    "height": 213
+  },
+  {
+    "id": "filter-pills-bar",
+    "left": 176,
+    "top": 1160,
+    "width": 1088,
+    "height": 30
+  },
+  {
+    "id": "routes-list-section",
+    "left": 176,
+    "top": 1214,
+    "width": 1088,
+    "height": 1152
+  },
+  {
+    "id": "cmd-k-search-modal",
+    "left": 384,
+    "top": 136,
+    "width": 672,
+    "height": 236
+  },
+  {
+    "id": "canon-search-input",
+    "left": 435,
+    "top": 153,
+    "width": 526,
+    "height": 28
+  },
+  {
+    "id": "canon-search-results",
+    "left": 385,
+    "top": 198,
+    "width": 670,
+    "height": 131
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 2811,
+    "width": 1088,
+    "height": 49
+  }
+]
