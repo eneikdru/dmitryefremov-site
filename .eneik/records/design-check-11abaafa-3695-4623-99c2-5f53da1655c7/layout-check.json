@@ -1,0 +1,65 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -822,
+    "width": 1440,
+    "height": 1722
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": -713,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": -385,
+    "width": 865,
+    "height": 50
+  },
+  {
+    "id": "contact-terminal-root",
+    "left": 336,
+    "top": -295,
+    "width": 768,
+    "height": 1074
+  },
+  {
+    "id": "core-identity-card",
+    "left": 336,
+    "top": -220,
+    "width": 768,
+    "height": 688
+  },
+  {
+    "id": "contact-form-container",
+    "left": 336,
+    "top": 492,
+    "width": 768,
+    "height": 287
+  },
+  {
+    "id": "contact-form-heading",
+    "left": 394,
+    "top": 517,
+    "width": 381,
+    "height": 28
+  },
+  {
+    "id": "contact-success-alert",
+    "left": 361,
+    "top": 593,
+    "width": 718,
+    "height": 161
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 819,
+    "width": 1088,
+    "height": 49
+  }
+]
