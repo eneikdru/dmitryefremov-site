@@ -173,11 +173,11 @@
     <!-- Available Longreads List & Telegram Sparks Feed -->
     <div id="longreads-list-section" class="md:col-span-5 space-y-6">
       <div class="space-y-3">
-              <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
-        <span class="sr-only">AVAILABLE_LONGREADS ({filteredArticles.length})</span>
-        <span class="font-medium text-white">Статьи</span>
-        <span>SELECT_TO_READ</span>
-      </div>
+        <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
+          <span class="sr-only">AVAILABLE_LONGREADS ({filteredArticles.length})</span>
+          <span class="font-medium text-white">Статьи</span>
+          <span class="sr-only">SELECT_TO_READ</span>
+        </div>
 
         {#if filteredArticles.length === 0}
           <div id="articles-empty-state" class="p-8 text-center rounded-xl border border-dashed border-[#1f2433] bg-[#090a0f] font-mono text-sm text-[#94a3b8]">
@@ -195,7 +195,6 @@
                   <span class="px-1.5 py-0.5 rounded bg-[#1f2433] text-[#38bdf8] uppercase">
                     {article.topic}
                   </span>
-                  <span class="text-[#64748b]">{article.readTime}</span>
                 </div>
                 <h3 class="font-bold text-white text-base mb-1 hover:text-[#38bdf8] transition-colors">
                   {article.title}
@@ -260,7 +259,7 @@
           <header id="article-header" class="border-b border-[#1f2433] pb-4 mb-4 space-y-3">
             <div class="flex items-center justify-between gap-2">
               <span class="text-xs font-mono text-[#38bdf8] uppercase">{selectedArticle.topic}</span>
-              <span class="text-xs font-mono text-[#94a3b8]">{selectedArticle.id}</span>
+              <span class="text-xs font-mono text-[#64748b]">{selectedArticle.publishedAt || ''}</span>
             </div>
             <div id="article-cover-container" class="w-full h-32 sm:h-40 rounded-lg overflow-hidden border border-[#38bdf8]/30">
               <ResponsivePicture
@@ -273,15 +272,14 @@
             </div>
             <h1 class="text-2xl font-bold tracking-tight text-white">{selectedArticle.title}</h1>
             <div class="flex items-center justify-between text-xs text-[#94a3b8] font-mono">
-              <span>Author: Dmitry Efremov</span>
-              <span>Scroll Depth Logged: {trackedThresholds.size}/4</span>
+              <span>Дмитрий Ефремов</span>
             </div>
           </header>
 
           <!-- Progress Indicator -->
           <div class="mb-4">
             <div class="flex justify-between text-xs font-mono text-[#94a3b8] mb-1">
-              <span>READ_PROGRESS</span>
+              <span>Прогресс</span>
               <span>{currentPercentage}%</span>
             </div>
             <div class="w-full bg-[#12151e] h-2 rounded overflow-hidden border border-[#1f2433]">

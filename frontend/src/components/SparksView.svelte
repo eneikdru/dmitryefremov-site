@@ -90,18 +90,9 @@
     id="sparks-header"
     class="sticky top-0 z-50 flex justify-between items-center w-full px-4 h-12 max-w-[680px] mx-auto backdrop-blur-md border-b {theme === 'dark' ? 'bg-[#0c0e12]/90 border-[#514532]/30' : 'bg-white/90 border-[#cbd5e1]'}"
   >
-    <!-- Brand Logo & Live Pulse -->
+    <!-- Brand Logo -->
     <div class="flex items-center space-x-2">
-      
       <h1 class="text-lg font-bold tracking-tight text-[#ffb300] select-none font-mono">SPARKS</h1>
-      <!-- Stream Pulse Telemetry Badge -->
-      <span
-        id="pulse-badge"
-        class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ffb300]/10 border border-[#ffb300]/30 text-[#ffb300] text-xs font-mono font-medium ml-1.5 animate-pulse"
-      >
-        <span class="w-1.5 h-1.5 rounded-full bg-[#ffb300] mr-1.5" aria-hidden="true"></span>
-        {telemetry.sparksPerMinute} spk/m
-      </span>
     </div>
 
     <!-- Trailing Actions & Stream Switcher -->
@@ -170,22 +161,6 @@
       </div>
     </div>
   {/if}
-
-  <!-- Velocity Status Ribbon & Micro-Counter -->
-  <section
-    id="velocity-ribbon"
-    class="w-full px-4 py-2 flex items-center justify-between border-b text-xs font-mono {theme === 'dark' ? 'bg-[#0c0e12]/80 border-[#514532]/20 text-[#d6c4ac]' : 'bg-[#f8fafc]/80 border-[#e2e8f0] text-[#475569]'}"
-  >
-    <div class="flex items-center space-x-2">
-      <span class="text-[#00d6e3] font-bold" aria-hidden="true"></span>
-      <span>THROUGHPUT: <strong class="text-[#00d6e3] font-bold">{telemetry.throughputWpm} WPM</strong></span>
-    </div>
-    <div class="flex items-center space-x-1.5 px-2 py-0.5 rounded border {theme === 'dark' ? 'bg-[#282a2e]/60 border-[#514532]/30 text-[#e2e2e8]' : 'bg-white border-[#cbd5e1] text-[#0f172a]'}">
-      <span class="text-[#ffb300] font-bold text-xs" aria-hidden="true"></span>
-      <span class="font-bold">{telemetry.consumedToday} sparks</span>
-      <span class="opacity-70">consumed today</span>
-    </div>
-  </section>
 
   <!-- Horizontal Filter Rail (Categorical Stream Rails) -->
   <nav
