@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Contact API Contract
-  description: API specification for Dmitry Efremov's direct contact submissions and email acknowledgement system.
+  title: Direct Contact Submission API Contract
+  description: Shared API specification for Dmitry Efremov's direct contact form submission and query system. Defines endpoints and schemas for direct messages from site visitors and clients.
   version: 1.0.0
 servers:
   - url: /
@@ -10,24 +10,85 @@ servers:
 paths:
   /api/v1/contact:
     post:
-      summary: Submit a direct contact message
-      description: Receives and saves direct contact submissions from web visitors or clients, and triggers an email acknowledgement dispatch to the sender.
+      summary: Submit a contact message
+      description: Submits a direct contact message or inquiry to Dmitry Efremov. Validates payload fields, saves message, and dispatches an email acknowledgement.
       operationId: submitContactMessage
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContactRequest'
+              $ref: '#/components/schemas/ContactSubmissionRequest'
       responses:
         '201':
-          description: Contact message submitted and processed successfully
+          description: Contact message submitted successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactResponse'
+                $ref: '#/components/schemas/ContactSubmissionResponse'
         '400':
-          description: Invalid request payload or validation failure
+          description: Invalid request payload or validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable entity due to business rule validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: Query contact messages status and history
+      description: Retrieves a paginated list of contact messages (filtered by sender email or processing status).
+      operationId: listContactMessages
+      parameters:
+        - name: senderEmail
+          in: query
+          description: Filter contact messages by sender email address
+          required: false
+          schema:
+            type: string
+            format: email
+        - name: status
+          in: query
+          description: Filter contact messages by status
+          required: false
+          schema:
+            $ref: '#/components/schemas/ContactStatus'
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successfully retrieved contact messages list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessagePage'
+        '400':
+          description: Invalid query parameters
           content:
             application/json:
               schema:
@@ -49,16 +110,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContactRequest'
+              $ref: '#/components/schemas/ContactSubmissionRequest'
       responses:
         '201':
-          description: Contact message submitted and processed successfully
+          description: Contact message submitted successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactResponse'
+                $ref: '#/components/schemas/ContactSubmissionResponse'
         '400':
-          description: Invalid request payload or validation failure
+          description: Invalid request payload or validation errors
           content:
             application/json:
               schema:
@@ -73,25 +134,31 @@ paths:
   /api/v1/contact/{id}:
     get:
       summary: Get contact message details by ID
-      description: Retrieves details of a specific contact submission by its unique identifier.
-      operationId: getContactById
+      description: Retrieves details of a specific contact message by its unique ID.
+      operationId: getContactMessageById
       parameters:
         - name: id
           in: path
           required: true
-          description: Unique numeric ID of the contact message
+          description: Unique identifier of the contact message
           schema:
             type: integer
             format: int64
       responses:
         '200':
-          description: Contact message found
+          description: Contact message details found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactResponse'
+                $ref: '#/components/schemas/ContactSubmissionResponse'
         '404':
           description: Contact message not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
           content:
             application/json:
               schema:
@@ -99,7 +166,16 @@ paths:
 
 components:
   schemas:
-    ContactRequest:
+    ContactStatus:
+      type: string
+      enum:
+        - NEW
+        - IN_REVIEW
+        - PROCESSED
+        - ARCHIVED
+      description: Processing status of the submitted contact message
+
+    ContactSubmissionRequest:
       type: object
       required:
         - senderName
@@ -108,29 +184,30 @@ components:
       properties:
         senderName:
           type: string
-          minLength: 1
+          minLength: 2
           maxLength: 255
-          example: "Alice Smith"
-          description: Full name or pseudonym of the sender
+          example: "Alex Mercer"
+          description: Full name of the person submitting the contact message
         senderEmail:
           type: string
           format: email
           maxLength: 255
-          example: "alice@example.com"
-          description: Sender email address to receive acknowledgement
+          example: "alex@example.com"
+          description: Valid contact email address for receiving responses
         subject:
           type: string
+          nullable: true
           maxLength: 255
-          example: "Collaboration inquiry"
-          description: Optional subject or topic of the message
+          example: "Inquiry regarding architectural advisory"
+          description: Optional subject line for the message
         content:
           type: string
           minLength: 1
           maxLength: 10000
-          example: "Hello Dmitry, I would like to discuss potential collaboration opportunities."
-          description: Main body or message content submitted
+          example: "Hello Dmitry, I would like to discuss potential collaboration on AI-agent architecture."
+          description: Detailed body content of the contact submission
 
-    ContactResponse:
+    ContactSubmissionResponse:
       type: object
       required:
         - id
@@ -145,35 +222,62 @@ components:
         id:
           type: integer
           format: int64
-          example: 101
+          example: 42
         senderName:
           type: string
-          example: "Alice Smith"
+          example: "Alex Mercer"
         senderEmail:
           type: string
           format: email
-          example: "alice@example.com"
+          example: "alex@example.com"
         subject:
           type: string
-          example: "Collaboration inquiry"
+          nullable: true
+          example: "Inquiry regarding architectural advisory"
         content:
           type: string
-          example: "Hello Dmitry, I would like to discuss potential collaboration opportunities."
+          example: "Hello Dmitry, I would like to discuss potential collaboration on AI-agent architecture."
         status:
-          type: string
-          example: "PROCESSED"
+          $ref: '#/components/schemas/ContactStatus'
         acknowledgementSent:
           type: boolean
           example: true
-          description: Indicates if an email acknowledgement was dispatched
+          description: Indicates whether an email acknowledgement was dispatched
         createdAt:
           type: string
           format: date-time
-          example: "2026-10-25T00:00:00Z"
+          example: "2026-10-25T12:00:00Z"
         updatedAt:
           type: string
           format: date-time
-          example: "2026-10-25T00:00:00Z"
+          example: "2026-10-25T12:00:00Z"
+
+    ContactMessagePage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactSubmissionResponse'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 1
+        totalPages:
+          type: integer
+          example: 1
 
     ValidationError:
       type: object
@@ -200,11 +304,11 @@ components:
           example: 400
         message:
           type: string
-          example: "Validation failed for contact request payload"
+          example: "Validation failed for contact submission payload"
         timestamp:
           type: string
           format: date-time
-          example: "2026-10-25T00:00:00Z"
+          example: "2026-10-25T12:00:00Z"
         errors:
           type: array
           items:

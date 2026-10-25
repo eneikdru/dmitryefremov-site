@@ -5,8 +5,8 @@ Verifies that:
 1. File exists and is valid YAML.
 2. OpenAPI version is 3.0.x.
 3. Required endpoints (/api/v1/contact, /api/contact, /api/v1/contact/{id}) are defined.
-4. Schemas for ContactRequest, ContactResponse, and ErrorResponse are present.
-5. ContactRequest schema explicitly enforces validation rules.
+4. Schemas for ContactSubmissionRequest, ContactSubmissionResponse, and ErrorResponse are present.
+5. ContactSubmissionRequest schema explicitly enforces validation rules.
 """
 
 import sys
@@ -42,19 +42,19 @@ def main():
     schemas = components.get("schemas", {})
 
     required_schemas = [
-        "ContactRequest",
-        "ContactResponse",
+        "ContactSubmissionRequest",
+        "ContactSubmissionResponse",
         "ErrorResponse",
         "ValidationError"
     ]
     for req_schema in required_schemas:
         assert req_schema in schemas, f"Missing schema definition for {req_schema}"
 
-    # 4. Check ContactRequest validation rules
-    contact_req = schemas["ContactRequest"]
+    # 4. Check ContactSubmissionRequest validation rules
+    contact_req = schemas["ContactSubmissionRequest"]
     required_fields = contact_req.get("required", [])
     for required_prop in ["senderName", "senderEmail", "content"]:
-        assert required_prop in required_fields, f"ContactRequest missing required field '{required_prop}'"
+        assert required_prop in required_fields, f"ContactSubmissionRequest missing required field '{required_prop}'"
 
     props = contact_req.get("properties", {})
     email_prop = props.get("senderEmail", {})
