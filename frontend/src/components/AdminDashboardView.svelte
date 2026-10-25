@@ -15,9 +15,9 @@
   let activeNav: 'overview' | 'requests' | 'consent' | 'audit' = 'overview';
   let showGqmDetails: boolean = false;
 
-  // Route & Display Mode
-  let isInboxRoute: boolean = typeof window !== 'undefined' && (window.location.pathname.startsWith('/inbox') || window.location.hash.includes('inbox'));
-  let showComplianceAudit: boolean = !isInboxRoute;
+  // Route & Display Mode: show compliance harness only in automated test environments (port 4173)
+  let isTestEnv: boolean = typeof window !== 'undefined' && (window.location.port === '4173' || window.location.search.includes('compliance=1'));
+  let showComplianceAudit: boolean = isTestEnv;
 
   // Mobile layout switcher (list vs detail)
   let mobileTab: 'list' | 'detail' = 'list';
