@@ -295,6 +295,22 @@
           <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Все права защищены.</span>
         </div>
         <div class="flex items-center gap-6">
+          <a
+            href="https://t.me/efremov_mvp"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-current transition-colors cursor-pointer"
+          >
+            Telegram
+          </a>
+          <a
+            href="https://youtube.com/@dmitrii.efremov"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-current transition-colors cursor-pointer"
+          >
+            YouTube
+          </a>
           <button
             id="cmp-persistent-link"
             type="button"

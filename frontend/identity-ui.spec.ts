@@ -22,11 +22,11 @@ test.describe('Core Identity and Essay Reader Verification', () => {
     await page.click('#tab-btn-article');
 
     // Click on the third article
-    await page.locator('text=Deterministic State Determinism').first().click();
+    await page.locator('text=Деонтическая логика в автономии').first().click();
 
     // Verify Essay reader fetches and renders content (based on trace)
-    await expect(page.locator('text=Deterministic State Determinism in Autonomous Loops').first()).toBeVisible();
-    await expect(page.locator('text=Replayability Condition').first()).toBeVisible();
+    await expect(page.locator('text=Деонтическая логика').first()).toBeVisible();
+    await expect(page.locator('text=Модальные операторы O(p) и P(p) в автономных системах.').first()).toBeVisible();
 
     // Verify Core Identity renders correctly (contact) by switching to contact tab
     await page.click('#tab-btn-contact');

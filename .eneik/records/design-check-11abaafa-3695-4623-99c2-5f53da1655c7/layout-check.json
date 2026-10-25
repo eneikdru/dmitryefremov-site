@@ -1,0 +1,121 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 1411
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 176,
+    "top": 37,
+    "width": 127,
+    "height": 26
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1129,
+    "top": 35,
+    "width": 135,
+    "height": 30
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 109,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 209,
+    "top": 142,
+    "width": 208,
+    "height": 208
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 437,
+    "width": 865,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 694,
+    "top": 444,
+    "width": 177,
+    "height": 36
+  },
+  {
+    "id": "content-view",
+    "left": 176,
+    "top": 527,
+    "width": 1088,
+    "height": 763
+  },
+  {
+    "id": "contact-terminal-root",
+    "left": 336,
+    "top": 527,
+    "width": 768,
+    "height": 763
+  },
+  {
+    "id": "contact-tab-card-btn",
+    "left": 515,
+    "top": 532,
+    "width": 227,
+    "height": 32
+  },
+  {
+    "id": "contact-tab-intake-btn",
+    "left": 742,
+    "top": 532,
+    "width": 184,
+    "height": 32
+  },
+  {
+    "id": "core-identity-card",
+    "left": 336,
+    "top": 602,
+    "width": 768,
+    "height": 688
+  },
+  {
+    "id": "identity-card-header",
+    "left": 369,
+    "top": 635,
+    "width": 702,
+    "height": 111
+  },
+  {
+    "id": "identity-links-section",
+    "left": 369,
+    "top": 770,
+    "width": 702,
+    "height": 430
+  },
+  {
+    "id": "identity-card-footer",
+    "left": 369,
+    "top": 1224,
+    "width": 702,
+    "height": 33
+  },
+  {
+    "id": "vault-intake-root",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 1330,
+    "width": 1088,
+    "height": 49
+  }
+]
