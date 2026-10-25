@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.1",
+  "name": "Dmitry Efremov Personal Portal & Systems Architecture Gateway",
+  "description": "Autonomous Agent Gateway for Dmitry Efremov's systems philosophy, architecture invariants, research essays, podcasts, and dynamic context synthesis.",
+  "author": "Dmitry Efremov",
+  "domain": "dmitryefremov.com",
+  "capabilities": {
+    "canon_context_synthesis": {
+      "endpoint": "https://dmitryefremov.com/api/v1/canon/context",
+      "method": "GET",
+      "formats": ["text/markdown", "application/json"],
+      "parameters": {
+        "task": "Technical task description (e.g. 'master schedule and break intervals in tbilisi tz')",
+        "budget": "Token budget cap for invariant slice (default 1500)",
+        "format": "Response format: 'markdown' (default) or 'json'"
+      },
+      "description": "Dynamic context synthesizer using Spreading Activation with Distance Decay (lambda=0.70) across Efremov Invariant Canon. Eliminates context bloat and injects rigorous deontic gates and falsification test requirements."
+    },
+    "contact_intake": {
+      "endpoint": "https://dmitryefremov.com/api/intake",
+      "method": "POST",
+      "format": "application/json",
+      "fields": ["name", "email", "message"]
+    },
+    "llms_documentation": {
+      "endpoint": "https://dmitryefremov.com/llms.txt",
+      "method": "GET",
+      "format": "text/markdown"
+    }
+  }
+}

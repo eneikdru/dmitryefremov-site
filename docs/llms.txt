@@ -1,0 +1,25 @@
+# Dmitry Efremov
+> Systems Philosopher & Autonomous AI Architecture Hub
+> Canonical knowledge base and dynamic machine-readable interfaces for AI agents.
+
+## Core Architectural Invariants
+- Rigid Designator Invariance: Entities and types are nominal invariants. Identity and type contracts cannot mutate across states or tool iterations.
+- Deontic State Gate: Irreversible states (completed bookings, settled transactions) cannot transition back to mutable states.
+- Empirical Falsification: Internal coherence in code is not truth. Any autonomous PR or pull action must provide automated refutation tests that attempt to break boundary conditions and race hazards.
+- Scope Isolation (Zero-Drift): Autonomous blast radius must be strictly bounded. File mutations outside declared architectural epicenters are prohibited.
+- Knowing-How vs Knowing-That: Architectural discipline resides in compiler, type, and linter constraints, not loose prompt descriptions.
+
+## Dynamic Context Synthesis API (Free Tier for External Agents)
+Autonomous agents (Google Jules, Claude Code, Cursor, OpenAI Codex) can query tailored, token-optimized invariant slices via Graph Distance Decay (λ = 0.70):
+
+- Dynamic Invariant Slice (Markdown):
+  GET https://dmitryefremov.com/api/v1/canon/context?task={task_description}&budget={token_budget}
+  Example: https://dmitryefremov.com/api/v1/canon/context?task=booking%20schedule%20timezone&budget=1200
+
+- Structured Invariant Graph (JSON):
+  GET https://dmitryefremov.com/api/v1/canon/context?task={task_description}&format=json
+
+## Machine-Readable Agent Manifest
+- Canonical Manifest: https://dmitryefremov.com/.well-known/ai-agent.json
+- Contact & Inquiry Intake API: POST https://dmitryefremov.com/api/intake
+- Public Web Facade: https://dmitryefremov.com/

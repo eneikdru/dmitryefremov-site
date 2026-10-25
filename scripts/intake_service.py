@@ -10,6 +10,7 @@ import json
 import time
 import uuid
 import datetime
+import urllib.parse
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 
@@ -183,6 +184,42 @@ class IntakeHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+        query_params = urllib.parse.parse_qs(parsed.query)
+
+        if path in ("/api/v1/canon/context", "/api/v1/agent/slice", "/api/canon/context"):
+            task_query = query_params.get("task", [""])[0] or query_params.get("q", ["general architectural task"])[0]
+            budget_str = query_params.get("budget", query_params.get("token_budget", ["1500"]))[0]
+            try:
+                budget = int(budget_str)
+            except Exception:
+                budget = 1500
+
+            format_type = query_params.get("format", ["markdown"])[0].lower()
+
+            try:
+                from philosopher_synthesizer import synthesizer
+                result = synthesizer.synthesize_context(task_query, token_budget=budget)
+                self.send_response(200)
+                self._send_cors_headers()
+
+                if format_type == "json":
+                    self.send_header("Content-Type", "application/json; charset=utf-8")
+                    self.end_headers()
+                    self.wfile.write(json.dumps(result, ensure_ascii=False).encode("utf-8"))
+                else:
+                    self.send_header("Content-Type", "text/markdown; charset=utf-8; variant=efremov")
+                    self.end_headers()
+                    self.wfile.write(result["markdown"].encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+            return
+
         if self.path in ("/health", "/api/health"):
             self.send_response(200)
             self._send_cors_headers()
