@@ -82,7 +82,16 @@
     }
   }
 
+  
+  function handleGlobalShortcut(e: KeyboardEvent) {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      isSearchModalOpen = !isSearchModalOpen;
+    }
+  }
+
   onMount(() => {
+    window.addEventListener('keydown', handleGlobalShortcut);
     updateRoute();
     const handlePopState = () => updateRoute();
     window.addEventListener('popstate', handlePopState);
@@ -98,6 +107,7 @@
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('keydown', handleGlobalShortcut);
     };
   });
 
@@ -186,17 +196,17 @@
               </button>
             </div>
 
-            <!-- Cmd+K Search Trigger -->
+            <!-- Clean Search Trigger (Accessible, no misleading browser shortcut prompt) -->
             <button
               id="cmd-k-trigger-btn"
               type="button"
               on:click={() => (isSearchModalOpen = true)}
               aria-label="Поиск по Канону (Cmd+K)"
-              class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#d4af37] {theme === 'dark' ? 'bg-[#12151d] text-[#dfe2ef] border-[#1f2433] hover:border-[#d4af37]/60' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
+              class="px-4 py-2 rounded-xl text-sm font-semibold border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#d4af37] shadow-sm {theme === 'dark' ? 'bg-[#161c28] text-[#f1f5f9] border-[#2d3748] hover:border-[#d4af37]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#181c26]'}"
             >
-              <span class="text-[#d4af37]">🔍</span>
-              <span>{t($currentLanguage).search_btn}</span>
-              <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] rounded font-mono border text-[#849495] {theme === 'dark' ? 'bg-[#0a0e17] border-[#3b494b]/40 text-[#00f0ff]' : 'bg-[#e2e8f0] border-[#cbd5e1]'}">Cmd+K</kbd>
+              <span class="text-base text-[#d4af37]" aria-hidden="true">🔍</span>
+              <span class="font-bold tracking-wide">ПОИСК</span>
+              <span class="sr-only">Cmd+K</span>
             </button>
 
             <!-- Theme Toggle -->
@@ -242,15 +252,15 @@
                     {$currentLanguage === 'ru' ? 'Философия действия' : ($currentLanguage === 'ka' ? 'მოქმედების ფილოსოფია' : 'Philosophy of Action')}
                   </span>
                 </div>
-                <h1 id="hero-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
+                <h1 id="hero-title" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
                   {t($currentLanguage).hero_name}
                 </h1>
-                <p id="hero-subtitle" class="text-base sm:text-lg font-mono font-medium {theme === 'dark' ? 'text-[#e5c158]' : 'text-[#9c7816]'}">
+                <p id="hero-subtitle" class="text-lg sm:text-xl font-mono font-semibold {theme === 'dark' ? 'text-[#e5c158]' : 'text-[#9c7816]'}">
                   {t($currentLanguage).hero_tagline}
                 </p>
               </div>
 
-              <blockquote id="hero-manifest" class="p-4 rounded-xl border-l-4 italic text-sm sm:text-base leading-relaxed {theme === 'dark' ? 'bg-[#12151d] border-[#d4af37] text-[#cbd5e1]' : 'bg-[#f8fafc] border-[#b78e20] text-[#334155]'}">
+              <blockquote id="hero-manifest" class="p-5 sm:p-6 rounded-2xl border-l-4 italic text-base sm:text-lg leading-relaxed {theme === 'dark' ? 'bg-[#12151d] border-[#d4af37] text-[#cbd5e1]' : 'bg-[#f8fafc] border-[#b78e20] text-[#334155]'}">
                 {t($currentLanguage).hero_manifest}
               </blockquote>
 
@@ -288,12 +298,12 @@
           </div>
         </section>
 
-        <!-- Navigation Bar for Public Portal -->
-        <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
+        <!-- Navigation Bar: Large, Comfortable, Touch-Friendly -->
+        <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2.5 p-2 rounded-2xl border text-sm sm:text-base font-semibold w-full sm:w-fit shadow-md {theme === 'dark' ? 'bg-[#131824] border-[#283248]' : 'bg-white border-[#cbd5e1]'}">
           <button
             id="tab-btn-podcast"
             type="button"
-            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'podcast')}
           >
             <span>{t($currentLanguage).nav_podcast}</span>
@@ -301,7 +311,7 @@
           <button
             id="tab-btn-article"
             type="button"
-            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'article')}
           >
             <span>{t($currentLanguage).nav_article}</span>
@@ -309,7 +319,7 @@
           <button
             id="tab-btn-sparks"
             type="button"
-            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'sparks')}
           >
             <span>{t($currentLanguage).nav_sparks}</span>
@@ -317,7 +327,7 @@
           <button
             id="tab-btn-contact"
             type="button"
-            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'contact')}
           >
             <span>{t($currentLanguage).nav_contact}</span>
@@ -325,7 +335,7 @@
           <button
             id="tab-btn-canon"
             type="button"
-            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'canon')}
           >
             <span>{t($currentLanguage).nav_canon}</span>

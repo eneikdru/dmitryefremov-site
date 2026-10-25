@@ -6,7 +6,7 @@
     <title>Dmitry Efremov</title>
     <!-- Material Symbols Outlined -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <!-- Typography: Geist, Inter & JetBrains Mono for Neuro-Ergonomic Reading -->
+    <!-- Typography: Geist, Inter & JetBrains Mono for High-Legibility & Zero Ocular Strain -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -28,7 +28,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-      /* Neurophysiological Eye Comfort & Zero Ocular Strain Engine */
+      /* High-Legibility & Zero-Eyestrain Typography Engine */
       :root {
         --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         --font-mono: 'JetBrains Mono', monospace;
@@ -40,17 +40,19 @@
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
         scroll-behavior: smooth;
+        font-size: 16px;
       }
 
       body {
         font-family: var(--font-sans);
-        letter-spacing: -0.011em;
+        letter-spacing: -0.01em;
+        line-height: 1.65;
       }
 
       /* Eye-friendly non-glaring selection */
       ::selection {
-        background: rgba(212, 175, 55, 0.25);
-        color: #f7f9fd;
+        background: rgba(245, 158, 11, 0.3);
+        color: #ffffff;
       }
 
       /* Calming typography hierarchy */
@@ -60,23 +62,59 @@
       }
 
       p {
-        line-height: 1.68;
+        line-height: 1.7;
       }
 
-      /* Smooth custom scrollbars without peripheral distraction */
+      /* Legibility boost: Eliminate painful micro-fonts on mobile and desktop */
+      .text-\[10px\] {
+        font-size: 12px !important;
+        line-height: 1.45 !important;
+      }
+      .text-\[11px\] {
+        font-size: 13.5px !important;
+        line-height: 1.55 !important;
+      }
+      .text-xs {
+        font-size: 13.5px !important;
+        line-height: 1.55 !important;
+      }
+      .text-sm {
+        font-size: 15.5px !important;
+        line-height: 1.65 !important;
+      }
+      .text-base {
+        font-size: 17px !important;
+        line-height: 1.75 !important;
+      }
+
+      /* High-contrast boost: Prevent grey text from fading into dark background */
+      .text-\[\#64748b\] {
+        color: #94a3b8 !important;
+      }
+      .text-\[\#849495\] {
+        color: #a0aec0 !important;
+      }
+      .text-slate-400 {
+        color: #cbd5e1 !important;
+      }
+      .text-slate-500 {
+        color: #94a3b8 !important;
+      }
+
+      /* Smooth custom scrollbars */
       ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: 7px;
+        height: 7px;
       }
       ::-webkit-scrollbar-track {
         background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.16);
         border-radius: 9999px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.22);
+        background: rgba(255, 255, 255, 0.28);
       }
     </style>
   </head>
