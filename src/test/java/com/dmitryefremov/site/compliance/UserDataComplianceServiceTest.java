@@ -11,6 +11,7 @@ import com.dmitryefremov.site.compliance.dto.UserDataExportDto;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
 import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
+import com.dmitryefremov.site.admin.repository.ConsentRecordRepository;
 import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,6 +54,9 @@ class UserDataComplianceServiceTest {
     @Mock
     private ClientIntakeRepository clientIntakeRepository;
 
+    @Mock
+    private ConsentRecordRepository consentRecordRepository;
+
     private Clock fixedClock;
     private UserDataComplianceService complianceService;
 
@@ -68,6 +72,8 @@ class UserDataComplianceServiceTest {
                 agentOrderRepository,
                 agentMessageRepository,
                 clientIntakeRepository,
+                null,
+                consentRecordRepository,
                 fixedClock
         );
     }
@@ -119,6 +125,7 @@ class UserDataComplianceServiceTest {
         verify(agentOrderRepository, times(1)).deleteByClientEmail(userId);
         verify(agentMessageRepository, times(1)).deleteBySenderEmail(userId);
         verify(clientIntakeRepository, times(1)).deleteByClientEmail(userId);
+        verify(consentRecordRepository, times(1)).deleteByUserId(userId);
     }
 
     @Test
