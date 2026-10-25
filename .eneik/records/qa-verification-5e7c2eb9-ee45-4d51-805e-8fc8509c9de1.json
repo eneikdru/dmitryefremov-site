@@ -1,6 +1,6 @@
 {
-  "testsRun": 245,
-  "testsPassed": 245,
+  "testsRun": 247,
+  "testsPassed": 247,
   "testsFailed": 0,
   "acceptanceCriteriaVerified": [
     "Given the API endpoints, When integration tests run, Then they verify structured error responses for invalid payloads.",
