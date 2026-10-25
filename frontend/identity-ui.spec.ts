@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { setupE2EMocks } from './src/lib/test-utils';
 
 test.describe('Core Identity and Essay Reader Verification', () => {
   // Assuming the server is running based on the existing playwright config
 
   test('no debug logs on facade and essay reader renders correctly', async ({ page }) => {
+    await setupE2EMocks(page);
     const logs: string[] = [];
     page.on('console', msg => {
       if (msg.type() === 'log' || msg.type() === 'debug') {

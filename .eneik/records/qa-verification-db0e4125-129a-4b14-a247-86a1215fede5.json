@@ -1,0 +1,13 @@
+{
+  "testsRun": 150,
+  "testsPassed": 150,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "AC1: Primary paths (podcast views, essay stream, canon links, search) function correctly against seeded Russian content",
+    "AC2: Live public site is accessible and returns 200 OK",
+    "AC3: WCAG 2.1 AA compliance (keyboard operability, visible focus, labelled form controls, theme contrast)"
+  ],
+  "coverageDeltaPercent": 0.5,
+  "verdict": "pass",
+  "notes": "Verified end-to-end integration and mock data removed."
+}

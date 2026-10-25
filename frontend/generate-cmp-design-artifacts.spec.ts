@@ -1,3 +1,4 @@
+import { setupE2EMocks } from './src/lib/test-utils';
 import { test, chromium, expect } from '@playwright/test';
 import { spawn } from 'child_process';
 import * as fs from 'fs';
@@ -35,7 +36,9 @@ test('generate design verification artifacts for consent platform integration', 
     // 1440px Desktop Screenshot
     const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const desktopPage = await desktopContext.newPage();
+    await setupE2EMocks(desktopPage);
     await desktopPage.goto('http://localhost:4173');
+
     await desktopPage.waitForSelector('#telemetry-hub-root');
     await desktopPage.waitForSelector('#cmp-modal-overlay');
     await desktopPage.waitForTimeout(300);
@@ -83,7 +86,9 @@ test('generate design verification artifacts for consent platform integration', 
     // 375px Mobile Screenshot
     const mobileContext = await browser.newContext({ viewport: { width: 375, height: 812 } });
     const mobilePage = await mobileContext.newPage();
+    await setupE2EMocks(mobilePage);
     await mobilePage.goto('http://localhost:4173');
+
     await mobilePage.waitForSelector('#telemetry-hub-root');
     await mobilePage.waitForSelector('#cmp-modal-overlay');
     await mobilePage.waitForTimeout(300);

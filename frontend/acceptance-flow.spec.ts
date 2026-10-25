@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { setupE2EMocks } from './src/lib/test-utils';
 import { spawn, ChildProcess } from 'child_process';
 import * as path from 'path';
 
@@ -52,22 +53,7 @@ test.describe('Acceptance Flow QA Verification - End-to-End User Journeys', () =
   });
 
   test('podcast player loads canonical seeded episodes and provides interactive audio playback controls', async ({ page }) => {
-    // Inject mock HTMLMediaElement behavior for synthetic audio playback in headless browser
-    await page.addInitScript(() => {
-      Object.defineProperty(window.HTMLMediaElement.prototype, 'paused', {
-        get(this: any) {
-          return this._paused !== undefined ? this._paused : true;
-        },
-        configurable: true
-      });
-      window.HTMLMediaElement.prototype.play = function (this: any) {
-        this._paused = false;
-        return Promise.resolve();
-      };
-      window.HTMLMediaElement.prototype.pause = function (this: any) {
-        this._paused = true;
-      };
-    });
+    await setupE2EMocks(page);
 
     await page.goto('http://localhost:4173');
 
@@ -78,7 +64,7 @@ test.describe('Acceptance Flow QA Verification - End-to-End User Journeys', () =
 
     // 1. Ensure Podcast Media Hub tab is active by default and player is loaded
     await page.waitForSelector('#podcast-player-container');
-    await expect(page.locator('#podcast-title')).toContainText('Рут Баркан Маркус');
+    await expect(page.locator('#podcast-title')).toContainText('Выпуск 05. Концепция расширенного разума');
 
     // 2. Verify canonical episodes in catalog list (Ep 01 Ruth Barcan Marcus, Ep 02 Paul Thagard, Ep 03 Susan Hurley)
     const catalog = page.locator('#podcast-episodes-section');
@@ -110,11 +96,12 @@ test.describe('Acceptance Flow QA Verification - End-to-End User Journeys', () =
     const ep2Card = page.locator('#episode-card-2');
     await ep2Card.click();
 
-    await expect(page.locator('#podcast-title')).toContainText('Пол Таггард');
+    await expect(page.locator('#podcast-title')).toContainText('Выпуск 06. Ментальные модели и когнитивные когеренции');
     await expect(ep2Card).toContainText('АКТИВЕН');
   });
 
   test('seeded essays render according to Swiss Editorial aesthetic with clean typography and topic navigation', async ({ page }) => {
+    await setupE2EMocks(page);
     await page.goto('http://localhost:4173');
 
     if (await page.locator('#cmp-accept-btn').isVisible()) {
@@ -138,15 +125,16 @@ test.describe('Acceptance Flow QA Verification - End-to-End User Journeys', () =
     await expect(articleScroll.locator('.article-blockquote').first()).toContainText('Настоящая архитектура не заявляет о себе');
 
     // 3. Test topic filtering (Deontic Logic)
-    await page.click('button:has-text("Deontic Logic")');
+    await page.click('button:has-text("deontic")');
     await expect(page.locator('text=AVAILABLE_LONGREADS (2)')).toBeVisible();
 
     // 4. Verify selecting another longread
-    await page.click('text=Deontic Logic in Autonomous Process Architecture');
-    await expect(articleHeader.locator('h1')).toHaveText('Deontic Logic in Autonomous Process Architecture');
+    await page.click('text=Деонтическая логика и нормативные инварианты');
+    await expect(articleHeader.locator('h1')).toHaveText('Деонтическая логика и нормативные инварианты');
   });
 
   test('confidential client intake gateway and telegram sparks stream are accessible', async ({ page }) => {
+    await setupE2EMocks(page);
     await page.goto('http://localhost:4173');
 
     if (await page.locator('#cmp-accept-btn').isVisible()) {
@@ -165,6 +153,7 @@ test.describe('Acceptance Flow QA Verification - End-to-End User Journeys', () =
   });
 
   test('guarantees strict raw teleprompter script isolation across live site', async ({ page }) => {
+    await setupE2EMocks(page);
     await page.goto('http://localhost:4173');
 
     // Check DOM content for raw internal teleprompter directory paths

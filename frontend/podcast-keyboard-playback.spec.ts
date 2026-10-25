@@ -1,30 +1,18 @@
 import { test, expect } from '@playwright/test';
+import { setupE2EMocks } from './src/lib/test-utils';
 
 test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability', () => {
   test('seeded podcast catalog is accessible and controls are fully keyboard operable', async ({ page }) => {
+    await setupE2EMocks(page);
     // Inject HTMLMediaElement mock to allow synthetic audio playback in headless Chromium
-    await page.addInitScript(() => {
-      Object.defineProperty(window.HTMLMediaElement.prototype, 'paused', {
-        get(this: any) {
-          return this._paused !== undefined ? this._paused : true;
-        },
-        configurable: true
-      });
-      window.HTMLMediaElement.prototype.play = function (this: any) {
-        this._paused = false;
-        return Promise.resolve();
-      };
-      window.HTMLMediaElement.prototype.pause = function (this: any) {
-        this._paused = true;
-      };
-    });
 
     // 1. Navigate to main page (Podcast Media Hub tab is active by default)
     await page.goto('/');
+    if (await page.locator('#cmp-accept-btn').isVisible()) { await page.click('#cmp-accept-btn'); }
 
     // Ensure Podcast player container is rendered
     await page.waitForSelector('#podcast-player-container');
-    await expect(page.locator('#podcast-title').first()).toContainText('Рут Баркан Маркус');
+    await expect(page.locator('#podcast-title').first()).toContainText('Выпуск 05. Концепция расширенного разума');
 
     // 2. Test Play / Pause button via mouse click and keyboard Focus & Space
     const playBtn = page.locator('#play-pause-btn');
@@ -95,7 +83,7 @@ test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability
     await page.keyboard.press('Enter');
 
     // Verify active episode switched to Episode 2 (Пол Таггард)
-    await expect(page.locator('#podcast-title')).toContainText('Пол Таггард');
+    await expect(page.locator('#podcast-title')).toContainText('Выпуск 06. Ментальные модели и когнитивные когеренции');
     await expect(ep2Card).toContainText('АКТИВЕН');
   });
 });

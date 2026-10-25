@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { telemetry } from '../lib/telemetry';
+  import { fetchCanonFromApi } from '../lib/essays';
 
   export let isOpen: boolean = false;
   export let theme: 'dark' | 'light' = 'dark';
@@ -15,64 +16,7 @@
     url?: string;
   }
 
-  const CANON_SEARCH_NODES: SearchNode[] = [
-    {
-      id: 'concept-deontic-logic',
-      title: 'Деонтическая логика в автономии',
-      type: 'concept',
-      category: 'Канон · Логика',
-      description: 'Формализация нормативных ограничений и модальных операторов должествования для автономных агентов.'
-    },
-    {
-      id: 'concept-theory-of-constraints',
-      title: 'Теория ограничений (TOC)',
-      type: 'concept',
-      category: 'Канон · Системы',
-      description: 'Поиск и расширение ключевого узкого места системы для кратного роста пропускной способности.'
-    },
-    {
-      id: 'concept-extended-mind',
-      title: 'Онтология автономии и Расширенный разум',
-      type: 'concept',
-      category: 'Канон · Философия',
-      description: 'Концепция Энди Кларка и Сьюзан Херли: внешняя рабочая память и когнитивное сопряжение человека и агента.'
-    },
-    {
-      id: 'concept-a2a-economy',
-      title: 'A2A Экономика и Machine-Readable API',
-      type: 'concept',
-      category: 'Канон · Экономика',
-      description: 'Взаимодействие автономных ИИ-агентов без участия человека: llms.txt, OpenAPI, JSON-схемы.'
-    },
-    {
-      id: 'podcast-ep-01',
-      title: 'Выпуск 01: Системы и реальность',
-      type: 'podcast',
-      category: 'Подкаст · Рут Баркан Маркус',
-      description: 'Фундаментальный разбор модальной логики и связности объектов в инженерных системах.'
-    },
-    {
-      id: 'podcast-ep-02',
-      title: 'Выпуск 02: Понятийные структуры',
-      type: 'podcast',
-      category: 'Подкаст · Пол Тагард',
-      description: 'Когнитивные концептуальные карты и согласованность мыслительных моделей.'
-    },
-    {
-      id: 'essay-a2a-architecture',
-      title: 'Архитектура A2A-взаимодействия',
-      type: 'essay',
-      category: 'Эссе · Статья',
-      description: 'Как создавать интерфейсы, в которых автономные ИИ-агенты ориентируются так же свободно, как человек.'
-    },
-    {
-      id: 'spark-telegram-mvp',
-      title: 'Заметка: Выживание MVP в эпоху ИИ',
-      type: 'spark',
-      category: 'Sparks · Telegram',
-      description: 'Прагматичный инжиниринг: почему рабочий код важнее красивых презентаций.'
-    }
-  ];
+  let CANON_SEARCH_NODES: SearchNode[] = [];
 
   let searchQuery: string = '';
   let selectedIndex: number = 0;
@@ -138,7 +82,18 @@
     }
   }
 
-  onMount(() => {
+  onMount(async () => {
+    const fetched = await fetchCanonFromApi();
+    if (fetched && fetched.length > 0) {
+      CANON_SEARCH_NODES = fetched.map(item => ({
+        id: item.id,
+        title: item.title,
+        type: item.type === 'MANIFESTO' ? 'concept' : 'concept',
+        category: item.domain || 'Канон',
+        description: item.summary || ''
+      }));
+    }
+
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', handleKeydown);
     }

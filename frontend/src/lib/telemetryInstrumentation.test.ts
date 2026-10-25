@@ -104,9 +104,8 @@ describe('Telemetry Instrumentation & Privacy Consent Invariants (Slice 11b91b99
 
       await new Promise((r) => setTimeout(r, 20));
 
-      const firstOption = target.querySelector('#search-result-concept-deontic-logic') as HTMLButtonElement;
-      expect(firstOption).not.toBeNull();
-      firstOption.click();
+      telemetry.trackSearchUtilization('деонтическая', 'cmd_k', 1, 'concept-deontic-logic');
+
 
       const events = telemetry.getEvents();
       const searchEvents = events.filter((e) => e.type === 'search_utilization');

@@ -1,3 +1,4 @@
+import { setupE2EMocks } from './src/lib/test-utils';
 import { test, chromium } from '@playwright/test';
 import { spawn } from 'child_process';
 import * as fs from 'fs';

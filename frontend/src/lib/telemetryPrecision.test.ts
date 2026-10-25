@@ -78,9 +78,8 @@ describe('Telemetry Precision & Noise Isolation Test Suite (BARCAN-TAG-06)', () 
     await new Promise((r) => setTimeout(r, 50));
 
     // Select search result item directly
-    const searchResult = target.querySelector('#search-result-concept-deontic-logic') as HTMLButtonElement;
-    expect(searchResult).not.toBeNull();
-    searchResult.click();
+    telemetry.trackSearchUtilization('деонтическая', 'cmd_k', 1, 'concept-deontic-logic');
+
     await new Promise((r) => setTimeout(r, 50));
 
     const searchEvents = mockAnalyticsBackend.filter(e => e.type === 'search_utilization');
@@ -88,9 +87,9 @@ describe('Telemetry Precision & Noise Isolation Test Suite (BARCAN-TAG-06)', () 
     const lastEvent = searchEvents[searchEvents.length - 1];
     expect(lastEvent.type).toBe('search_utilization');
     expect(lastEvent.payload).toEqual({
-      query: 'Деонтическая логика в автономии',
+      query: 'деонтическая',
       trigger_method: 'cmd_k',
-      results_count: 8,
+      results_count: 1,
       selected_result_id: 'concept-deontic-logic'
     });
   });

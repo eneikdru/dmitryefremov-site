@@ -1,3 +1,4 @@
+import { setupE2EMocks } from './src/lib/test-utils';
 import { test, chromium, expect } from '@playwright/test';
 import { spawn } from 'child_process';
 import * as fs from 'fs';
@@ -35,7 +36,9 @@ test('generate design verification artifacts and image performance audit for res
     // 1440px Desktop Screenshot and Audit
     const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const desktopPage = await desktopContext.newPage();
+    await setupE2EMocks(desktopPage);
     await desktopPage.goto('http://localhost:4173');
+    if (await desktopPage.locator('#cmp-accept-btn').isVisible()) { await desktopPage.click('#cmp-accept-btn'); }
     await desktopPage.waitForSelector('#telemetry-hub-root');
 
     // Click on [PODCAST_MEDIA] tab
@@ -131,7 +134,9 @@ test('generate design verification artifacts and image performance audit for res
     // 375px Mobile Screenshot and Audit
     const mobileContext = await browser.newContext({ viewport: { width: 375, height: 812 } });
     const mobilePage = await mobileContext.newPage();
+    await setupE2EMocks(mobilePage);
     await mobilePage.goto('http://localhost:4173');
+    if (await mobilePage.locator('#cmp-accept-btn').isVisible()) { await mobilePage.click('#cmp-accept-btn'); }
     await mobilePage.waitForSelector('#telemetry-hub-root');
 
     await mobilePage.click('#tab-btn-podcast');
