@@ -56,84 +56,95 @@
   }
 </script>
 
-<div id="core-identity-card" class="bg-[#090a0f] text-[#e2e8f0] p-6 sm:p-8 rounded-xl border border-[#1f2433] max-w-3xl mx-auto my-6 font-sans shadow-2xl transition-all duration-300">
-  <!-- Header / Visual Identity Branding -->
-  <header id="identity-card-header" class="border-b border-[#1f2433] pb-6 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-    <div class="space-y-1">
-      <div class="flex items-center gap-2">
-        <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono font-semibold tracking-wide">[IDENTITY_CARD]</span>
-        <span class="text-xs font-mono text-[#94a3b8]">VERIFIED_PRESENCE</span>
+
+<div id="core-identity-card" class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/70 shadow-sm relative overflow-hidden font-sans text-on-surface w-full max-w-[540px] mx-auto my-4 selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+  <!-- Subtle Top Tone Accent -->
+  <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#316bf3] via-[#0051d5] to-[#131b2e]"></div>
+  <div class="flex items-start gap-space-md mt-1">
+    <!-- Verified Avatar with Status Dot -->
+    <div class="relative shrink-0">
+      <div id="hero-avatar-img" class="w-16 h-16 rounded-xl overflow-hidden border-2 border-surface-container-lowest shadow-sm ring-2 ring-outline-variant/50 bg-[#12151e] flex items-center justify-center">
+        <!-- We will just show initials as no avatar image URL is provided in the existing code, or keep a generic placeholder -->
+        <span class="text-xl font-bold text-white">ДЕ</span>
       </div>
-      <h2 id="identity-name" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Дмитрий Ефремов</h2>
-      <p id="identity-bio" class="text-xs sm:text-sm text-[#94a3b8] font-mono leading-relaxed">Systems Architect & Deontic Logic Researcher</p>
-    </div>
-    <div class="px-3 py-1.5 rounded-lg bg-[#12151e] border border-[#1f2433] text-right font-mono text-xs">
-      <span class="text-[#64748b] block">STATUS</span>
-      <span class="text-[#38bdf8] font-bold flex items-center gap-1.5 justify-end">
-        <span class="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse"></span>
-        ACTIVE_ONLINE
+      <!-- Online status badge -->
+      <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-600 rounded-full border-2 border-surface-container-lowest ring-1 ring-emerald-700/30 flex items-center justify-center" title="ACTIVE_ONLINE">
+        <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
       </span>
     </div>
-  </header>
-
-  <!-- Interactive Contact Links Grid -->
-  <section id="identity-links-section" aria-label="Contact Channels" class="space-y-4 mb-6">
-    <h3 class="text-xs font-mono text-[#94a3b8] uppercase tracking-wider mb-2">Verified Channels & Matrix</h3>
-    <div id="identity-links-grid" class="grid grid-cols-1 gap-3">
-      {#each contactLinks as link}
-        <div
-          id="contact-card-{link.id}"
-          class="group relative flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg bg-[#12151e] border border-[#1f2433] hover:border-[#38bdf8] focus-within:border-[#38bdf8] transition-all duration-200 gap-3"
-        >
-          <a
-            id="link-{link.id}"
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="{link.label} - {link.description}"
-            on:click={(e) => handleOutboundClick(link, e)}
-            class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm font-mono focus:outline-none"
-          >
-            <div class="flex items-center gap-3 min-w-0">
-              <span class="text-[#f43f5e] text-xs font-bold shrink-0">{link.tag}</span>
-              <div class="min-w-0">
-                <span class="text-white font-semibold group-hover:text-[#38bdf8] transition-colors block truncate">{link.label}</span>
-                <span class="text-xs text-[#64748b] group-hover:text-[#94a3b8] transition-colors block truncate">{link.description}</span>
-              </div>
-            </div>
-            <div class="flex items-center gap-1 text-xs text-[#64748b] group-hover:text-[#38bdf8] shrink-0">
-              <span class="truncate max-w-[180px] hidden md:inline">{link.url}</span>
-              <span class="font-bold">↗</span>
-            </div>
-          </a>
-
-          <!-- Interactive Action Buttons / Feedback -->
-          <div class="flex items-center gap-2 border-t sm:border-t-0 pt-2 sm:pt-0 border-[#1f2433] justify-end shrink-0">
-            <button
-              id="copy-btn-{link.id}"
-              type="button"
-              aria-label="Copy URL for {link.label}"
-              on:click={(e) => copyToClipboard(link, e)}
-              class="px-2.5 py-1 rounded text-xs font-mono border border-[#1f2433] bg-[#090a0f] text-[#94a3b8] hover:text-white hover:border-[#38bdf8] transition-colors flex items-center gap-1 focus:outline-none focus:ring-1 focus:ring-[#38bdf8]"
-            >
-              {#if copiedFeedbackId === link.id}
-                <span class="text-[#38bdf8] font-bold">COPIED ✓</span>
-              {:else}
-                <span>COPY</span>
-              {/if}
-            </button>
-            {#if activeFeedbackId === link.id}
-              <span class="text-xs font-mono text-[#38bdf8] font-bold animate-fade-in">[OPENING...]</span>
-            {/if}
-          </div>
-        </div>
-      {/each}
+    <!-- Name, Entity & Bio -->
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-1.5 flex-wrap">
+        <h2 id="identity-name" class="text-headline-sm font-headline-sm text-on-surface tracking-tight font-bold text-[18px]">Дмитрий Ефремов</h2>
+        <span class="inline-flex items-center gap-1 bg-[#dbe1ff]/50 text-[#00174b] text-[11px] font-bold px-2 py-0.5 rounded-full border border-[#b4c5ff]">
+          <span class="text-[13px]">✓</span>
+          VERIFIED
+        </span>
+      </div>
+      <p id="identity-bio" class="text-body-sm font-body-sm text-on-surface-variant mt-0.5 font-medium text-[13px]">Systems Architect & Deontic Logic Researcher</p>
     </div>
-  </section>
+  </div>
 
-  <!-- High-End Dark Clean Footer / Identity Note -->
-  <footer id="identity-card-footer" class="pt-4 border-t border-[#1f2433] flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#64748b] gap-2">
-    <span>[DEONTIC_SPEC_2026]</span>
-    <span class="text-[#94a3b8]">Zero debug logging on facade · Clean Brand Identity</span>
-  </footer>
+  <!-- Bio text -->
+  <p class="text-body-sm font-body-sm text-on-surface mt-4 leading-relaxed text-[13px]">
+    Системы, логика мышления и автономные процессы. Открыт для обсуждения архитектурных паттернов и интеграции AI-агентов.
+  </p>
+
+  <!-- Dynamic Status & Availabilities Chips -->
+  <div class="mt-4 pt-2 border-t border-outline-variant/40 flex flex-wrap gap-2 text-[11px] font-bold">
+    <div class="inline-flex items-center gap-1.5 bg-[#eff4ff] text-on-surface px-2.5 py-1 rounded-full border border-outline-variant/60">
+      <span>⚡</span>
+      <span>ACTIVE_ONLINE</span>
+    </div>
+    <div class="inline-flex items-center gap-1.5 bg-[#eff4ff] text-on-surface px-2.5 py-1 rounded-full border border-outline-variant/60">
+      <span>🌐</span>
+      <span>[IDENTITY_CARD]</span>
+    </div>
+  </div>
 </div>
+
+<section id="identity-links-section" aria-label="Contact Channels" class="space-y-3 w-full max-w-[540px] mx-auto mb-6">
+  <div class="flex items-center justify-between px-1">
+    <h3 class="text-[12px] font-bold text-on-surface uppercase tracking-wider">Verified Channels & Matrix</h3>
+    <span class="text-[11px] font-bold text-on-surface-variant flex items-center gap-1">
+      <span class="text-[#0051d5]">🔒</span>
+      Encrypted
+    </span>
+  </div>
+
+  <div id="identity-links-grid" class="grid grid-cols-1 gap-2.5">
+    {#each contactLinks as link}
+      <div id="contact-card-{link.id}" class="bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-3 flex items-center justify-between hover:border-[#0051d5] transition-colors group">
+        <a id="link-{link.id}" href={link.url} target="_blank" rel="noopener noreferrer" on:click={(e) => handleOutboundClick(link, e)} class="flex-1 flex items-center gap-3 min-w-0 focus:outline-none focus:ring-2 focus:ring-[#0051d5]/30 rounded">
+          <div class="w-10 h-10 rounded-lg bg-[#eff4ff] flex items-center justify-center text-on-surface shrink-0 group-hover:bg-[#dbe1ff]/40 transition-colors">
+            <span class="text-[20px] font-bold text-[#f43f5e]">{link.tag.charAt(1)}</span>
+          </div>
+          <div class="min-w-0 flex-1 pr-2">
+            <span class="text-[11px] font-bold text-on-surface-variant block">{link.tag}</span>
+            <span class="text-[15px] text-on-surface font-semibold truncate block">{link.label}</span>
+          </div>
+        </a>
+        <div class="flex items-center gap-2">
+          {#if activeFeedbackId === link.id}
+            <span class="text-xs font-mono text-[#0051d5] font-bold animate-fade-in">[OPENING...]</span>
+          {/if}
+          <button id="copy-btn-{link.id}" type="button" aria-label="Copy URL for {link.label}" on:click={(e) => copyToClipboard(link, e)} class="px-3 py-1.5 bg-[#eff4ff] text-on-surface hover:bg-[#e5eeff] border border-outline-variant rounded-lg flex items-center gap-1.5 text-[11px] font-bold shrink-0 transition-transform active:translate-y-px {copiedFeedbackId === link.id ? 'bg-[#dbe1ff] text-[#00174b]' : ''}">
+            {#if copiedFeedbackId === link.id}
+              <span>✓ Copied</span>
+            {:else}
+              <span>Copy</span>
+            {/if}
+          </button>
+        </div>
+      </div>
+    {/each}
+  </div>
+
+  <footer id="identity-card-footer" class="text-center py-4 space-y-1">
+    <div class="inline-flex items-center gap-1 text-[11px] font-bold text-on-surface-variant">
+      <span class="text-[16px] text-[#0051d5]">✓</span>
+      <span>Profile Cryptographically Verified</span>
+    </div>
+    <p class="text-[11px] text-outline leading-tight">Zero debug logging on facade · Clean Brand Identity</p>
+  </footer>
+</section>

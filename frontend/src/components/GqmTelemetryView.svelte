@@ -2,18 +2,18 @@
   import { onMount, onDestroy } from 'svelte';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
 
-  export let epicId: string = 'EPIC-4209: Canon Intake & Conversion';
+  export let epicId: string = 'EPIC-4209: Canon Request & Conversion';
   export let epicVersion: string = 'v2.4.1-rc';
 
   // State
-  let activeTab: 'gqm' | 'canon_reader' | 'intake_form' = 'gqm';
+  let activeTab: 'gqm' | 'canon_reader' | 'request_form' = 'gqm';
   let dwellMs: number = 0;
   let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
   let scrollContainer: HTMLElement | null = null;
   let scrollPercentage: number = 0;
   let loggedEvents: TelemetryEvent[] = [];
 
-  // Form State for Intake Conversion
+  // Form State for Request Conversion
   let clientName: string = '';
   let clientEmail: string = '';
   let projectScope: string = '';
@@ -64,7 +64,7 @@
     }
   }
 
-  function submitIntakeForm() {
+  function submitRequestForm() {
     if (!handleStepValidation(2)) return;
     if (!projectScope.trim()) {
       formError = 'Project Scope description is required.';
@@ -138,13 +138,13 @@
       [CANON_READER]
     </button>
     <button
-      id="tab-intake-form"
+      id="tab-request-form"
       type="button"
-      class="px-4 py-2 text-xs font-mono rounded transition-colors focus:outline-none focus:ring-2 focus:ring-[#00f0ff] {activeTab === 'intake_form' ? 'bg-[#00f0ff] text-[#00363a] font-bold' : 'bg-[#1c1f2a] text-[#dfe2f1] hover:bg-[#313540]'}"
-      on:click={() => (activeTab = 'intake_form')}
-      aria-pressed={activeTab === 'intake_form'}
+      class="px-4 py-2 text-xs font-mono rounded transition-colors focus:outline-none focus:ring-2 focus:ring-[#00f0ff] {activeTab === 'request_form' ? 'bg-[#00f0ff] text-[#00363a] font-bold' : 'bg-[#1c1f2a] text-[#dfe2f1] hover:bg-[#313540]'}"
+      on:click={() => (activeTab = 'request_form')}
+      aria-pressed={activeTab === 'request_form'}
     >
-      [INTAKE_CONVERSION_FORM]
+      [REQUEST_CONVERSION_FORM]
     </button>
   </nav>
 
@@ -159,9 +159,9 @@
             <span class="text-xs font-mono text-[#00dbe9] uppercase tracking-wider">GQM Framework Tier 1: Strategic Goal</span>
             <span class="text-xs font-mono text-[#4edea3] bg-[#313540] px-2 py-0.5 rounded border border-[#4edea3]/30">ALIGNMENT 94%</span>
           </div>
-          <h2 class="text-lg font-bold text-white">Optimize Canon intake flow engagement and completion rate</h2>
+          <h2 class="text-lg font-bold text-white">Optimize Canon request flow engagement and completion rate</h2>
           <p class="text-xs text-[#b9cacb] leading-relaxed">
-            Telemetry audit targeting cognitive friction points, field interaction bottlenecks, and user verification drop-offs across native Canon intake modules.
+            Telemetry audit targeting cognitive friction points, field interaction bottlenecks, and user verification drop-offs across native Canon request modules.
           </p>
         </div>
 
@@ -170,7 +170,7 @@
           <div class="flex justify-between items-start gap-2">
             <div>
               <span class="text-xs font-mono text-[#c0c1ff] uppercase">Question 01</span>
-              <h3 class="text-sm font-semibold text-white">What is the median active dwell time across Canon intake steps?</h3>
+              <h3 class="text-sm font-semibold text-white">What is the median active dwell time across Canon request steps?</h3>
             </div>
             <span class="text-xs font-mono text-[#00dbe9] bg-[#313540] px-2 py-1 rounded border border-[#3b494b] shrink-0">METRIC M-101</span>
           </div>
@@ -194,7 +194,7 @@
           </div>
           <div class="grid grid-cols-3 gap-2 text-center pt-2">
             <div class="p-2 bg-[#171b26] border border-[#3b494b] rounded">
-              <span class="text-[10px] font-mono text-[#b9cacb] block">STEP 1: INTAKE</span>
+              <span class="text-[10px] font-mono text-[#b9cacb] block">STEP 1: REQUEST</span>
               <span class="text-sm font-bold text-[#dbfcff]">94.2%</span>
             </div>
             <div class="p-2 bg-[#171b26] border border-[#3b494b] rounded">
@@ -284,19 +284,19 @@
       </div>
     </section>
 
-  {:else if activeTab === 'intake_form'}
-    <!-- Intake Conversion Form with Field Focus & Submission Telemetry -->
+  {:else if activeTab === 'request_form'}
+    <!-- Request Conversion Form with Field Focus & Submission Telemetry -->
     <section class="bg-[#171b26] border border-[#3b494b] rounded-lg p-6 space-y-6 max-w-xl mx-auto">
       <header class="border-b border-[#3b494b] pb-4 space-y-1">
-        <span class="text-xs font-mono text-[#4edea3] bg-[#1c1f2a] px-2 py-0.5 rounded border border-[#3b494b]">[INTAKE_CONVERSION]</span>
-        <h2 class="text-xl font-bold text-white">Client Intake & Project Brief Form</h2>
+        <span class="text-xs font-mono text-[#4edea3] bg-[#1c1f2a] px-2 py-0.5 rounded border border-[#3b494b]">[REQUEST_CONVERSION]</span>
+        <h2 class="text-xl font-bold text-white">Client Request & Project Brief Form</h2>
         <p class="text-xs text-[#b9cacb]">Fill out details below to convert. Fields trigger focus and validation telemetry events.</p>
       </header>
 
       {#if isConverted}
         <div class="p-4 bg-[#1c1f2a] border border-[#4edea3] rounded text-center space-y-3 font-mono text-xs">
           <span class="text-base text-[#4edea3] font-bold block">[CONVERSION_SUCCESS]</span>
-          <p class="text-[#dfe2f1]">Intake proposal submitted and telemetry conversion event dispatched.</p>
+          <p class="text-[#dfe2f1]">Request proposal submitted and telemetry conversion event dispatched.</p>
           <button
             type="button"
             class="px-4 py-2 bg-[#00f0ff] text-[#00363a] font-bold rounded hover:bg-[#7df4ff] transition-colors focus:outline-none focus:ring-2 focus:ring-[#00f0ff]"
@@ -312,7 +312,7 @@
           </button>
         </div>
       {:else}
-        <form on:submit|preventDefault={submitIntakeForm} class="space-y-4 font-mono text-xs">
+        <form on:submit|preventDefault={submitRequestForm} class="space-y-4 font-mono text-xs">
           {#if formError}
             <div class="p-3 bg-[#93000a] text-[#ffdad6] border border-[#ffb4ab] rounded" role="alert">
               {formError}
@@ -334,9 +334,9 @@
 
           {#if formStep === 1}
             <div class="space-y-2">
-              <label for="intake-name-input" class="block text-[#dfe2f1] font-semibold">Client Name / Entity</label>
+              <label for="request-name-input" class="block text-[#dfe2f1] font-semibold">Client Name / Entity</label>
               <input
-                id="intake-name-input"
+                id="request-name-input"
                 type="text"
                 bind:value={clientName}
                 on:focus={() => handleFieldFocus('client_name')}
@@ -354,9 +354,9 @@
             </div>
           {:else if formStep === 2}
             <div class="space-y-2">
-              <label for="intake-email-input" class="block text-[#dfe2f1] font-semibold">Contact Email</label>
+              <label for="request-email-input" class="block text-[#dfe2f1] font-semibold">Contact Email</label>
               <input
-                id="intake-email-input"
+                id="request-email-input"
                 type="email"
                 bind:value={clientEmail}
                 on:focus={() => handleFieldFocus('client_email')}
@@ -383,9 +383,9 @@
             </div>
           {:else if formStep === 3}
             <div class="space-y-2">
-              <label for="intake-scope-input" class="block text-[#dfe2f1] font-semibold">Project Scope & Directives</label>
+              <label for="request-scope-input" class="block text-[#dfe2f1] font-semibold">Project Scope & Directives</label>
               <textarea
-                id="intake-scope-input"
+                id="request-scope-input"
                 rows="4"
                 bind:value={projectScope}
                 on:focus={() => handleFieldFocus('project_scope')}

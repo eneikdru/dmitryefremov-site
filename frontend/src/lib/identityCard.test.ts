@@ -33,12 +33,12 @@ describe('CoreSvelteIdentityCard Component', () => {
     const copyBtn = target.querySelector('#copy-btn-tg') as HTMLButtonElement;
 
     expect(copyBtn).not.toBeNull();
-    expect(copyBtn.textContent).toContain('COPY');
+    expect(copyBtn.textContent).toContain('Copy');
 
     copyBtn.click();
     await new Promise(r => setTimeout(r, 0));
 
-    expect(copyBtn.textContent).toContain('COPIED ✓');
+    expect(copyBtn.textContent).toContain('✓ Copied');
   });
 
   it('provides opening feedback on outbound channel click', async () => {

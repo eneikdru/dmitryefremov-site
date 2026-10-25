@@ -108,7 +108,7 @@ describe('VaultIntakeView Component', () => {
 
     const successBanner = target.querySelector('#intake-success-feedback');
     expect(successBanner).not.toBeNull();
-    expect(successBanner?.textContent).toContain('Payload Encrypted & Submitted Successfully');
+    expect(successBanner?.textContent).toContain('Transmission Complete');
     expect(successBanner?.textContent).toContain('An email acknowledgement has been sent to client@example.com');
   });
 });

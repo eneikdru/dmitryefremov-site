@@ -1,0 +1,324 @@
+[
+  {
+    "id": "app",
+    "left": 0,
+    "top": -531,
+    "width": 375,
+    "height": 1989.75
+  },
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -531,
+    "width": 375,
+    "height": 1989.75
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 16,
+    "top": -497,
+    "width": 115.75,
+    "height": 42
+  },
+  {
+    "id": "cmd-k-trigger-btn",
+    "left": 147.75,
+    "top": -491,
+    "width": 85.015625,
+    "height": 30
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 244.765625,
+    "top": -499,
+    "width": 114.234375,
+    "height": 46
+  },
+  {
+    "id": "hero-section",
+    "left": 16,
+    "top": -412,
+    "width": 343,
+    "height": 597.5
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 115.5,
+    "top": -387,
+    "width": 144,
+    "height": 144
+  },
+  {
+    "id": "hero-avatar-img",
+    "left": 117.5,
+    "top": -385,
+    "width": 140,
+    "height": 140
+  },
+  {
+    "id": "hero-title",
+    "left": 41,
+    "top": -161,
+    "width": 293,
+    "height": 72
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 41,
+    "top": -83,
+    "width": 293,
+    "height": 48
+  },
+  {
+    "id": "hero-manifest",
+    "left": 41,
+    "top": -19,
+    "width": 293,
+    "height": 77.5
+  },
+  {
+    "id": "nav-tabs",
+    "left": 16,
+    "top": 209.5,
+    "width": 343,
+    "height": 182
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 23,
+    "top": 216.5,
+    "width": 184.625,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 23,
+    "top": 260.5,
+    "width": 140.625,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-sparks",
+    "left": 171.625,
+    "top": 260.5,
+    "width": 162.21875,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 23,
+    "top": 304.5,
+    "width": 176.625,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-canon",
+    "left": 23,
+    "top": 348.5,
+    "width": 155.03125,
+    "height": 36
+  },
+  {
+    "id": "content-view",
+    "left": 16,
+    "top": 431.5,
+    "width": 343,
+    "height": 858.25
+  },
+  {
+    "id": "contact-terminal-root",
+    "left": 16,
+    "top": 431.5,
+    "width": 343,
+    "height": 858.25
+  },
+  {
+    "id": "contact-tab-card-btn",
+    "left": 21,
+    "top": 436.5,
+    "width": 180.171875,
+    "height": 48
+  },
+  {
+    "id": "contact-tab-intake-btn",
+    "left": 201.171875,
+    "top": 436.5,
+    "width": 152.828125,
+    "height": 48
+  },
+  {
+    "id": "core-identity-card",
+    "left": 16,
+    "top": 522.5,
+    "width": 343,
+    "height": 257.5
+  },
+  {
+    "id": "hero-avatar-img",
+    "left": 17,
+    "top": 527.5,
+    "width": 64,
+    "height": 64
+  },
+  {
+    "id": "identity-name",
+    "left": 81,
+    "top": 527.5,
+    "width": 185.140625,
+    "height": 27
+  },
+  {
+    "id": "identity-bio",
+    "left": 81,
+    "top": 588,
+    "width": 277,
+    "height": 39
+  },
+  {
+    "id": "identity-links-section",
+    "left": 16,
+    "top": 804,
+    "width": 343,
+    "height": 485.75
+  },
+  {
+    "id": "identity-links-grid",
+    "left": 16,
+    "top": 834,
+    "width": 343,
+    "height": 370
+  },
+  {
+    "id": "contact-card-tg",
+    "left": 16,
+    "top": 834,
+    "width": 343,
+    "height": 66
+  },
+  {
+    "id": "link-tg",
+    "left": 29,
+    "top": 847,
+    "width": 260.3125,
+    "height": 40
+  },
+  {
+    "id": "copy-btn-tg",
+    "left": 289.3125,
+    "top": 851.75,
+    "width": 56.6875,
+    "height": 30.5
+  },
+  {
+    "id": "contact-card-yt",
+    "left": 16,
+    "top": 910,
+    "width": 343,
+    "height": 66
+  },
+  {
+    "id": "link-yt",
+    "left": 29,
+    "top": 923,
+    "width": 260.3125,
+    "height": 40
+  },
+  {
+    "id": "copy-btn-yt",
+    "left": 289.3125,
+    "top": 927.75,
+    "width": 56.6875,
+    "height": 30.5
+  },
+  {
+    "id": "contact-card-gh",
+    "left": 16,
+    "top": 986,
+    "width": 343,
+    "height": 66
+  },
+  {
+    "id": "link-gh",
+    "left": 29,
+    "top": 999,
+    "width": 260.3125,
+    "height": 40
+  },
+  {
+    "id": "copy-btn-gh",
+    "left": 289.3125,
+    "top": 1003.75,
+    "width": 56.6875,
+    "height": 30.5
+  },
+  {
+    "id": "contact-card-li",
+    "left": 16,
+    "top": 1062,
+    "width": 343,
+    "height": 66
+  },
+  {
+    "id": "link-li",
+    "left": 29,
+    "top": 1075,
+    "width": 260.3125,
+    "height": 40
+  },
+  {
+    "id": "copy-btn-li",
+    "left": 289.3125,
+    "top": 1079.75,
+    "width": 56.6875,
+    "height": 30.5
+  },
+  {
+    "id": "contact-card-em",
+    "left": 16,
+    "top": 1138,
+    "width": 343,
+    "height": 66
+  },
+  {
+    "id": "link-em",
+    "left": 29,
+    "top": 1151,
+    "width": 260.3125,
+    "height": 40
+  },
+  {
+    "id": "copy-btn-em",
+    "left": 289.3125,
+    "top": 1155.75,
+    "width": 56.6875,
+    "height": 30.5
+  },
+  {
+    "id": "identity-card-footer",
+    "left": 16,
+    "top": 1216,
+    "width": 343,
+    "height": 73.75
+  },
+  {
+    "id": "main-footer",
+    "left": 16,
+    "top": 1329.75,
+    "width": 343,
+    "height": 97
+  },
+  {
+    "id": "cmp-persistent-link",
+    "left": 45.875,
+    "top": 1410.75,
+    "width": 122.421875,
+    "height": 16
+  },
+  {
+    "id": "imprint-toggle-btn",
+    "left": 192.296875,
+    "top": 1410.75,
+    "width": 136.828125,
+    "height": 16
+  }
+]
