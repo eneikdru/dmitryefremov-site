@@ -39,7 +39,12 @@
   let loggedEvents: TelemetryEvent[] = [];
 
   $: selectedArticle = articles.find(a => a.id === selectedArticleId) || articles[0] || null;
-  $: parsedContent = selectedArticle ? parseMarkdown(selectedArticle.contentMarkdown) : { html: '' };
+    function stripLeadingH1(markdown: string): string {
+    if (!markdown) return '';
+    return markdown.replace(/^\s*#\s+[^\n]+(?:\r?\n|$)/, '');
+  }
+
+  $: parsedContent = selectedArticle ? parseMarkdown(stripLeadingH1(selectedArticle.contentMarkdown)) : { html: '' };
   $: filteredArticles = filterTopic === 'all'
     ? articles
     : articles.filter(a => a.topic === filterTopic);
