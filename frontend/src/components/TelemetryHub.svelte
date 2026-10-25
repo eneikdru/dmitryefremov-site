@@ -11,11 +11,12 @@
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
   import CanonGatewayView from './CanonGatewayView.svelte';
+  import TelemetryHudView from './TelemetryHudView.svelte';
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -37,6 +38,12 @@
         hash === '#canon'
       ) {
         activeTab = 'canon';
+      } else if (
+        currentPath === '/telemetry-hud' ||
+        hash === '#/telemetry-hud' ||
+        hash === '#telemetry-hud'
+      ) {
+        activeTab = 'hud';
       }
     }
   }
@@ -84,6 +91,8 @@
 
 {#if currentPath === '/admin' || (typeof window !== 'undefined' && window.location.hash === '#/admin')}
   <AdminDashboardView {theme} />
+{:else if currentPath === '/telemetry-hud' || (typeof window !== 'undefined' && (window.location.hash === '#/telemetry-hud' || window.location.hash === '#telemetry-hud')) || activeTab === 'hud'}
+  <TelemetryHudView {theme} />
 {:else}
   <SeoMeta
     title="Дмитрий Ефремов — Архитектура систем, философия сознания и автономные процессы"
