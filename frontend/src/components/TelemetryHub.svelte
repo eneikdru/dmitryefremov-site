@@ -13,10 +13,11 @@
   import CanonGatewayView from './CanonGatewayView.svelte';
   import TelemetryHudView from './TelemetryHudView.svelte';
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
+  import ConceptualNavigatorView from './ConceptualNavigatorView.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'explorer' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'explorer' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -28,7 +29,9 @@
     if (typeof window !== 'undefined') {
       currentPath = window.location.pathname;
       const hash = window.location.hash.toLowerCase();
-      if (
+      if (hash === '#/explorer' || hash === '#explorer') {
+        activeTab = 'explorer';
+      } else if (
         currentPath === '/canon-gateway' ||
         currentPath === '/canon' ||
         currentPath === '/llms.txt' ||
@@ -261,6 +264,14 @@
           >
             <span>🤖 КАНОН & AI API</span>
           </button>
+          <button
+            id="tab-btn-explorer"
+            type="button"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'explorer' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            on:click={() => (activeTab = 'explorer')}
+          >
+            <span>🔍 EXPLORER</span>
+          </button>
         </nav>
       </header>
 
@@ -285,6 +296,10 @@
         {:else if activeTab === 'canon'}
           <div class="space-y-6">
             <CanonGatewayView {theme} />
+          </div>
+        {:else if activeTab === 'explorer'}
+          <div class="space-y-6">
+            <ConceptualNavigatorView {theme} />
           </div>
         {/if}
       </section>
