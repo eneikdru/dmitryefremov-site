@@ -92,6 +92,7 @@
         {#if searchQuery}
           <button
             type="button"
+            aria-label="Clear search"
             class="absolute right-2.5 text-xs text-[#9e8e78] hover:text-white"
             on:click={() => (searchQuery = '')}
           >

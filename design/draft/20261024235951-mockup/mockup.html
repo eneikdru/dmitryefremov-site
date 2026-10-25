@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Epic Telemetry &amp; Events Tracker</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts: Geist & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#213145",
+            "on-primary-fixed-variant": "#5516be",
+            "inverse-primary": "#6d3bd7",
+            "surface-container-lowest": "#000f21",
+            "tertiary": "#4cd7f6",
+            "surface-container-low": "#0b1c30",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "error-container": "#93000a",
+            "secondary": "#4edea3",
+            "outline-variant": "#494454",
+            "surface-tint": "#d0bcff",
+            "surface": "#031427",
+            "on-primary-container": "#340080",
+            "secondary-container": "#00a572",
+            "tertiary-fixed-dim": "#4cd7f6",
+            "surface-container-high": "#1b2b3f",
+            "on-secondary-fixed-variant": "#005236",
+            "tertiary-fixed": "#acedff",
+            "on-background": "#d3e4fe",
+            "inverse-surface": "#d3e4fe",
+            "surface-dim": "#031427",
+            "on-secondary": "#003824",
+            "primary": "#d0bcff",
+            "on-primary": "#3c0091",
+            "on-tertiary": "#003640",
+            "on-surface-variant": "#cbc3d7",
+            "secondary-fixed": "#6ffbbe",
+            "primary-container": "#a078ff",
+            "on-primary-fixed": "#23005c",
+            "outline": "#958ea0",
+            "on-surface": "#d3e4fe",
+            "error": "#ffb4ab",
+            "on-error": "#690005",
+            "on-tertiary-fixed": "#001f26",
+            "on-tertiary-container": "#002f38",
+            "tertiary-container": "#009eb9",
+            "on-secondary-fixed": "#002113",
+            "surface-container-highest": "#26364a",
+            "primary-fixed": "#e9ddff",
+            "on-error-container": "#ffdad6",
+            "surface-variant": "#26364a",
+            "surface-bright": "#2a3a4f",
+            "primary-fixed-dim": "#d0bcff",
+            "secondary-fixed-dim": "#4edea3",
+            "background": "#031427",
+            "surface-container": "#102034"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "margin-mobile": "0.75rem",
+            "gutter": "0.75rem",
+            "gutter-mobile": "0.5rem",
+            "space-xl": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Geist"],
+            "body-md": ["Geist"],
+            "headline-sm": ["Geist"],
+            "label-lg": ["JetBrains Mono"],
+            "label-sm": ["JetBrains Mono"],
+            "body-sm": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "label-md": ["JetBrains Mono"],
+            "headline-lg": ["Geist"],
+            "body-lg": ["Geist"]
+          },
+          "fontSize": {
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.04em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-md": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .animate-live-glow {
+      animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    /* Technical scrollbars */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000f21;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #26364a;
+      border-radius: 2px;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container pb-24 overflow-x-hidden">
+<!-- TopAppBar (Shared Component Implementation) -->
+<header class="flex justify-between items-center w-full px-space-md py-space-xs sticky top-0 z-40 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="text-headline-sm font-headline-sm tracking-tight text-on-surface">Telemetry &amp; Events</span>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-label-sm font-label-sm bg-surface-container-high text-primary border border-outline-variant/40">EPIC-402</span>
+</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#4edea3] animate-live-glow"></span>
+<span class="text-label-sm font-label-sm text-secondary tracking-wider uppercase">Live Stream Active</span>
+<span class="text-label-sm font-label-sm text-outline">• 428 evt/s</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="w-8 h-8 rounded bg-surface-container border border-outline-variant/40 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-150 active:scale-95" id="pauseToggleBtn" onclick="toggleStream()" title="Pause Stream">
+<span class="material-symbols-outlined" data-icon="pause_circle" id="streamStateIcon">pause_circle</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-container border border-outline-variant/40 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-150 active:scale-95" title="Filter Buffer">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="px-margin-mobile pt-space-md space-y-space-md max-w-md mx-auto">
+<!-- Instrumentation QA & Health Banner -->
+<section class="rounded-lg bg-surface-container-low border border-outline-variant/40 p-space-sm flex items-start gap-space-sm shadow-sm relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary shadow-[0_0_10px_#4edea3]"></div>
+<div class="w-7 h-7 rounded bg-secondary/10 border border-secondary/30 flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified">verified</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider font-semibold">Verification Pass (6/6 Hooks)</span>
+<span class="text-label-sm font-label-sm text-outline">v2.4.1 runtime</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5 leading-snug">
+          All 6 critical epic telemetry hooks passing verification specs in production. Schema drift: <span class="text-on-surface font-label-sm">0.00%</span>.
+        </p>
+</div>
+</section>
+<!-- Epic Goal Measurement Summary Card -->
+<section class="rounded-lg bg-surface-container border border-outline-variant/40 p-space-md relative overflow-hidden shadow-sm">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Epic Objective KPI</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface mt-0.5">Multi-Step Checkout Overhaul</h2>
+</div>
+<span class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-primary/10 text-primary border border-primary/30 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          Production A/B
+        </span>
+</div>
+<!-- Metric Highlight Cluster -->
+<div class="mt-space-md grid grid-cols-2 gap-space-sm pt-space-xs border-t border-outline-variant/20">
+<div>
+<span class="text-label-sm font-label-sm text-outline block">Target Goal</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="text-headline-sm font-headline-sm text-on-surface">≥ 68.5%</span>
+<span class="text-label-sm font-label-sm text-outline">CR</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant text-[11px] block mt-0.5">Baseline control: 58.4%</span>
+</div>
+<div class="border-l border-outline-variant/20 pl-space-sm">
+<span class="text-label-sm font-label-sm text-secondary block font-medium">Current Progress</span>
+<div class="flex items-baseline gap-1.5 mt-0.5">
+<span class="text-headline-lg-mobile font-headline-lg-mobile text-secondary tabular-nums">64.2%</span>
+<span class="text-label-sm font-label-sm px-1 rounded bg-secondary/10 text-secondary border border-secondary/30">+5.8%</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant text-[11px] block mt-0.5">delta vs control</span>
+</div>
+</div>
+<!-- Linear Gauge / Progress Meter -->
+<div class="mt-space-md">
+<div class="flex justify-between items-center text-label-sm font-label-sm text-outline mb-1.5">
+<span>Progress to Target Threshold</span>
+<span class="text-on-surface font-semibold tabular-nums">93.7% of target attained</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full overflow-hidden p-[1px] border border-outline-variant/30 relative">
+<!-- Baseline Marker -->
+<div class="absolute left-[58.4%] top-0 bottom-0 w-0.5 bg-outline z-10" title="Control: 58.4%"></div>
+<!-- Target Marker -->
+<div class="absolute left-[68.5%] top-0 bottom-0 w-0.5 bg-primary z-10 shadow-[0_0_6px_#d0bcff]" title="Target: 68.5%"></div>
+<div class="h-full bg-gradient-to-r from-secondary-container via-secondary to-tertiary rounded-full transition-all duration-500 shadow-[0_0_12px_rgba(78,222,163,0.3)]" style="width: 64.2%;"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] font-label-sm text-outline mt-1 font-mono">
+<span>0%</span>
+<span class="text-on-surface-variant">Control: 58.4%</span>
+<span class="text-primary">Target: 68.5%</span>
+<span>100%</span>
+</div>
+</div>
+<!-- Metadata Badges Footer -->
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/20 flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary" data-icon="query_stats">query_stats</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium">98.4% Statistical Sig.</span>
+<span class="px-1 rounded text-[9px] font-label-sm bg-primary/20 text-primary border border-primary/40 font-mono">p &lt; 0.01</span>
+</div>
+<div class="flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="layers">layers</span>
+<span class="text-on-surface font-semibold font-mono">142.8k</span> events tracked
+        </div>
+</div>
+</section>
+<!-- Key Interaction Triggers Section -->
+<section class="space-y-space-xs">
+<div class="flex items-center justify-between px-0.5">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="ads_click">ads_click</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Key Interaction Triggers</h3>
+</div>
+<span class="text-label-sm font-label-sm text-outline font-mono">4 ACTIVE HOOKS</span>
+</div>
+<!-- Grid of Triggers -->
+<div class="grid grid-cols-2 gap-space-xs">
+<!-- Trigger 1: cta_checkout_click -->
+<div class="bg-surface-container rounded-lg p-space-sm border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors relative group">
+<div class="flex items-start justify-between gap-1 mb-1.5">
+<span class="px-1.5 py-0.5 rounded text-[9px] font-label-sm bg-primary-container/20 text-primary border border-primary/30 uppercase tracking-wider">
+              Primary Metric
+            </span>
+<span class="text-label-sm font-label-sm text-secondary font-mono flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>99.4%
+            </span>
+</div>
+<div>
+<span class="text-label-md font-label-md text-on-surface break-all font-mono font-medium block">cta_checkout_click</span>
+<span class="text-body-sm font-body-sm text-outline text-[11px] block mt-0.5">Step 1 Cart Gate</span>
+</div>
+<div class="mt-space-sm pt-space-xs border-t border-outline-variant/20 flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-outline">Volume</span>
+<span class="text-on-surface font-mono font-semibold tabular-nums">42.1k hits</span>
+</div>
+</div>
+<!-- Trigger 2: step_payment_method_selected -->
+<div class="bg-surface-container rounded-lg p-space-sm border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div class="flex items-start justify-between gap-1 mb-1.5">
+<span class="px-1.5 py-0.5 rounded text-[9px] font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/40 uppercase tracking-wider">
+              Funnel Step
+            </span>
+<span class="text-label-sm font-label-sm text-secondary font-mono flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>98.9%
+            </span>
+</div>
+<div>
+<span class="text-label-md font-label-md text-on-surface break-all font-mono font-medium block">step_payment_method_selected</span>
+<span class="text-body-sm font-body-sm text-outline text-[11px] block mt-0.5">Step 2 Payment Init</span>
+</div>
+<div class="mt-space-sm pt-space-xs border-t border-outline-variant/20 flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-outline">Volume</span>
+<span class="text-on-surface font-mono font-semibold tabular-nums">31.8k hits</span>
+</div>
+</div>
+<!-- Trigger 3: form_coupon_applied -->
+<div class="bg-surface-container rounded-lg p-space-sm border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors">
+<div class="flex items-start justify-between gap-1 mb-1.5">
+<span class="px-1.5 py-0.5 rounded text-[9px] font-label-sm bg-tertiary-container/20 text-tertiary border border-tertiary/30 uppercase tracking-wider">
+              Secondary
+            </span>
+<span class="text-label-sm font-label-sm text-secondary font-mono flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>94.2%
+            </span>
+</div>
+<div>
+<span class="text-label-md font-label-md text-on-surface break-all font-mono font-medium block">form_coupon_applied</span>
+<span class="text-body-sm font-body-sm text-outline text-[11px] block mt-0.5">Promo Drawer Dispatch</span>
+</div>
+<div class="mt-space-sm pt-space-xs border-t border-outline-variant/20 flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-outline">Volume</span>
+<span class="text-on-surface font-mono font-semibold tabular-nums">12.3k hits</span>
+</div>
+</div>
+<!-- Trigger 4: error_checkout_validation -->
+<div class="bg-surface-container rounded-lg p-space-sm border border-outline-variant/30 flex flex-col justify-between hover:border-outline transition-colors bg-surface-container/60">
+<div class="flex items-start justify-between gap-1 mb-1.5">
+<span class="px-1.5 py-0.5 rounded text-[9px] font-label-sm bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 uppercase tracking-wider flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[10px]" data-icon="warning">warning</span> Warn
+            </span>
+<span class="text-label-sm font-label-sm text-[#F59E0B] font-mono font-medium">
+              1.2% rate
+            </span>
+</div>
+<div>
+<span class="text-label-md font-label-md text-on-surface break-all font-mono font-medium block">error_checkout_validation</span>
+<span class="text-body-sm font-body-sm text-outline text-[11px] block mt-0.5">Client Card/ZIP Fallback</span>
+</div>
+<div class="mt-space-sm pt-space-xs border-t border-outline-variant/20 flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-outline">Volume</span>
+<span class="text-on-surface font-mono font-semibold tabular-nums">1.5k hits</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Real-time Live Event Inspector / Stream Section -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="sensors">sensors</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Live Event Stream</h3>
+</div>
+<div class="flex items-center gap-1">
+<span class="text-label-sm font-label-sm text-outline font-mono" id="feedRate">12 evt/s</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</div>
+</div>
+<!-- Segmented Stream Filter Toggles -->
+<div class="flex p-0.5 bg-surface-container-lowest rounded-lg border border-outline-variant/40">
+<button class="flex-1 py-1.5 px-2 rounded text-label-sm font-label-sm bg-surface-container-high text-on-surface font-medium border border-outline-variant/50 transition-all text-center" onclick="setFilter('all', this)">
+          All (142k)
+        </button>
+<button class="flex-1 py-1.5 px-2 rounded text-label-sm font-label-sm text-outline hover:text-on-surface transition-all text-center" onclick="setFilter('conversions', this)">
+          Conversions
+        </button>
+<button class="flex-1 py-1.5 px-2 rounded text-label-sm font-label-sm text-outline hover:text-on-surface transition-all text-center flex items-center justify-center gap-1" onclick="setFilter('failures', this)">
+          Failures <span class="text-[9px] px-1 rounded bg-[#F59E0B]/20 text-[#F59E0B]">0.4%</span>
+</button>
+</div>
+<!-- Stream List Cards -->
+<div class="space-y-space-xs" id="eventStreamContainer">
+<!-- Stream Event Item 1: Purchase Order Submit (Conversion) -->
+<article class="bg-surface-container rounded-lg border border-outline-variant/30 overflow-hidden hover:border-outline-variant/80 transition-all">
+<div class="p-space-sm cursor-pointer select-none" onclick="togglePayload('payload-1', 'arrow-1')">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-outline mb-1">
+<span class="font-mono text-tertiary">14:02:49.812 UTC</span>
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded text-[9px] font-label-sm bg-secondary/10 text-secondary border border-secondary/30 flex items-center gap-0.5 font-mono">
+<span class="material-symbols-outlined text-[11px]" data-icon="check_circle">check_circle</span> Schema Valid ✓
+                </span>
+<span class="material-symbols-outlined text-[16px] text-outline transition-transform duration-200" data-icon="expand_more" id="arrow-1">expand_more</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-label-sm font-bold bg-[#8B5CF6]/20 text-[#d0bcff] border border-[#8B5CF6]/40 font-mono uppercase">
+                  POST
+                </span>
+<span class="font-label-md text-label-md text-on-surface font-semibold font-mono">order_completed</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline font-mono">/checkout/step-3</span>
+</div>
+</div>
+<!-- Expandable Payload -->
+<div class="border-t border-outline-variant/20 bg-surface-container-lowest p-space-sm font-mono text-[11px] space-y-1" id="payload-1">
+<div class="text-outline text-[10px] uppercase font-semibold mb-1 flex items-center justify-between">
+<span>Telemetry Payload Context</span>
+<span class="text-primary cursor-pointer hover:underline" onclick="copySnippet('payload-1-code')">Copy JSON</span>
+</div>
+<div class="text-on-surface-variant leading-relaxed" id="payload-1-code">
+<div><span class="text-tertiary">"user_segment"</span>: <span class="text-secondary">"enterprise"</span>,</div>
+<div><span class="text-tertiary">"cart_value"</span>: <span class="text-[#F59E0B]">$149.00</span>,</div>
+<div><span class="text-tertiary">"checkout_step"</span>: <span class="text-[#F59E0B]">3</span>,</div>
+<div><span class="text-tertiary">"payment_provider"</span>: <span class="text-secondary">"stripe_elements"</span>,</div>
+<div><span class="text-tertiary">"session_id"</span>: <span class="text-outline">"sess_9f02a4b8"</span></div>
+</div>
+</div>
+</article>
+<!-- Stream Event Item 2: Payment Method Selected -->
+<article class="bg-surface-container rounded-lg border border-outline-variant/30 overflow-hidden hover:border-outline-variant/80 transition-all">
+<div class="p-space-sm cursor-pointer select-none" onclick="togglePayload('payload-2', 'arrow-2')">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-outline mb-1">
+<span class="font-mono text-tertiary">14:02:48.330 UTC</span>
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded text-[9px] font-label-sm bg-secondary/10 text-secondary border border-secondary/30 flex items-center gap-0.5 font-mono">
+<span class="material-symbols-outlined text-[11px]" data-icon="check_circle">check_circle</span> Schema Valid ✓
+                </span>
+<span class="material-symbols-outlined text-[16px] text-outline transition-transform duration-200" data-icon="expand_more" id="arrow-2">expand_more</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-label-sm font-bold bg-tertiary-container/30 text-tertiary border border-tertiary/40 font-mono uppercase">
+                  PUT
+                </span>
+<span class="font-label-md text-label-md text-on-surface font-semibold font-mono">step_payment_method_selected</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline font-mono">/checkout/step-2</span>
+</div>
+</div>
+<!-- Expandable Payload -->
+<div class="border-t border-outline-variant/20 bg-surface-container-lowest p-space-sm font-mono text-[11px] space-y-1" id="payload-2">
+<div class="text-outline text-[10px] uppercase font-semibold mb-1 flex items-center justify-between">
+<span>Telemetry Payload Context</span>
+<span class="text-primary cursor-pointer hover:underline" onclick="copySnippet('payload-2-code')">Copy JSON</span>
+</div>
+<div class="text-on-surface-variant leading-relaxed" id="payload-2-code">
+<div><span class="text-tertiary">"method"</span>: <span class="text-secondary">"apple_pay"</span>,</div>
+<div><span class="text-tertiary">"wallet_enabled"</span>: <span class="text-secondary">true</span>,</div>
+<div><span class="text-tertiary">"checkout_step"</span>: <span class="text-[#F59E0B]">2</span>,</div>
+<div><span class="text-tertiary">"latency_ms"</span>: <span class="text-[#F59E0B]">44</span></div>
+</div>
+</div>
+</article>
+<!-- Stream Event Item 3: Coupon Applied -->
+<article class="bg-surface-container rounded-lg border border-outline-variant/30 overflow-hidden hover:border-outline-variant/80 transition-all">
+<div class="p-space-sm cursor-pointer select-none" onclick="togglePayload('payload-3', 'arrow-3')">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-outline mb-1">
+<span class="font-mono text-tertiary">14:02:45.109 UTC</span>
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded text-[9px] font-label-sm bg-secondary/10 text-secondary border border-secondary/30 flex items-center gap-0.5 font-mono">
+<span class="material-symbols-outlined text-[11px]" data-icon="check_circle">check_circle</span> Schema Valid ✓
+                </span>
+<span class="material-symbols-outlined text-[16px] text-outline transition-transform duration-200" data-icon="expand_more" id="arrow-3">expand_more</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-label-sm font-bold bg-[#8B5CF6]/20 text-[#d0bcff] border border-[#8B5CF6]/40 font-mono uppercase">
+                  POST
+                </span>
+<span class="font-label-md text-label-md text-on-surface font-semibold font-mono">form_coupon_applied</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline font-mono">/checkout/step-1</span>
+</div>
+</div>
+<!-- Expandable Payload -->
+<div class="hidden border-t border-outline-variant/20 bg-surface-container-lowest p-space-sm font-mono text-[11px] space-y-1" id="payload-3">
+<div class="text-outline text-[10px] uppercase font-semibold mb-1 flex items-center justify-between">
+<span>Telemetry Payload Context</span>
+<span class="text-primary cursor-pointer hover:underline" onclick="copySnippet('payload-3-code')">Copy JSON</span>
+</div>
+<div class="text-on-surface-variant leading-relaxed" id="payload-3-code">
+<div><span class="text-tertiary">"coupon_code"</span>: <span class="text-secondary">"SPRING20"</span>,</div>
+<div><span class="text-tertiary">"discount_rate"</span>: <span class="text-[#F59E0B]">0.20</span>,</div>
+<div><span class="text-tertiary">"cart_subtotal"</span>: <span class="text-[#F59E0B]">$186.25</span></div>
+</div>
+</div>
+</article>
+<!-- Stream Event Item 4: Validation Error Warning -->
+<article class="bg-surface-container rounded-lg border border-[#F59E0B]/30 overflow-hidden hover:border-[#F59E0B]/60 transition-all bg-[#F59E0B]/[0.02]">
+<div class="p-space-sm cursor-pointer select-none" onclick="togglePayload('payload-4', 'arrow-4')">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-outline mb-1">
+<span class="font-mono text-[#F59E0B]">14:02:41.522 UTC</span>
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded text-[9px] font-label-sm bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 flex items-center gap-0.5 font-mono">
+<span class="material-symbols-outlined text-[11px]" data-icon="error">error</span> Handled Fail
+                </span>
+<span class="material-symbols-outlined text-[16px] text-outline transition-transform duration-200" data-icon="expand_more" id="arrow-4">expand_more</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-label-sm font-bold bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40 font-mono uppercase">
+                  WARN
+                </span>
+<span class="font-label-md text-label-md text-[#F59E0B] font-semibold font-mono">error_checkout_validation</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline font-mono">/checkout/step-2</span>
+</div>
+</div>
+<!-- Expandable Payload -->
+<div class="hidden border-t border-outline-variant/20 bg-surface-container-lowest p-space-sm font-mono text-[11px] space-y-1" id="payload-4">
+<div class="text-outline text-[10px] uppercase font-semibold mb-1 flex items-center justify-between">
+<span>Telemetry Payload Context</span>
+<span class="text-primary cursor-pointer hover:underline" onclick="copySnippet('payload-4-code')">Copy JSON</span>
+</div>
+<div class="text-on-surface-variant leading-relaxed" id="payload-4-code">
+<div><span class="text-tertiary">"field_id"</span>: <span class="text-secondary">"postal_code"</span>,</div>
+<div><span class="text-tertiary">"error_code"</span>: <span class="text-[#ffb4ab]">"INVALID_FORMAT"</span>,</div>
+<div><span class="text-tertiary">"country_iso"</span>: <span class="text-secondary">"CA"</span>,</div>
+<div><span class="text-tertiary">"step"</span>: <span class="text-[#F59E0B]">2</span></div>
+</div>
+</div>
+</article>
+</div>
+<!-- Action Load / Buffer Indicator -->
+<div class="p-space-sm text-center">
+<button class="w-full py-2 px-space-md rounded bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:bg-surface-container text-label-sm font-label-sm flex items-center justify-center gap-2 transition-colors active:scale-[0.99]">
+<span class="material-symbols-outlined text-[16px]" data-icon="history">history</span>
+          Fetch Previous Buffer (500 events)
+        </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component Implementation) -->
+<!-- Active state determined as 'Stream' matching prompt intent -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30">
+<!-- Tab 1: Stream (Active) -->
+<a class="flex flex-col items-center justify-center text-secondary py-space-xs active:scale-95 transition-transform duration-100 flex-1" href="#stream">
+<span class="material-symbols-outlined text-[22px] drop-shadow-[0_0_8px_#4edea3]" data-icon="sensors">sensors</span>
+<span class="text-label-sm font-label-sm mt-0.5 font-medium">Stream</span>
+</a>
+<!-- Tab 2: Metrics -->
+<a class="flex flex-col items-center justify-center text-outline py-space-xs hover:text-on-surface active:scale-95 transition-transform duration-100 flex-1" href="#metrics">
+<span class="material-symbols-outlined text-[22px]" data-icon="monitoring">monitoring</span>
+<span class="text-label-sm font-label-sm mt-0.5">Metrics</span>
+</a>
+<!-- Tab 3: Triggers -->
+<a class="flex flex-col items-center justify-center text-outline py-space-xs hover:text-on-surface active:scale-95 transition-transform duration-100 flex-1" href="#triggers">
+<span class="material-symbols-outlined text-[22px]" data-icon="ads_click">ads_click</span>
+<span class="text-label-sm font-label-sm mt-0.5">Triggers</span>
+</a>
+<!-- Tab 4: Validation -->
+<a class="flex flex-col items-center justify-center text-outline py-space-xs hover:text-on-surface active:scale-95 transition-transform duration-100 flex-1" href="#validation">
+<span class="material-symbols-outlined text-[22px]" data-icon="verified">verified</span>
+<span class="text-label-sm font-label-sm mt-0.5">Validation</span>
+</a>
+</nav>
+<!-- Micro-interactions Script -->
+<script>
+    let isStreaming = true;
+
+    function toggleStream() {
+      isStreaming = !isStreaming;
+      const icon = document.getElementById('streamStateIcon');
+      const rate = document.getElementById('feedRate');
+      if (isStreaming) {
+        icon.innerText = 'pause_circle';
+        rate.innerText = '12 evt/s';
+      } else {
+        icon.innerText = 'play_circle';
+        rate.innerText = 'PAUSED';
+      }
+    }
+
+    function togglePayload(elementId, arrowId) {
+      const payload = document.getElementById(elementId);
+      const arrow = document.getElementById(arrowId);
+      if (payload.classList.contains('hidden')) {
+        payload.classList.remove('hidden');
+        arrow.style.transform = 'rotate(180deg)';
+      } else {
+        payload.classList.add('hidden');
+        arrow.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function setFilter(category, buttonEl) {
+      // Toggle button styles
+      const buttons = buttonEl.parentElement.querySelectorAll('button');
+      buttons.forEach(btn => {
+        btn.className = "flex-1 py-1.5 px-2 rounded text-label-sm font-label-sm text-outline hover:text-on-surface transition-all text-center";
+      });
+      buttonEl.className = "flex-1 py-1.5 px-2 rounded text-label-sm font-label-sm bg-surface-container-high text-on-surface font-medium border border-outline-variant/50 transition-all text-center";
+    }
+
+    function copySnippet(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Payload copied to clipboard.');
+      }).catch(() => {});
+    }
+  </script>
+</body></html>

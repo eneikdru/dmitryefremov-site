@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { telemetry } from '../lib/telemetry';
 
   export let apiEndpoint: string = '/api/intake';
 
@@ -99,6 +100,14 @@
       claimTicket = resData.claimTicket || `MSG-${Date.now().toString(36).toUpperCase()}`;
       submitSuccess = true;
       acknowledgementEmailSent = true;
+
+      telemetry.trackFormValidationPassed('vault_intake_submit', 12, 2);
+      telemetry.trackCanonSubmitConverted(claimTicket, 0, {
+        classification,
+        title: finalTitle,
+        client_email: email.trim()
+      });
+
       clearDraft();
     } catch (err: any) {
       submitError = 'Ошибка соединения при отправке сообщения. Черновик сохранён локально, повторите отправку через минуту.';

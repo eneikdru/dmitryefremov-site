@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TelegramSparkMapperTest {
 
@@ -141,5 +142,66 @@ class TelegramSparkMapperTest {
         assertThat(spark.getTelegramChatId()).isEqualTo(777L);
         assertThat(spark.getDomain()).isEqualTo("Pragmatic Business Strategy");
         assertThat(spark.getPublishedAt().toEpochSecond()).isEqualTo(1760300000L);
+    }
+
+    @Test
+    void testMapInvalidPayloadThrowsException() {
+        assertThatThrownBy(() -> mapper.mapTelegramPayload(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Payload cannot be empty");
+
+        assertThatThrownBy(() -> mapper.mapTelegramPayload(""))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Payload cannot be empty");
+
+        assertThatThrownBy(() -> mapper.mapTelegramPayload("{ invalid json }"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Failed to parse Telegram payload");
+    }
+
+    @Test
+    void testMapMissingUpdateIdThrowsException() {
+        String jsonPayload = """
+                {
+                  "channel_post": {
+                    "message_id": 100,
+                    "text": "Hello world"
+                  }
+                }
+                """;
+
+        assertThatThrownBy(() -> mapper.mapTelegramPayload(jsonPayload))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("missing update_id");
+    }
+
+    @Test
+    void testMapMissingMessagePayloadThrowsException() {
+        String jsonPayload = """
+                {
+                  "update_id": 10001
+                }
+                """;
+
+        assertThatThrownBy(() -> mapper.mapTelegramPayload(jsonPayload))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("missing message or channel_post data");
+    }
+
+    @Test
+    void testMapEmptyMessageContentThrowsException() {
+        String jsonPayload = """
+                {
+                  "update_id": 10002,
+                  "message": {
+                    "message_id": 101,
+                    "text": ""
+                  }
+                }
+                """;
+
+        assertThatThrownBy(() -> mapper.mapTelegramPayload(jsonPayload))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("message content is empty");
     }
 }

@@ -39,6 +39,55 @@ describe('Telemetry Service Invariants & Acceptance Criteria', () => {
     expect(events[0]).toEqual(evt25);
   });
 
+  describe('Graph Cross-Links & Cmd+K Search Telemetry Events', () => {
+    it('dispatches cross_link_click telemetry event when cross-linking between nodes', () => {
+      const dispatchedEvents: TelemetryEvent[] = [];
+      const unsubscribe = telemetry.subscribe((evt) => dispatchedEvents.push(evt));
+
+      const evt = telemetry.trackCrossLinkClick(
+        'essay-deontic-logic',
+        'podcast-ep-01',
+        'podcast',
+        'Выпуск 01: Системы и реальность'
+      );
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('cross_link_click');
+      expect(evt?.payload).toEqual({
+        source_node_id: 'essay-deontic-logic',
+        target_node_id: 'podcast-ep-01',
+        target_node_type: 'podcast',
+        label: 'Выпуск 01: Системы и реальность'
+      });
+
+      expect(dispatchedEvents).toHaveLength(1);
+      expect(dispatchedEvents[0]).toEqual(evt);
+
+      unsubscribe();
+    });
+
+    it('dispatches search_utilization telemetry event on Cmd+K search invocation', () => {
+      const dispatchedEvents: TelemetryEvent[] = [];
+      const unsubscribe = telemetry.subscribe((evt) => dispatchedEvents.push(evt));
+
+      const evt = telemetry.trackSearchUtilization('деонтическая', 'cmd_k', 3, 'concept-deontic-logic');
+
+      expect(evt).not.toBeNull();
+      expect(evt?.type).toBe('search_utilization');
+      expect(evt?.payload).toEqual({
+        query: 'деонтическая',
+        trigger_method: 'cmd_k',
+        results_count: 3,
+        selected_result_id: 'concept-deontic-logic'
+      });
+
+      expect(dispatchedEvents).toHaveLength(1);
+      expect(dispatchedEvents[0]).toEqual(evt);
+
+      unsubscribe();
+    });
+  });
+
   describe('Contact Link Analytics Event Dispatching', () => {
     it('dispatches correct analytics payload when a contact link is clicked', () => {
       const dispatchedEvents: TelemetryEvent[] = [];

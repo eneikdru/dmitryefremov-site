@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { telemetry } from '../lib/telemetry';
   import {
     CANON_ROUTES,
     CANON_PATTERNS,
@@ -26,6 +27,37 @@
   };
 
   let copySuccess: boolean = false;
+  let testOrderModalOpen: boolean = false;
+  let testOrderForm = {
+    clientName: 'Agent_Auto_Test',
+    clientEmail: 'agent@test.io',
+    serviceType: 'MVP',
+    requirements: 'Automated architectural review test'
+  };
+  let testOrderResult: string | null = null;
+  let recentInvocations = [
+    { agent: 'LangChain_Agent_04', route: 'GET /llms.txt', status: '200 OK', latency: '18ms' },
+    { agent: 'Claude_Codex_Sync', route: 'GET /.well-known/ai-agent.json', status: '200 OK', latency: '24ms' },
+    { agent: 'AutoGPT_Runner', route: 'POST /api/v1/agent/orders', status: '201 Created', latency: '42ms' }
+  ];
+
+  let activeGraphNode: string = 'concept-deontic-logic';
+
+  function handleGraphCrossLink(sourceId: string, targetId: string, targetType: string, label: string) {
+    activeGraphNode = targetId;
+    telemetry.trackCrossLinkClick(sourceId, targetId, targetType, label);
+  }
+
+  onMount(async () => {
+    // Load live telemetry if available
+    const telemetry = await fetchAgentTelemetry();
+    if (telemetry && telemetry.totalInvocations) {
+      recentInvocations = [
+        { agent: 'Live_Agent_Service', route: 'GET /api/v1/agent/telemetry', status: '200 OK', latency: '12ms' },
+        ...recentInvocations
+      ];
+    }
+  });
 
   $: filteredRoutes = CANON_ROUTES.filter(route => {
     if (activeFilter === 'all') return true;
@@ -50,21 +82,7 @@
       routeTestData[route.id] = JSON.stringify(json, null, 2);
       expandedSchemas[route.id] = true;
     } else if (route.path === '/api/v1/agent/orders') {
-      routeTestData[route.id] = JSON.stringify({
-        endpoint: '/api/v1/agent/orders',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Canon-Agent-Key': '<CANON_AGENT_KEY>'
-        },
-        payloadContract: {
-          clientName: 'string',
-          clientEmail: 'string (valid email)',
-          serviceType: 'MVP | AUDIT | AUTOMATION',
-          requirements: 'string (min 10 chars)'
-        }
-      }, null, 2);
-      expandedSchemas[route.id] = true;
+      testOrderModalOpen = true;
     }
   }
 
@@ -79,6 +97,22 @@
         copiedPatternId = null;
       }
     }, 2000);
+  }
+
+  async function handleTestOrderSubmit() {
+    testOrderResult = 'Отправка...';
+    const res = await submitAgentOrder(testOrderForm);
+    if (res.success) {
+      const orderId = res.data?.orderId || res.data?.id || 'ORD-9821';
+      testOrderResult = `Успешно (201 Created)! ID: ${orderId}`;
+      telemetry.trackCanonSubmitConverted(orderId, 0, {
+        service_type: testOrderForm.serviceType,
+        client_name: testOrderForm.clientName,
+        source: 'agent_api'
+      });
+    } else {
+      testOrderResult = `Ошибка: ${res.error}`;
+    }
   }
 
   function copyBaseEndpoint() {
@@ -152,6 +186,114 @@
     </div>
   </section>
 
+
+
+  <!-- Canon Concept Graph & Interactive Cross-Links -->
+  <section id="canon-graph-section" class="bg-[#1c2028] border border-[#3a494b]/40 rounded-xl p-5 space-y-4 shadow-xl">
+    <div class="flex items-center justify-between border-b border-[#3a494b]/20 pb-3">
+      <div class="flex items-center gap-2">
+        <span class="text-lg text-[#00f2fe]">🌐</span>
+        <div>
+          <h2 id="canon-graph-title" class="text-base font-semibold text-[#dfe2ee]">
+            Единый граф понятий Канона (Canon Cross-Links)
+          </h2>
+          <p class="text-xs font-mono text-[#b9cacb]">
+            Перекрёстные ссылки между понятиями, подкастами и эссе с отправкой телеметрии навигации.
+          </p>
+        </div>
+      </div>
+      <span class="text-xs font-mono text-[#67f4b7] bg-[#0a0e16] px-2.5 py-1 rounded border border-[#3a494b]/30">
+        ACTIVE_NODE: {activeGraphNode}
+      </span>
+    </div>
+
+    <!-- Node Navigation Matrix -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
+      <div class="p-3 bg-[#0a0e16] border border-[#3a494b]/30 rounded-lg space-y-2">
+        <div class="flex items-center justify-between text-[#00f2fe] text-[11px] font-bold">
+          <span>ПОНЯТИЕ КАНОНА</span>
+          <span>[CORE]</span>
+        </div>
+        <h3 class="font-bold text-[#dfe2ee] text-sm">Деонтическая логика</h3>
+        <p class="text-[11px] text-[#b9cacb] leading-relaxed">
+          Модальная логика нормативных требований и предписаний в автономных системах.
+        </p>
+        <div class="pt-2 border-t border-[#3a494b]/20 flex flex-wrap gap-1.5">
+          <button
+            id="crosslink-to-podcast-1"
+            type="button"
+            on:click={() => handleGraphCrossLink('concept-deontic-logic', 'podcast-ep-01', 'podcast', 'Выпуск 01')}
+            aria-label="Перейти к подкасту Выпуск 01"
+            class="px-2 py-1 rounded bg-[#262a33] text-[#67f4b7] hover:border-[#67f4b7] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
+          >
+            🎙️ Выпуск 01 →
+          </button>
+          <button
+            id="crosslink-to-essay-1"
+            type="button"
+            on:click={() => handleGraphCrossLink('concept-deontic-logic', 'essay-deontic', 'essay', 'Эссе по логике')}
+            aria-label="Перейти к Эссе по логике"
+            class="px-2 py-1 rounded bg-[#262a33] text-[#00f2fe] hover:border-[#00f2fe] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
+          >
+            📖 Эссе →
+          </button>
+        </div>
+      </div>
+
+      <div class="p-3 bg-[#0a0e16] border border-[#3a494b]/30 rounded-lg space-y-2">
+        <div class="flex items-center justify-between text-[#67f4b7] text-[11px] font-bold">
+          <span>ПОНЯТИЕ КАНОНА</span>
+          <span>[SYSTEMS]</span>
+        </div>
+        <h3 class="font-bold text-[#dfe2ee] text-sm">Теория ограничений (TOC)</h3>
+        <p class="text-[11px] text-[#b9cacb] leading-relaxed">
+          Локализация узких мест в архитектуре распределённых агентов.
+        </p>
+        <div class="pt-2 border-t border-[#3a494b]/20 flex flex-wrap gap-1.5">
+          <button
+            id="crosslink-to-podcast-2"
+            type="button"
+            on:click={() => handleGraphCrossLink('concept-toc', 'podcast-ep-02', 'podcast', 'Выпуск 02')}
+            aria-label="Перейти к подкасту Выпуск 02"
+            class="px-2 py-1 rounded bg-[#262a33] text-[#67f4b7] hover:border-[#67f4b7] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
+          >
+            🎙️ Выпуск 02 →
+          </button>
+          <button
+            id="crosslink-to-spark-1"
+            type="button"
+            on:click={() => handleGraphCrossLink('concept-toc', 'spark-telegram-mvp', 'spark', 'Telegram Spark')}
+            aria-label="Перейти к Заметке в Telegram"
+            class="px-2 py-1 rounded bg-[#262a33] text-[#c3c0ff] hover:border-[#c3c0ff] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
+          >
+            ⚡ Spark →
+          </button>
+        </div>
+      </div>
+
+      <div class="p-3 bg-[#0a0e16] border border-[#3a494b]/30 rounded-lg space-y-2">
+        <div class="flex items-center justify-between text-[#c3c0ff] text-[11px] font-bold">
+          <span>ПОНЯТИЕ КАНОНА</span>
+          <span>[A2A]</span>
+        </div>
+        <h3 class="font-bold text-[#dfe2ee] text-sm">A2A Экономика</h3>
+        <p class="text-[11px] text-[#b9cacb] leading-relaxed">
+          Автономные транзакции и машиночитаемая спецификация сервисов.
+        </p>
+        <div class="pt-2 border-t border-[#3a494b]/20 flex flex-wrap gap-1.5">
+          <button
+            id="crosslink-to-canon-llmstxt"
+            type="button"
+            on:click={() => handleGraphCrossLink('concept-a2a', 'route-lore-summary', 'api', 'llms.txt')}
+            aria-label="Перейти к llms.txt"
+            class="px-2 py-1 rounded bg-[#262a33] text-[#00f2fe] hover:border-[#00f2fe] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
+          >
+            📄 llms.txt →
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Ingress Gateway Overview Card -->
   <section id="ingress-gateway-card" class="bg-[#1c2028] border border-[#3a494b]/40 rounded-xl p-5 space-y-4 shadow-xl">
@@ -346,4 +488,85 @@
     </div>
 
   </section>
+  <!-- Interactive Test Order Modal -->
+  {#if testOrderModalOpen}
+    <div id="test-order-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="max-w-md w-full bg-[#12151e] border border-[#3a494b] rounded-2xl p-6 space-y-4 font-mono text-xs text-[#e2e8f0] shadow-2xl">
+        <div class="flex justify-between items-center border-b border-[#1f2433] pb-3">
+          <h3 class="text-sm font-bold text-[#00f2fe]">TEST API ROUTE: POST /api/v1/agent/orders</h3>
+          <button
+            type="button"
+            on:click={() => (testOrderModalOpen = false)}
+            class="px-2 py-1 rounded bg-[#1f2433] hover:bg-[#2e364f]"
+          >
+            ✕
+          </button>
+        </div>
+
+        <form on:submit|preventDefault={handleTestOrderSubmit} class="space-y-3">
+          <div>
+            <label class="block text-[#b9cacb] text-[10px] mb-1" for="input-client-name">CLIENT / AGENT NAME</label>
+            <input
+              id="input-client-name"
+              type="text"
+              bind:value={testOrderForm.clientName}
+              class="w-full bg-[#0a0e16] border border-[#3a494b] rounded p-2 text-xs text-white"
+            />
+          </div>
+          <div>
+            <label class="block text-[#b9cacb] text-[10px] mb-1" for="input-client-email">CONTACT EMAIL</label>
+            <input
+              id="input-client-email"
+              type="email"
+              bind:value={testOrderForm.clientEmail}
+              class="w-full bg-[#0a0e16] border border-[#3a494b] rounded p-2 text-xs text-white"
+            />
+          </div>
+          <div>
+            <label class="block text-[#b9cacb] text-[10px] mb-1" for="input-service-type">SERVICE TYPE</label>
+            <select
+              id="input-service-type"
+              bind:value={testOrderForm.serviceType}
+              class="w-full bg-[#0a0e16] border border-[#3a494b] rounded p-2 text-xs text-white"
+            >
+              <option value="MVP">MVP (Autonomous Architecture)</option>
+              <option value="AUDIT">AUDIT (Systems & Knowledge Graph)</option>
+              <option value="AUTOMATION">AUTOMATION (Agent Protocol)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[#b9cacb] text-[10px] mb-1" for="input-requirements">REQUIREMENTS</label>
+            <textarea
+              id="input-requirements"
+              bind:value={testOrderForm.requirements}
+              rows="2"
+              class="w-full bg-[#0a0e16] border border-[#3a494b] rounded p-2 text-xs text-white"
+            ></textarea>
+          </div>
+
+          {#if testOrderResult}
+            <div class="p-2 rounded bg-[#0a0e16] border border-[#00f2fe]/40 text-[#67f4b7] text-[11px]">
+              {testOrderResult}
+            </div>
+          {/if}
+
+          <div class="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              on:click={() => (testOrderModalOpen = false)}
+              class="px-3 py-1.5 rounded bg-[#262a33] text-[#b9cacb]"
+            >
+              Закрыть
+            </button>
+            <button
+              type="submit"
+              class="px-3 py-1.5 rounded bg-[#00f2fe] text-[#00373a] font-bold hover:brightness-110"
+            >
+              Отправить Test Order
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {/if}
 </div>
