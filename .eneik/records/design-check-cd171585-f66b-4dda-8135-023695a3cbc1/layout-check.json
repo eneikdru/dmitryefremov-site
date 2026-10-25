@@ -1,0 +1,30 @@
+[
+  {
+    "id": "header",
+    "left": 16,
+    "top": 32,
+    "width": 343,
+    "height": 890.5
+  },
+  {
+    "id": "tab-models",
+    "left": 23,
+    "top": 879.5,
+    "width": 155.03125,
+    "height": 36
+  },
+  {
+    "id": "conf-slider",
+    "left": 49,
+    "top": 1610.5,
+    "width": 277,
+    "height": 6
+  },
+  {
+    "id": "main-content",
+    "left": 0,
+    "top": 0,
+    "width": 375,
+    "height": 2360
+  }
+]
