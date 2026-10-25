@@ -235,7 +235,7 @@
                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                     <span class="text-white tracking-wider font-semibold">STATUS: ACTIVE</span>
                   </div>
-                  <span class="tracking-widest text-[10px]">ТБИЛИСИ / МОСКВА</span>
+                  <span class="tracking-widest text-[10px]">КУТАИСИ, ГРУЗИЯ</span>
                 </div>
                 <!-- Portrait Viewport -->
                 <div class="relative aspect-[3/4] w-full overflow-hidden rounded bg-[#080a0e] border border-[#1e2633]">
@@ -251,7 +251,7 @@
                     E-50mm f/1.4
                   </div>
                   <div class="absolute bottom-2.5 right-2.5 font-mono text-[10px] text-[#94a3b8] bg-[#080a0e]/90 px-1.5 py-0.5 border border-[#1e2633] rounded">
-                    41.7151° N, 44.8271° E
+                    42.2679° N, 42.7180° E
                   </div>
                 </div>
                 <!-- Optical Chassis Footer -->
