@@ -248,8 +248,8 @@
     <div class="flex items-center space-x-3">
       <span class="material-symbols-outlined text-2xl text-sky-400" aria-hidden="true">shield</span>
       <div class="flex flex-col">
-        <span class="text-sm font-bold tracking-tight leading-none">Trust & Compliance</span>
-        <span class="text-[11px] font-mono font-medium opacity-80">Compliance Ops</span>
+        <span class="text-sm font-bold tracking-tight leading-none">Личный кабинет (Trust & Compliance)</span>
+        <span class="text-[11px] font-mono font-medium opacity-80">Панель управления</span>
       </div>
     </div>
 
@@ -259,13 +259,13 @@
         href="/"
         class="px-3 py-1.5 rounded text-xs font-mono font-semibold border transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center gap-1 {theme === 'dark' ? 'bg-[#1f2433] text-[#38bdf8] border-[#38bdf8]/40 hover:bg-[#2d354b]' : 'bg-[#f1f5f9] text-[#0284c7] border-[#0284c7]/40 hover:bg-[#e2e8f0]'}"
       >
-        <span>← Public Portal</span>
+        <span>← На сайт</span>
       </a>
       <button
         id="admin-filter-btn"
         type="button"
-        title="Filter Queue"
-        aria-label="Filter Queue"
+        title="Фильтр очереди"
+        aria-label="Фильтр очереди"
         class="p-2 rounded hover:bg-black/10 dark:hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none"
       >
         <span class="material-symbols-outlined text-xl" aria-hidden="true">filter_list</span>
@@ -273,8 +273,8 @@
       <button
         id="admin-framework-btn"
         type="button"
-        title="Statutory Legal Framework"
-        aria-label="Statutory Legal Framework"
+        title="Правовые стандарты"
+        aria-label="Правовые стандарты"
         class="p-2 rounded hover:bg-black/10 dark:hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none"
       >
         <span class="material-symbols-outlined text-xl" aria-hidden="true">gavel</span>
@@ -561,23 +561,23 @@
     >
       <div class="flex items-center justify-between pb-1">
         <span class="font-mono text-xs font-semibold uppercase tracking-wider text-sky-400">
-          STATUTORY BENCHMARK
+          НОРМАТИВНЫЙ СТАТУС (STATUTORY BENCHMARK)
         </span>
         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          ENFORCED
+          АКТИВЕН
         </span>
       </div>
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2">
         <div>
-          <h1 class="text-xl sm:text-2xl font-bold tracking-tight">GDPR / CCPA Compliant: 99.4%</h1>
-          <p class="text-xs font-sans opacity-80 mt-1">Audited across 14 sovereign data jurisdictions (UTC synced)</p>
+          <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Безопасность данных: GDPR / CCPA Compliant: 99.4%</h1>
+          <p class="text-xs font-sans opacity-80 mt-1">Аудит по 14 суверенным юрисдикциям данных (синхронизация по UTC)</p>
         </div>
         <button
           id="admin-audit-filter-btn"
           type="button"
-          title="Quick Audit Filter"
-          aria-label="Quick Audit Filter"
+          title="Фильтр аудита"
+          aria-label="Фильтр аудита"
           class="p-2 rounded border transition-colors self-start sm:self-center focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {theme === 'dark' ? 'border-[#1f2433] hover:bg-[#1f2433] text-emerald-400' : 'border-[#c6c6cd] hover:bg-slate-100 text-emerald-600'}"
         >
           <span class="material-symbols-outlined text-xl" aria-hidden="true">tune</span>
@@ -591,30 +591,30 @@
       <div class="sm:col-span-2 md:col-span-1 p-4 rounded-xl border shadow-sm flex flex-col justify-between {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}">
         <div>
           <div class="flex justify-between items-start">
-            <span class="font-mono text-xs font-semibold opacity-80">ACTIVE DSARS</span>
+            <span class="font-mono text-xs font-semibold opacity-80">ЗАПРОСЫ ДАННЫХ (DSAR)</span>
             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-red-500/20 text-red-400 border border-red-500/30">
               <span class="material-symbols-outlined text-sm" aria-hidden="true">alarm</span>
-              2 due in &lt;48h
+              2 требуют ответа &lt;48ч
             </span>
           </div>
           <div class="flex items-baseline gap-2 mt-2">
             <span class="text-3xl font-extrabold">{dsar8821Status === 'deleted' ? '11' : '12'}</span>
-            <span class="text-sm font-medium opacity-80">Pending</span>
+            <span class="text-sm font-medium opacity-80">В ожидании</span>
           </div>
         </div>
         <div class="mt-4 pt-3 border-t flex items-center justify-between text-xs font-mono opacity-80 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
           <span class="flex items-center gap-1">
             <span class="material-symbols-outlined text-sm text-emerald-400" aria-hidden="true">verified_user</span>
-            Statutory SLA threshold: 30 days
+            Порог регламента SLA: 30 дней
           </span>
-          <span class="font-bold">Avg: 3.4d</span>
+          <span class="font-bold">Среднее: 3.4д</span>
         </div>
       </div>
 
       <!-- Metric 2: Consent Opt-In Rate -->
       <div class="p-4 rounded-xl border shadow-sm flex flex-col justify-between {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}">
         <div>
-          <span class="font-mono text-xs font-semibold opacity-80 block">CONSENT OPT-IN</span>
+          <span class="font-mono text-xs font-semibold opacity-80 block">УРОВЕНЬ СОГЛАСИЯ</span>
           <div class="mt-2">
             <span class="text-3xl font-extrabold">84.2%</span>
           </div>
@@ -624,22 +624,22 @@
             <span class="material-symbols-outlined text-sm" aria-hidden="true">trending_up</span>
             +2.1%
           </span>
-          <span class="font-sans text-[11px] opacity-80 {theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}">30d trend</span>
+          <span class="font-sans text-[11px] opacity-80 {theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}">за 30 дней</span>
         </div>
       </div>
 
       <!-- Metric 3: Sub-Processors -->
       <div class="p-4 rounded-xl border shadow-sm flex flex-col justify-between {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}">
         <div>
-          <span class="font-mono text-xs font-semibold opacity-80 block">SUB-PROCESSORS</span>
+          <span class="font-mono text-xs font-semibold opacity-80 block">ОБРАБОТЧИКИ ДАННЫХ</span>
           <div class="mt-2">
-            <span class="text-2xl font-bold">24 Verified</span>
+            <span class="text-2xl font-bold">24 верифицировано</span>
           </div>
         </div>
         <div class="mt-4 pt-1">
           <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-            1 Review Needed
+            1 требует проверки
           </span>
         </div>
       </div>
@@ -650,9 +650,9 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-emerald-400 text-2xl" aria-hidden="true">assignment_turned_in</span>
-          <h2 class="text-lg font-bold tracking-tight">Urgent Data Subject Requests</h2>
+          <h2 class="text-lg font-bold tracking-tight">Запросы субъектов данных (DSAR)</h2>
         </div>
-        <span class="font-mono text-xs opacity-80">Queue: {dsar8821Status === 'deleted' ? '2 Active' : '3 Active'}</span>
+        <span class="font-mono text-xs opacity-80">Очередь: {dsar8821Status === 'deleted' ? '2 активных' : '3 активных'}</span>
       </div>
 
       <!-- Queue Item 1: Erasure Request (High Priority) -->
@@ -666,30 +666,30 @@
               <span class="font-mono text-xs font-bold">#DSAR-8821</span>
               {#if dsar8821Status === 'deleted'}
                 <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
-                  DELETED / PURGED
+                  УДАЛЕНО / DELETED / PURGED
                 </span>
               {:else}
                 <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-red-500/20 text-red-400 font-bold border border-red-500/30">
-                  CRITICAL SLA
+                  СРОЧНЫЙ СРОК (CRITICAL SLA)
                 </span>
               {/if}
             </div>
-            <span class="text-base font-bold mt-1">Erasure / Right to be Forgotten</span>
-            <span class="font-mono text-xs opacity-80">Subject: u_8910 • Direct consumer tier</span>
+            <span class="text-base font-bold mt-1">Удаление данных / Право на забвение</span>
+            <span class="font-mono text-xs opacity-80">Субъект: u_8910 • Прямой потребитель</span>
           </div>
 
           <div class="sm:text-right">
             {#if dsar8821Status === 'deleted'}
-              <span class="font-mono text-xs font-bold text-emerald-400 block">Completed</span>
+              <span class="font-mono text-xs font-bold text-emerald-400 block">Выполнено</span>
             {:else}
-              <span class="font-mono text-xs font-bold text-red-400 block">18h left</span>
+              <span class="font-mono text-xs font-bold text-red-400 block">Осталось 18ч</span>
             {/if}
-            <span class="text-[11px] opacity-70">Art. 17 GDPR</span>
+            <span class="text-[11px] opacity-70">Ст. 17 GDPR</span>
           </div>
         </div>
 
         <p class="text-xs opacity-80 pt-2 border-t {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
-          Requires cascading purge across customer database, billing shards, and marketing analytics sink.
+          Требует каскадного удаления из базы клиентов, шардов биллинга и хранилища маркетинговой аналитики.
         </p>
 
         <!-- Action Buttons -->
@@ -700,7 +700,7 @@
             class="h-9 px-4 border rounded text-xs font-semibold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center gap-1.5 {theme === 'dark' ? 'border-[#1f2433] bg-[#1a233a] hover:bg-[#25304e] text-white' : 'border-[#c6c6cd] bg-slate-100 hover:bg-slate-200 text-[#0b1c30]'}"
           >
             <span class="material-symbols-outlined text-sm" aria-hidden="true">visibility</span>
-            Review Details
+            Детали запроса
           </button>
 
           {#if dsar8821Status === 'pending'}
@@ -711,7 +711,7 @@
               class="h-9 px-4 rounded text-xs font-bold bg-red-600 text-white hover:bg-red-700 transition-all focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span class="material-symbols-outlined text-sm" aria-hidden="true">delete_sweep</span>
-              Execute Deletion
+              Выполнить удаление
             </button>
           {:else}
             <button
@@ -720,7 +720,7 @@
               class="h-9 px-4 rounded text-xs font-bold bg-emerald-800/40 text-emerald-300 cursor-not-allowed flex items-center justify-center gap-1.5"
             >
               <span class="material-symbols-outlined text-sm" aria-hidden="true">check_circle</span>
-              Purge Confirmed
+              Удаление подтверждено
             </button>
           {/if}
         </div>
@@ -736,13 +736,13 @@
             <div class="flex items-center gap-2">
               <span class="font-mono text-xs font-bold">#DSAR-8819</span>
               <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-bold border border-sky-500/30">
-                BATCH PROCESS
+                ПАКЕТНАЯ ОБРАБОТКА
               </span>
             </div>
-            <span class="text-base font-bold mt-1">Data Export (ZIP)</span>
-            <span class="font-mono text-xs opacity-80">Subject: u_4412 • Portability request</span>
+            <span class="text-base font-bold mt-1">Экспорт данных (ZIP архив)</span>
+            <span class="font-mono text-xs opacity-80">Субъект: u_4412 • Запрос переноса данных</span>
           </div>
-          <span class="font-mono text-xs font-bold text-sky-400">Processing (92%)</span>
+          <span class="font-mono text-xs font-bold text-sky-400">Обработка (92%)</span>
         </div>
 
         <div class="w-full bg-slate-700/40 h-2 rounded-full overflow-hidden">
@@ -750,8 +750,8 @@
         </div>
 
         <div class="flex items-center justify-between font-mono text-xs opacity-80">
-          <span>Target: archive_u4412_payload.enc</span>
-          <span>SLA: 26d left</span>
+          <span>Файл: archive_u4412_payload.enc</span>
+          <span>SLA: осталось 26д</span>
         </div>
       </div>
 
@@ -765,15 +765,15 @@
             <div class="flex items-center gap-2">
               <span class="font-mono text-xs font-bold">#DSAR-8814</span>
               <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
-                RECONCILED
+                СОГЛАСОВАНО
               </span>
             </div>
-            <span class="text-base font-bold mt-1">Rectification</span>
-            <span class="font-mono text-xs opacity-80">Attribute: Legal Identity Name & Tax ID</span>
+            <span class="text-base font-bold mt-1">Уточнение данных (Rectification)</span>
+            <span class="font-mono text-xs opacity-80">Атрибуты: Юридическое имя и налоговый ID</span>
           </div>
           <div class="flex items-center gap-1 text-emerald-400">
             <span class="material-symbols-outlined text-base" aria-hidden="true">check_circle</span>
-            <span class="font-mono text-xs font-bold">Completed</span>
+            <span class="font-mono text-xs font-bold">Завершено</span>
           </div>
         </div>
       </div>
@@ -784,7 +784,7 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-sky-400 text-2xl" aria-hidden="true">lock</span>
-          <h2 class="text-lg font-bold tracking-tight">System Isolation & Audit</h2>
+          <h2 class="text-lg font-bold tracking-tight">Изоляция систем и аудит безопасности</h2>
         </div>
         <span class="font-mono text-xs text-sky-400 font-semibold">Zero-Trust V2</span>
       </div>
@@ -793,9 +793,9 @@
         <div class="flex items-center justify-between border-b pb-3 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            <span class="font-bold text-sm">Data Silo Isolation Gateways</span>
+            <span class="font-bold text-sm">Шлюзы изоляции хранилищ данных</span>
           </div>
-          <span class="font-mono text-xs text-emerald-400 font-bold uppercase">Operational</span>
+          <span class="font-mono text-xs text-emerald-400 font-bold uppercase">В РАБОТЕ</span>
         </div>
 
         <div class="space-y-2">
@@ -804,12 +804,12 @@
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined text-sky-400 text-xl" aria-hidden="true">key</span>
               <div>
-                <span class="text-xs font-bold block">PII Database Tokenization</span>
-                <span class="text-[11px] opacity-80 font-sans">AES-256 field-level vault</span>
+                <span class="text-xs font-bold block">Токенизация базы персональных данных (PII)</span>
+                <span class="text-[11px] opacity-80 font-sans">Хранилище с шифрованием полей AES-256</span>
               </div>
             </div>
             <span class="font-mono text-xs px-2 py-0.5 rounded font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              ACTIVE
+              АКТИВЕН
             </span>
           </div>
 
@@ -818,12 +818,12 @@
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined text-sky-400 text-xl" aria-hidden="true">sync_alt</span>
               <div>
-                <span class="text-xs font-bold block">Isolated Telemetry Pipelines</span>
-                <span class="text-[11px] opacity-80 font-sans">Strict IP redaction enforced</span>
+                <span class="text-xs font-bold block">Изолированные пайплайны телеметрии</span>
+                <span class="text-[11px] opacity-80 font-sans">Строгое обезличивание IP активно</span>
               </div>
             </div>
             <span class="font-mono text-xs px-2 py-0.5 rounded font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              ROUTED
+              МАРШРУТИЗИРОВАНО
             </span>
           </div>
 
@@ -832,18 +832,18 @@
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined text-sky-400 text-xl" aria-hidden="true">history</span>
               <div>
-                <span class="text-xs font-bold block">Cold Storage Purge Logs</span>
-                <span class="text-[11px] opacity-80 font-sans">Cryptographic SHA-256 chain</span>
+                <span class="text-xs font-bold block">Журнал холодного удаления данных</span>
+                <span class="text-[11px] opacity-80 font-sans">Криптографическая цепочка SHA-256</span>
               </div>
             </div>
             <span class="font-mono text-xs px-2 py-0.5 rounded font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              SYNCED
+              СИНХРОНИЗИРОВАНО
             </span>
           </div>
         </div>
 
         <div class="pt-3 border-t flex flex-wrap items-center justify-between font-mono text-xs opacity-90 gap-2 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
-          <span>Ledger Hash: <strong class="text-sky-400">#7f8c...3a19</strong></span>
+          <span>Хеш реестра: <strong class="text-sky-400">#7f8c...3a19</strong></span>
           <div class="flex items-center gap-2">
             <button
               id="admin-view-gqm-btn"
@@ -851,10 +851,10 @@
               on:click={() => (showGqmDetails = !showGqmDetails)}
               class="px-2.5 py-1 rounded border text-xs font-mono font-bold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {showGqmDetails ? 'bg-sky-500 text-white border-sky-400' : 'border-sky-500/40 text-sky-400 hover:bg-sky-500/10'}"
             >
-              {showGqmDetails ? 'Hide Telemetry Audit' : 'Show Telemetry Audit'}
+              {showGqmDetails ? 'Скрыть аудит телеметрии' : 'Показать аудит телеметрии'}
             </button>
             <button id="admin-audit-ledger-btn" type="button" class="text-sky-400 hover:underline flex items-center gap-0.5 focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none rounded px-1">
-              <span>Audit Ledger</span>
+              <span>Журнал аудита</span>
               <span class="material-symbols-outlined text-sm" aria-hidden="true">open_in_new</span>
             </button>
           </div>
@@ -883,7 +883,7 @@
       class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'overview' ? 'text-sky-400 font-bold bg-sky-500/10' : 'opacity-70 hover:opacity-100'}"
     >
       <span class="material-symbols-outlined text-xl" aria-hidden="true">dashboard</span>
-      <span class="text-[11px] font-mono">Overview</span>
+      <span class="text-[11px] font-mono">Обзор (Overview)</span>
     </button>
 
     <button
@@ -893,7 +893,7 @@
       class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'requests' ? 'text-sky-400 font-bold bg-sky-500/10' : 'opacity-70 hover:opacity-100'}"
     >
       <span class="material-symbols-outlined text-xl" aria-hidden="true">assignment_turned_in</span>
-      <span class="text-[11px] font-mono">Requests</span>
+      <span class="text-[11px] font-mono">Запросы (Requests)</span>
     </button>
 
     <button
@@ -903,7 +903,7 @@
       class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'consent' ? 'text-sky-400 font-bold bg-sky-500/10' : 'opacity-70 hover:opacity-100'}"
     >
       <span class="material-symbols-outlined text-xl" aria-hidden="true">tune</span>
-      <span class="text-[11px] font-mono">Consent</span>
+      <span class="text-[11px] font-mono">Согласия (Consent)</span>
     </button>
 
     <button
@@ -913,7 +913,7 @@
       class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'audit' ? 'text-sky-400 font-bold bg-sky-500/10' : 'opacity-70 hover:opacity-100'}"
     >
       <span class="material-symbols-outlined text-xl" aria-hidden="true">history_toggle_off</span>
-      <span class="text-[11px] font-mono">Audit Logs</span>
+      <span class="text-[11px] font-mono">Журнал аудита (Audit Logs)</span>
     </button>
   </nav>
 
@@ -935,20 +935,20 @@
           <span class="material-symbols-outlined text-3xl text-red-500" aria-hidden="true">warning</span>
           <div>
             <h2 id="delete-modal-title" class="text-lg font-bold text-red-500">
-              Confirm Destructive Erasure
+              Подтверждение удаления (Confirm Destructive Erasure)
             </h2>
-            <span class="font-mono text-xs opacity-70">Target: #{targetDsarId} ({targetSubject})</span>
+            <span class="font-mono text-xs opacity-70">Объект: #{targetDsarId} ({targetSubject})</span>
           </div>
         </div>
 
         <p id="delete-modal-description" class="text-xs leading-relaxed opacity-90">
-          This action will permanently purge all customer records, billing shard identifiers, and analytics entries for
-          <strong class="font-mono underline text-red-400">{targetSubject}</strong>. This action is irrevocable under Art. 17 GDPR.
+          Это действие безвозвратно удалит все записи клиента, идентификаторы биллинга и аналитические данные для
+          <strong class="font-mono underline text-red-400">{targetSubject}</strong>. Процедура необратима согласно ст. 17 GDPR.
         </p>
 
         <div class="space-y-2">
           <label for="delete-confirm-input" class="block text-xs font-semibold">
-            Type <span class="font-mono font-bold text-red-400">DELETE</span> to confirm:
+            Введите <span class="font-mono font-bold text-red-400">DELETE</span> для подтверждения:
           </label>
           <input
             id="delete-confirm-input"
@@ -967,7 +967,7 @@
             on:click={closeDeleteModal}
             class="px-4 py-2 rounded text-xs font-semibold border transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {theme === 'dark' ? 'border-[#1f2433] bg-[#1a233a] hover:bg-[#25304e] text-white' : 'border-[#c6c6cd] bg-slate-100 hover:bg-slate-200 text-[#0b1c30]'}"
           >
-            Cancel
+            Отмена (Cancel)
           </button>
           <button
             id="confirm-deletion-btn"
@@ -977,7 +977,7 @@
             on:click={executeDeletion}
             class="px-5 py-2 rounded text-xs font-bold transition-all focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none {confirmInput.trim().toUpperCase() === 'DELETE' ? 'bg-red-600 text-white hover:bg-red-700 cursor-pointer shadow-md' : 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-50'}"
           >
-            Confirm Deletion
+            Подтвердить удаление (Confirm Deletion)
           </button>
         </div>
       </div>
