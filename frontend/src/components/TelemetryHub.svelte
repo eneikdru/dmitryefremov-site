@@ -226,17 +226,39 @@
         <section id="hero-section" class="p-8 sm:p-10 lg:p-12 rounded-xl border transition-all relative {theme === 'dark' ? 'bg-[#0d1118] border-white/[0.09] shadow-2xl' : 'bg-white border-slate-300 shadow-sm'}">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-            <!-- Author Studio Portrait: Industrial Bezel Framing -->
+            <!-- Author Studio Portrait: Leica Optical Bezel Framing (Stitch Design Specification) -->
             <div class="lg:col-span-4 flex justify-center lg:justify-start">
-              <div id="hero-avatar-container" class="relative group w-44 h-44 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-lg overflow-hidden border border-white/15 bg-black shadow-2xl">
-                <ResponsivePicture
-                  id="hero-avatar-img"
-                  assetKey="dmitry_efremov_studio"
-                  alt="Официальный студийный портрет Дмитрия Ефремова"
-                  imgClass="w-full h-full object-cover object-top filter grayscale contrast-110 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                  loading="eager"
-                />
-
+              <div id="hero-avatar-container" class="relative w-full max-w-[340px] bg-[#0e1219] border border-[#1e2633] p-2.5 rounded-lg shadow-2xl">
+                <!-- Optical Machined Rim Header -->
+                <div class="flex items-center justify-between pb-2 px-1 border-b border-[#1e2633]/60 mb-2 font-mono text-xs text-[#94a3b8]">
+                  <div class="flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span class="text-white tracking-wider font-semibold">STATUS: ACTIVE</span>
+                  </div>
+                  <span class="tracking-widest text-[10px]">ТБИЛИСИ / МОСКВА</span>
+                </div>
+                <!-- Portrait Viewport -->
+                <div class="relative aspect-[3/4] w-full overflow-hidden rounded bg-[#080a0e] border border-[#1e2633]">
+                  <ResponsivePicture
+                    id="hero-avatar-img"
+                    assetKey="dmitry_efremov_studio"
+                    alt="Официальный студийный портрет Дмитрия Ефремова"
+                    imgClass="w-full h-full object-cover grayscale contrast-125 filter hover:scale-[1.01] transition-transform duration-500 ease-out"
+                    loading="eager"
+                  />
+                  <!-- Optical Precision Overlay Coordinate Marks -->
+                  <div class="absolute top-2.5 left-2.5 font-mono text-[10px] text-amber-300 bg-[#080a0e]/90 px-1.5 py-0.5 border border-[#1e2633] rounded">
+                    E-50mm f/1.4
+                  </div>
+                  <div class="absolute bottom-2.5 right-2.5 font-mono text-[10px] text-[#94a3b8] bg-[#080a0e]/90 px-1.5 py-0.5 border border-[#1e2633] rounded">
+                    41.7151° N, 44.8271° E
+                  </div>
+                </div>
+                <!-- Optical Chassis Footer -->
+                <div class="pt-2 px-1 flex items-center justify-between font-mono text-xs text-[#94a3b8]">
+                  <span class="text-[#e2e8f0] font-mono text-[11px] font-semibold">EFREMOV // ARCHITECT</span>
+                  <span class="text-[10px] tracking-wider text-[#94a3b8]">CALIBRATED MONOCHROME</span>
+                </div>
               </div>
             </div>
 
@@ -298,6 +320,22 @@
                 >
                   {$currentLanguage === 'ru' ? 'Прямая связь & Заявки' : ($currentLanguage === 'ka' ? 'პირდაპირი კავშირი და განაცხადები' : 'Direct Contact & Inquiries')}
                 </button>
+              </div>
+
+              <!-- Stitch Telemetry Indicators & Metrics -->
+              <div class="pt-5 border-t border-[#1e2633]/60 grid grid-cols-3 gap-4 text-center lg:text-left">
+                <div class="space-y-0.5">
+                  <div class="font-mono text-sm sm:text-base text-amber-400 font-semibold">{podcastCount > 0 ? `${podcastCount}+ Выпусков` : '24+ Выпуска'}</div>
+                  <div class="font-mono text-[10px] sm:text-xs text-[#94a3b8] uppercase tracking-wider">Глубинные беседы</div>
+                </div>
+                <div class="space-y-0.5">
+                  <div class="font-mono text-sm sm:text-base text-amber-400 font-semibold">180K+</div>
+                  <div class="font-mono text-[10px] sm:text-xs text-[#94a3b8] uppercase tracking-wider">Слушателей</div>
+                </div>
+                <div class="space-y-0.5">
+                  <div class="font-mono text-sm sm:text-base text-amber-400 font-semibold">Zero Downtime</div>
+                  <div class="font-mono text-[10px] sm:text-xs text-[#94a3b8] uppercase tracking-wider">Стандарт</div>
+                </div>
               </div>
             </div>
           </div>

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ДМИТРИЙ ЕФРЕМОВ — Системный архитектор &amp; Мыслитель</title>
+<!-- Google Fonts: Space Grotesk, Inter, JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration Verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#735c00",
+            "tertiary-fixed": "#d4e4fa",
+            "on-tertiary-container": "#384658",
+            "inverse-surface": "#e2e2e8",
+            "surface-container-low": "#1a1c20",
+            "surface-dim": "#111318",
+            "on-error": "#690005",
+            "tertiary-fixed-dim": "#b9c8de",
+            "outline": "#99907c",
+            "on-surface": "#e2e2e8",
+            "on-error-container": "#ffdad6",
+            "secondary-container": "#785d00",
+            "on-secondary-fixed-variant": "#594400",
+            "on-tertiary-fixed-variant": "#39485a",
+            "surface-container-highest": "#333539",
+            "on-primary-container": "#554300",
+            "on-secondary": "#3e2e00",
+            "error": "#ffb4ab",
+            "on-primary-fixed-variant": "#574500",
+            "surface-container-high": "#282a2e",
+            "secondary-fixed-dim": "#e7c364",
+            "secondary-fixed": "#ffdf92",
+            "outline-variant": "#4d4635",
+            "surface-variant": "#333539",
+            "surface-container": "#1e2024",
+            "surface-container-lowest": "#0c0e12",
+            "on-surface-variant": "#d0c5af",
+            "primary-fixed-dim": "#e9c349",
+            "tertiary": "#c0d0e6",
+            "primary-container": "#d4af37",
+            "on-tertiary-fixed": "#0d1c2d",
+            "surface": "#111318",
+            "on-background": "#e2e2e8",
+            "secondary": "#e7c364",
+            "error-container": "#93000a",
+            "on-tertiary": "#233143",
+            "primary-fixed": "#ffe088",
+            "inverse-on-surface": "#2e3035",
+            "background": "#111318",
+            "on-secondary-container": "#fed877",
+            "surface-tint": "#e9c349",
+            "on-secondary-fixed": "#241a00",
+            "surface-bright": "#37393e",
+            "tertiary-container": "#a5b4ca",
+            "primary": "#f2ca50",
+            "on-primary-fixed": "#241a00",
+            "on-primary": "#3c2f00"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-lg": "1.75rem",
+            "gutter": "1.5rem",
+            "gutter-desktop": "2.5rem",
+            "space-md": "1rem",
+            "margin-desktop": "4rem",
+            "margin": "1.25rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-xl": "3rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Space Grotesk"],
+            "headline-md": ["Space Grotesk"],
+            "display-hero-mobile": ["Space Grotesk"],
+            "body-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "label-mono-sm": ["JetBrains Mono"],
+            "display-hero": ["Space Grotesk"],
+            "headline-lg": ["Space Grotesk"],
+            "label-mono-lg": ["JetBrains Mono"],
+            "headline-sm": ["Space Grotesk"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["13px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "30px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-md": ["15px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-mono-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "400" }],
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "label-mono-lg": ["13px", { "lineHeight": "18px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    ::selection {
+      background-color: #d4af37;
+      color: #0c0e12;
+    }
+    /* Subtle Chamfer catch-light */
+    .chamfer-edge {
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+    }
+    /* Smooth waveform animation styling */
+    .wave-bar {
+      transition: height 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface antialiased font-body-md text-body-md selection:bg-primary-container selection:text-surface-container-lowest min-h-screen flex flex-col">
+<!-- 1. SOVEREIGN TOPNAVBAR (Shared Component) -->
+<header class="sticky top-0 z-50 bg-surface-dim/90 backdrop-blur-md border-b border-outline-variant/30">
+<div class="w-full px-margin md:px-margin-desktop max-w-[1280px] mx-auto flex items-center justify-between h-16">
+<!-- Wordmark Brand -->
+<a class="flex flex-col group" href="#top">
+<span class="font-headline-sm text-headline-sm tracking-tight font-medium text-on-surface group-hover:text-primary transition-colors">
+          ДМИТРИЙ ЕФРЕМОВ
+        </span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline tracking-wider uppercase">
+          СИСТЕМНЫЙ АРХИТЕКТОР &amp; МЫСЛИТЕЛЬ
+        </span>
+</a>
+<!-- Desktop Navigation Links -->
+<nav class="hidden lg:flex items-center space-x-8">
+<a class="text-primary border-b border-primary pb-1 font-label-mono-lg text-label-mono-lg uppercase transition-colors" href="#podcast">
+          ПОДКАСТ
+        </a>
+<a class="text-outline hover:text-on-surface font-label-mono-lg text-label-mono-lg uppercase transition-colors" href="#essays">
+          СТАТЬИ И ЭССЕ
+        </a>
+<a class="text-outline hover:text-on-surface font-label-mono-lg text-label-mono-lg uppercase transition-colors" href="#thoughts">
+          МЫСЛИ
+        </a>
+<a class="text-outline hover:text-on-surface font-label-mono-lg text-label-mono-lg uppercase transition-colors" href="#canon">
+          КАНОН
+        </a>
+<a class="text-outline hover:text-on-surface font-label-mono-lg text-label-mono-lg uppercase transition-colors" href="#terminal">
+          СВЯЗЬ
+        </a>
+</nav>
+<!-- Trailing Controls Cluster -->
+<div class="flex items-center space-x-4">
+<!-- Language Switcher -->
+<div class="hidden sm:flex items-center px-2.5 py-1 bg-surface-container border border-outline-variant/30 rounded font-label-mono-sm text-label-mono-sm">
+<span class="text-primary font-medium cursor-default">RU</span>
+<span class="text-outline-variant mx-1.5">|</span>
+<a class="text-outline hover:text-on-surface transition-colors" href="#en">EN</a>
+<span class="text-outline-variant mx-1.5">|</span>
+<a class="text-outline hover:text-on-surface transition-colors" href="#ka">KA</a>
+</div>
+<!-- Search Icon Action Trigger -->
+<button aria-label="Search" class="p-2 text-outline hover:text-primary transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<!-- Dark/Optical Mode Toggle -->
+<button aria-label="Toggle optical mode" class="p-2 text-outline hover:text-primary transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">dark_mode</span>
+</button>
+<!-- Primary Header Action -->
+<a class="hidden md:inline-flex items-center justify-center px-4 py-1.5 bg-primary-container text-surface-container-lowest font-label-mono-sm text-label-mono-sm font-medium uppercase tracking-wider rounded hover:bg-secondary-fixed-dim transition-colors chamfer-edge" href="#terminal">
+          СВЯЗАТЬСЯ
+        </a>
+</div>
+</div>
+</header>
+<!-- MAIN CANVAS -->
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-margin md:px-margin-desktop py-space-lg md:py-space-xl space-y-space-xl" id="top">
+<!-- 2. MONUMENTAL HERO SECTION -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-center pt-space-md">
+<!-- Left Column: The Epistemic Core -->
+<div class="lg:col-span-7 space-y-space-md">
+<!-- Epistemic Badge -->
+<div class="inline-flex items-center space-x-2 px-3 py-1 bg-surface-container border border-outline-variant/40 rounded">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary-fixed uppercase tracking-wider">
+            ОНТОЛОГИЯ ДЕЙСТВИЯ &amp; АВТОНОМНЫЕ СИСТЕМЫ
+          </span>
+</div>
+<!-- Monumental Thesis Statement -->
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface tracking-tight font-medium">
+          «Ваш код и ваши решения — это то, кто вы есть на самом деле.»
+        </h1>
+<!-- Authoritative Bio Narrative -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          Инженер сложных распределенных систем, исследователь онтологии решений и автор подкаста «Системы и Реальность». Проектирование когнитивных и технологических архитектур высокой надежности.
+        </p>
+<!-- Tactile Engineered Action Cluster -->
+<div class="pt-space-xs flex flex-wrap items-center gap-3">
+<a class="inline-flex items-center space-x-2 px-5 py-3 bg-primary-container text-surface-container-lowest font-label-mono-sm text-label-mono-sm font-semibold tracking-wider uppercase rounded hover:bg-secondary-fixed-dim transition-colors chamfer-edge" href="#podcast">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Слушать подкаст</span>
+</a>
+<a class="inline-flex items-center space-x-2 px-4 py-3 bg-surface-container border border-outline-variant/40 text-on-surface hover:border-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider rounded transition-colors" href="https://t.me/efremov_mvp" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[16px] text-outline">terminal</span>
+<span>Telegram @efremov_mvp</span>
+</a>
+<a class="inline-flex items-center space-x-2 px-4 py-3 bg-surface-container border border-outline-variant/40 text-on-surface hover:border-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider rounded transition-colors" href="https://youtube.com" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[16px] text-outline">smart_display</span>
+<span>YouTube</span>
+</a>
+<a class="inline-flex items-center space-x-2 px-4 py-3 bg-surface-container border border-outline-variant/40 text-on-surface hover:border-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider rounded transition-colors" href="#terminal">
+<span class="material-symbols-outlined text-[16px] text-outline">mail</span>
+<span>Связаться</span>
+</a>
+</div>
+<!-- Telemetry Indicators & Metrics -->
+<div class="pt-space-md border-t border-outline-variant/30 grid grid-cols-3 gap-4">
+<div class="space-y-0.5">
+<div class="font-label-mono-lg text-label-mono-lg text-primary font-medium">24+ Выпуска</div>
+<div class="font-label-mono-sm text-label-mono-sm text-outline uppercase">Глубинные беседы</div>
+</div>
+<div class="space-y-0.5">
+<div class="font-label-mono-lg text-label-mono-lg text-primary font-medium">180K+</div>
+<div class="font-label-mono-sm text-label-mono-sm text-outline uppercase">Слушателей сообщества</div>
+</div>
+<div class="space-y-0.5">
+<div class="font-label-mono-lg text-label-mono-lg text-primary font-medium">Zero Downtime</div>
+<div class="font-label-mono-sm text-label-mono-sm text-outline uppercase">Архитектурный стандарт</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Leica Optical Bezel Portrait -->
+<div class="lg:col-span-5 flex justify-center">
+<div class="relative w-full max-w-[420px] bg-surface-container border border-outline-variant/50 p-2.5 rounded-lg chamfer-edge shadow-2xl">
+<!-- Optical Machined Rim Header -->
+<div class="flex items-center justify-between pb-2 px-1 border-b border-outline-variant/30 mb-2 font-label-mono-sm text-label-mono-sm text-outline">
+<div class="flex items-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-primary/80"></span>
+<span class="text-on-surface tracking-wider">STATUS: ACTIVE</span>
+</div>
+<span class="tracking-widest text-[10px]">ТБИЛИСИ / МОСКВА</span>
+</div>
+<!-- Portrait Viewport -->
+<div class="relative aspect-[3/4] w-full overflow-hidden rounded bg-surface-container-lowest border border-outline-variant/30">
+<img alt="Дмитрий Ефремов — портрет системного архитектора и мыслителя" class="w-full h-full object-cover grayscale contrast-125 filter hover:scale-[1.01] transition-transform duration-500 ease-out" src="/dmitry_efremov_stitch_portrait.jpg"/>
+<!-- Optical Precision Overlay Coordinate Marks -->
+<div class="absolute top-3 left-3 font-label-mono-sm text-[10px] text-primary/70 bg-surface-container-lowest/80 px-1.5 py-0.5 border border-outline-variant/30">
+              E-50mm f/1.4
+            </div>
+<div class="absolute bottom-3 right-3 font-label-mono-sm text-[10px] text-outline/80 bg-surface-container-lowest/80 px-1.5 py-0.5 border border-outline-variant/30">
+              41.7151° N, 44.8271° E
+            </div>
+</div>
+<!-- Optical Chassis Footer -->
+<div class="pt-2.5 px-1 flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-on-surface-variant font-mono text-[11px]">EFREMOV // ARCHITECT</span>
+<span class="text-[10px] tracking-wider text-outline">CALIBRATED MONOCHROME</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. INTERACTIVE NAVIGATION TABS & FILTER BAR -->
+<section class="border-y border-outline-variant/30 py-space-sm bg-surface-container-low/40">
+<div class="flex items-center space-x-6 md:space-x-10 overflow-x-auto no-scrollbar">
+<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-on-surface border-b-2 border-primary pb-1 font-medium transition-colors" type="button">
+          [ВСЕ МАТЕРИАЛЫ]
+        </button>
+<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
+          [ПОДКАСТ]
+        </button>
+<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
+          [СТАТЬИ И ЭССЕ]
+        </button>
+<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
+          [МЫСЛИ]
+        </button>
+<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
+          [КАНОН]
+        </button>
+<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
+          [СВЯЗЬ]
+        </button>
+</div>
+</section>
+<!-- 4. PODCAST MEDIA SUITE («Системы и Реальность») -->
+<section class="space-y-space-lg" id="podcast">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between border-b border-outline-variant/30 pb-space-sm gap-2">
+<div>
+<div class="font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">АУДИО АРХИВ // ОНТОЛОГИЧЕСКИЙ РАЗБОР</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-medium">
+            Подкаст «Системы и Реальность»
+          </h2>
+</div>
+<div class="font-label-mono-sm text-label-mono-sm text-outline">
+          АКТУАЛЬНЫЙ СЕЗОН • РЕЖИМ СТУДИЙНОГО МАСТЕРИНГА
+        </div>
+</div>
+<!-- High-Fidelity Audio Player Console -->
+<div class="bg-surface-container border border-outline-variant/50 rounded-lg p-space-md md:p-space-lg chamfer-edge space-y-space-md">
+<!-- Header Info Plate -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-space-sm border-b border-outline-variant/30">
+<div class="space-y-1">
+<div class="flex items-center space-x-2">
+<span class="px-2 py-0.5 bg-surface-container-lowest border border-outline-variant/40 rounded font-label-mono-sm text-label-mono-sm text-primary uppercase">
+                АКТИВНЫЙ ВЫПУСК #24
+              </span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">18.01.2025</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-medium">
+              «Онтология автономных агентов: предел управляемости и сингулярность контекста»
+            </h3>
+</div>
+<div class="flex items-center space-x-4 font-label-mono-sm text-label-mono-sm text-outline self-start md:self-auto">
+<span>Хронометраж: 1:38:40</span>
+<span>•</span>
+<span>Гость: Проф. А. Левин</span>
+<span>•</span>
+<span class="text-secondary-fixed">24-bit Flac Master</span>
+</div>
+</div>
+<!-- Dynamic Frequency Waveform Visualizer (48 Bars) -->
+<div class="relative py-4 bg-surface-container-lowest/60 border border-outline-variant/20 rounded px-4">
+<div class="h-20 flex items-center justify-between gap-1 overflow-hidden" id="waveform-container">
+<!-- 48 Bars with varied heights simulating studio audio spectrum -->
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 28%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 45%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 60%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 35%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 75%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 90%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 65%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 80%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 50%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 40%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 70%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 85%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 95%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 60%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 48%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 38%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 82%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 90%"></div>
+<!-- Cursor mark position at ~40% -->
+<div class="wave-bar w-1.5 rounded-xs bg-primary" style="height: 64%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-primary relative" style="height: 76%">
+<div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-on-surface rounded-full shadow"></div>
+</div>
+<!-- Remaining bars in unplayed slate -->
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 52%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 30%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 44%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 65%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 80%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 55%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 70%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 88%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 62%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 40%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 58%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 72%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 48%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 36%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 64%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 75%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 50%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 62%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 45%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 30%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 55%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 68%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 42%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 50%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 35%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 25%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 18%"></div>
+<div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 12%"></div>
+</div>
+<!-- Linear Track Scrubber Bar -->
+<div class="mt-3 relative w-full h-1 bg-outline-variant/40 rounded-full cursor-pointer">
+<div class="absolute top-0 left-0 h-full w-[41%] bg-primary rounded-full"></div>
+<!-- Precision Scrubber Head (2px x 12px lens mark) -->
+<div class="absolute -top-1.5 left-[41%] w-1 h-4 bg-on-surface border border-surface-container-lowest"></div>
+</div>
+<!-- Time Markers -->
+<div class="flex items-center justify-between pt-2 font-label-mono-sm text-label-mono-sm text-outline">
+<span>00:40:24</span>
+<span class="text-on-surface-variant font-mono text-[10px]">ГЛАВА: ПРИНЦИП НЕЛОКАЛЬНОЙ ОТВЕТСТВЕННОСТИ</span>
+<span>01:38:40</span>
+</div>
+</div>
+<!-- Precision Console Controls & Dials -->
+<div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+<!-- Core Transport Controls -->
+<div class="flex items-center space-x-3">
+<!-- Skip -15s -->
+<button aria-label="Назад на 15 секунд" class="p-2 text-outline hover:text-on-surface border border-outline-variant/30 rounded bg-surface-container-lowest transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[18px]">replay_10</span>
+</button>
+<!-- Main Play / Pause Button in Gold Titanium -->
+<button aria-label="Воспроизвести / Пауза" class="w-12 h-12 bg-primary-container text-surface-container-lowest rounded flex items-center justify-center hover:bg-secondary-fixed-dim transition-colors chamfer-edge" type="button">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<!-- Skip +30s -->
+<button aria-label="Вперед на 30 секунд" class="p-2 text-outline hover:text-on-surface border border-outline-variant/30 rounded bg-surface-container-lowest transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[18px]">forward_30</span>
+</button>
+</div>
+<!-- Rate Selector -->
+<div class="flex items-center space-x-1 bg-surface-container-lowest border border-outline-variant/30 p-1 rounded font-label-mono-sm text-label-mono-sm">
+<button class="px-2 py-0.5 rounded text-outline hover:text-on-surface" type="button">1.0x</button>
+<button class="px-2 py-0.5 rounded bg-surface-container text-primary font-medium" type="button">1.25x</button>
+<button class="px-2 py-0.5 rounded text-outline hover:text-on-surface" type="button">1.5x</button>
+</div>
+<!-- Volume Dial & Audio Signal Telemetry -->
+<div class="flex items-center space-x-3 font-label-mono-sm text-label-mono-sm text-outline">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+<div class="w-24 h-1.5 bg-surface-container-lowest border border-outline-variant/30 rounded-full relative overflow-hidden">
+<div class="h-full w-3/4 bg-primary"></div>
+</div>
+<span class="text-on-surface">75%</span>
+</div>
+</div>
+<!-- Chapter Timecodes Index -->
+<div class="pt-space-sm border-t border-outline-variant/30">
+<div class="font-label-mono-sm text-label-mono-sm text-outline uppercase tracking-wider mb-3">
+            ТАЙМКОДЫ ГЛАВ ВЫПУСКА
+          </div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 font-label-mono-sm text-label-mono-sm">
+<button class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group" type="button">
+<span class="text-on-surface group-hover:text-primary transition-colors">Архитектура субъекта в детерминированном мире</span>
+<span class="text-outline group-hover:text-primary transition-colors ml-2 font-mono">00:00:00</span>
+</button>
+<button class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group" type="button">
+<span class="text-on-surface group-hover:text-primary transition-colors">Семантический вакуум больших языковых моделей</span>
+<span class="text-outline group-hover:text-primary transition-colors ml-2 font-mono">00:18:22</span>
+</button>
+<button class="flex items-center justify-between p-2.5 bg-surface-container-low border border-primary text-left transition-colors group" type="button">
+<span class="text-primary font-medium">Принцип нелокальной ответственности в распределенных системах</span>
+<span class="text-primary font-mono ml-2">00:44:10</span>
+</button>
+<button class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group" type="button">
+<span class="text-on-surface group-hover:text-primary transition-colors">Прагматика воли: от алгоритма к онтологии</span>
+<span class="text-outline group-hover:text-primary transition-colors ml-2 font-mono">01:12:45</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Episode Catalog Grid (3 Latest Releases) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Episode Card 23 -->
+<article class="bg-surface-container border border-outline-variant/40 rounded p-space-md chamfer-edge hover:border-outline transition-colors flex flex-col justify-between space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary">ВЫПУСК #23</span>
+<span>1:22:15</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug">
+              «Теория информации Шеннона и предел плотности решений в кризисных средах»
+            </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3">
+              Анализ энтропийного барьера при передаче директив в сверхсложных организациях. Математический базис устойчивости связности.
+            </p>
+</div>
+<div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Гость: Д-р И. Воронов</span>
+<button aria-label="Слушать #23" class="p-1.5 text-on-surface hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+</button>
+</div>
+</article>
+<!-- Episode Card 22 -->
+<article class="bg-surface-container border border-outline-variant/40 rounded p-space-md chamfer-edge hover:border-outline transition-colors flex flex-col justify-between space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary">ВЫПУСК #22</span>
+<span>1:45:00</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug">
+              «Кибернетика второго порядка: когда наблюдатель становится частью контура»
+            </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3">
+              Исследование работ Хайнца фон Фёрстера и Норберта Винера. Обратная связь как онтологический каркас субъектности.
+            </p>
+</div>
+<div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Гость: М. Баранов</span>
+<button aria-label="Слушать #22" class="p-1.5 text-on-surface hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+</button>
+</div>
+</article>
+<!-- Episode Card 21 -->
+<article class="bg-surface-container border border-outline-variant/40 rounded p-space-md chamfer-edge hover:border-outline transition-colors flex flex-col justify-between space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary">ВЫПУСК #21</span>
+<span>1:14:30</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug">
+              «Детерминизм и свобода воли в коде: можно ли запрограммировать ответственность?»
+            </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3">
+              Этические и вычислительные парадоксы смарт-контрактов и полностью автономных транзакционных протоколов.
+            </p>
+</div>
+<div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-outline">Соло разбор Дмитрия</span>
+<button aria-label="Слушать #21" class="p-1.5 text-on-surface hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<!-- 5. MONOGRAPHIC EDITORIAL ESSAYS & LONGREADS -->
+<section class="space-y-space-lg" id="essays">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between border-b border-outline-variant/30 pb-space-sm gap-2">
+<div>
+<div class="font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">ИЗБРАННЫЕ ТЕКСТЫ // МОНОГРАФИЧЕСКИЙ РАЗБОР</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-medium">
+            Статьи и эссе
+          </h2>
+</div>
+<div class="font-label-mono-sm text-label-mono-sm text-outline">
+          ФОРМАТ STRIPE PRESS &amp; СТРОГИЙ ЭПИСТЕМИЧЕСКИЙ НАБОР
+        </div>
+</div>
+<!-- Featured Longread Essay: Stripe Press Style Layout (Capped at 760px centered or dual asymmetric) -->
+<article class="bg-surface-container border border-outline-variant/40 rounded-lg p-space-md md:p-space-xl chamfer-edge space-y-space-md">
+<div class="space-y-2 max-w-3xl">
+<div class="font-label-mono-sm text-label-mono-sm text-secondary-fixed uppercase tracking-wider">
+            ЭССЕ-МАНИФЕСТ • 14 МИНУТ ЧТЕНИЯ • РЕЦЕНЗИРОВАНО
+          </div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface font-medium leading-tight">
+            Декомпозиция воли: математические основания суверенных систем
+          </h3>
+<div class="font-label-mono-sm text-label-mono-sm text-outline">
+            Опубликовано: Ноябрь 2024 • Версия 2.1
+          </div>
+</div>
+<!-- Essay Text Body -->
+<div class="prose max-w-3xl text-on-surface-variant font-body-lg text-body-lg space-y-6 leading-relaxed">
+<p>
+            Всякая инженерная система, достигающая определенного порога плотности связей, перестает быть чисто алгоритмическим автоматом. Она неизбежно порождает внутреннее фазовое пространство решений, где классическая причинность уступает место динамическому гомеостазу. Когда мы говорим о суверенности системы — будь то распределенный протокол, автономный агент или мыслящий субъект — мы говорим о ее способности сохранять инвариант целеполагания при стохастическом давлении внешней среды.
+          </p>
+<!-- Embedded Mathematical Formula Block (Austere Leica Machined Box) -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 p-space-md rounded my-6 space-y-3">
+<div class="font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">
+              Уравнение устойчивости распределенного консенсуса в стохастическом поле:
+            </div>
+<div class="py-2 text-center overflow-x-auto font-mono text-on-surface text-lg md:text-xl tracking-wide select-all">
+              $$\Omega(S) = \lim_{t \to \infty} \sum_{i \in V} w_i \cdot \nabla \Phi(x_i(t)) - \lambda \mathcal{H}(P)$$
+            </div>
+<p class="font-body-sm text-body-sm text-outline">
+              Где $V$ — граф топологии агентов, $\nabla \Phi$ — градиент локального потенциала согласования, а $\lambda \mathcal{H}(P)$ выражает энтропийную утечку информации через недетерминированные каналы связи. Преодоление этого барьера требует жесткой локализации ответственности на каждом узле.
+            </p>
+</div>
+<p>
+            Проблема подавляющего большинства современных так называемых «децентрализованных» платформ заключается в том, что они пытаются подменить архитектурную суверенность протокола консенсусом толпы. Однако консенсус без онтологической модели воли есть лишь формализованная энтропия.
+          </p>
+</div>
+<div class="pt-4 flex items-center justify-between border-t border-outline-variant/30 font-label-mono-sm text-label-mono-sm">
+<a class="text-primary hover:text-secondary-fixed inline-flex items-center space-x-1.5 transition-colors" href="#read-full">
+<span>ЧИТАТЬ ПОЛНУЮ МОНОГРАФИЮ</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<span class="text-outline">PDF VERSION AVAILABLE</span>
+</div>
+</article>
+<!-- Second Essay & Epistemic Thought Stream (Split Grid) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left: Second Essay Preview -->
+<article class="lg:col-span-7 bg-surface-container border border-outline-variant/40 rounded-lg p-space-md md:p-space-lg chamfer-edge flex flex-col justify-between space-y-4">
+<div class="space-y-3">
+<div class="font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">
+              АРХИТЕКТУРНЫЙ КРИТИЦИЗМ • 8 МИН ЧТЕНИЯ
+            </div>
+<h4 class="font-headline-md text-headline-md text-on-surface font-medium leading-snug">
+              «Почему микросервисы разрушают эпистемическую ясность инженерной команды»
+            </h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Иллюзия изоляции контекстов часто маскирует неспособность спроектировать единый доменный язык. В статье разбирается цена когнитивного расщепления при переходе от монолитной архитектуры к фрагментированным RPC-сетям, а также предлагается критерий Колмогоровской сложности для архитектурных решений.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex items-center justify-between font-label-mono-sm text-label-mono-sm">
+<a class="text-on-surface hover:text-primary inline-flex items-center space-x-1 transition-colors" href="#read-microservices">
+<span>ЧИТАТЬ СТАТЬЮ</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<span class="text-outline">АРХИТЕКТУРА И МЫШЛЕНИЕ</span>
+</div>
+</article>
+<!-- Right: Epistemic Short Thoughts («Мысли») -->
+<div class="lg:col-span-5 bg-surface-container-low border border-outline-variant/40 rounded-lg p-space-md md:p-space-lg chamfer-edge space-y-4" id="thoughts">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+<span class="font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">
+              МЫСЛИ // КВАНТЫ ПОНИМАНИЯ
+            </span>
+<span class="font-label-mono-sm text-label-mono-sm text-outline">ХРОНИКА</span>
+</div>
+<div class="space-y-4 divide-y divide-outline-variant/20">
+<!-- Thought 1 -->
+<div class="pt-3 first:pt-0 space-y-1">
+<p class="font-body-sm text-body-sm text-on-surface leading-normal">
+                «Сложность системы растет экспоненциально, но цена каждого неверного допущения в ядре растет факториально. Простота — это не эстетический каприз, а единственный способ выживания алгоритма.»
+              </p>
+<div class="font-label-mono-sm text-[10px] text-outline">12 ЯНВ 2025 • О ПРИНЦИПАХ РЕДУКЦИИ</div>
+</div>
+<!-- Thought 2 -->
+<div class="pt-3 space-y-1">
+<p class="font-body-sm text-body-sm text-on-surface leading-normal">
+                «Автономность не дается отсутствием ограничений; автономность формируется исключительно плотностью внутренних инвариантов, способных сопротивляться внешнему шуму.»
+              </p>
+<div class="font-label-mono-sm text-[10px] text-outline">04 ДЕК 2024 • О СУВЕРЕННОСТИ</div>
+</div>
+<!-- Thought 3 -->
+<div class="pt-3 space-y-1">
+<p class="font-body-sm text-body-sm text-on-surface leading-normal">
+                «Код, который невозможно удержать в голове одного человека за 30 минут аналитического чтения, уже не принадлежит создателю. Он принадлежит хаосу.»
+              </p>
+<div class="font-label-mono-sm text-[10px] text-outline">19 НОЯ 2024 • КОГНИТИВНЫЙ ЛИМИТ</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. THE CANON («Канон») -->
+<section class="space-y-space-lg" id="canon">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between border-b border-outline-variant/30 pb-space-sm gap-2">
+<div>
+<div class="font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">ИНТЕЛЛЕКТУАЛЬНЫЙ ФУНДАМЕНТ // БИБЛИОГРАФИЯ</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-medium">
+            Канон системного мышления
+          </h2>
+</div>
+<div class="font-label-mono-sm text-label-mono-sm text-outline">
+          ФУНДАМЕНТАЛЬНЫЕ МОДЕЛИ &amp; ПЕРВОИСТОЧНИКИ
+        </div>
+</div>
+<!-- Canon Grid Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Canon Item 1 -->
+<div class="bg-surface-container border border-outline-variant/40 p-space-md rounded chamfer-edge space-y-3">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary font-mono">КИБЕРНЕТИКА</span>
+<span>1948</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">
+            Норберт Винер — «Кибернетика: или управление и связь в животном и машине»
+          </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Основополагающий труд по контурам обратной связи, гомеостазу и энтропийным процессам в искусственных и естественных системах.
+          </p>
+<div class="font-label-mono-sm text-[10px] text-outline pt-2 border-t border-outline-variant/20">
+            МЕНТАЛЬНАЯ МОДЕЛЬ: ОТРИЦАТЕЛЬНАЯ ОБРАТНАЯ СВЯЗЬ
+          </div>
+</div>
+<!-- Canon Item 2 -->
+<div class="bg-surface-container border border-outline-variant/40 p-space-md rounded chamfer-edge space-y-3">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary font-mono">ТЕОРИЯ СВЯЗИ</span>
+<span>1948</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">
+            Клод Шеннон — «Математическая теория связи»
+          </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Введение понятия информационной энтропии, пропускной способности канала и квантования шума в средах передачи данных.
+          </p>
+<div class="font-label-mono-sm text-[10px] text-outline pt-2 border-t border-outline-variant/20">
+            МЕНТАЛЬНАЯ МОДЕЛЬ: ИНФОРМАЦИОННАЯ ЭНТРОПИЯ
+          </div>
+</div>
+<!-- Canon Item 3 -->
+<div class="bg-surface-container border border-outline-variant/40 p-space-md rounded chamfer-edge space-y-3">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary font-mono">ОБЩАЯ ТЕОРИЯ СИСТЕМ</span>
+<span>1968</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">
+            Людвиг фон Берталанфи — «Общая теория систем»
+          </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Переход от механистического редукционизма к холистическому анализу открытых систем в состоянии подвижного равновесия.
+          </p>
+<div class="font-label-mono-sm text-[10px] text-outline pt-2 border-t border-outline-variant/20">
+            МЕНТАЛЬНАЯ МОДЕЛЬ: ЭКВИФИНАЛЬНОСТЬ СИСТЕМ
+          </div>
+</div>
+<!-- Canon Item 4 -->
+<div class="bg-surface-container border border-outline-variant/40 p-space-md rounded chamfer-edge space-y-3">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary font-mono">ФИЛОСОФИЯ ТЕХНИКИ</span>
+<span>1958</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">
+            Жильбер Симондон — «О способе существования технических объектов»
+          </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Концепция конкретизации техники и индивидуации технических ансамблей. Технический объект как медиатор между человеком и природой.
+          </p>
+<div class="font-label-mono-sm text-[10px] text-outline pt-2 border-t border-outline-variant/20">
+            МЕНТАЛЬНАЯ МОДЕЛЬ: ПРОЦЕСС ИНДИВИДУАЦИИ
+          </div>
+</div>
+<!-- Canon Item 5 -->
+<div class="bg-surface-container border border-outline-variant/40 p-space-md rounded chamfer-edge space-y-3">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary font-mono">ЭПИСТЕМОЛОГИЯ</span>
+<span>2011</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">
+            Дэвид Дойч — «Начало бесконечности: объяснения, которые трансформируют мир»
+          </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Принцип фальсифицируемых трудноизменяемых объяснений как единственный двигатель объективного познания и прогресса.
+          </p>
+<div class="font-label-mono-sm text-[10px] text-outline pt-2 border-t border-outline-variant/20">
+            МЕНТАЛЬНАЯ МОДЕЛЬ: КРИТЕРИЙ ОБЪЯСНЕНИЯ
+          </div>
+</div>
+<!-- Canon Item 6 -->
+<div class="bg-surface-container border border-outline-variant/40 p-space-md rounded chamfer-edge space-y-3">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-primary font-mono">ДИЗАЙН И ФОРМА</span>
+<span>1989</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">
+            Дитер Рамс — «Десять принципов хорошего дизайна»
+          </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Weniger, aber besser («Меньше, но лучше»). Инструментальная честность предметов и отказ от декоративного шума.
+          </p>
+<div class="font-label-mono-sm text-[10px] text-outline pt-2 border-t border-outline-variant/20">
+            МЕНТАЛЬНАЯ МОДЕЛЬ: ФУНКЦИОНАЛЬНАЯ РЕДУКЦИЯ
+          </div>
+</div>
+</div>
+</section>
+<!-- 7. DIRECT CONTACT TERMINAL (Confidential Communication) -->
+<section class="space-y-space-lg" id="terminal">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between border-b border-outline-variant/30 pb-space-sm gap-2">
+<div>
+<div class="font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">ЗАЩИЩЕННЫЙ КАНАЛ // КОНФИДЕНЦИАЛЬНЫЙ ТЕРМИНАЛ</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-medium">
+            Связь и прямое обращение
+          </h2>
+</div>
+<div class="font-label-mono-sm text-label-mono-sm text-outline">
+          PGP ENCRYPTED COMMUNICATIONS ONLY
+        </div>
+</div>
+<!-- Terminal Chassis Container -->
+<div class="bg-surface-container border border-outline-variant/50 rounded-lg p-space-md md:p-space-xl chamfer-edge">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop">
+<!-- Left Console Details & PGP Specs -->
+<div class="lg:col-span-5 space-y-space-md">
+<div class="space-y-2">
+<div class="font-label-mono-sm text-label-mono-sm text-primary uppercase tracking-wider">
+                РЕГЛАМЕНТ ВЗАИМОДЕЙСТВИЯ
+              </div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-medium">
+                Архитектурный консалтинг, участие в подкасте и партнерства
+              </h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                Я рассматриваю только задачи с высокой системной плотностью: проектирование критической инфраструктуры, онтологический аудит решений и фундаментальные исследования.
+              </p>
+</div>
+<!-- Public PGP Fingerprint Box -->
+<div class="p-space-md bg-surface-container-lowest border border-outline-variant/40 rounded space-y-2">
+<div class="flex items-center justify-between font-label-mono-sm text-label-mono-sm">
+<span class="text-primary font-mono">PUBLIC KEY FINGERPRINT</span>
+<span class="text-outline">RSA 4096</span>
+</div>
+<div class="font-mono text-[12px] text-on-surface tracking-wider break-all select-all py-1">
+                4A8F C319 92D0 E407 1B5F 8821 70DA E18B
+              </div>
+<div class="font-label-mono-sm text-[10px] text-outline">
+                Шифрование гарантирует неприкосновенность данных при передаче.
+              </div>
+</div>
+<!-- Direct Telegram Bridge Trigger -->
+<a class="inline-flex items-center space-x-3 p-3 w-full bg-surface-container-lowest border border-outline-variant/40 hover:border-primary rounded transition-colors group" href="https://t.me/efremov_mvp" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-primary text-[22px]">send</span>
+<div class="text-left font-label-mono-sm text-label-mono-sm">
+<div class="text-on-surface group-hover:text-primary transition-colors font-medium">ПРЯМОЙ МОСТ В TELEGRAM</div>
+<div class="text-outline text-[11px]">@efremov_mvp • Мгновенный отклик</div>
+</div>
+</a>
+</div>
+<!-- Right: Engineered Minimal Form Fields -->
+<div class="lg:col-span-7">
+<form class="space-y-4" onsubmit="event.preventDefault();">
+<!-- Field 1: Name / Org -->
+<div class="space-y-1">
+<label class="block font-label-mono-sm text-label-mono-sm text-outline uppercase tracking-wider" for="contact-name">
+                  Имя / Организация
+                </label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded px-4 py-2.5 text-on-surface font-body-md text-body-md placeholder:text-outline/50 focus:outline-none focus:border-primary transition-colors" id="contact-name" placeholder="Иван Петров, Лаборатория распределенных систем" type="text"/>
+</div>
+<!-- Field 2: Secure Contact -->
+<div class="space-y-1">
+<label class="block font-label-mono-sm text-label-mono-sm text-outline uppercase tracking-wider" for="contact-channel">
+                  Защищенный контакт (Telegram / PGP Email)
+                </label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded px-4 py-2.5 text-on-surface font-body-md text-body-md placeholder:text-outline/50 focus:outline-none focus:border-primary transition-colors" id="contact-channel" placeholder="@handle или secure@domain.tld" type="text"/>
+</div>
+<!-- Field 3: Scope / Topic Selection -->
+<div class="space-y-1">
+<label class="block font-label-mono-sm text-label-mono-sm text-outline uppercase tracking-wider" for="contact-topic">
+                  Тематика обращения
+                </label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded px-4 py-2.5 text-on-surface font-body-md text-body-md focus:outline-none focus:border-primary transition-colors" id="contact-topic">
+<option class="bg-surface-container">Архитектурный консалтинг и аудит систем</option>
+<option class="bg-surface-container">Гость / тема для подкаста «Системы и Реальность»</option>
+<option class="bg-surface-container">Исследовательское партнерство</option>
+<option class="bg-surface-container">Конфиденциальный запрос</option>
+</select>
+</div>
+<!-- Field 4: Message Content -->
+<div class="space-y-1">
+<label class="block font-label-mono-sm text-label-mono-sm text-outline uppercase tracking-wider" for="contact-message">
+                  Суть задачи и архитектурный контекст
+                </label>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded px-4 py-2.5 text-on-surface font-body-md text-body-md placeholder:text-outline/50 focus:outline-none focus:border-primary transition-colors resize-none" id="contact-message" placeholder="Опишите структуру проблемы, стек технологий и желаемый результат..." rows="4"></textarea>
+</div>
+<!-- Submit Action Button -->
+<div class="pt-2 flex items-center justify-between">
+<div class="font-label-mono-sm text-[10px] text-outline">
+                  STATUS: READY • PGP VERIFIED
+                </div>
+<button class="px-6 py-3 bg-primary-container text-surface-container-lowest font-label-mono-sm text-label-mono-sm font-semibold tracking-wider uppercase rounded hover:bg-secondary-fixed-dim transition-colors chamfer-edge inline-flex items-center space-x-2" type="submit">
+<span>ОТПРАВИТЬ СООБЩЕНИЕ</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- 8. SOVEREIGN ENGINEERED FOOTER (Shared Component) -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 mt-space-xl">
+<div class="w-full px-margin md:px-margin-desktop py-space-xl max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-space-md">
+<!-- Brand & Copyright from JSON -->
+<div class="flex flex-col space-y-1 text-center md:text-left">
+<span class="font-headline-sm text-headline-sm text-on-surface">
+          ДМИТРИЙ ЕФРЕМОВ
+        </span>
+<p class="font-body-sm text-body-sm text-outline">
+          © 2025 ДМИТРИЙ ЕФРЕМОВ. СИСТЕМЫ И ДЕЙСТВИЕ. SOVEREIGN INTELLECTUAL HUB.
+        </p>
+</div>
+<!-- Links from JSON -->
+<nav class="flex flex-wrap items-center justify-center gap-6">
+<a class="text-outline hover:text-on-surface font-label-mono-sm text-label-mono-sm transition-colors" href="#podcast">
+          ПОДКАСТ
+        </a>
+<a class="text-outline hover:text-on-surface font-label-mono-sm text-label-mono-sm transition-colors" href="#essays">
+          ЭССЕ
+        </a>
+<a class="text-outline hover:text-on-surface font-label-mono-sm text-label-mono-sm transition-colors" href="#canon">
+          ОНТОЛОГИЯ
+        </a>
+<a class="text-outline hover:text-on-surface font-label-mono-sm text-label-mono-sm transition-colors" href="https://t.me/efremov_mvp" rel="noopener noreferrer" target="_blank">
+          TELEGRAM @EFREMOV_MVP
+        </a>
+<a class="text-outline hover:text-on-surface font-label-mono-sm text-label-mono-sm transition-colors" href="#terminal">
+          TERMINAL CONTACT
+        </a>
+</nav>
+<!-- System Diagnostic Version & Jump to Top -->
+<div class="flex items-center space-x-4 font-label-mono-sm text-label-mono-sm text-outline">
+<span class="text-secondary-fixed">SYS VER: 4.8.2</span>
+<span>•</span>
+<a aria-label="В начало страницы" class="hover:text-primary transition-colors flex items-center space-x-1" href="#top">
+<span>ВВЕРХ</span>
+<span class="material-symbols-outlined text-[14px]">north</span>
+</a>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions Script for Atmospheric Waveform Modulation -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const bars = document.querySelectorAll('.wave-bar');
+      if (bars.length > 0) {
+        setInterval(() => {
+          bars.forEach((bar, idx) => {
+            // Subtle organic fluctuation simulating active signal
+            if (idx < 20) {
+              const currentH = parseInt(bar.style.height) || 50;
+              const delta = (Math.random() - 0.5) * 8;
+              const newH = Math.min(Math.max(currentH + delta, 15), 98);
+              bar.style.height = `${newH}%`;
+            }
+          });
+        }, 300);
+      }
+    });
+  </script>
+</body></html>
