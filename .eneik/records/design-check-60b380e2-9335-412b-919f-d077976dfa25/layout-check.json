@@ -1,0 +1,184 @@
+[
+  {
+    "id": "app",
+    "left": 0,
+    "top": -125,
+    "width": 1440,
+    "height": 2258.5
+  },
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -125,
+    "width": 1440,
+    "height": 2258.5
+  },
+  {
+    "id": "sys-core-badge",
+    "left": 176,
+    "top": -88,
+    "width": 127.03125,
+    "height": 26
+  },
+  {
+    "id": "sys-domain",
+    "left": 315.03125,
+    "top": -83,
+    "width": 122.421875,
+    "height": 16
+  },
+  {
+    "id": "cmd-k-trigger-btn",
+    "left": 980.140625,
+    "top": -93,
+    "width": 137.03125,
+    "height": 36
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1129.171875,
+    "top": -90,
+    "width": 134.828125,
+    "height": 30
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": -16,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-avatar-container",
+    "left": 209,
+    "top": 17,
+    "width": 208,
+    "height": 208
+  },
+  {
+    "id": "hero-avatar-img",
+    "left": 211,
+    "top": 19,
+    "width": 204,
+    "height": 204
+  },
+  {
+    "id": "hero-title",
+    "left": 449,
+    "top": 43,
+    "width": 782,
+    "height": 48
+  },
+  {
+    "id": "hero-subtitle",
+    "left": 449,
+    "top": 97,
+    "width": 782,
+    "height": 28
+  },
+  {
+    "id": "hero-manifest",
+    "left": 449,
+    "top": 141,
+    "width": 782,
+    "height": 56
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 312,
+    "width": 1049.75,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 183,
+    "top": 319,
+    "width": 184.625,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 375.625,
+    "top": 319,
+    "width": 140.625,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-sparks",
+    "left": 524.25,
+    "top": 319,
+    "width": 162.21875,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 694.46875,
+    "top": 319,
+    "width": 176.625,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-canon",
+    "left": 879.09375,
+    "top": 319,
+    "width": 155.03125,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-models",
+    "left": 1042.125,
+    "top": 319,
+    "width": 176.625,
+    "height": 36
+  },
+  {
+    "id": "content-view",
+    "left": 176,
+    "top": 402,
+    "width": 1088,
+    "height": 1610.5
+  },
+  {
+    "id": "temp-slider",
+    "left": 226,
+    "top": 963,
+    "width": 318.65625,
+    "height": 4
+  },
+  {
+    "id": "topp-slider",
+    "left": 560.65625,
+    "top": 963,
+    "width": 318.671875,
+    "height": 4
+  },
+  {
+    "id": "tokens-slider",
+    "left": 895.328125,
+    "top": 963,
+    "width": 318.65625,
+    "height": 4
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 2052.5,
+    "width": 1088,
+    "height": 49
+  },
+  {
+    "id": "cmp-persistent-link",
+    "left": 980.75,
+    "top": 2085.5,
+    "width": 122.421875,
+    "height": 16
+  },
+  {
+    "id": "imprint-toggle-btn",
+    "left": 1127.171875,
+    "top": 2085.5,
+    "width": 136.828125,
+    "height": 16
+  }
+]

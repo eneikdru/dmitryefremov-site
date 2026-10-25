@@ -13,10 +13,11 @@
   import CanonGatewayView from './CanonGatewayView.svelte';
   import TelemetryHudView from './TelemetryHudView.svelte';
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
+  import AppliedModelsPlayground from './AppliedModelsPlayground.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'models' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'models' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -219,7 +220,7 @@
         </section>
 
         <!-- Navigation Bar for Public Portal -->
-        <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
+                <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2 p-1.5 rounded-xl border font-mono text-xs w-full sm:w-fit {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433]' : 'bg-white border-[#e2e8f0] shadow-sm'}">
           <button
             id="tab-btn-podcast"
             type="button"
@@ -261,6 +262,14 @@
           >
             <span>🤖 КАНОН & AI API</span>
           </button>
+          <button
+            id="tab-btn-models"
+            type="button"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'models' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            on:click={() => (activeTab = 'models')}
+          >
+            <span>⚙️ ПРИКЛАДНЫЕ МОДЕЛИ</span>
+          </button>
         </nav>
       </header>
 
@@ -285,6 +294,10 @@
         {:else if activeTab === 'canon'}
           <div class="space-y-6">
             <CanonGatewayView {theme} />
+          </div>
+        {:else if activeTab === 'models'}
+          <div class="space-y-6">
+            <AppliedModelsPlayground />
           </div>
         {/if}
       </section>
