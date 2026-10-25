@@ -109,10 +109,6 @@
       </h1>
     </div>
     <div class="flex items-center gap-3 text-xs font-mono">
-      <span class="px-2.5 py-1 rounded bg-[#171b26] text-[#4edea3] border border-[#4edea3]/30 flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-[#4edea3] animate-pulse"></span>
-        INGEST 1.4K EPS
-      </span>
       <span class="text-[#849495]">{epicId} ({epicVersion})</span>
     </div>
   </header>

@@ -28,9 +28,9 @@ export async function fetchEssaysFromApi(customFetch = fetch): Promise<EssayArti
         return {
           id: item.slug || String(item.id),
           slug: item.slug || String(item.id),
-          title: item.title || 'Отредактированное эссе',
+          title: item.title || '',
           topic: (item.topic || 'systems') as any,
-          readTime: item.readTime || '5 min read',
+          readTime: item.readTime || '',
           publishedAt: item.publishedAt ? String(item.publishedAt).slice(0, 10) : '',
           summary: item.summary || '',
           contentMarkdown: item.content || item.summary || ''

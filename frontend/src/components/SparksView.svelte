@@ -94,14 +94,6 @@
     <div class="flex items-center space-x-2">
       <span class="text-[#ffb300] font-bold text-xl select-none" aria-hidden="true">⚡</span>
       <h1 class="text-lg font-bold tracking-tight text-[#ffb300] select-none font-mono">SPARKS</h1>
-      <!-- Stream Pulse Telemetry Badge -->
-      <span
-        id="pulse-badge"
-        class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ffb300]/10 border border-[#ffb300]/30 text-[#ffb300] text-xs font-mono font-medium ml-1.5 animate-pulse"
-      >
-        <span class="w-1.5 h-1.5 rounded-full bg-[#ffb300] mr-1.5" aria-hidden="true"></span>
-        {telemetry.sparksPerMinute} spk/m
-      </span>
     </div>
 
     <!-- Trailing Actions & Stream Switcher -->

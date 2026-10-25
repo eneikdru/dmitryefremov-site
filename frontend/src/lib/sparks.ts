@@ -58,8 +58,8 @@ export async function fetchSparksFromApi(customFetch = fetch): Promise<SparkItem
     const data = await res.json();
     const rawList = Array.isArray(data) ? data : (data?.content || []);
     return rawList.map((spk: any) => {
-      const author = spk.author || '@efremov_mvp';
-      const authorInitial = author.replace(/^@/, '').charAt(0).toUpperCase() || 'D';
+      const author = spk.author || '';
+      const authorInitial = author ? author.replace(/^@/, '').charAt(0).toUpperCase() : '';
       return {
         id: String(spk.id || spk.telegramMessageId || `spk-${Math.random()}`),
         telegramMessageId: spk.telegramMessageId,
@@ -119,9 +119,9 @@ export function filterSparks(sparks: SparkItem[], selectedCategory: string, sear
   return result;
 }
 
-export function createSpark(text: string, author: string = '@dmitryefremov', tag: string = '#heuristics'): SparkItem {
+export function createSpark(text: string, author: string = '', tag: string = '#heuristics'): SparkItem {
   const trimmed = text.trim().slice(0, 180);
-  const initial = author.replace(/^@/, '').charAt(0).toUpperCase() || 'D';
+  const initial = author ? author.replace(/^@/, '').charAt(0).toUpperCase() : '';
 
   return {
     id: `spk-user-${Date.now()}`,

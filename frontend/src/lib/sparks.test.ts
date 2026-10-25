@@ -62,7 +62,7 @@ describe('Sparks Domain Model & Logic', () => {
 
   it('creates new spark correctly with trimmed length and default tag', () => {
     const newSpark = createSpark('Fast-stream layout for quantized thoughts');
-    expect(newSpark.author).toBe('@dmitryefremov');
+    expect(newSpark.author).toBe('');
     expect(newSpark.tag).toBe('#heuristics');
     expect(newSpark.body).toBe('"Fast-stream layout for quantized thoughts"');
     expect(newSpark.isFired).toBe(true);

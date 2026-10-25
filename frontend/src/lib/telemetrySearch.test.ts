@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import TelemetryHub from '../components/TelemetryHub.svelte';
 import CanonSearchModal from '../components/CanonSearchModal.svelte';
 import { mount, unmount } from 'svelte';
 import { telemetry } from './telemetry';
 import { setConsentStatus, resetConsentStatus } from './consent';
+import * as essaysModule from './essays';
 
 describe('Cmd+K Search Modal & Cross-Link Telemetry Integration', () => {
   let target: HTMLElement;
@@ -98,12 +99,27 @@ describe('Cmd+K Search Modal & Cross-Link Telemetry Integration', () => {
   });
 
   it('dispatches cross_link_click telemetry event when cross-links in ArticleStreamView are clicked', async () => {
+    vi.spyOn(essaysModule, 'fetchEssaysFromApi').mockResolvedValue([{
+      id: 'art-01-deontic-logic',
+      slug: 'art-01-deontic-logic',
+      title: 'Деонтическая логика в автономии',
+      topic: 'deontic',
+      readTime: '6 min read',
+      publishedAt: '2026-03-12',
+      summary: 'Формализация нормативных ограничений',
+      contentMarkdown: '# Деонтическая логика'
+    }]);
+
     component = mount(TelemetryHub, { target, props: { initialTab: 'article' } });
     await new Promise(r => setTimeout(r, 200));
 
+    const articleBtn = target.querySelector('.article-card') as HTMLButtonElement;
+    expect(articleBtn).not.toBeNull();
+    articleBtn.click();
+    await new Promise(r => setTimeout(r, 50));
+
     const crossLinkBtn = target.querySelector('#article-cross-links button') as HTMLButtonElement;
     expect(crossLinkBtn).not.toBeNull();
-
     crossLinkBtn.click();
     await new Promise(r => setTimeout(r, 50));
 

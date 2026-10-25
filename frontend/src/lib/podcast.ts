@@ -46,14 +46,14 @@ export async function fetchPodcastsFromApi(customFetch = fetch): Promise<Podcast
       .map((ep: any) => ({
         id: ep.id,
         slug: ep.slug || `ep-${ep.id}`,
-        philosopher: ep.philosopher || 'Дмитрий Ефремов',
-        title: ep.title || 'Выпуск подкаста',
+        philosopher: ep.philosopher || '',
+        title: ep.title || '',
         thesis: ep.thesis || ep.description || '',
         description: ep.description || ep.thesis || '',
         audioUrl: ep.audioUrl || ep.audio_url || '',
         mediaLink: ep.mediaLink || ep.youtubeUrl || '',
-        youtubeUrl: ep.youtubeUrl || ep.mediaLink || 'https://youtube.com/@dmitrii.efremov',
-        telegramUrl: ep.telegramUrl || 'https://t.me/efremov_mvp',
+        youtubeUrl: ep.youtubeUrl || ep.mediaLink || '',
+        telegramUrl: ep.telegramUrl || '',
         durationSeconds: ep.durationSeconds || 0,
         publishedAt: ep.publishedAt ? String(ep.publishedAt).slice(0, 10) : '',
         timecodes: Array.isArray(ep.timecodes) ? ep.timecodes : []
