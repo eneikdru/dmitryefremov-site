@@ -149,22 +149,22 @@
   {#if isSearchVisible}
     <div class="px-4 py-2 border-b {theme === 'dark' ? 'bg-[#1e2024] border-[#514532]/30' : 'bg-[#f1f5f9] border-[#cbd5e1]'}">
       <div class="relative flex items-center">
-        <label for="spark-search-input" class="sr-only">Search Sparks</label>
+        <label for="spark-search-input" class="sr-only">Поиск искр</label>
         <input
           id="spark-search-input"
           type="text"
           bind:value={searchQuery}
-          placeholder="Filter sparks by keyword, author, or tag..."
+          placeholder="Фильтр по ключевым словам, авторам или тегам..."
           class="w-full px-3 py-1.5 rounded-lg text-sm font-mono border focus:outline-none focus:ring-2 focus:ring-[#ffb300] {theme === 'dark' ? 'bg-[#111317] text-[#e2e2e8] border-[#514532]/50 placeholder-[#9e8e78]' : 'bg-white text-[#0f172a] border-[#cbd5e1] placeholder-[#94a3b8]'}"
         />
         {#if searchQuery}
           <button
             type="button"
-            aria-label="Clear search"
+            aria-label="Очистить поиск"
             class="absolute right-2 text-xs font-mono px-1.5 py-0.5 rounded hover:bg-[#ffb300]/20 text-[#ffb300]"
             on:click={() => (searchQuery = '')}
           >
-            Clear
+            Очистить
           </button>
         {/if}
       </div>
@@ -178,12 +178,12 @@
   >
     <div class="flex items-center space-x-2">
       <span class="text-[#00d6e3] font-bold" aria-hidden="true">⚡</span>
-      <span>THROUGHPUT: <strong class="text-[#00d6e3] font-bold">{telemetry.throughputWpm} WPM</strong></span>
+      <span>ПРОПУСКНАЯ СПОСОБНОСТЬ: <strong class="text-[#00d6e3] font-bold">{telemetry.throughputWpm} WPM</strong></span>
     </div>
     <div class="flex items-center space-x-1.5 px-2 py-0.5 rounded border {theme === 'dark' ? 'bg-[#282a2e]/60 border-[#514532]/30 text-[#e2e2e8]' : 'bg-white border-[#cbd5e1] text-[#0f172a]'}">
       <span class="text-[#ffb300] font-bold text-xs" aria-hidden="true">⚡</span>
-      <span class="font-bold">{telemetry.consumedToday} sparks</span>
-      <span class="opacity-70">consumed today</span>
+      <span class="font-bold">{telemetry.consumedToday}</span>
+      <span class="opacity-70">прочитано сегодня</span>
     </div>
   </section>
 
@@ -424,14 +424,14 @@
         🎙️
       </button>
 
-      <label for="spark-composer-input" class="sr-only">Type a spark thought</label>
+      <label for="spark-composer-input" class="sr-only">Введите мысль</label>
       <input
         id="spark-composer-input"
         type="text"
         maxlength="180"
         bind:value={newSparkText}
         on:keydown={handleKeydownComposer}
-        placeholder="Type a spark thought... (max 180 chars)"
+        placeholder="Введите мысль... (макс. 180 символов)"
         class="bg-transparent border-0 text-sm focus:ring-0 flex-1 px-1 py-1 focus:outline-none {theme === 'dark' ? 'text-[#e2e2e8] placeholder-[#9e8e78]' : 'text-[#0f172a] placeholder-[#94a3b8]'}"
       />
 
