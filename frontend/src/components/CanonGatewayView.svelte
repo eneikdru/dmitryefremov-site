@@ -91,8 +91,9 @@
       const orderId = res.data?.orderId || res.data?.id || 'ORD-9821';
       testOrderResult = `Успешно (201 Created)! ID: ${orderId}`;
       telemetry.trackCanonSubmitConverted(orderId, 0, {
+        service_type: testOrderForm.serviceType,
         client_name: testOrderForm.clientName,
-        service_type: testOrderForm.serviceType
+        source: 'agent_api'
       });
     } else {
       testOrderResult = `Ошибка: ${res.error}`;
