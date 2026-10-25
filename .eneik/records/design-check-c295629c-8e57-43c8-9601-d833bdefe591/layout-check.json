@@ -1,0 +1,65 @@
+[
+  {
+    "id": "admin-header",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 56
+  },
+  {
+    "id": "statutory-benchmark-banner",
+    "left": 296,
+    "top": 80,
+    "width": 848,
+    "height": 120
+  },
+  {
+    "id": "admin-metrics-grid",
+    "left": 296,
+    "top": 224,
+    "width": 848,
+    "height": 165
+  },
+  {
+    "id": "dsar-queue-section",
+    "left": 296,
+    "top": 413,
+    "width": 848,
+    "height": 514
+  },
+  {
+    "id": "dsar-item-8821",
+    "left": 296,
+    "top": 461,
+    "width": 848,
+    "height": 188
+  },
+  {
+    "id": "dsar-item-8819",
+    "left": 296,
+    "top": 665,
+    "width": 848,
+    "height": 147
+  },
+  {
+    "id": "dsar-item-8814",
+    "left": 296,
+    "top": 828,
+    "width": 848,
+    "height": 99
+  },
+  {
+    "id": "system-isolation-section",
+    "left": 296,
+    "top": 951,
+    "width": 848,
+    "height": 408
+  },
+  {
+    "id": "admin-bottom-nav",
+    "left": 0,
+    "top": 836,
+    "width": 1440,
+    "height": 64
+  }
+]

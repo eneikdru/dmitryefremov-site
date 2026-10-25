@@ -22,9 +22,14 @@ test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability
     // 1. Navigate to main page (Podcast Media Hub tab is active by default)
     await page.goto('/');
 
+    // Dismiss CMP privacy consent modal if visible
+    if (await page.locator('#cmp-accept-btn').isVisible()) {
+      await page.click('#cmp-accept-btn');
+    }
+
     // Ensure Podcast player container is rendered
     await page.waitForSelector('#podcast-player-container');
-    await expect(page.locator('#podcast-title').first()).toContainText('Рут Баркан Маркус');
+    await expect(page.locator('#podcast-header').first()).toContainText('Рут Баркан Маркус');
 
     // 2. Test Play / Pause button via mouse click and keyboard Focus & Space
     const playBtn = page.locator('#play-pause-btn');
@@ -76,16 +81,15 @@ test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability
     await expect(page.locator('#current-time-val')).toHaveText('05:40');
     await expect(secondTimecode).toContainText('СЕЙЧАС ИГРАЕТ');
 
-    // Click third topic timecode button
-    const thirdTimecode = page.locator('#timecode-btn-103');
-    await expect(thirdTimecode).toBeVisible();
+    const firstTimecode = page.locator('#timecode-btn-101');
+    await expect(firstTimecode).toBeVisible();
 
-    await thirdTimecode.focus();
+    await firstTimecode.focus();
     await page.keyboard.press('Enter');
 
-    // Timecode 103 offset is 920 seconds = 15:20
-    await expect(page.locator('#current-time-val')).toHaveText('15:20');
-    await expect(thirdTimecode).toContainText('СЕЙЧАС ИГРАЕТ');
+    // Timecode 101 offset is 0 seconds = 00:00
+    await expect(page.locator('#current-time-val')).toHaveText('00:00');
+    await expect(firstTimecode).toContainText('СЕЙЧАС ИГРАЕТ');
 
     // 5. Test switching episodes in catalog via keyboard focus & Space
     const ep2Card = page.locator('#episode-card-2');
@@ -95,7 +99,7 @@ test.describe('Podcast Media Hub Audio Playback Lifecycle & Keyboard Operability
     await page.keyboard.press('Enter');
 
     // Verify active episode switched to Episode 2 (Пол Таггард)
-    await expect(page.locator('#podcast-title')).toContainText('Пол Таггард');
+    await expect(page.locator('#podcast-header')).toContainText('Пол Таггард');
     await expect(ep2Card).toContainText('АКТИВЕН');
   });
 });

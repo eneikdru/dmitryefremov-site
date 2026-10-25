@@ -107,7 +107,6 @@
       acknowledgementEmailSent = true;
       clearDraft();
     } catch (err: any) {
-      // Network failure or API error - draft is retained so nothing typed is lost
       submitError = 'Connection issue or validation error during transmission. Your input was safely preserved locally. Please try submitting again.';
     } finally {
       isSubmitting = false;

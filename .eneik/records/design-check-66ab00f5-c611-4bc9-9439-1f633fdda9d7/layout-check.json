@@ -1,0 +1,142 @@
+[
+  {
+    "id": "telemetry-hub-root",
+    "left": 0,
+    "top": -198,
+    "width": 1440,
+    "height": 1098
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": -89,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 239,
+    "width": 859,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-sparks",
+    "left": 518,
+    "top": 246,
+    "width": 162,
+    "height": 36
+  },
+  {
+    "id": "sparks-view-root",
+    "left": 380,
+    "top": 329,
+    "width": 680,
+    "height": 450
+  },
+  {
+    "id": "sparks-header",
+    "left": 380,
+    "top": 329,
+    "width": 680,
+    "height": 48
+  },
+  {
+    "id": "pulse-badge",
+    "left": 488,
+    "top": 342,
+    "width": 80,
+    "height": 22
+  },
+  {
+    "id": "hyperModeBtn",
+    "left": 889,
+    "top": 343,
+    "width": 56,
+    "height": 20
+  },
+  {
+    "id": "focusModeBtn",
+    "left": 945,
+    "top": 343,
+    "width": 56,
+    "height": 20
+  },
+  {
+    "id": "velocity-ribbon",
+    "left": 380,
+    "top": 377,
+    "width": 680,
+    "height": 39
+  },
+  {
+    "id": "category-filter-rail",
+    "left": 380,
+    "top": 416,
+    "width": 680,
+    "height": 47
+  },
+  {
+    "id": "sparkFeed",
+    "left": 396,
+    "top": 475,
+    "width": 636,
+    "height": 176
+  },
+  {
+    "id": "spark-card-spk-1",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "spark-card-spk-2",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "spark-card-spk-3",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "spark-card-spk-4",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "spark-card-spk-5",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "quick-spark-form",
+    "left": 396,
+    "top": 790,
+    "width": 648,
+    "height": 46
+  },
+  {
+    "id": "dispatch-spark-btn",
+    "left": 1005,
+    "top": 797,
+    "width": 32,
+    "height": 32
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 819,
+    "width": 1088,
+    "height": 49
+  }
+]

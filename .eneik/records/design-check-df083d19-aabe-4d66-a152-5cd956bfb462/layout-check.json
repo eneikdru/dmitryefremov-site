@@ -1,0 +1,93 @@
+[
+  {
+    "id": "main-header",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 109,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "content-view",
+    "left": 176,
+    "top": 527,
+    "width": 1088,
+    "height": 718
+  },
+  {
+    "id": "cmp-modal-overlay",
+    "left": 0,
+    "top": 40,
+    "width": 1440,
+    "height": 860
+  },
+  {
+    "id": "cmp-container",
+    "left": 496,
+    "top": 135,
+    "width": 448,
+    "height": 765
+  },
+  {
+    "id": "cmp-badge",
+    "left": 690,
+    "top": 181,
+    "width": 253,
+    "height": 30
+  },
+  {
+    "id": "cmp-title",
+    "left": 536,
+    "top": 135,
+    "width": 359,
+    "height": 20
+  },
+  {
+    "id": "cmp-description",
+    "left": 497,
+    "top": 212,
+    "width": 446,
+    "height": 120
+  },
+  {
+    "id": "cmp-actions",
+    "left": 496,
+    "top": 851,
+    "width": 448,
+    "height": 49
+  },
+  {
+    "id": "cmp-decline-btn",
+    "left": 496,
+    "top": 852,
+    "width": 225,
+    "height": 48
+  },
+  {
+    "id": "cmp-accept-btn",
+    "left": 721,
+    "top": 852,
+    "width": 223,
+    "height": 48
+  },
+  {
+    "id": "cmp-save-btn",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 1285,
+    "width": 1088,
+    "height": 49
+  }
+]
