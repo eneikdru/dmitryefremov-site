@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount, unmount } from 'svelte';
 import { telemetry } from './telemetry';
 import { setConsentStatus, resetConsentStatus } from './consent';
-import VaultIntakeView from '../components/VaultIntakeView.svelte';
+import ContactFormView from '../components/ContactFormView.svelte';
 import CanonGatewayView from '../components/CanonGatewayView.svelte';
 import CanonSearchModal from '../components/CanonSearchModal.svelte';
 import TelemetryHudView from '../components/TelemetryHudView.svelte';
@@ -38,13 +38,17 @@ describe('Telemetry Instrumentation & Privacy Consent Invariants (Slice 11b91b99
         json: async () => ({ claimTicket: '0xticket_998877' })
       });
 
-      component = mount(VaultIntakeView, { target });
+      component = mount(ContactFormView, { target });
 
       const emailInput = target.querySelector('#client-email-input') as HTMLInputElement;
       emailInput.value = 'client@enterprise.com';
       emailInput.dispatchEvent(new Event('input', { bubbles: true }));
 
-      const form = target.querySelector('#vault-intake-form') as HTMLFormElement;
+      const messageText = target.querySelector('#narrative-textarea') as HTMLTextAreaElement;
+      messageText.value = 'Test message';
+      messageText.dispatchEvent(new Event('input', { bubbles: true }));
+
+      const form = target.querySelector('#contact-form') as HTMLFormElement;
       form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
 
       await new Promise((r) => setTimeout(r, 50));
@@ -140,9 +144,9 @@ describe('Telemetry Instrumentation & Privacy Consent Invariants (Slice 11b91b99
         json: async () => ({ claimTicket: '0xticket_declined' })
       });
 
-      component = mount(VaultIntakeView, { target });
+      component = mount(ContactFormView, { target });
 
-      const form = target.querySelector('#vault-intake-form') as HTMLFormElement;
+      const form = target.querySelector('#contact-form') as HTMLFormElement;
       form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
 
       await new Promise((r) => setTimeout(r, 50));
