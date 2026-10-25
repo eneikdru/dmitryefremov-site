@@ -120,7 +120,7 @@ class KnowledgeBaseSearchControllerTest {
     void testLlmsTxtEndpoint() throws Exception {
         when(searchService.generateLlmsTxt()).thenReturn("# Dmitry Efremov Index");
 
-        mockMvc.perform(get("/llms.txt"))
+        mockMvc.perform(get("/api/v1/llms.txt"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
                 .andExpect(content().string(containsString("Dmitry Efremov Index")));
@@ -131,7 +131,7 @@ class KnowledgeBaseSearchControllerTest {
         AiAgentGraphRepresentation representation = new AiAgentGraphRepresentation("1.0.0", OffsetDateTime.now(), 5, 2, List.of(), List.of());
         when(searchService.generateAiAgentGraph()).thenReturn(representation);
 
-        mockMvc.perform(get("/ai-agent.json"))
+        mockMvc.perform(get("/api/v1/ai-agent.json"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.version", is("1.0.0")))

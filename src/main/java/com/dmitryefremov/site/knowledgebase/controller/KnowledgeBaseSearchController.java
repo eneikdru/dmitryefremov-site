@@ -75,12 +75,12 @@ public class KnowledgeBaseSearchController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/llms.txt", produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/api/v1/llms.txt", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getLlmsTxtIndex() {
         return ResponseEntity.ok(searchService.generateLlmsTxt());
     }
 
-    @GetMapping(value = "/ai-agent.json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/v1/ai-agent.json", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AiAgentGraphRepresentation> getAiAgentGraphJson() {
         return ResponseEntity.ok(searchService.generateAiAgentGraph());
     }
