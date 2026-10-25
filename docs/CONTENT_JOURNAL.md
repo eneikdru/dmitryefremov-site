@@ -7,7 +7,7 @@
 - **Telegram:** `https://t.me/efremov_mvp` (`@efremov_mvp`)
 - **YouTube:** `https://youtube.com/@efremov_dmitriy` (`@efremov_dmitriy`)
 - **LinkedIn:** `https://www.linkedin.com/in/dmitrii-efremov-87b816349/`
-- **GitHub:** `https://github.com/eneikdru`
+- **GitHub:** `https://github.com/dmitriieneik-rgb`
 
 ---
 
@@ -22,3 +22,5 @@
   4. **Контентная политика:** Фейковые заглушки не генерируются; наполнение уникальными авторскими паттернами и мыслями ведётся напрямую от автора через этот журнал и сессии `site-admin`.
 
 * **Обновление контактов (LinkedIn):** Зафиксирован точный рабочий профиль автора: `https://www.linkedin.com/in/dmitrii-efremov-87b816349/`.
+
+* **Обновление контактов (GitHub):** Зафиксирован точный рабочий профиль автора: `https://github.com/dmitriieneik-rgb`.

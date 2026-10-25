@@ -14,7 +14,7 @@ description: >-
 * **Telegram Channel:** `https://t.me/efremov_mvp` (`@efremov_mvp`)
 * **YouTube Channel:** `https://youtube.com/@efremov_dmitriy` (`@efremov_dmitriy`)
 * **LinkedIn Profile:** `https://www.linkedin.com/in/dmitrii-efremov-87b816349/`
-* **GitHub Organization / Repo:** `https://github.com/eneikdru`
+* **GitHub Organization / Repo:** `https://github.com/dmitriieneik-rgb`
 
 > [!IMPORTANT]
 > Never use placeholder links or arbitrary handles. All outbound links, metadata, and OpenGraph tags must strictly reference the canonical URLs above.
