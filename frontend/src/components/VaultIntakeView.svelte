@@ -325,7 +325,7 @@
           placeholder="your.email@organization.com"
           class="w-full h-11 bg-white text-[#0b1c30] text-xs border border-[#c3c6d7] rounded-lg px-3.5 focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/20 outline-none transition-all"
         />
-        <p class="text-[11px] text-[#737686]">Used solely for dispatching email receipt & status confirmation.</p>
+        <p class="text-[11px] text-[#434655]">Used solely for dispatching email receipt & status confirmation.</p>
       </div>
 
       <!-- Submission Title -->
@@ -370,7 +370,7 @@
           placeholder="Describe the vulnerability or incident with specifics. All phone numbers, emails, and IP strings are tokenized..."
           class="w-full bg-white text-[#0b1c30] text-xs border border-[#c3c6d7] rounded-lg p-3 focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/20 outline-none transition-all resize-none font-sans"
         ></textarea>
-        <div class="flex items-center justify-between text-[10px] font-mono text-[#737686]">
+        <div class="flex items-center justify-between text-[10px] font-mono text-[#434655]">
           <span>Client cryptographic entropy: 99.8%</span>
           <span id="char-counter">{narrative.length} / 4000</span>
         </div>

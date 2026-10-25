@@ -281,9 +281,16 @@
       </section>
 
       <!-- Footer -->
-      <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-[#1f2433] text-[#94a3b8]' : 'border-[#e2e8f0] text-[#64748b]'}">
-        <div>
+      <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col md:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-[#1f2433] text-[#94a3b8]' : 'border-[#e2e8f0] text-[#64748b]'}">
+        <div class="flex flex-col sm:flex-row items-center gap-4">
           <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Все права защищены.</span>
+          <!-- Footer Social Links -->
+          <div id="footer-social-links" class="flex items-center gap-3">
+            <a id="footer-link-tg" href="https://t.me/efremov_mvp" target="_blank" rel="noopener noreferrer" aria-label="Dmitry Efremov Telegram Channel" class="hover:text-[#38bdf8] transition-colors underline">Telegram</a>
+            <a id="footer-link-yt" href="https://youtube.com/@dmitrii.efremov" target="_blank" rel="noopener noreferrer" aria-label="Dmitry Efremov YouTube Channel" class="hover:text-[#38bdf8] transition-colors underline">YouTube</a>
+            <a id="footer-link-gh" href="https://github.com/dmitryefremov" target="_blank" rel="noopener noreferrer" aria-label="Dmitry Efremov GitHub Profile" class="hover:text-[#38bdf8] transition-colors underline">GitHub</a>
+            <a id="footer-link-li" href="https://linkedin.com/in/dmitryefremov" target="_blank" rel="noopener noreferrer" aria-label="Dmitry Efremov LinkedIn Profile" class="hover:text-[#38bdf8] transition-colors underline">LinkedIn</a>
+          </div>
         </div>
         <div class="flex items-center gap-6">
           <button
