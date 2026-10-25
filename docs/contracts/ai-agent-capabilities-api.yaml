@@ -1,0 +1,278 @@
+openapi: 3.0.3
+info:
+  title: Shared AI Agent Capabilities API Contract
+  description: >
+    Formal API specification for AI agent access to Dmitry Efremov's platform capabilities.
+    Defines endpoints and DTO schemas for machine-readable content discovery (llms.txt, ai-agent.json)
+    and AI agent service submissions (service orders, direct messages, and API docs).
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /.well-known/llms.txt:
+    get:
+      summary: Retrieve plain-text index of site content for LLMs and AI agents
+      description: Returns a structured Markdown formatted summary index of articles, essays, and podcast episodes.
+      operationId: getWellKnownLlmsTxt
+      responses:
+        '200':
+          description: Plain-text site content index successfully retrieved
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "# Dmitry Efremov Canon Index\n\n> Dynamic index of articles, essays, and podcasts.\n"
+
+  /.well-known/ai-agent.json:
+    get:
+      summary: Retrieve JSON discovery index of content endpoints for AI agents
+      description: Returns structured links to articles, essays, and podcast resource endpoints.
+      operationId: getWellKnownAiAgentJson
+      responses:
+        '200':
+          description: Structured JSON content index successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiAgentDiscoveryResponse'
+
+  /api/v1/ai/docs:
+    get:
+      summary: Retrieve OpenAPI specification metadata for AI Agent endpoints
+      description: Provides machine-readable specification of available AI agent capabilities and endpoints.
+      operationId: getAiAgentDocs
+      responses:
+        '200':
+          description: OpenAPI spec metadata successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/v1/ai/orders:
+    post:
+      summary: Create a service order request from an AI agent
+      description: Submits a request for professional services (e.g. MVP development, audit, automation) on behalf of a user.
+      operationId: createAiServiceOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiServiceOrderRequest'
+      responses:
+        '201':
+          description: Service order request created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiServiceOrderResponse'
+        '400':
+          description: Validation error in request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/ai/messages:
+    post:
+      summary: Send a direct message from an AI agent
+      description: Submits a direct message or collaboration inquiry to Dmitry Efremov on behalf of a user.
+      operationId: createAiDirectMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiDirectMessageRequest'
+      responses:
+        '201':
+          description: Direct message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiDirectMessageResponse'
+        '400':
+          description: Validation error in request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ContentReference:
+      type: object
+      required:
+        - title
+        - slug
+        - url
+      properties:
+        title:
+          type: string
+          example: "Deontic Autonomy of AI Agents"
+        slug:
+          type: string
+          example: "deonticheskaya-avtonomiya-agentov"
+        url:
+          type: string
+          example: "/api/v1/canon/deonticheskaya-avtonomiya-agentov"
+
+    AiAgentDiscoveryResponse:
+      type: object
+      required:
+        - articles
+        - essays
+        - podcasts
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentReference'
+        essays:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentReference'
+        podcasts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentReference'
+
+    AiServiceOrderRequest:
+      type: object
+      required:
+        - userName
+        - userEmail
+        - serviceType
+      properties:
+        userName:
+          type: string
+          minLength: 1
+          example: "Dmitry Efremov"
+          description: Name of the user submitting the service order
+        userEmail:
+          type: string
+          format: email
+          example: "user@example.com"
+          description: Valid email address for order communications
+        agentIdentifier:
+          type: string
+          nullable: true
+          example: "agent-gpt4-v1"
+          description: Optional identifier or moniker of the calling AI agent
+        serviceType:
+          type: string
+          minLength: 1
+          example: "MVP Development"
+          description: Type of service requested (e.g., MVP Development, Architectural Audit, Automation)
+        requirements:
+          type: string
+          nullable: true
+          example: "We need a turnkey AI agent capability contract and implementation."
+          description: Detailed requirements or scope specifications
+
+    AiServiceOrderResponse:
+      type: object
+      required:
+        - id
+        - status
+        - message
+        - timestamp
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 101
+        status:
+          type: string
+          example: "NEW"
+        message:
+          type: string
+          example: "Service order request received successfully."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-24T23:50:00Z"
+
+    AiDirectMessageRequest:
+      type: object
+      required:
+        - senderName
+        - senderEmail
+        - content
+      properties:
+        senderName:
+          type: string
+          minLength: 1
+          example: "Alice Smith"
+          description: Name of the sender
+        senderEmail:
+          type: string
+          format: email
+          example: "alice@example.com"
+          description: Contact email address of the sender
+        agentIdentifier:
+          type: string
+          nullable: true
+          example: "claude-3-5-sonnet"
+          description: Optional identifier or moniker of the calling AI agent
+        content:
+          type: string
+          minLength: 1
+          example: "Inquiry regarding AI Agent Architecture collaboration."
+          description: Content text of the message
+
+    AiDirectMessageResponse:
+      type: object
+      required:
+        - id
+        - status
+        - message
+        - timestamp
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 202
+        status:
+          type: string
+          example: "NEW"
+        message:
+          type: string
+          example: "Direct message received successfully."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-24T23:50:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Validation failed: userEmail must be a valid email address"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-24T23:50:00Z"
