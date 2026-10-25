@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { telemetry } from '../lib/telemetry';
 
   export let apiEndpoint: string = '/api/intake';
 
@@ -105,6 +106,14 @@
       claimTicket = resData.claimTicket || `0x${Math.random().toString(16).slice(2, 10)}...31bc`;
       submitSuccess = true;
       acknowledgementEmailSent = true;
+
+      telemetry.trackFormValidationPassed('vault_intake_submit', 12, 2);
+      telemetry.trackCanonSubmitConverted(claimTicket, 0, {
+        classification,
+        title: title.trim(),
+        client_email: email.trim()
+      });
+
       clearDraft();
     } catch (err: any) {
       submitError = 'Connection issue or validation error during transmission. Your input was safely preserved locally. Please try submitting again.';
@@ -321,6 +330,7 @@
           type="email"
           bind:value={email}
           on:input={handleInput}
+          on:focus={() => telemetry.trackFormFieldFocused('client_email')}
           placeholder="your.email@organization.com"
           class="w-full h-11 bg-white text-[#0b1c30] text-xs border border-[#c3c6d7] rounded-lg px-3.5 focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/20 outline-none transition-all"
         />
@@ -344,6 +354,7 @@
           required
           bind:value={title}
           on:input={handleInput}
+          on:focus={() => telemetry.trackFormFieldFocused('submission_title')}
           placeholder="e.g. Memory anomaly in enclave worker node"
           class="w-full h-11 bg-white text-[#0b1c30] text-xs border border-[#c3c6d7] rounded-lg px-3.5 focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/20 outline-none transition-all"
         />
@@ -366,6 +377,7 @@
           rows="4"
           bind:value={narrative}
           on:input={handleInput}
+          on:focus={() => telemetry.trackFormFieldFocused('narrative')}
           placeholder="Describe the vulnerability or incident with specifics. All phone numbers, emails, and IP strings are tokenized..."
           class="w-full bg-white text-[#0b1c30] text-xs border border-[#c3c6d7] rounded-lg p-3 focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/20 outline-none transition-all resize-none font-sans"
         ></textarea>
