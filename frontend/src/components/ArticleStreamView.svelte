@@ -166,7 +166,7 @@
 
 <div id="article-stream-container" class="space-y-6">
   <!-- Section Header & Filter Options -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2433] pb-4">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
     <div>
       <h2 class="text-xl font-bold tracking-tight text-white">
         <span class="sr-only">Articles & Thought Stream</span>
@@ -178,21 +178,21 @@
     <div class="flex flex-wrap gap-1.5 font-mono text-xs" role="toolbar" aria-label="Article Topic Filters">
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'all' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
+        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'all' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
         on:click={() => (filterTopic = 'all')}
       >
         <span>{$currentLanguage === 'ru' ? 'Все темы' : ($currentLanguage === 'ka' ? 'ყველა თემა' : 'All Topics')}</span>
       </button>
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'deontic' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
+        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'deontic' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
         on:click={() => (filterTopic = 'deontic')}
       >
         <span>{$currentLanguage === 'ru' ? 'Деонтическая логика' : ($currentLanguage === 'ka' ? 'დეონტური ლოგიკა' : 'Deontic Logic')}</span>
       </button>
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'toc' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
+        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'toc' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
         on:click={() => (filterTopic = 'toc')}
       >
         <span class="sr-only">Theory of Constraints</span>
@@ -200,14 +200,14 @@
       </button>
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'autonomous' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
+        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'autonomous' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
         on:click={() => (filterTopic = 'autonomous')}
       >
         <span>{$currentLanguage === 'ru' ? 'Автономные системы' : ($currentLanguage === 'ka' ? 'ავტონომიური სისტემები' : 'Autonomous Systems')}</span>
       </button>
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'systems' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
+        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'systems' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
         on:click={() => (filterTopic = 'systems')}
       >
         <span>{$currentLanguage === 'ru' ? 'Архитектура систем' : ($currentLanguage === 'ka' ? 'სისტემების არქიტექტურა' : 'Systems Architecture')}</span>
@@ -229,7 +229,7 @@
         </div>
 
         {#if filteredArticles.length === 0}
-          <div id="articles-empty-state" class="p-8 text-center rounded-xl border border-dashed border-[#1f2433] bg-[#090a0f] font-mono text-sm text-[#94a3b8]">
+          <div id="articles-empty-state" class="p-8 text-center rounded-xl border border-dashed border-white/[0.08] bg-[#080a0e] font-mono text-sm text-[#94a3b8]">
             {$currentLanguage === 'ru' ? 'Эссе и публикации отсутствуют' : ($currentLanguage === 'ka' ? 'ესეები და პუბლიკაციები არ არის' : 'No essays or publications available')}
           </div>
         {:else}
@@ -237,16 +237,16 @@
             {#each filteredArticles as article}
               <button
                 type="button"
-                class="article-card w-full p-4 rounded-xl border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#38bdf8] {selectedArticleId === article.id ? 'bg-[#12151e] border-[#38bdf8] shadow-lg shadow-[#38bdf8]/10' : 'bg-[#090a0f] border-[#1f2433] hover:border-[#38bdf8]/50 hover:bg-[#12151e]/50'}"
+                class="article-card w-full p-4 rounded-xl border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-amber-400 {selectedArticleId === article.id ? 'bg-[#0d1118] border-amber-400/60 shadow-xl ring-1 ring-amber-400/20' : 'bg-[#080a0e] border-white/[0.08] hover:border-amber-400/50/50 hover:bg-[#0d1118]/50'}"
                 on:click={() => handleArticleSelect(article.id)}
               >
                 <div class="flex justify-between items-center text-xs font-mono mb-2">
-                  <span class="px-2 py-0.5 rounded bg-[#1f2433] text-[#38bdf8] uppercase text-[10px] font-bold tracking-wider">
+                  <span class="px-2 py-0.5 rounded bg-[#1f2433] text-amber-400 uppercase text-[10px] font-bold tracking-wider">
                     {article.topic}
                   </span>
                   <span class="text-[#64748b] text-[11px]">{article.readTime}</span>
                 </div>
-                <h3 class="font-bold text-white text-sm mb-1.5 hover:text-[#38bdf8] transition-colors leading-snug">
+                <h3 class="font-bold text-white text-sm mb-1.5 hover:text-amber-300 transition-colors leading-snug">
                   {article.title}
                 </h3>
                 <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
@@ -254,7 +254,7 @@
                 </p>
                 <div class="mt-3 text-[11px] font-mono flex justify-between items-center">
                   <span class="text-[#64748b]">{article.publishedAt}</span>
-                  <span class="font-medium {selectedArticleId === article.id ? 'text-[#38bdf8]' : 'text-[#64748b]'}">
+                  <span class="font-medium {selectedArticleId === article.id ? 'text-amber-400' : 'text-[#64748b]'}">
                     {selectedArticleId === article.id 
                       ? ($currentLanguage === 'ru' ? '● Читаете сейчас' : ($currentLanguage === 'ka' ? '● კითხულობთ ახლა' : '● Reading now'))
                       : ($currentLanguage === 'ru' ? 'Читать →' : ($currentLanguage === 'ka' ? 'წაკითხვა →' : 'Read →'))}
@@ -288,16 +288,16 @@
 
     <!-- Active Article Reader View - FULL HEIGHT & EDITORIAL BEAUTY -->
     <div id="article-reader-section" class="lg:col-span-8 flex flex-col">
-      <div id="article-reader-root" class="bg-[#0f1118] text-[#e2e8f0] p-6 sm:p-8 rounded-2xl border border-[#1f2433] space-y-6 font-sans shadow-xl">
+      <div id="article-reader-root" class="bg-[#0f1118] text-[#e2e8f0] p-6 sm:p-8 rounded-2xl border border-white/[0.08] space-y-6 font-sans shadow-xl">
         {#if !selectedArticle}
-          <div id="article-reader-empty" class="p-12 text-center rounded-xl border border-dashed border-[#1f2433] font-mono text-sm text-[#94a3b8] my-auto">
+          <div id="article-reader-empty" class="p-12 text-center rounded-xl border border-dashed border-white/[0.08] font-mono text-sm text-[#94a3b8] my-auto">
             Выберите эссе из списка для чтения
           </div>
         {:else}
           <!-- Header -->
-          <header id="article-header" class="border-b border-[#1f2433] pb-5 space-y-4">
+          <header id="article-header" class="border-b border-white/[0.08] pb-5 space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-              <span class="px-2.5 py-1 rounded bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/30 uppercase font-bold tracking-wider">{selectedArticle.topic}</span>
+              <span class="px-2.5 py-1 rounded bg-amber-400/10 text-amber-400 border border-[#38bdf8]/30 uppercase font-bold tracking-wider">{selectedArticle.topic}</span>
               <div class="flex items-center gap-3 text-[#94a3b8]">
                 <span>{selectedArticle.readTime}</span>
                 <span>•</span>
@@ -314,8 +314,8 @@
             </div>
 
             <!-- Canon Cross-Links for Concept Navigation -->
-            <div id="article-cross-links" class="pt-3 border-t border-[#1f2433] space-y-2">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-[#38bdf8] block">
+            <div id="article-cross-links" class="pt-3 border-t border-white/[0.08] space-y-2">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 block">
                 Связанные узлы Канона (Cross-Links)
               </span>
               <div class="flex flex-wrap gap-2 text-xs font-mono">
@@ -324,7 +324,7 @@
                   type="button"
                   on:click={() => handleCrossLinkClick('concept-deontic-logic', 'concept', 'Деонтическая логика')}
                   aria-label="Перейти к узлу Деонтическая логика"
-                  class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] focus:outline-none focus:ring-2 focus:ring-[#38bdf8] transition-colors cursor-pointer flex items-center gap-1"
+                  class="px-2.5 py-1 rounded bg-[#0d1118] text-amber-400 border border-white/[0.08] hover:border-amber-400/50 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors cursor-pointer flex items-center gap-1"
                 >
                   <span class="font-mono text-xs">→</span>
                   <span>Деонтическая логика</span>
@@ -334,7 +334,7 @@
                   type="button"
                   on:click={() => handleCrossLinkClick('concept-theory-of-constraints', 'concept', 'Теория ограничений')}
                   aria-label="Перейти к узлу Теория ограничений"
-                  class="px-2.5 py-1 rounded bg-[#12151e] text-[#34d399] border border-[#1f2433] hover:border-[#34d399] focus:outline-none focus:ring-2 focus:ring-[#34d399] transition-colors cursor-pointer flex items-center gap-1"
+                  class="px-2.5 py-1 rounded bg-[#0d1118] text-[#34d399] border border-white/[0.08] hover:border-[#34d399] focus:outline-none focus:ring-2 focus:ring-[#34d399] transition-colors cursor-pointer flex items-center gap-1"
                 >
                   <span class="font-mono text-xs">→</span>
                   <span>Теория ограничений (TOC)</span>
@@ -344,7 +344,7 @@
                   type="button"
                   on:click={() => handleCrossLinkClick('podcast-ep-01', 'podcast', 'Выпуск 01: Системы и реальность')}
                   aria-label="Перейти к подкасту Выпуск 01"
-                  class="px-2.5 py-1 rounded bg-[#12151e] text-[#a7f3d0] border border-[#1f2433] hover:border-[#a7f3d0] focus:outline-none focus:ring-2 focus:ring-[#a7f3d0] transition-colors cursor-pointer flex items-center gap-1"
+                  class="px-2.5 py-1 rounded bg-[#0d1118] text-[#a7f3d0] border border-white/[0.08] hover:border-[#a7f3d0] focus:outline-none focus:ring-2 focus:ring-[#a7f3d0] transition-colors cursor-pointer flex items-center gap-1"
                 >
                   <span class="font-mono text-xs">PODCAST</span>
                   <span>Выпуск 01</span>
@@ -366,21 +366,21 @@
           </div>
 
           <!-- Telemetry Event Log -->
-          <footer id="article-telemetry-log" class="mt-6 pt-4 border-t border-[#1f2433]">
+          <footer id="article-telemetry-log" class="mt-6 pt-4 border-t border-white/[0.08]">
             <div class="text-xs font-mono text-[#94a3b8] mb-2 flex items-center justify-between">
               <span>События телеметрии</span>
               <span class="text-[#34d399]">ZERO_COOKIE_ACTIVE</span>
             </div>
-            <div class="bg-[#12151e] p-3 rounded border border-[#1f2433] font-mono text-xs max-h-28 overflow-y-auto space-y-1 text-[#a7f3d0]">
+            <div class="bg-[#0d1118] p-3 rounded border border-white/[0.08] font-mono text-xs max-h-28 overflow-y-auto space-y-1 text-[#a7f3d0]">
               {#if loggedEvents.length === 0}
                 <span class="text-[#64748b]">Прокрутите статью для регистрации событий чтения...</span>
               {:else}
                 {#each loggedEvents as evt}
-                  <div class="flex justify-between border-b border-[#1f2433] pb-1">
+                  <div class="flex justify-between border-b border-white/[0.08] pb-1">
                     {#if evt.type === 'essay_view'}
                       <span>[VIEW] {evt.payload.articleId}</span>
                     {:else if evt.type === 'cross_link_click'}
-                      <span class="text-[#38bdf8]">[CROSS_LINK] {evt.payload.source_node_id} → {evt.payload.target_node_id}</span>
+                      <span class="text-amber-400">[CROSS_LINK] {evt.payload.source_node_id} → {evt.payload.target_node_id}</span>
                     {:else}
                       <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
                     {/if}
