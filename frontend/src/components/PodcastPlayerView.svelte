@@ -220,7 +220,7 @@
               on:click={() => handleSelectEpisode(ep.id)}
             >
               <div class="flex justify-between items-center text-xs font-mono mb-2">
-                <span class="px-2 py-0.5 rounded bg-[#1f2433] text-[#34d399] font-mono text-[11px]">Выпуск {String(ep.id).padStart(2, '0')}</span>
+                
                 <span class="text-[#64748b]">{formatTime(ep.durationSeconds)}</span>
               </div>
               <h3 class="font-bold text-white text-sm mb-1.5 hover:text-[#34d399] transition-colors leading-snug">
@@ -247,7 +247,7 @@
               <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div class="flex-1 space-y-1">
                   <div class="flex items-center justify-between gap-2 mb-1">
-                    <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono font-medium">Выпуск {String(currentEpisode.id).padStart(2, '0')}</span>
+                    
                     <span class="text-xs font-mono text-[#94a3b8]">{currentEpisode.publishedAt}</span>
                   </div>
                   <h1 id="podcast-title" class="text-lg sm:text-xl font-bold tracking-tight text-white leading-tight">{currentEpisode.title}</h1>

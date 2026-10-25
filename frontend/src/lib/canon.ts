@@ -85,10 +85,10 @@ export const CANON_ROUTES: CanonRoute[] = [
         articles: [{ title: "Деонтическая логика в автономии", slug: "deontic-logic", url: "/api/v1/articles/deontic-logic" }],
         essays: [{ title: "Онтология автономии", slug: "ontology-autonomy", url: "/api/v1/essays/ontology-autonomy" }],
         podcasts: [
-          { title: "Выпуск 01: Имя не равно описанию", slug: "01-ruth-barcan-marcus", url: "/api/v1/podcasts/01-ruth-barcan-marcus" },
-          { title: "Выпуск 02: Почему логичная ложь побеждает факты?", slug: "02-paul-thagard", url: "/api/v1/podcasts/02-paul-thagard" },
-          { title: "Выпуск 03: Почему мы копируем других?", slug: "03-susan-hurley", url: "/api/v1/podcasts/03-susan-hurley" },
-          { title: "Выпуск 04: Знать — не значит уметь", slug: "04-gilbert-ryle", url: "/api/v1/podcasts/04-gilbert-ryle" }
+          { title: "Имя не равно описанию", slug: "01-ruth-barcan-marcus", url: "/api/v1/podcasts/01-ruth-barcan-marcus" },
+          { title: "Почему логичная ложь побеждает факты?", slug: "02-paul-thagard", url: "/api/v1/podcasts/02-paul-thagard" },
+          { title: "Почему мы копируем других?", slug: "03-susan-hurley", url: "/api/v1/podcasts/03-susan-hurley" },
+          { title: "Знать — не значит уметь", slug: "04-gilbert-ryle", url: "/api/v1/podcasts/04-gilbert-ryle" }
         ]
       },
       null,

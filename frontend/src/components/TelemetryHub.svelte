@@ -209,7 +209,7 @@
             class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'article')}
           >
-            <span>Эссе и мысли</span>
+            <span>Эссе и статьи</span>
           </button>
           <button
             id="tab-btn-sparks"
@@ -233,7 +233,7 @@
             class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'canon')}
           >
-            <span>Канон & API</span>
+            <span>База знаний & API</span>
           </button>
         </nav>
       </header>
@@ -275,7 +275,8 @@
             on:click={toggleCmpModal}
             class="underline hover:text-current transition-colors cursor-pointer"
           >
-            Приватность (CMP)
+            <span class="sr-only">Приватность (CMP)</span>
+            <span>Конфиденциальность</span>
           </button>
           <button
             id="imprint-toggle-btn"
@@ -283,7 +284,7 @@
             on:click={toggleImprint}
             class="underline hover:text-current transition-colors cursor-pointer"
           >
-            Реквизиты / Imprint
+            Реквизиты
           </button>
         </div>
       </footer>

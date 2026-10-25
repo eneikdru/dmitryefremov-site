@@ -234,7 +234,7 @@
             bind:value={narrative}
             on:input={handleInput}
             rows="5"
-            placeholder="Опишите вашу задачу, мысль, архитектурную проблему или вопрос к Дмитрию..."
+            placeholder="Опишите ваш проект, архитектурную задачу или вопрос для обсуждения..."
             class="w-full bg-[#12151e] border border-[#1f2433] focus:border-[#38bdf8] rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-[#64748b] font-mono focus:outline-none transition-colors resize-y leading-relaxed"
           ></textarea>
         </div>
