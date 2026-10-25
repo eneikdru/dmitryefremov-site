@@ -204,7 +204,6 @@
               aria-label="Поиск по Канону (Cmd+K)"
               class="px-4 py-2 rounded-xl text-sm font-semibold border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#d4af37] shadow-sm {theme === 'dark' ? 'bg-[#161c28] text-[#f1f5f9] border-[#2d3748] hover:border-[#d4af37]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#181c26]'}"
             >
-              <span class="text-base text-[#d4af37]" aria-hidden="true">🔍</span>
               <span class="font-bold tracking-wide">ПОИСК</span>
               <span class="sr-only">Cmd+K</span>
             </button>

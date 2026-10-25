@@ -115,7 +115,7 @@
       </div>
     </div>
     <div class="flex items-center gap-1 text-[#86948a]">
-      <span class="text-[#4edea3]">📡</span>
+      <span class="font-mono text-xs text-[#4edea3]">[SYS]</span>
       <span>3 Pings Active</span>
     </div>
   </section>
@@ -193,7 +193,7 @@
           <span class="font-mono text-xs text-[#bbcabf] ml-2">Device Viewport: Mobile App Flow</span>
         </div>
         <span class="px-2 py-0.5 bg-[#060e20] rounded text-[#4edea3] border border-[#4edea3]/30 font-mono text-[10px] flex items-center gap-1">
-          👁️ Telemetry Overlay Active
+          Telemetry Overlay Active
         </span>
       </div>
 
@@ -301,7 +301,7 @@
       <div class="p-4 border-b bg-[#171f33] border-[#3c4a42] space-y-2">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-2">
-            <span class="text-[#4edea3]">⚡</span>
+            <span class="font-mono text-xs text-[#4edea3]">[LIVE]</span>
             <h3 class="text-sm font-semibold text-[#dae2fd]">Live Event Log Inspector</h3>
             {#if isStreaming}
               <span class="px-2 py-0.5 rounded-full bg-[#4edea3]/20 border border-[#4edea3]/50 text-[#4edea3] font-mono text-[10px] shadow-[0_0_8px_#4edea3] uppercase tracking-wider animate-pulse">
@@ -439,19 +439,19 @@
     class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-1.5 h-16 border-t transition-colors {theme === 'dark' ? 'bg-[#060e20] border-[#3c4a42]' : 'bg-white border-[#cbd5e1]'}"
   >
     <button type="button" class="flex flex-col items-center justify-center text-[#bbcabf] px-3 py-1 hover:text-[#dae2fd]">
-      <span class="font-mono text-xs">📐</span>
+      <span class="font-mono text-xs">[GQM]</span>
       <span class="font-mono text-[10px] mt-0.5">Flows</span>
     </button>
     <button type="button" class="flex flex-col items-center justify-center text-[#bbcabf] px-3 py-1 hover:text-[#dae2fd]">
-      <span class="font-mono text-xs">📡</span>
+      <span class="font-mono text-xs">[NET]</span>
       <span class="font-mono text-[10px] mt-0.5">Stream</span>
     </button>
     <button type="button" class="flex flex-col items-center justify-center bg-[#222a3d] text-[#4edea3] rounded-xl px-3 py-1 border border-[#3c4a42]">
-      <span class="font-mono text-xs">⚡</span>
+      <span class="font-mono text-xs">[EVT]</span>
       <span class="font-mono text-[10px] font-semibold mt-0.5">Events</span>
     </button>
     <button type="button" class="flex flex-col items-center justify-center text-[#bbcabf] px-3 py-1 hover:text-[#dae2fd]">
-      <span class="font-mono text-xs">📊</span>
+      <span class="font-mono text-xs">[DAT]</span>
       <span class="font-mono text-[10px] mt-0.5">Metrics</span>
     </button>
   </nav>

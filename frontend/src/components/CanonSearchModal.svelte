@@ -203,11 +203,11 @@
   let agentThought: string = '';
 
   const QUICK_PROMPTS = [
-    { label: '🎙️ Где послушать про модальную логику?', query: 'где послушать про модальную логику и Рут Маркус' },
-    { label: '🔬 Что почитать про фальсификацию Поппера?', query: 'фальсификация Поппера тесты и фильтр' },
-    { label: '🧠 Воплощенное познание и сенсомоторный цикл', query: 'сенсомоторный цикл Сьюзан Херли рантайм' },
-    { label: '🏗️ Архитектура против слепой генерации', query: 'архитектурное knowing how против слепой генерации кода' },
-    { label: '⚡ A2A протоколы и llms.txt', query: 'a2a экономика llms.txt машиночитаемый контекст' }
+    { label: 'Где послушать про модальную логику?', query: 'где послушать про модальную логику и Рут Маркус' },
+    { label: 'Что почитать про фальсификацию Поппера?', query: 'фальсификация Поппера тесты и фильтр' },
+    { label: 'Воплощенное познание и сенсомоторный цикл', query: 'сенсомоторный цикл Сьюзан Херли рантайм' },
+    { label: 'Архитектура против слепой генерации', query: 'архитектурное knowing how против слепой генерации кода' },
+    { label: 'A2A протоколы и llms.txt', query: 'a2a экономика llms.txt машиночитаемый контекст' }
   ];
 
   function stemWord(word: string): string {
@@ -455,7 +455,7 @@
 
       <!-- Search Input Bar -->
       <div class="p-4 border-b flex items-center gap-3 {theme === 'dark' ? 'border-[#1f2433] bg-[#07090e]' : 'border-[#e2e8f0] bg-white'}">
-        <span class="text-xl text-[#38bdf8]">✦</span>
+        <span class="font-mono text-sm text-[#38bdf8]">&gt;</span>
         <label for="canon-search-input" class="sr-only">Контекстный поиск по материалам</label>
         <input
           id="canon-search-input"
@@ -495,7 +495,7 @@
 
       <!-- Agent Recommendation & Synthesis Banner -->
       <div class="px-5 py-3 border-b text-xs font-sans leading-relaxed flex items-start gap-3 {theme === 'dark' ? 'bg-[#0e131f] border-[#1f2433] text-[#cbd5e1]' : 'bg-[#f0f9ff] border-[#bae6fd] text-[#0369a1]'}">
-        <span class="text-base shrink-0">💡</span>
+        
         <div class="flex-1">
           <span class="font-bold block text-[11px] font-mono uppercase tracking-wider text-[#38bdf8]">
             {t($currentLanguage).search_synthesis_label}
@@ -508,7 +508,7 @@
       <div id="canon-search-results" class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar" role="listbox" aria-label="Результаты поиска">
         {#if filteredResults.length === 0}
           <div class="p-10 text-center space-y-2">
-            <div class="text-2xl text-[#64748b]">🔍</div>
+            <div class="font-mono text-xs uppercase tracking-widest text-[#64748b]">[ ПОИСК ПО БАЗЕ ]</div>
             <p class="text-xs font-mono text-[#94a3b8]">
               {t($currentLanguage).search_empty_title}
             </p>
@@ -551,7 +551,7 @@
 
               {#if node.contextReason}
                 <div class="pt-1.5 mt-1 border-t {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'} flex items-center gap-1.5 text-[11px] font-mono text-[#38bdf8]">
-                  <span>🎯</span>
+                  <span class="font-mono text-[10px] text-[#38bdf8]">•</span>
                   <span class="truncate">{t($currentLanguage).search_relevance}: {node.contextReason}</span>
                 </div>
               {/if}

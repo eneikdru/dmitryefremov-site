@@ -326,7 +326,7 @@
                   aria-label="Перейти к узлу Деонтическая логика"
                   class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] focus:outline-none focus:ring-2 focus:ring-[#38bdf8] transition-colors cursor-pointer flex items-center gap-1"
                 >
-                  <span>🔗</span>
+                  <span class="font-mono text-xs">→</span>
                   <span>Деонтическая логика</span>
                 </button>
                 <button
@@ -336,7 +336,7 @@
                   aria-label="Перейти к узлу Теория ограничений"
                   class="px-2.5 py-1 rounded bg-[#12151e] text-[#34d399] border border-[#1f2433] hover:border-[#34d399] focus:outline-none focus:ring-2 focus:ring-[#34d399] transition-colors cursor-pointer flex items-center gap-1"
                 >
-                  <span>🔗</span>
+                  <span class="font-mono text-xs">→</span>
                   <span>Теория ограничений (TOC)</span>
                 </button>
                 <button
@@ -346,7 +346,7 @@
                   aria-label="Перейти к подкасту Выпуск 01"
                   class="px-2.5 py-1 rounded bg-[#12151e] text-[#a7f3d0] border border-[#1f2433] hover:border-[#a7f3d0] focus:outline-none focus:ring-2 focus:ring-[#a7f3d0] transition-colors cursor-pointer flex items-center gap-1"
                 >
-                  <span>🎙️</span>
+                  <span class="font-mono text-xs">PODCAST</span>
                   <span>Выпуск 01</span>
                 </button>
               </div>

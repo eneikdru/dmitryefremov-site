@@ -192,7 +192,7 @@
   <section id="canon-graph-section" class="bg-[#1c2028] border border-[#3a494b]/40 rounded-xl p-5 space-y-4 shadow-xl">
     <div class="flex items-center justify-between border-b border-[#3a494b]/20 pb-3">
       <div class="flex items-center gap-2">
-        <span class="text-lg text-[#00f2fe]">🌐</span>
+        
         <div>
           <h2 id="canon-graph-title" class="text-base font-semibold text-[#dfe2ee]">
             Единый граф понятий Канона (Canon Cross-Links)
@@ -226,7 +226,7 @@
             aria-label="Перейти к подкасту Выпуск 01"
             class="px-2 py-1 rounded bg-[#262a33] text-[#67f4b7] hover:border-[#67f4b7] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
           >
-            🎙️ Выпуск 01 →
+            Выпуск 01 →
           </button>
           <button
             id="crosslink-to-essay-1"
@@ -235,7 +235,7 @@
             aria-label="Перейти к Эссе по логике"
             class="px-2 py-1 rounded bg-[#262a33] text-[#00f2fe] hover:border-[#00f2fe] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
           >
-            📖 Эссе →
+            Эссе →
           </button>
         </div>
       </div>
@@ -257,7 +257,7 @@
             aria-label="Перейти к подкасту Выпуск 02"
             class="px-2 py-1 rounded bg-[#262a33] text-[#67f4b7] hover:border-[#67f4b7] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
           >
-            🎙️ Выпуск 02 →
+            Выпуск 02 →
           </button>
           <button
             id="crosslink-to-spark-1"
@@ -266,7 +266,7 @@
             aria-label="Перейти к Заметке в Telegram"
             class="px-2 py-1 rounded bg-[#262a33] text-[#c3c0ff] hover:border-[#c3c0ff] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
           >
-            ⚡ Spark →
+            Spark →
           </button>
         </div>
       </div>
@@ -288,7 +288,7 @@
             aria-label="Перейти к llms.txt"
             class="px-2 py-1 rounded bg-[#262a33] text-[#00f2fe] hover:border-[#00f2fe] focus:outline-none focus:ring-2 focus:ring-[#00f2fe] border border-[#3a494b]/40 cursor-pointer text-[10px]"
           >
-            📄 llms.txt →
+            llms.txt →
           </button>
         </div>
       </div>
