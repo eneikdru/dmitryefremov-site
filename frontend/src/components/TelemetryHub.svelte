@@ -321,23 +321,7 @@
                   {$currentLanguage === 'ru' ? 'Прямая связь & Заявки' : ($currentLanguage === 'ka' ? 'პირდაპირი კავშირი და განაცხადები' : 'Direct Contact & Inquiries')}
                 </button>
               </div>
-
-              <!-- Stitch Telemetry Indicators & Metrics -->
-              <div class="pt-5 border-t border-[#1e2633]/60 grid grid-cols-3 gap-4 text-center lg:text-left">
-                <div class="space-y-0.5">
-                  <div class="font-mono text-sm sm:text-base text-amber-400 font-semibold">{podcastCount > 0 ? `${podcastCount}+ Выпусков` : '24+ Выпуска'}</div>
-                  <div class="font-mono text-[10px] sm:text-xs text-[#94a3b8] uppercase tracking-wider">Глубинные беседы</div>
-                </div>
-                <div class="space-y-0.5">
-                  <div class="font-mono text-sm sm:text-base text-amber-400 font-semibold">180K+</div>
-                  <div class="font-mono text-[10px] sm:text-xs text-[#94a3b8] uppercase tracking-wider">Слушателей</div>
-                </div>
-                <div class="space-y-0.5">
-                  <div class="font-mono text-sm sm:text-base text-amber-400 font-semibold">Zero Downtime</div>
-                  <div class="font-mono text-[10px] sm:text-xs text-[#94a3b8] uppercase tracking-wider">Стандарт</div>
-                </div>
-              </div>
-            </div>
+</div>
           </div>
         </section>
 
