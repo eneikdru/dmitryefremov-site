@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
+
+  let isStreaming = true;
   import { telemetry, type TelemetryEvent } from '../lib/telemetry';
 
   export let theme: 'dark' | 'light' = 'dark';
@@ -14,7 +16,9 @@
   onMount(() => {
     liveEvents = telemetry.getEvents();
     unsubscribeTelemetry = telemetry.subscribe((evt) => {
-      liveEvents = [evt, ...liveEvents];
+      if (isStreaming) {
+        liveEvents = [evt, ...liveEvents];
+      }
     });
   });
 
@@ -299,6 +303,15 @@
           <div class="flex items-center gap-2">
             <span class="text-[#4edea3]">⚡</span>
             <h3 class="text-sm font-semibold text-[#dae2fd]">Live Event Log Inspector</h3>
+            {#if isStreaming}
+              <span class="px-2 py-0.5 rounded-full bg-[#4edea3]/20 border border-[#4edea3]/50 text-[#4edea3] font-mono text-[10px] shadow-[0_0_8px_#4edea3] uppercase tracking-wider animate-pulse">
+                Live Stream Active
+              </span>
+            {:else}
+              <span class="px-2 py-0.5 rounded-full bg-[#222a3d] border border-[#3c4a42] text-[#86948a] font-mono text-[10px] uppercase tracking-wider">
+                Stream Paused
+              </span>
+            {/if}
             <span class="px-2 py-0.5 rounded-full bg-[#222a3d] border border-[#3c4a42] text-[#bbcabf] font-mono text-[10px]">
               {filteredEvents.length} Events captured
             </span>
@@ -310,6 +323,19 @@
               class="px-2.5 py-1 bg-[#4edea3] text-[#003824] font-mono text-xs font-bold rounded flex items-center gap-1 active:scale-95 transition-transform"
             >
               ▶ Trigger Test Event
+            </button>
+            <button
+              id="pauseToggleBtn"
+              type="button"
+              on:click={() => isStreaming = !isStreaming}
+              title={isStreaming ? "Pause Stream" : "Resume Stream"}
+              class="w-7 h-7 rounded border border-[#3c4a42] flex items-center justify-center text-[#bbcabf] hover:text-[#dae2fd] hover:bg-[#222a3d] transition-colors active:scale-95"
+            >
+              {#if isStreaming}
+                <span class="material-symbols-outlined text-sm" id="streamStateIcon">pause_circle</span>
+              {:else}
+                <span class="material-symbols-outlined text-sm" id="streamStateIcon">play_circle</span>
+              {/if}
             </button>
           </div>
         </div>
