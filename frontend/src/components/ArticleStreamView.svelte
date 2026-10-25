@@ -38,7 +38,7 @@
   let currentPercentage = 0;
   let loggedEvents: TelemetryEvent[] = [];
 
-  $: selectedArticle = articles.find(a => a.id === selectedArticleId) || articles[0] || null;
+  $: selectedArticle = articles.find(a => a.id === selectedArticleId || a.slug === selectedArticleId) || articles[0] || null;
     function stripLeadingH1(markdown: string): string {
     if (!markdown) return '';
     return markdown.replace(/^\s*#\s+[^\n]+(?:\r?\n|$)/, '');

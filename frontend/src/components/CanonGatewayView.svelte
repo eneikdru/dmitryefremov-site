@@ -41,7 +41,7 @@
     { agent: 'AutoGPT_Runner', route: 'POST /api/v1/agent/orders', status: '201 Created', latency: '42ms' }
   ];
 
-  let activeGraphNode: string = 'concept-deontic-logic';
+  export let activeGraphNode: string = 'concept-deontic-logic';
 
   function handleGraphCrossLink(sourceId: string, targetId: string, targetType: string, label: string) {
     activeGraphNode = targetId;

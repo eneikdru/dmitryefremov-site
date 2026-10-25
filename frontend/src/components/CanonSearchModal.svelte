@@ -16,7 +16,7 @@
     keywords: string[];
     authorOrSource?: string;
     targetTab?: 'podcast' | 'article' | 'sparks' | 'canon';
-    targetId?: string;
+    targetId?: string | number;
   }
 
   // Baseline 8 Canon Nodes (preserves exact test contract and initial count=8)
@@ -79,7 +79,7 @@
       keywords: ['подкаст', 'слушать', 'выпуск 01', 'рут маркус', 'баркан', 'модальная логика', 'дрейф', 'эпизод 1', 'аудио'],
       authorOrSource: 'Рут Баркан Маркус (1946) & Дмитрий Ефремов',
       targetTab: 'podcast',
-      targetId: 'ep-01'
+      targetId: 1
     },
     {
       id: 'podcast-ep-02',
@@ -91,7 +91,7 @@
       keywords: ['подкаст', 'слушать', 'выпуск 02', 'тагард', 'согласованность', 'граф понятий', 'когнитивные структуры', 'эпизод 2', 'аудио'],
       authorOrSource: 'Пол Тагард (1989) & Дмитрий Ефремов',
       targetTab: 'podcast',
-      targetId: 'ep-02'
+      targetId: 2
     },
     {
       id: 'essay-a2a-architecture',
@@ -103,7 +103,7 @@
       keywords: ['эссе', 'статья', 'читать', 'a2a', 'интерфейсы', 'автономия', 'агенты'],
       authorOrSource: 'Дмитрий Ефремов',
       targetTab: 'article',
-      targetId: 'essay-rigid-identity'
+      targetId: '01-ruth-barcan-marcus'
     },
     {
       id: 'spark-telegram-mvp',
@@ -132,7 +132,19 @@
       keywords: ['подкаст', 'слушать', 'выпуск 03', 'херли', 'воплощенное действие', 'сенсомоторный цикл', 'обратная связь', 'эпизод 3', 'аудио'],
       authorOrSource: 'Сьюзан Херли (1998) & Дмитрий Ефремов',
       targetTab: 'podcast',
-      targetId: 'ep-03'
+      targetId: 3
+    },
+    {
+      id: 'podcast-ep-04',
+      title: 'Выпуск 04: Знать — не значит уметь (Гилберт Райл)',
+      type: 'podcast',
+      category: 'Подкаст · Гилберт Райл',
+      description: 'Отказ от мифа о «призраке в машине». Знание как практический навык (knowing-how) первично по отношению к знанию формулировок.',
+      contextReason: 'Рекомендуется послушать для понимания, почему регламенты не спасают бизнес при кризисе, а интеллект проявляется в действии.',
+      keywords: ['подкаст', 'слушать', 'выпуск 04', 'райл', 'knowing how', 'знание как', 'призрак в машине', 'эпизод 4', 'аудио'],
+      authorOrSource: 'Гилберт Райл (1949) & Дмитрий Ефремов',
+      targetTab: 'podcast',
+      targetId: 4
     },
     {
       id: 'essay-rigid-identity',
@@ -144,7 +156,7 @@
       keywords: ['эссе', 'статья', 'читать', 'десигнаторы', 'крипке', 'идентичность', 'uuid', 'инвариант', 'rigid identity'],
       authorOrSource: 'Сол Крипке (1971) & Дмитрий Ефремов',
       targetTab: 'article',
-      targetId: 'essay-rigid-identity'
+      targetId: '01-ruth-barcan-marcus'
     },
     {
       id: 'essay-falsification-gate',
@@ -156,7 +168,7 @@
       keywords: ['эссе', 'статья', 'читать', 'поппер', 'фальсификация', 'фильтр', 'тесты', 'верификация', 'критерий поппера'],
       authorOrSource: 'Карл Поппер (1934) & Дмитрий Ефремов',
       targetTab: 'article',
-      targetId: 'essay-falsification-gate'
+      targetId: '02-paul-thagard'
     },
     {
       id: 'essay-sensorimotor-loop',
@@ -168,7 +180,7 @@
       keywords: ['эссе', 'статья', 'читать', 'сенсомоторный', 'воплощенное знание', 'херли', 'цикл', 'рантайм', 'тестирование'],
       authorOrSource: 'Сьюзан Херли (1998) & Дмитрий Ефремов',
       targetTab: 'article',
-      targetId: 'essay-sensorimotor-loop'
+      targetId: '03-susan-hurley'
     },
     {
       id: 'essay-knowing-how',
@@ -180,7 +192,7 @@
       keywords: ['эссе', 'статья', 'читать', 'knowing how', 'знание как', 'райл', 'слепая генерация', 'архитектура', 'инженерия', 'вайб'],
       authorOrSource: 'Гилберт Райл (1949) & Дмитрий Ефремов',
       targetTab: 'article',
-      targetId: 'essay-knowing-how'
+      targetId: '04-gilbert-ryle'
     }
   ];
 
@@ -377,9 +389,12 @@
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (selectedIndex > 0) selectedIndex--;
-    } else if (e.key === 'Enter' && filteredResults[selectedIndex]) {
+    } else if (e.key === 'Enter') {
       e.preventDefault();
-      selectNode(filteredResults[selectedIndex]);
+      const target = filteredResults[selectedIndex] || filteredResults[0];
+      if (target) {
+        selectNode(target);
+      }
     }
   }
 

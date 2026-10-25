@@ -24,6 +24,39 @@
   let currentPath: string = typeof window !== 'undefined' ? window.location.pathname : '/';
   let podcastCount: number = 0;
 
+  let selectedArticleId: string = '01-ruth-barcan-marcus';
+  let selectedEpisodeId: number | string = 1;
+  let activeGraphNode: string = 'concept-deontic-logic';
+
+  function handleSelectSearchNode(node: SearchNode) {
+    if (node.type === 'concept') {
+      activeTab = 'canon';
+      activeGraphNode = (node.targetId as string) || node.id;
+    } else if (node.type === 'podcast') {
+      activeTab = 'podcast';
+      selectedEpisodeId = node.targetId !== undefined ? (typeof node.targetId === 'number' ? node.targetId : Number(node.targetId) || node.targetId) : 1;
+    } else if (node.type === 'essay') {
+      activeTab = 'article';
+      selectedArticleId = (node.targetId as string) || '01-ruth-barcan-marcus';
+    } else if (node.type === 'spark') {
+      activeTab = 'sparks';
+    } else if (node.targetTab) {
+      activeTab = node.targetTab;
+      if (node.targetTab === 'article' && node.targetId) selectedArticleId = node.targetId as string;
+      if (node.targetTab === 'podcast' && node.targetId) selectedEpisodeId = typeof node.targetId === 'number' ? node.targetId : Number(node.targetId) || node.targetId;
+      if (node.targetTab === 'canon' && node.targetId) activeGraphNode = node.targetId as string;
+    }
+
+    if (typeof document !== 'undefined') {
+      setTimeout(() => {
+        const el = document.getElementById('content-view') || document.getElementById('nav-tabs');
+        if (el && typeof el.scrollIntoView === 'function') {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 60);
+    }
+  }
+
   function updateRoute() {
     if (typeof window !== 'undefined') {
       currentPath = window.location.pathname;
@@ -111,7 +144,7 @@
           <div class="flex items-center gap-3">
             <span
               id="sys-core-badge"
-              class="px-2.5 py-1 rounded text-xs font-mono font-medium tracking-wide {theme === 'dark' ? 'bg-[#12151e] text-[#38bdf8] border border-[#1f2433]' : 'bg-[#f1f5f9] text-[#0284c7] border border-[#cbd5e1]'}"
+              class="sr-only"
             >
               DMITRY EFREMOV
             </span>
@@ -266,11 +299,11 @@
       <section id="content-view" class="space-y-8">
         {#if activeTab === 'podcast'}
           <div class="space-y-6">
-            <PodcastPlayerView />
+            <PodcastPlayerView bind:selectedEpisodeId />
           </div>
         {:else if activeTab === 'article'}
           <div class="space-y-6">
-            <ArticleStreamView />
+            <ArticleStreamView bind:selectedArticleId />
           </div>
         {:else if activeTab === 'sparks'}
           <div class="space-y-6">
@@ -282,7 +315,7 @@
           </div>
         {:else if activeTab === 'canon'}
           <div class="space-y-6">
-            <CanonGatewayView {theme} />
+            <CanonGatewayView {theme} bind:activeGraphNode />
           </div>
         {/if}
       </section>
@@ -343,12 +376,7 @@
       <CanonSearchModal
         bind:isOpen={isSearchModalOpen}
         {theme}
-        onSelectNode={(node) => {
-          if (node.type === 'concept') activeTab = 'canon';
-          else if (node.type === 'podcast') activeTab = 'podcast';
-          else if (node.type === 'essay') activeTab = 'article';
-          else if (node.type === 'spark') activeTab = 'sparks';
-        }}
+        onSelectNode={handleSelectSearchNode}
       />
     </main>
   </div>

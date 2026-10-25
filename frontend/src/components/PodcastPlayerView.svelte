@@ -41,7 +41,7 @@
     }
   });
 
-  $: currentEpisode = episodes.find(ep => ep.id === selectedEpisodeId) || episodes[0] || null;
+  $: currentEpisode = episodes.find(ep => ep.id === selectedEpisodeId || String(ep.id) === String(selectedEpisodeId) || ep.slug === selectedEpisodeId) || episodes[0] || null;
   $: waveBars = currentEpisode ? generateWaveformHeights(40, currentEpisode.slug) : [];
   $: progressPercent = currentEpisode && currentEpisode.durationSeconds > 0
     ? Math.min(100, Math.max(0, (currentTime / currentEpisode.durationSeconds) * 100))
