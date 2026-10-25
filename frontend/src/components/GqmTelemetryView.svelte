@@ -402,7 +402,7 @@
                   ← Back
                 </button>
                 <button
-                  id="btn-submit-conversion"
+                  id="btn-submit-conversion" on:click={() => { telemetry.trackOutboundClick("/onboarding/checkout", "Start Free Trial", "Primary CTA"); telemetry.trackCanonSubmitConverted("submit", 0, { step: "step_payment_method_selected", action: "cta_checkout_click" }); }}
                   type="submit"
                   class="px-5 py-2 bg-[#4edea3] text-[#003824] font-bold rounded hover:bg-[#6ffbbe] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4edea3]"
                 >
