@@ -1,8 +1,8 @@
 <script lang="ts">
   import CoreSvelteIdentityCard from './CoreSvelteIdentityCard.svelte';
-  import VaultIntakeView from './VaultIntakeView.svelte';
+  import ContactFormView from './ContactFormView.svelte';
 
-  let activeSection: 'card' | 'intake' = 'card';
+  let activeSection = $state<'card' | 'contact'>('card');
 </script>
 
 <div id="contact-terminal-root" class="max-w-3xl mx-auto my-4 font-sans space-y-6">
@@ -12,18 +12,18 @@
       <button
         id="contact-tab-card-btn"
         type="button"
-        on:click={() => activeSection = 'card'}
+        onclick={() => activeSection = 'card'}
         class="px-4 py-2 rounded-md font-semibold transition-all {activeSection === 'card' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
       >
         🌐 DIRECT CHANNELS & MATRIX
       </button>
       <button
-        id="contact-tab-intake-btn"
+        id="contact-tab-contact-btn"
         type="button"
-        on:click={() => activeSection = 'intake'}
-        class="px-4 py-2 rounded-md font-semibold transition-all {activeSection === 'intake' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
+        onclick={() => activeSection = 'contact'}
+        class="px-4 py-2 rounded-md font-semibold transition-all {activeSection === 'contact' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
       >
-        🔒 SECURE INTAKE FORM
+        🔒 SECURE CONTACT FORM
       </button>
     </div>
   </div>
@@ -31,6 +31,6 @@
   {#if activeSection === 'card'}
     <CoreSvelteIdentityCard />
   {:else}
-    <VaultIntakeView />
+    <ContactFormView />
   {/if}
 </div>

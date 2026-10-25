@@ -295,6 +295,12 @@
           <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Все права защищены.</span>
         </div>
         <div class="flex items-center gap-6">
+          <div class="flex items-center gap-4 border-r pr-6 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
+            <a href="https://t.me/efremov_mvp" target="_blank" rel="noopener noreferrer" class="hover:text-current transition-colors">Telegram</a>
+            <a href="https://youtube.com/@dmitrii.efremov" target="_blank" rel="noopener noreferrer" class="hover:text-current transition-colors">YouTube</a>
+            <a href="https://github.com/dmitryefremov" target="_blank" rel="noopener noreferrer" class="hover:text-current transition-colors">GitHub</a>
+            <a href="https://linkedin.com/in/dmitryefremov" target="_blank" rel="noopener noreferrer" class="hover:text-current transition-colors">LinkedIn</a>
+          </div>
           <button
             id="cmp-persistent-link"
             type="button"
