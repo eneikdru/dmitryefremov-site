@@ -1,3 +1,6 @@
+import { PODCAST_TRANSLATIONS } from './podcast_translations';
+import type { Language } from './i18n';
+
 // Canonical Podcast Episodes with verified audio streams
 // Canonical Podcast Episodes Collection
 
@@ -199,4 +202,19 @@ export function generateWaveformHeights(barsCount: number = 40, seed: string = '
     heights.push(height);
   }
   return heights;
+}
+
+export function getLocalizedPodcast(episode: PodcastEpisode, lang: Language): PodcastEpisode {
+  if (lang === 'ru') return episode;
+  const numericId = typeof episode.id === 'number' ? episode.id : parseInt(String(episode.id), 10);
+  const translations = PODCAST_TRANSLATIONS[numericId];
+  if (!translations || !translations[lang]) return episode;
+  const tr = translations[lang];
+  return {
+    ...episode,
+    title: tr.title,
+    thesis: tr.thesis,
+    description: tr.description,
+    timecodes: tr.timecodes || episode.timecodes
+  };
 }

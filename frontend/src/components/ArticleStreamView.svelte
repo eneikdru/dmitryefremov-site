@@ -2,7 +2,8 @@
   import { onMount } from 'svelte';
   import { parseMarkdown } from '../lib/markdown';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
-  import { fetchEssaysFromApi, INITIAL_ESSAYS, type EssayArticleItem } from '../lib/essays';
+  import { fetchEssaysFromApi, INITIAL_ESSAYS, getLocalizedEssay, type EssayArticleItem } from '../lib/essays';
+  import { currentLanguage } from '../lib/i18n';
   import { fetchSparksFromApi } from '../lib/sparks';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import SeoMeta from './SeoMeta.svelte';
@@ -38,7 +39,8 @@
   let currentPercentage = 0;
   let loggedEvents: TelemetryEvent[] = [];
 
-  $: selectedArticle = articles.find(a => a.id === selectedArticleId || a.slug === selectedArticleId) || articles[0] || null;
+  $: localizedArticles = articles.map(a => getLocalizedEssay(a, $currentLanguage));
+  $: selectedArticle = localizedArticles.find(a => a.id === selectedArticleId || a.slug === selectedArticleId) || localizedArticles[0] || null;
     function stripLeadingH1(markdown: string): string {
     if (!markdown) return '';
     return markdown.replace(/^\s*#\s+[^\n]+(?:\r?\n|$)/, '');
@@ -46,11 +48,11 @@
 
   $: parsedContent = selectedArticle ? parseMarkdown(stripLeadingH1(selectedArticle.contentMarkdown)) : { html: '' };
   $: filteredArticles = filterTopic === 'all'
-    ? articles
-    : articles.filter(a => a.topic === filterTopic);
+    ? localizedArticles
+    : localizedArticles.filter(a => a.topic === filterTopic);
 
   function getArticle(id: string): Article | null {
-    return articles.find(a => a.id === id) || articles[0] || null;
+    return localizedArticles.find(a => a.id === id) || localizedArticles[0] || null;
   }
 
   function handleArticleSelect(id: string) {
@@ -179,14 +181,14 @@
         class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'all' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
         on:click={() => (filterTopic = 'all')}
       >
-        Все темы
+        <span>{$currentLanguage === 'ru' ? 'Все темы' : ($currentLanguage === 'ka' ? 'ყველა თემა' : 'All Topics')}</span>
       </button>
       <button
         type="button"
         class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'deontic' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
         on:click={() => (filterTopic = 'deontic')}
       >
-        Деонтическая логика
+        <span>{$currentLanguage === 'ru' ? 'Деонтическая логика' : ($currentLanguage === 'ka' ? 'დეონტური ლოგიკა' : 'Deontic Logic')}</span>
       </button>
       <button
         type="button"
@@ -194,21 +196,21 @@
         on:click={() => (filterTopic = 'toc')}
       >
         <span class="sr-only">Theory of Constraints</span>
-        <span>Теория ограничений (TOC)</span>
+        <span>{$currentLanguage === 'ru' ? 'Теория ограничений (TOC)' : ($currentLanguage === 'ka' ? 'შეზღუდვების თეორია (TOC)' : 'Theory of Constraints (TOC)')}</span>
       </button>
       <button
         type="button"
         class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'autonomous' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
         on:click={() => (filterTopic = 'autonomous')}
       >
-        Автономные системы
+        <span>{$currentLanguage === 'ru' ? 'Автономные системы' : ($currentLanguage === 'ka' ? 'ავტონომიური სისტემები' : 'Autonomous Systems')}</span>
       </button>
       <button
         type="button"
         class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'systems' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
         on:click={() => (filterTopic = 'systems')}
       >
-        Архитектура систем
+        <span>{$currentLanguage === 'ru' ? 'Архитектура систем' : ($currentLanguage === 'ka' ? 'სისტემების არქიტექტურა' : 'Systems Architecture')}</span>
       </button>
     </div>
   </div>
@@ -220,13 +222,15 @@
       <div class="space-y-3">
         <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
           <span class="sr-only">AVAILABLE_LONGREADS ({filteredArticles.length})</span>
-          <span class="font-medium text-white uppercase tracking-wider">Каталог эссе</span>
+          <span class="font-medium text-white uppercase tracking-wider">
+            {$currentLanguage === 'ru' ? 'Каталог эссе' : ($currentLanguage === 'ka' ? 'ესეების კატალოგი' : 'Essay Catalog')}
+          </span>
           <span class="sr-only">SELECT_TO_READ</span>
         </div>
 
         {#if filteredArticles.length === 0}
           <div id="articles-empty-state" class="p-8 text-center rounded-xl border border-dashed border-[#1f2433] bg-[#090a0f] font-mono text-sm text-[#94a3b8]">
-            Эссе и публикации отсутствуют
+            {$currentLanguage === 'ru' ? 'Эссе и публикации отсутствуют' : ($currentLanguage === 'ka' ? 'ესეები და პუბლიკაციები არ არის' : 'No essays or publications available')}
           </div>
         {:else}
           <div class="space-y-3" role="list" aria-label="Available Longreads">
@@ -251,7 +255,9 @@
                 <div class="mt-3 text-[11px] font-mono flex justify-between items-center">
                   <span class="text-[#64748b]">{article.publishedAt}</span>
                   <span class="font-medium {selectedArticleId === article.id ? 'text-[#38bdf8]' : 'text-[#64748b]'}">
-                    {selectedArticleId === article.id ? '● Читаете сейчас' : 'Читать →'}
+                    {selectedArticleId === article.id 
+                      ? ($currentLanguage === 'ru' ? '● Читаете сейчас' : ($currentLanguage === 'ka' ? '● კითხულობთ ახლა' : '● Reading now'))
+                      : ($currentLanguage === 'ru' ? 'Читать →' : ($currentLanguage === 'ka' ? 'წაკითხვა →' : 'Read →'))}
                   </span>
                 </div>
               </button>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { telemetry } from '../lib/telemetry';
+  import { currentLanguage, t } from '../lib/i18n';
 
   export let isOpen: boolean = false;
   export let theme: 'dark' | 'light' = 'dark';
@@ -326,12 +327,12 @@
     if (searchQuery.trim().length > 2) {
       const top = filteredResults[0];
       if (top) {
-        agentThought = `По запросу «${searchQuery.trim()}» подобрано ${filteredResults.length} материалов. Рекомендую начать с «${top.title}» (${top.category}): ${top.contextReason || top.description}`;
+        agentThought = t($currentLanguage).search_agent_results_thought(filteredResults.length, searchQuery.trim(), top.title);
       } else {
-        agentThought = `По запросу «${searchQuery.trim()}» точных прямых связей не обнаружено. Попробуйте сформулировать вопрос через понятия: логика, Поппер, подкаст, эссе или A2A.`;
+        agentThought = t($currentLanguage).search_agent_not_found(searchQuery.trim());
       }
     } else {
-      agentThought = 'Агент-навигатор готов к контекстным запросам. Задайте вопрос в свободной форме или выберите быстрый сценарий ниже:';
+      agentThought = t($currentLanguage).search_agent_default_thought;
     }
   }
 
@@ -434,12 +435,12 @@
         <div class="flex items-center gap-2.5">
           <span class="w-2.5 h-2.5 rounded-full bg-[#38bdf8] animate-pulse"></span>
           <span id="canon-search-title" class="text-xs font-mono font-bold tracking-wide uppercase text-[#38bdf8]">
-            Контекстный Агент-Навигатор Дмитрия Ефремова
+            {t($currentLanguage).search_title}
           </span>
         </div>
         <div class="flex items-center gap-2">
           <kbd class="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono rounded border text-[#64748b] {theme === 'dark' ? 'bg-[#12151e] border-[#1f2433]' : 'bg-[#e2e8f0] border-[#cbd5e1]'}">
-            ESC закрыть
+            {t($currentLanguage).search_esc}
           </kbd>
           <button
             type="button"
@@ -463,7 +464,7 @@
           bind:value={searchQuery}
           on:input={handleSearchInput}
           on:keydown={handleListKeydown}
-          placeholder="Спросите агента своими словами: 'где послушать про модальную логику?' или 'критерий Поппера'..."
+          placeholder={t($currentLanguage).search_placeholder}
           class="w-full bg-transparent border-0 focus:outline-none text-sm sm:text-base font-sans placeholder:text-[#64748b] {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}"
           autocomplete="off"
         />
@@ -473,14 +474,14 @@
             on:click={() => { searchQuery = ''; handleSearchInput(); }}
             class="text-xs text-[#64748b] hover:text-white px-2 py-1"
           >
-            Очистить
+            {t($currentLanguage).search_clear}
           </button>
         {/if}
       </div>
 
       <!-- Quick Suggestion Chips -->
       <div class="px-4 py-2.5 border-b overflow-x-auto flex items-center gap-2 no-scrollbar text-xs font-mono {theme === 'dark' ? 'border-[#1f2433] bg-[#0a0d14]' : 'border-[#e2e8f0] bg-[#f1f5f9]'}">
-        <span class="text-[10px] text-[#64748b] shrink-0 uppercase tracking-wider">Примеры:</span>
+        <span class="text-[10px] text-[#64748b] shrink-0 uppercase tracking-wider">{t($currentLanguage).search_examples_label}</span>
         {#each QUICK_PROMPTS as chip}
           <button
             type="button"
@@ -497,7 +498,7 @@
         <span class="text-base shrink-0">💡</span>
         <div class="flex-1">
           <span class="font-bold block text-[11px] font-mono uppercase tracking-wider text-[#38bdf8]">
-            Синтез Агента
+            {t($currentLanguage).search_synthesis_label}
           </span>
           <p class="mt-0.5">{agentThought}</p>
         </div>
@@ -509,10 +510,10 @@
           <div class="p-10 text-center space-y-2">
             <div class="text-2xl text-[#64748b]">🔍</div>
             <p class="text-xs font-mono text-[#94a3b8]">
-              Агент не нашёл прямых соответствий для «{searchQuery}».
+              {t($currentLanguage).search_empty_title}
             </p>
             <p class="text-[11px] text-[#64748b]">
-              Попробуйте задать вопрос иначе или кликните один из примеров выше.
+              {t($currentLanguage).search_empty_subtitle}
             </p>
           </div>
         {:else}
@@ -536,7 +537,7 @@
                   {/if}
                 </div>
                 <span class="text-[11px] text-[#38bdf8] font-mono group-hover:translate-x-1 transition-transform">
-                  Перейти к материалу ↗
+                  {t($currentLanguage).search_navigate_to}
                 </span>
               </div>
 
@@ -551,7 +552,7 @@
               {#if node.contextReason}
                 <div class="pt-1.5 mt-1 border-t {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'} flex items-center gap-1.5 text-[11px] font-mono text-[#38bdf8]">
                   <span>🎯</span>
-                  <span class="truncate">Релевантность: {node.contextReason}</span>
+                  <span class="truncate">{t($currentLanguage).search_relevance}: {node.contextReason}</span>
                 </div>
               {/if}
             </button>
@@ -561,7 +562,7 @@
 
       <!-- Footer Info -->
       <div class="p-3 border-t text-[11px] font-mono flex items-center justify-between text-[#64748b] {theme === 'dark' ? 'border-[#1f2433] bg-[#07090e]' : 'border-[#e2e8f0] bg-[#f8fafc]'}">
-        <span>Навигация: ↑↓ выбор · Enter переход · ESC закрыть</span>
+        <span>{t($currentLanguage).search_footer}</span>
         <span class="text-[#38bdf8]">Zero-Cookie Semantic Telemetry Active</span>
       </div>
     </div>

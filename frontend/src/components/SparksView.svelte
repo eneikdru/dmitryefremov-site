@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { currentLanguage } from '../lib/i18n';
   import {
     fetchSparksFromApi,
     filterSparks,
@@ -138,10 +139,10 @@
       {#if filteredSparks.length === 0}
         <div id="sparks-empty-state" class="py-16 text-center space-y-2">
           <p class="text-sm font-mono {theme === 'dark' ? 'text-[#d6c4ac]' : 'text-[#64748b]'}">
-            Искры и записи отсутствуют
+            {$currentLanguage === 'ru' ? 'Искры и записи отсутствуют' : ($currentLanguage === 'ka' ? 'ჩანაწერები არ მოიძებნა' : 'No sparks or entries found')}
           </p>
           <p class="text-xs {theme === 'dark' ? 'text-[#9e8e78]' : 'text-[#94a3b8]'}">
-            Попробуйте изменить категорию фильтрации или поисковый запрос
+            {$currentLanguage === 'ru' ? 'Попробуйте изменить категорию фильтрации или поисковый запрос' : ($currentLanguage === 'ka' ? 'სცადეთ შეცვალოთ ფილტრის კატეგორია ან საძიებო მოთხოვნა' : 'Try changing the filter category or search query')}
           </p>
         </div>
       {:else}

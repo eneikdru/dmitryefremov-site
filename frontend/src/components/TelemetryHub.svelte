@@ -13,6 +13,7 @@
   import CanonGatewayView from './CanonGatewayView.svelte';
   import TelemetryHudView from './TelemetryHudView.svelte';
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
+  import { currentLanguage, setLanguage, t } from '../lib/i18n';
 
   export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = 'podcast';
 
@@ -154,6 +155,37 @@
           </div>
 
           <div class="flex items-center gap-3">
+            <!-- Language Selector: RU | EN | KA -->
+            <div id="language-switcher" class="flex items-center rounded-lg border font-mono text-xs overflow-hidden {theme === 'dark' ? 'border-[#1f2433] bg-[#12151e]' : 'border-[#cbd5e1] bg-white'}">
+              <button
+                type="button"
+                id="lang-btn-ru"
+                aria-label="Переключить на русский язык"
+                on:click={() => setLanguage('ru')}
+                class="px-2 py-1 transition-all cursor-pointer {$currentLanguage === 'ru' ? (theme === 'dark' ? 'bg-[#38bdf8] text-[#090a0f] font-bold' : 'bg-[#0284c7] text-white font-bold') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+              >
+                RU
+              </button>
+              <button
+                type="button"
+                id="lang-btn-en"
+                aria-label="Switch to English"
+                on:click={() => setLanguage('en')}
+                class="px-2 py-1 transition-all cursor-pointer {$currentLanguage === 'en' ? (theme === 'dark' ? 'bg-[#38bdf8] text-[#090a0f] font-bold' : 'bg-[#0284c7] text-white font-bold') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                id="lang-btn-ka"
+                aria-label="ქართულ ენაზე გადართვა"
+                on:click={() => setLanguage('ka')}
+                class="px-2 py-1 transition-all cursor-pointer {$currentLanguage === 'ka' ? (theme === 'dark' ? 'bg-[#38bdf8] text-[#090a0f] font-bold' : 'bg-[#0284c7] text-white font-bold') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+              >
+                KA
+              </button>
+            </div>
+
             <!-- Cmd+K Search Trigger -->
             <button
               id="cmd-k-trigger-btn"
@@ -163,7 +195,7 @@
               class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#00f0ff] {theme === 'dark' ? 'bg-[#12151e] text-[#dfe2ef] border-[#1f2433] hover:border-[#00f0ff]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
             >
               <span class="text-[#00f0ff]">🔍</span>
-              <span>ПОИСК</span>
+              <span>{t($currentLanguage).search_btn}</span>
               <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] rounded font-mono border text-[#849495] {theme === 'dark' ? 'bg-[#0a0e17] border-[#3b494b]/40 text-[#00f0ff]' : 'bg-[#e2e8f0] border-[#cbd5e1]'}">Cmd+K</kbd>
             </button>
 
@@ -175,7 +207,7 @@
               aria-label="Toggle theme"
               class="px-2.5 py-1.5 rounded-lg text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#00f0ff] {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
             >
-              <span>{theme === 'dark' ? 'Тёмная' : 'Светлая'}</span>
+              <span>{theme === 'dark' ? t($currentLanguage).theme_dark : t($currentLanguage).theme_light}</span>
             </button>
           </div>
         </div>
@@ -198,22 +230,28 @@
             <div class="space-y-4 flex-1 text-center md:text-left">
               <div class="space-y-1.5">
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-mono">
-                  <span class="px-2 py-0.5 rounded bg-[#38bdf8]/10 text-[#38bdf8] font-medium">Архитектор автономных систем</span>
+                  <span class="px-2 py-0.5 rounded bg-[#38bdf8]/10 text-[#38bdf8] font-medium">
+                    {$currentLanguage === 'ru' ? 'Архитектор автономных систем' : ($currentLanguage === 'ka' ? 'ავტონომიური სისტემების არქიტექტორი' : 'Autonomous Systems Architect')}
+                  </span>
                   <span class="{theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">•</span>
-                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">A2A Экономика</span>
+                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
+                    {$currentLanguage === 'ru' ? 'A2A Экономика' : ($currentLanguage === 'ka' ? 'A2A ეკონომიკა' : 'A2A Economy')}
+                  </span>
                   <span class="{theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">•</span>
-                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">Философия действия</span>
+                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
+                    {$currentLanguage === 'ru' ? 'Философия действия' : ($currentLanguage === 'ka' ? 'მოქმედების ფილოსოფია' : 'Philosophy of Action')}
+                  </span>
                 </div>
                 <h1 id="hero-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
-                  Дмитрий Ефремов
+                  {t($currentLanguage).hero_name}
                 </h1>
                 <p id="hero-subtitle" class="text-base sm:text-lg font-mono font-medium {theme === 'dark' ? 'text-[#38bdf8]' : 'text-[#0284c7]'}">
-                  Системы, логика мышления и автономные процессы
+                  {t($currentLanguage).hero_tagline}
                 </p>
               </div>
 
               <blockquote id="hero-manifest" class="p-4 rounded-xl border-l-4 italic text-sm sm:text-base leading-relaxed {theme === 'dark' ? 'bg-[#141824] border-[#38bdf8] text-[#cbd5e1]' : 'bg-[#f8fafc] border-[#0284c7] text-[#334155]'}">
-                «Ваш код и ваши решения — это то, кто вы есть на самом деле.»
+                {t($currentLanguage).hero_manifest}
               </blockquote>
 
               <!-- Quick Action Links -->
@@ -243,7 +281,7 @@
                   on:click={() => (activeTab = 'contact')}
                   class="px-3.5 py-2 rounded-lg transition-colors border {theme === 'dark' ? 'bg-[#141824] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7]'}"
                 >
-                  Прямая связь & Заявки
+                  {$currentLanguage === 'ru' ? 'Прямая связь & Заявки' : ($currentLanguage === 'ka' ? 'პირდაპირი კავშირი და განაცხადები' : 'Direct Contact & Inquiries')}
                 </button>
               </div>
             </div>
@@ -258,7 +296,7 @@
             class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'podcast')}
           >
-            <span>Подкаст</span>
+            <span>{t($currentLanguage).nav_podcast}</span>
           </button>
           <button
             id="tab-btn-article"
@@ -266,7 +304,7 @@
             class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'article')}
           >
-            <span>Эссе и статьи</span>
+            <span>{t($currentLanguage).nav_article}</span>
           </button>
           <button
             id="tab-btn-sparks"
@@ -274,7 +312,7 @@
             class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'sparks')}
           >
-            <span>Sparks</span>
+            <span>{t($currentLanguage).nav_sparks}</span>
           </button>
           <button
             id="tab-btn-contact"
@@ -282,7 +320,7 @@
             class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'contact')}
           >
-            <span>Контакты</span>
+            <span>{t($currentLanguage).nav_contact}</span>
           </button>
           <button
             id="tab-btn-canon"
@@ -290,7 +328,7 @@
             class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'canon')}
           >
-            <span>База знаний & API</span>
+            <span>{t($currentLanguage).nav_canon}</span>
           </button>
         </nav>
       </header>
@@ -323,7 +361,7 @@
       <!-- Footer -->
       <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-[#1f2433] text-[#94a3b8]' : 'border-[#e2e8f0] text-[#64748b]'}">
         <div>
-          <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Все права защищены.</span>
+          <span>© {new Date().getFullYear()} {t($currentLanguage).footer_rights}</span>
         </div>
         <div class="flex items-center gap-6">
           <button
@@ -333,7 +371,7 @@
             class="underline hover:text-current transition-colors cursor-pointer"
           >
             <span class="sr-only">Приватность (CMP)</span>
-            <span>Конфиденциальность</span>
+            <span>{t($currentLanguage).footer_privacy}</span>
           </button>
           <button
             id="imprint-toggle-btn"
@@ -341,7 +379,7 @@
             on:click={toggleImprint}
             class="underline hover:text-current transition-colors cursor-pointer"
           >
-            Реквизиты
+            {t($currentLanguage).footer_imprint}
           </button>
         </div>
       </footer>
@@ -351,7 +389,7 @@
         <div id="imprint-modal" role="dialog" aria-labelledby="imprint-title" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div class="max-w-md w-full p-6 rounded-2xl border shadow-2xl space-y-4 font-mono text-xs {theme === 'dark' ? 'bg-[#12151e] border-[#1f2433] text-[#e2e8f0]' : 'bg-white border-[#cbd5e1] text-[#0f172a]'}">
             <div class="flex justify-between items-center border-b pb-3 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
-              <h2 id="imprint-title" class="text-sm font-bold">ЮРИДИЧЕСКИЕ РЕКВИЗИТЫ</h2>
+              <h2 id="imprint-title" class="text-sm font-bold">{t($currentLanguage).imprint_title}</h2>
               <button
                 id="imprint-close-btn"
                 type="button"
@@ -362,11 +400,11 @@
               </button>
             </div>
             <div id="imprint-details-content" class="space-y-2 leading-relaxed">
-              <p><strong>Владелец сайта:</strong> Дмитрий Ефремов (Dmitry Efremov)</p>
-              <p><strong>Домен:</strong> dmitryefremov.com</p>
-              <p><strong>Email:</strong> dmitrii.eneik@gmail.com</p>
-              <p><strong>Стандарт конфиденциальности:</strong> Нулевые сторонние трекеры до явного согласия (Zero-Cookie Telemetry).</p>
-              <p><strong>Авторские права:</strong> Все материалы, манифесты и формулировки процессов являются интеллектуальной собственностью автора.</p>
+              <p><strong>{t($currentLanguage).imprint_owner_label}:</strong> {t($currentLanguage).imprint_owner_val}</p>
+              <p><strong>{t($currentLanguage).imprint_domain_label}:</strong> dmitryefremov.com</p>
+              <p><strong>{t($currentLanguage).imprint_email_label}:</strong> dmitrii.eneik@gmail.com</p>
+              <p><strong>{t($currentLanguage).imprint_privacy_label}:</strong> {t($currentLanguage).imprint_privacy_val}</p>
+              <p><strong>{t($currentLanguage).imprint_copyright_label}:</strong> {t($currentLanguage).imprint_copyright_val}</p>
             </div>
           </div>
         </div>

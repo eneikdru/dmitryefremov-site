@@ -1,3 +1,6 @@
+import { ESSAYS_TRANSLATIONS } from './essays_translations';
+import type { Language } from './i18n';
+
 export interface EssayArticleItem {
   id: string;
   slug: string;
@@ -249,4 +252,17 @@ export async function fetchCanonFromApi(customFetch = fetch): Promise<any[]> {
   } catch {
     return [];
   }
+}
+
+export function getLocalizedEssay(essay: EssayArticleItem, lang: Language): EssayArticleItem {
+  if (lang === 'ru') return essay;
+  const translations = ESSAYS_TRANSLATIONS[essay.id] || ESSAYS_TRANSLATIONS[essay.slug];
+  if (!translations || !translations[lang]) return essay;
+  const tr = translations[lang];
+  return {
+    ...essay,
+    title: tr.title,
+    summary: tr.summary,
+    contentMarkdown: tr.contentMarkdown
+  };
 }

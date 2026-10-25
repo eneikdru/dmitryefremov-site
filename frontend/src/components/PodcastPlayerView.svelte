@@ -7,11 +7,13 @@
     return match ? `https://www.youtube-nocookie.com/embed/${match[1]}?rel=0` : null;
   }
   import { telemetry } from '../lib/telemetry';
+  import { currentLanguage } from '../lib/i18n';
   import {
     PODCAST_EPISODES,
     fetchPodcastsFromApi,
     formatTime,
     generateWaveformHeights,
+    getLocalizedPodcast,
     type PodcastEpisode,
     type PodcastTimecode
   } from '../lib/podcast';
@@ -41,7 +43,8 @@
     }
   });
 
-  $: currentEpisode = episodes.find(ep => ep.id === selectedEpisodeId || String(ep.id) === String(selectedEpisodeId) || ep.slug === selectedEpisodeId) || episodes[0] || null;
+  $: localizedEpisodes = episodes.map(ep => getLocalizedPodcast(ep, $currentLanguage));
+  $: currentEpisode = localizedEpisodes.find(ep => ep.id === selectedEpisodeId || String(ep.id) === String(selectedEpisodeId) || ep.slug === selectedEpisodeId) || localizedEpisodes[0] || null;
   $: waveBars = currentEpisode ? generateWaveformHeights(40, currentEpisode.slug) : [];
   $: progressPercent = currentEpisode && currentEpisode.durationSeconds > 0
     ? Math.min(100, Math.max(0, (currentTime / currentEpisode.durationSeconds) * 100))
@@ -159,7 +162,13 @@
   <!-- Header & Domain Indicator -->
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2433] pb-4">
     <div>
-      <h2 class="text-xl font-bold tracking-tight text-white break-words">Подкаст «Системы и реальность»</h2>
+      <h2 class="text-xl font-bold tracking-tight text-white break-words">
+        {$currentLanguage === 'ru' 
+          ? 'Подкаст «Системы и реальность»' 
+          : ($currentLanguage === 'ka' 
+            ? 'პოდკასტი «სისტემები და რეალობა»' 
+            : 'Podcast "Systems and Reality"')}
+      </h2>
     </div>
 
     <!-- External Media Subscription Links -->
@@ -350,7 +359,9 @@
             <!-- Timecodes List Section -->
             {#if currentEpisode.timecodes && currentEpisode.timecodes.length > 0}
               <div id="timecodes-section" class="border-t border-[#1f2433] pt-4 space-y-3">
-                <div class="text-xs font-mono text-[#94a3b8]">ТАЙМКОДЫ И ТЕМЫ</div>
+                <div class="text-xs font-mono text-[#94a3b8]">
+                  {$currentLanguage === 'ru' ? 'ТАЙМКОДЫ И ТЕМЫ' : ($currentLanguage === 'ka' ? 'ტაიმკოდები და თემები' : 'TIMECODES & TOPICS')}
+                </div>
 
                 <ul id="timecodes-list" class="space-y-2" aria-label="Episode Timecodes">
                   {#each currentEpisode.timecodes as tc}
@@ -369,7 +380,9 @@
                           <div class="font-bold text-xs flex items-center justify-between">
                             <span class="truncate">{tc.title}</span>
                             {#if isActive}
-                              <span class="text-[10px] font-mono text-[#38bdf8] shrink-0 font-bold">СЕЙЧАС ИГРАЕТ</span>
+                              <span class="text-[10px] font-mono text-[#38bdf8] shrink-0 font-bold">
+                                {$currentLanguage === 'ru' ? 'СЕЙЧАС ИГРАЕТ' : ($currentLanguage === 'ka' ? 'ახლა უკრავს' : 'NOW PLAYING')}
+                              </span>
                             {/if}
                           </div>
                           {#if tc.description}

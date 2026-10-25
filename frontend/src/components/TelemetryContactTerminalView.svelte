@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { currentLanguage } from '../lib/i18n';
   import CoreSvelteIdentityCard from './CoreSvelteIdentityCard.svelte';
   import VaultIntakeView from './VaultIntakeView.svelte';
 
@@ -15,7 +16,7 @@
         on:click={() => activeSection = 'card'}
         class="px-4 py-2 rounded-md font-medium transition-all {activeSection === 'card' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
       >
-        Прямые контакты
+        {$currentLanguage === 'ru' ? 'Прямые контакты' : ($currentLanguage === 'ka' ? 'პირდაპირი კონტაქტები' : 'Direct Contacts')}
       </button>
       <button
         id="contact-tab-intake-btn"
@@ -23,7 +24,7 @@
         on:click={() => activeSection = 'intake'}
         class="px-4 py-2 rounded-md font-medium transition-all {activeSection === 'intake' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
       >
-        Написать сообщение
+        {$currentLanguage === 'ru' ? 'Написать сообщение' : ($currentLanguage === 'ka' ? 'შეტყობინების გაგზავნა' : 'Send Message')}
       </button>
     </div>
   </div>
