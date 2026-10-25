@@ -12,11 +12,12 @@
   import AdminDashboardView from './AdminDashboardView.svelte';
   import CanonGatewayView from './CanonGatewayView.svelte';
   import TelemetryHudView from './TelemetryHudView.svelte';
+  import TelemetryStreamTrackerView from './TelemetryStreamTrackerView.svelte';
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'stream' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'stream' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -44,6 +45,12 @@
         hash === '#telemetry-hud'
       ) {
         activeTab = 'hud';
+      } else if (
+        currentPath === '/telemetry-stream' ||
+        hash === '#/telemetry-stream' ||
+        hash === '#telemetry-stream'
+      ) {
+        activeTab = 'stream';
       }
     }
   }
@@ -91,6 +98,8 @@
 
 {#if currentPath === '/admin' || (typeof window !== 'undefined' && window.location.hash === '#/admin')}
   <AdminDashboardView {theme} />
+{:else if currentPath === '/telemetry-stream' || (typeof window !== 'undefined' && (window.location.hash === '#/telemetry-stream' || window.location.hash === '#telemetry-stream')) || activeTab === 'stream'}
+  <TelemetryStreamTrackerView />
 {:else if currentPath === '/telemetry-hud' || (typeof window !== 'undefined' && (window.location.hash === '#/telemetry-hud' || window.location.hash === '#telemetry-hud')) || activeTab === 'hud'}
   <TelemetryHudView {theme} />
 {:else}
