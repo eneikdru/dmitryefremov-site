@@ -132,12 +132,6 @@
   <!-- Section Header & Filter Options -->
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2433] pb-4">
     <div>
-      <div class="flex items-center gap-2 mb-1">
-        <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
-          
-        </span>
-        
-      </div>
       <h2 class="text-xl font-bold tracking-tight text-white">Articles & Thought Stream</h2>
     </div>
 
@@ -265,9 +259,7 @@
           <!-- Header -->
           <header id="article-header" class="border-b border-[#1f2433] pb-4 mb-4 space-y-3">
             <div class="flex items-center justify-between gap-2">
-              <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
-                
-              </span>
+              <span class="text-xs font-mono text-[#38bdf8] uppercase">{selectedArticle.topic}</span>
               <span class="text-xs font-mono text-[#94a3b8]">{selectedArticle.id}</span>
             </div>
             <div id="article-cover-container" class="w-full h-32 sm:h-40 rounded-lg overflow-hidden border border-[#38bdf8]/30">

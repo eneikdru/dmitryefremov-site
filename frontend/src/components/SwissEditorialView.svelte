@@ -279,7 +279,7 @@
             on:click={() => setGatingMode('isolate')}
             class="py-1.5 px-2 font-bold flex items-center justify-center gap-1 border transition-none cursor-pointer {gatingMode === 'isolate' ? 'bg-[#00e3fd] text-[#111316] border-[#00e3fd]' : 'bg-[#282a2d] text-[#849581] border-[#3b4b3a] opacity-70'}"
           >
-            <span>🔒</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
             <span>[ 0 | ISOLATE ]</span>
           </button>
           <button
@@ -288,7 +288,7 @@
             on:click={() => setGatingMode('route')}
             class="py-1.5 px-2 font-bold flex items-center justify-center gap-1 border transition-none cursor-pointer {gatingMode === 'route' ? 'bg-[#ffb4ab] text-[#111316] border-[#ffb4ab]' : 'bg-[#282a2d] text-[#849581] border-[#3b4b3a] opacity-60'}"
           >
-            <span>🔀</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
             <span>[ 1 | ROUTE ]</span>
           </button>
         </div>
@@ -393,7 +393,7 @@
       on:click={() => (activeNavTab = 'enclave')}
       class="flex flex-col items-center justify-center px-3 py-1 cursor-pointer {activeNavTab === 'enclave' ? 'bg-[#1e2023] text-[#00ff66] border-t-2 border-[#00ff66]' : 'text-[#849581] opacity-70 hover:bg-[#1a1c1f]'}"
     >
-      <span class="text-xs" aria-hidden="true">🛡️</span>
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
       <span class="text-[9px] font-bold mt-0.5">ENCLAVE</span>
     </button>
     <!-- Tab 2: MEMORY -->
@@ -403,7 +403,7 @@
       on:click={() => (activeNavTab = 'memory')}
       class="flex flex-col items-center justify-center px-3 py-1 cursor-pointer {activeNavTab === 'memory' ? 'bg-[#1e2023] text-[#00ff66] border-t-2 border-[#00ff66]' : 'text-[#849581] opacity-70 hover:bg-[#1a1c1f]'}"
     >
-      <span class="text-xs" aria-hidden="true">💾</span>
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
       <span class="text-[9px] font-bold mt-0.5">MEMORY</span>
     </button>
     <!-- Tab 3: KEYS -->
@@ -413,7 +413,7 @@
       on:click={() => (activeNavTab = 'keys')}
       class="flex flex-col items-center justify-center px-3 py-1 cursor-pointer {activeNavTab === 'keys' ? 'bg-[#1e2023] text-[#00ff66] border-t-2 border-[#00ff66]' : 'text-[#849581] opacity-70 hover:bg-[#1a1c1f]'}"
     >
-      <span class="text-xs" aria-hidden="true">🔑</span>
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
       <span class="text-[9px] font-bold mt-0.5">KEYS</span>
     </button>
     <!-- Tab 4: ATTEST -->

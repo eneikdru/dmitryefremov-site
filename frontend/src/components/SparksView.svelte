@@ -140,7 +140,7 @@
         class="w-8 h-8 rounded-full flex items-center justify-center transition-transform active:scale-95 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#ffb300] {theme === 'dark' ? 'text-[#d6c4ac] hover:bg-[#282a2e] hover:text-[#ffb300]' : 'text-[#475569] hover:bg-[#e2e8f0]'}"
         on:click={() => (isSearchVisible = !isSearchVisible)}
       >
-        <span class="text-base select-none" aria-hidden="true">🔍</span>
+        <svg class="w-4 h-4 select-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
       </button>
     </div>
   </header>
@@ -242,20 +242,14 @@
                 <span class="text-[#9e8e78]">{spark.timestamp}</span>
               </div>
 
-              {#if spark.readTime}
-                <div class="flex items-center space-x-1 text-xs text-[#00d6e3] bg-[#00d6e3]/10 border border-[#00d6e3]/20 px-2 py-0.5 rounded-full">
-                  <span>Read: {spark.readTime}</span>
-                </div>
-              {:else if spark.type === 'framework'}
+              {#if spark.type === 'framework'}
                 <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#1a1c20] text-[#9e8e78] border border-[#514532]/30">FRAMEWORK</span>
               {:else if spark.type === 'quote'}
                 <span class="inline-flex items-center text-[#ffb300] text-xs font-bold">
-                  <span class="mr-1" aria-hidden="true">🧠</span>
                   HIGH RESONANCE
                 </span>
               {:else if spark.type === 'audio' && spark.audioSnippet}
                 <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#00d6e3]/10 border border-[#00d6e3]/30 text-[#00d6e3] text-xs">
-                  
                   {spark.audioSnippet.duration} voice snippet
                 </span>
               {:else if spark.type === 'theorem'}
@@ -314,7 +308,7 @@
                   on:click={() => toggleAudio(spark.id)}
                 >
                   {#if isAudioPlaying[spark.id]}
-                    ⏸
+                    <span class="text-xs">❚❚</span>
                   {:else}
                     ▶
                   {/if}
@@ -341,7 +335,7 @@
               </div>
 
               <p class="text-sm tracking-tight mb-3 {theme === 'dark' ? 'text-[#e2e2e8]' : 'text-[#0f172a]'}">
-                <span class="text-[#00d6e3] font-mono text-xs mr-1">[TRANSCRIPT]</span>
+                <span class="text-[#00d6e3] font-mono text-xs mr-1 font-bold">Транскрипт:</span>
                 {spark.audioSnippet.transcript}
               </p>
             {:else if spark.type === 'theorem' && spark.theoremContrast}
@@ -363,10 +357,6 @@
                 <span class="px-2 py-0.5 rounded border text-[#ffb300] bg-[#ffb300]/10 border-[#ffb300]/20">
                   {spark.tag}
                 </span>
-                <span class="text-[#9e8e78] flex items-center">
-                  
-                  Отклик
-                </span>
               </div>
 
               <div class="flex items-center space-x-2">
@@ -376,7 +366,7 @@
                   class="w-7 h-7 rounded-full flex items-center justify-center border transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#ffb300] {spark.isFired ? 'bg-[#ffb300]/20 border-[#ffb300] text-[#ffb300]' : (theme === 'dark' ? 'bg-white/5 border-white/10 text-[#d6c4ac] hover:text-[#ffb300]' : 'bg-[#f1f5f9] border-[#cbd5e1] text-[#475569] hover:text-[#0284c7]')}"
                   on:click={() => handleFire(spark.id)}
                 >
-                  🔥
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.316.492-.533 1.035-.688 1.587a11.95 11.95 0 00-.51 2.87c-.244-.24-.51-.462-.792-.663a1 1 0 00-1.385.253C6.31 7.644 6 8.784 6 10c0 3.314 2.686 6 6 6s6-2.686 6-6c0-2.433-1.01-4.63-2.63-6.19a8.97 8.97 0 00-2.975-1.257z" clip-rule="evenodd"></path></svg>
                 </button>
                 <button
                   type="button"
@@ -384,7 +374,7 @@
                   class="w-7 h-7 rounded-full flex items-center justify-center border transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#ffb300] {spark.isBookmarked ? 'bg-[#00d6e3]/20 border-[#00d6e3] text-[#00d6e3]' : (theme === 'dark' ? 'bg-white/5 border-white/10 text-[#d6c4ac] hover:text-[#ffb300]' : 'bg-[#f1f5f9] border-[#cbd5e1] text-[#475569] hover:text-[#0284c7]')}"
                   on:click={() => handleBookmark(spark.id)}
                 >
-                  🔖
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
                 </button>
               </div>
             </div>

@@ -168,7 +168,7 @@
 
         <!-- Classification Buttons -->
         <div class="space-y-1.5">
-          <label class="block text-xs font-mono text-[#94a3b8] uppercase tracking-wider">Категория обращения</label>
+          <span class="block text-xs font-mono text-[#94a3b8] uppercase tracking-wider">Категория обращения</span>
           <div class="grid grid-cols-3 gap-2">
             <button
               type="button"

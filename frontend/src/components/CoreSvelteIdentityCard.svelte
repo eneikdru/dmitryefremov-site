@@ -114,7 +114,7 @@
               {/if}
             </button>
             {#if activeFeedbackId === link.id}
-              <span class="text-xs font-mono text-[#38bdf8] font-bold animate-fade-in">[OPENING...]</span>
+              <span class="text-xs font-mono text-[#38bdf8] font-bold animate-fade-in"><span class="sr-only">[OPENING...]</span><span>Переход...</span></span>
             {/if}
           </div>
         </div>
