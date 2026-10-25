@@ -12,7 +12,7 @@ description: >-
 * **Email:** `dmitrii.eneik@gmail.com`
 * **Canonical Domain:** `https://dmitrii.eneik.com`
 * **Telegram Channel:** `https://t.me/efremov_mvp` (`@efremov_mvp`)
-* **YouTube Channel:** `https://youtube.com/@dmitrii.efremov` (`@dmitrii.efremov`)
+* **YouTube Channel:** `https://www.youtube.com/@dmitrii.efremov` (`@dmitrii.efremov`)
 * **LinkedIn Profile:** `https://www.linkedin.com/in/dmitrii-efremov-87b816349/`
 * **GitHub Organization / Repo:** `https://github.com/dmitriieneik-rgb`
 

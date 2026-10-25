@@ -173,10 +173,10 @@
                   <span>↗</span>
                 </a>
                 <a
-                  href="https://youtube.com/@dmitrii.efremov"
+                  href="https://www.youtube.com/@dmitrii.efremov"
                   target="_blank"
                   rel="noopener noreferrer"
-                  on:click={() => handleOutboundClick('https://youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
+                  on:click={() => handleOutboundClick('https://www.youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
                   class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 border {theme === 'dark' ? 'bg-[#141824] text-white border-[#1f2433] hover:border-[#ef4444]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#ef4444]'}"
                 >
                   <span class="text-[#ef4444]">YouTube</span>

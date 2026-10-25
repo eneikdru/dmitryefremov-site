@@ -165,11 +165,11 @@
     <!-- External Media Subscription Links -->
     <div class="flex flex-wrap gap-2 text-xs font-mono">
       <a
-        href={currentEpisode?.youtubeUrl || 'https://youtube.com/@dmitrii.efremov'}
+        href={currentEpisode?.youtubeUrl || 'https://www.youtube.com/@dmitrii.efremov'}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="YouTube Channel"
-        on:click={() => handleOutboundClick(currentEpisode?.youtubeUrl || 'https://youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
+        on:click={() => handleOutboundClick(currentEpisode?.youtubeUrl || 'https://www.youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
         class="px-2.5 py-1 rounded bg-[#12151e] text-[#ef4444] border border-[#1f2433] hover:border-[#ef4444] transition-colors flex items-center gap-1"
       >
         <span>YouTube</span>

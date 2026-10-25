@@ -52,7 +52,7 @@ export async function fetchPodcastsFromApi(customFetch = fetch): Promise<Podcast
         description: ep.description || ep.thesis || '',
         audioUrl: ep.audioUrl || ep.audio_url || '',
         mediaLink: ep.mediaLink || ep.youtubeUrl || '',
-        youtubeUrl: ep.youtubeUrl || ep.mediaLink || 'https://youtube.com/@dmitrii.efremov',
+        youtubeUrl: ep.youtubeUrl || ep.mediaLink || 'https://www.youtube.com/@dmitrii.efremov',
         telegramUrl: ep.telegramUrl || 'https://t.me/efremov_mvp',
         durationSeconds: ep.durationSeconds || 0,
         publishedAt: ep.publishedAt ? String(ep.publishedAt).slice(0, 10) : '',

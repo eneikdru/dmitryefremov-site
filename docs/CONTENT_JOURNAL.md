@@ -5,7 +5,7 @@
 - **Основной канонический домен:** `https://dmitrii.eneik.com`
 - **Email:** `dmitrii.eneik@gmail.com`
 - **Telegram:** `https://t.me/efremov_mvp` (`@efremov_mvp`)
-- **YouTube:** `https://youtube.com/@dmitrii.efremov` (`@dmitrii.efremov`)
+- **YouTube:** `https://www.youtube.com/@dmitrii.efremov` (`@dmitrii.efremov`)
 - **LinkedIn:** `https://www.linkedin.com/in/dmitrii-efremov-87b816349/`
 - **GitHub:** `https://github.com/dmitriieneik-rgb`
 
@@ -25,4 +25,4 @@
 
 * **Обновление контактов (GitHub):** Зафиксирован точный рабочий профиль автора: `https://github.com/dmitriieneik-rgb`.
 
-* **Восстановление контактов (YouTube):** Возвращён канонический рабочий канал автора: `https://youtube.com/@dmitrii.efremov` (`@dmitrii.efremov`).
+* **Восстановление контактов (YouTube):** Возвращён канонический рабочий канал автора: `https://www.youtube.com/@dmitrii.efremov` (`@dmitrii.efremov`).

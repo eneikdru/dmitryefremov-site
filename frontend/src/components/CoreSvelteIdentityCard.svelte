@@ -12,7 +12,7 @@
 
   export let contactLinks: ContactLink[] = [
     { id: 'tg', label: 'Telegram Channel', platform: 'Telegram', url: 'https://t.me/efremov_mvp', tag: '[TG_CORE]', description: 'Main broadcast channel for systems & philosophy' },
-    { id: 'yt', label: 'YouTube Channel', platform: 'YouTube', url: 'https://youtube.com/@dmitrii.efremov', tag: '[YT_MEDIA]', description: 'Video essays & Podcast "Systems & Reality"' },
+    { id: 'yt', label: 'YouTube Channel', platform: 'YouTube', url: 'https://www.youtube.com/@dmitrii.efremov', tag: '[YT_MEDIA]', description: 'Video essays & Podcast "Systems & Reality"' },
     { id: 'gh', label: 'GitHub Repository', platform: 'GitHub', url: 'https://github.com/dmitriieneik-rgb', tag: '[GH_SRC]', description: 'Open-source software, architectures & tools' },
     { id: 'li', label: 'LinkedIn Profile', platform: 'LinkedIn', url: 'https://www.linkedin.com/in/dmitrii-efremov-87b816349/', tag: '[LI_PROF]', description: 'Professional network & technology leadership' },
     { id: 'em', label: 'Direct Email', platform: 'Email', url: 'mailto:dmitrii.eneik@gmail.com', tag: '[EM_DIRECT]', description: 'Direct contact for inquiries & collaborations' }
