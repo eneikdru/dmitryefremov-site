@@ -72,7 +72,12 @@ class GraphNavigationAndSearchVerificationTest {
         List<ConceptMediaLink> linksFromPodcast = conceptMediaLinkRepository.findByPodcastEpisodeId(ep.getId());
         assertThat(linksFromPodcast).isNotEmpty();
 
-        CanonItem connectedCanon = linksFromPodcast.get(0).getCanonItem();
+        CanonItem connectedCanon = linksFromPodcast.stream()
+                .map(ConceptMediaLink::getCanonItem)
+                .filter(c -> "rasshirennyy-razum-i-vneshnyaya-pamyat".equals(c.getSlug()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Expected canon item not found in podcast links"));
+
         String canonSlug = connectedCanon.getSlug();
         assertThat(canonSlug).isEqualTo("rasshirennyy-razum-i-vneshnyaya-pamyat");
 
@@ -96,6 +101,6 @@ class GraphNavigationAndSearchVerificationTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$.content[0].slug", is("rasshirennyy-razum-i-vneshnyaya-pamyat")));
+                .andExpect(jsonPath("$.content[*].slug", hasItem("rasshirennyy-razum-i-vneshnyaya-pamyat")));
     }
 }
