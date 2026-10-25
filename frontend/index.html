@@ -6,11 +6,79 @@
     <title>Dmitry Efremov</title>
     <!-- Material Symbols Outlined -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <!-- Typography: Inter & JetBrains Mono -->
+    <!-- Typography: Geist, Inter & JetBrains Mono for Neuro-Ergonomic Reading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    
+    <script>
+      tailwind = {
+        config: {
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ['Geist', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+              }
+            }
+          }
+        }
+      };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+      /* Neurophysiological Eye Comfort & Zero Ocular Strain Engine */
+      :root {
+        --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+      }
+
+      html {
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        letter-spacing: -0.011em;
+      }
+
+      /* Eye-friendly non-glaring selection */
+      ::selection {
+        background: rgba(212, 175, 55, 0.25);
+        color: #f7f9fd;
+      }
+
+      /* Calming typography hierarchy */
+      h1, h2, h3, h4 {
+        letter-spacing: -0.022em;
+        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+      }
+
+      p {
+        line-height: 1.68;
+      }
+
+      /* Smooth custom scrollbars without peripheral distraction */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 9999px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.22);
+      }
+    </style>
   </head>
   <body class="bg-[#090a0f] text-[#e2e8f0]">
     <div id="app"></div>

@@ -351,10 +351,10 @@
   <!-- TopAppBar: Material Spec & Design System Tokens -->
   <header
     id="admin-header"
-    class="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-4 sm:px-6 h-14 border-b transition-colors shadow-sm {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433] text-[#ffffff]' : 'bg-white border-[#c6c6cd] text-[#0b1c30]'}"
+    class="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-4 sm:px-6 h-14 border-b transition-colors shadow-sm {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433] text-[#ffffff]' : 'bg-white border-[#c6c6cd] text-[#0b1c30]'}"
   >
     <div class="flex items-center space-x-3">
-      <span class="material-symbols-outlined text-2xl text-sky-400" aria-hidden="true">shield</span>
+      <span class="material-symbols-outlined text-2xl text-[#d4af37]" aria-hidden="true">shield</span>
       <div class="flex flex-col">
         <span class="text-sm font-bold tracking-tight leading-none">Личный кабинет (Trust & Compliance)</span>
         <span class="text-[11px] font-mono font-medium opacity-80">
@@ -367,7 +367,7 @@
       <button
         type="button"
         on:click={toggleOnboarding}
-        class="px-2.5 py-1 rounded text-xs font-mono border transition-all flex items-center gap-1 {theme === 'dark' ? 'bg-[#1a233a] text-slate-300 border-[#1f2433] hover:text-white' : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'}"
+        class="px-2.5 py-1 rounded text-xs font-mono border transition-all flex items-center gap-1 {theme === 'dark' ? 'bg-[#171a24] text-slate-300 border-[#1f2433] hover:text-white' : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'}"
         title="Показать / скрыть подсказку"
       >
         <span>💡</span>
@@ -378,7 +378,7 @@
         <button
           type="button"
           on:click={() => (showComplianceAudit = !showComplianceAudit)}
-          class="px-2.5 py-1 rounded text-xs font-mono border transition-all flex items-center gap-1 {showComplianceAudit ? 'bg-sky-500/20 text-sky-400 border-sky-500/40' : 'bg-[#1a233a] text-slate-400 border-[#1f2433]'}"
+          class="px-2.5 py-1 rounded text-xs font-mono border transition-all flex items-center gap-1 {showComplianceAudit ? 'bg-[#d4af37]/20 text-[#d4af37] border-[#d4af37]/40' : 'bg-[#171a24] text-slate-400 border-[#1f2433]'}"
           title="Скрыть или показать технический аудит"
         >
           <span>⚙️</span>
@@ -389,7 +389,7 @@
       <a
         id="admin-exit-btn"
         href="/"
-        class="px-3 py-1.5 rounded text-xs font-mono font-semibold border transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center gap-1 {theme === 'dark' ? 'bg-[#1f2433] text-[#38bdf8] border-[#38bdf8]/40 hover:bg-[#2d354b]' : 'bg-[#f1f5f9] text-[#0284c7] border-[#0284c7]/40 hover:bg-[#e2e8f0]'}"
+        class="px-3 py-1.5 rounded text-xs font-mono font-semibold border transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center gap-1 {theme === 'dark' ? 'bg-[#1f2433] text-[#d4af37] border-[#d4af37]/40 hover:bg-[#2d354b]' : 'bg-[#f1f5f9] text-[#0284c7] border-[#0284c7]/40 hover:bg-[#e2e8f0]'}"
       >
         <span>← На сайт</span>
       </a>
@@ -422,16 +422,16 @@
 
     <!-- Onboarding Guide Card -->
     {#if showOnboarding}
-      <section class="rounded-2xl border p-5 shadow-xl relative transition-all {theme === 'dark' ? 'bg-[#10182b] border-sky-500/30 text-slate-200' : 'bg-sky-50/90 border-sky-200 text-slate-800'}">
+      <section class="rounded-2xl border p-5 shadow-xl relative transition-all {theme === 'dark' ? 'bg-[#12151d] border-[#d4af37]/30 text-slate-200' : 'bg-sky-50/90 border-sky-200 text-slate-800'}">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-start gap-3.5">
             <span class="text-3xl shrink-0">🎯</span>
             <div class="space-y-2">
               <div class="flex items-center gap-2">
-                <h2 class="text-base font-bold text-sky-400 tracking-tight">
+                <h2 class="text-base font-bold text-[#d4af37] tracking-tight">
                   Онбординг • Личный кабинет и управление клиентами
                 </h2>
-                <span class="text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                <span class="text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-[#d4af37]/20 text-[#e5c158] border border-[#d4af37]/30">
                   СУВЕРЕННОСТЬ 100%
                 </span>
               </div>
@@ -443,7 +443,7 @@
                 <div class="flex items-center gap-2 p-2 rounded-lg bg-black/10 dark:bg-white/5 border border-white/5">
                   <span class="text-base">⚡</span>
                   <div>
-                    <strong class="block text-sky-300">Саммари по клиенту:</strong>
+                    <strong class="block text-[#e5c158]">Саммари по клиенту:</strong>
                     <span class="text-[11px] opacity-80">Выжимка всей переписки и задач в один клик.</span>
                   </div>
                 </div>
@@ -490,12 +490,12 @@
     <!-- Sovereign Mini-CRM Section: Client Dossier & Agreements Log -->
     <section
       id="messages-inbox-section"
-      class="rounded-2xl border transition-all shadow-2xl overflow-hidden {theme === 'dark' ? 'bg-[#0f1523] border-[#1e293b]' : 'bg-white border-slate-200'}"
+      class="rounded-2xl border transition-all shadow-2xl overflow-hidden {theme === 'dark' ? 'bg-[#10131a] border-[#1e293b]' : 'bg-white border-slate-200'}"
     >
       <!-- CRM Header -->
-      <div class="px-5 py-4 border-b flex flex-wrap items-center justify-between gap-3 {theme === 'dark' ? 'bg-[#131c31] border-[#1e293b]' : 'bg-slate-50 border-slate-200'}">
+      <div class="px-5 py-4 border-b flex flex-wrap items-center justify-between gap-3 {theme === 'dark' ? 'bg-[#141720] border-[#1e293b]' : 'bg-slate-50 border-slate-200'}">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400 border border-sky-500/20">
+          <div class="w-9 h-9 rounded-xl bg-[#d4af37]/10 flex items-center justify-center text-[#d4af37] border border-[#d4af37]/20">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
@@ -515,7 +515,7 @@
             <button
               type="button"
               on:click={loadCrmData}
-              class="px-3 py-1.5 rounded-lg border text-xs font-mono font-semibold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center gap-1.5 {theme === 'dark' ? 'bg-[#18233c] text-sky-400 border-sky-500/30 hover:bg-[#202e4d]' : 'bg-slate-100 text-sky-600 border-slate-300 hover:bg-slate-200'}"
+              class="px-3 py-1.5 rounded-lg border text-xs font-mono font-semibold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center gap-1.5 {theme === 'dark' ? 'bg-[#191d28] text-[#d4af37] border-[#d4af37]/30 hover:bg-[#202e4d]' : 'bg-slate-100 text-sky-600 border-slate-300 hover:bg-slate-200'}"
               title="Обновить базу клиентов"
             >
               <span>↻</span>
@@ -532,7 +532,7 @@
       {#if !isAuthenticated && !isLoadingCrm}
         <!-- Auth Gate -->
         <div class="p-8 sm:p-12 text-center max-w-md mx-auto space-y-4">
-          <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-500/10 flex items-center justify-center text-sky-400 border border-sky-500/20">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-[#d4af37]/10 flex items-center justify-center text-[#d4af37] border border-[#d4af37]/20">
             <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
@@ -543,7 +543,7 @@
               Доступ ограничен владельцем
             </h3>
             <p class="text-xs text-slate-400 font-mono">
-              Вход строго для: <strong class="text-sky-300">dmitrii.eneik@gmail.com</strong>
+              Вход строго для: <strong class="text-[#e5c158]">dmitrii.eneik@gmail.com</strong>
             </p>
           </div>
 
@@ -561,7 +561,7 @@
 
             <button
               type="submit"
-              class="w-full py-2.5 rounded-xl text-xs font-mono font-bold bg-sky-500 hover:bg-sky-400 text-[#090a0f] transition-all shadow-md active:scale-95"
+              class="w-full py-2.5 rounded-xl text-xs font-mono font-bold bg-[#d4af37] hover:bg-[#e2c15e] text-[#090a0f] transition-all shadow-md active:scale-95"
             >
               Войти в хранилище
             </button>
@@ -602,13 +602,13 @@
                   clientSummaryText = '';
                   activeSummaryClient = '';
                 }}
-                class="w-full text-left p-3 rounded-xl border transition-all duration-150 flex flex-col gap-1.5 focus:outline-none {selectedClient?.email.toLowerCase() === client.email.toLowerCase() ? (theme === 'dark' ? 'bg-[#18233c] border-sky-500/60 shadow-md ring-1 ring-sky-500/30' : 'bg-white border-sky-500 shadow-md ring-1 ring-sky-500/30') : (theme === 'dark' ? 'bg-[#121929] border-[#1e293b] hover:border-slate-600' : 'bg-white border-slate-200 hover:border-slate-300')}"
+                class="w-full text-left p-3 rounded-xl border transition-all duration-150 flex flex-col gap-1.5 focus:outline-none {selectedClient?.email.toLowerCase() === client.email.toLowerCase() ? (theme === 'dark' ? 'bg-[#191d28] border-[#d4af37]/60 shadow-md ring-1 ring-[#d4af37]/30' : 'bg-white border-[#d4af37] shadow-md ring-1 ring-[#d4af37]/30') : (theme === 'dark' ? 'bg-[#121929] border-[#1e293b] hover:border-slate-600' : 'bg-white border-slate-200 hover:border-slate-300')}"
               >
                 <div class="flex items-center justify-between gap-1">
                   <span class="text-xs font-bold truncate {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
                     {client.email === 'anonymous' ? 'Анонимный контакт' : client.email}
                   </span>
-                  <span class="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold {client.status === 'AGREED' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : client.status === 'IN_DISCUSSION' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : client.status === 'ARCHIVED' ? 'bg-slate-700/50 text-slate-400' : 'bg-sky-500/20 text-sky-400 border border-sky-500/30'}">
+                  <span class="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold {client.status === 'AGREED' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : client.status === 'IN_DISCUSSION' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : client.status === 'ARCHIVED' ? 'bg-slate-700/50 text-slate-400' : 'bg-[#d4af37]/20 text-[#d4af37] border border-[#d4af37]/30'}">
                     {client.status === 'AGREED' ? 'ДОГОВОРИЛИСЬ' : client.status === 'IN_DISCUSSION' ? 'В ДИАЛОГЕ' : client.status === 'ARCHIVED' ? 'АРХИВ' : 'НОВЫЙ'}
                   </span>
                 </div>
@@ -632,7 +632,7 @@
           </div>
 
           <!-- Right Column: Selected Client Dossier & Timeline -->
-          <div class="md:col-span-7 p-4 sm:p-6 flex flex-col justify-between space-y-5 overflow-y-auto max-h-[700px] {theme === 'dark' ? 'bg-[#0f1523]' : 'bg-white'}">
+          <div class="md:col-span-7 p-4 sm:p-6 flex flex-col justify-between space-y-5 overflow-y-auto max-h-[700px] {theme === 'dark' ? 'bg-[#10131a]' : 'bg-white'}">
             {#if selectedClient}
               <!-- Client Dossier Header -->
               <div class="space-y-3 pb-4 border-b {theme === 'dark' ? 'border-[#1e293b]' : 'border-slate-200'}">
@@ -666,7 +666,7 @@
                     {#if selectedClient.email && selectedClient.email !== 'anonymous'}
                       <a
                         href="mailto:{selectedClient.email}?subject=Dmitry Efremov — продолжение диалога"
-                        class="px-2.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-sky-500 hover:bg-sky-400 text-[#090a0f] transition-all flex items-center gap-1 shadow-sm"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-[#d4af37] hover:bg-[#e2c15e] text-[#090a0f] transition-all flex items-center gap-1 shadow-sm"
                       >
                         <span>✉ Написать</span>
                       </a>
@@ -690,7 +690,7 @@
                     <button
                       type="button"
                       on:click={() => updateStatus(stCode)}
-                      class="px-2.5 py-1 rounded-md text-xs font-mono transition-all {selectedClient.status === stCode ? 'bg-sky-500 text-[#090a0f] font-bold shadow-sm' : (theme === 'dark' ? 'bg-[#18233c] text-slate-300 hover:bg-[#202e4d]' : 'bg-slate-100 text-slate-700 hover:bg-slate-200')}"
+                      class="px-2.5 py-1 rounded-md text-xs font-mono transition-all {selectedClient.status === stCode ? 'bg-[#d4af37] text-[#090a0f] font-bold shadow-sm' : (theme === 'dark' ? 'bg-[#191d28] text-slate-300 hover:bg-[#202e4d]' : 'bg-slate-100 text-slate-700 hover:bg-slate-200')}"
                     >
                       {stLabel}
                     </button>
@@ -721,9 +721,9 @@
               {/if}
 
               <!-- Fast Agreement / Note Recording Box -->
-              <div class="p-4 rounded-xl border space-y-3 {theme === 'dark' ? 'bg-[#131b2e] border-sky-500/20' : 'bg-slate-50 border-slate-200'}">
+              <div class="p-4 rounded-xl border space-y-3 {theme === 'dark' ? 'bg-[#13161e] border-[#d4af37]/20' : 'bg-slate-50 border-slate-200'}">
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold font-mono text-sky-400 uppercase tracking-wide">
+                  <span class="text-xs font-bold font-mono text-[#d4af37] uppercase tracking-wide">
                     + Зафиксировать договорённость или заметку
                   </span>
                   <div class="flex items-center gap-1 bg-black/20 p-0.5 rounded-lg border border-white/5 text-[11px] font-mono">
@@ -737,7 +737,7 @@
                     <button
                       type="button"
                       on:click={() => (newNoteType = 'note')}
-                      class="px-2 py-0.5 rounded {newNoteType === 'note' ? 'bg-sky-500 text-[#090a0f] font-bold' : 'text-slate-400 hover:text-white'}"
+                      class="px-2 py-0.5 rounded {newNoteType === 'note' ? 'bg-[#d4af37] text-[#090a0f] font-bold' : 'text-slate-400 hover:text-white'}"
                     >
                       📝 Заметка
                     </button>
@@ -756,7 +756,7 @@
                     type="button"
                     disabled={isSavingNote || !newNoteText.trim()}
                     on:click={addNote}
-                    class="px-4 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed {newNoteType === 'agreement' ? 'bg-emerald-500 hover:bg-emerald-400 text-[#090a0f]' : 'bg-sky-500 hover:bg-sky-400 text-[#090a0f]'}"
+                    class="px-4 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed {newNoteType === 'agreement' ? 'bg-emerald-500 hover:bg-emerald-400 text-[#090a0f]' : 'bg-[#d4af37] hover:bg-[#e2c15e] text-[#090a0f]'}"
                   >
                     {#if isSavingNote}
                       <span>Сохранение...</span>
@@ -775,7 +775,7 @@
 
                 <div class="space-y-3">
                   {#each getClientTimeline(selectedClient) as item}
-                    <div class="p-3.5 rounded-xl border space-y-2 {item.type === 'agreement' ? (theme === 'dark' ? 'bg-emerald-950/20 border-emerald-500/40' : 'bg-emerald-50 border-emerald-300') : item.type === 'note' ? (theme === 'dark' ? 'bg-sky-950/20 border-sky-500/30' : 'bg-sky-50 border-sky-200') : (theme === 'dark' ? 'bg-[#121929] border-[#1e293b]' : 'bg-slate-50 border-slate-200')}">
+                    <div class="p-3.5 rounded-xl border space-y-2 {item.type === 'agreement' ? (theme === 'dark' ? 'bg-emerald-950/20 border-emerald-500/40' : 'bg-emerald-50 border-emerald-300') : item.type === 'note' ? (theme === 'dark' ? 'bg-sky-950/20 border-[#d4af37]/30' : 'bg-sky-50 border-sky-200') : (theme === 'dark' ? 'bg-[#121929] border-[#1e293b]' : 'bg-slate-50 border-slate-200')}">
                       <div class="flex items-center justify-between gap-1 flex-wrap">
                         <div class="flex items-center gap-2">
                           {#if item.type === 'agreement'}
@@ -783,7 +783,7 @@
                               🤝 ДОГОВОРЁННОСТЬ
                             </span>
                           {:else if item.type === 'note'}
-                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#d4af37]/20 text-[#d4af37] border border-[#d4af37]/30">
                               📝 ЗАМЕТКА
                             </span>
                           {:else}
@@ -791,7 +791,7 @@
                               📩 СООБЩЕНИЕ С САЙТА
                             </span>
                             {#if item.ticket}
-                              <span class="text-[11px] font-mono text-sky-400">{item.ticket}</span>
+                              <span class="text-[11px] font-mono text-[#d4af37]">{item.ticket}</span>
                             {/if}
                           {/if}
                         </div>
@@ -823,7 +823,7 @@
     <!-- Client Deletion Confirmation Modal -->
     {#if showClientDeleteConfirm}
       <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-        <div class="w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 font-sans {theme === 'dark' ? 'bg-[#131b2e] border-red-500/60 text-white' : 'bg-white border-red-400 text-slate-900'}">
+        <div class="w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 font-sans {theme === 'dark' ? 'bg-[#13161e] border-red-500/60 text-white' : 'bg-white border-red-400 text-slate-900'}">
           <div class="flex items-center gap-3 border-b pb-3 border-red-500/30">
             <span class="text-3xl text-red-500">🗑️</span>
             <div>
@@ -840,7 +840,7 @@
             <button
               type="button"
               on:click={() => (showClientDeleteConfirm = false)}
-              class="px-4 py-2 rounded-lg text-xs font-semibold border {theme === 'dark' ? 'border-[#1e293b] bg-[#1a233a] text-slate-200' : 'border-slate-300 bg-slate-100 text-slate-700'}"
+              class="px-4 py-2 rounded-lg text-xs font-semibold border {theme === 'dark' ? 'border-[#1e293b] bg-[#171a24] text-slate-200' : 'border-slate-300 bg-slate-100 text-slate-700'}"
             >
               Отмена
             </button>
@@ -866,7 +866,7 @@
       <!-- Statutory Benchmark Banner -->
       <section
         id="statutory-benchmark-banner"
-        class="p-4 sm:p-5 rounded-2xl border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
+        class="p-4 sm:p-5 rounded-2xl border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
       >
         <div class="flex items-center space-x-3.5">
           <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
@@ -890,7 +890,7 @@
       <section id="admin-metrics-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <!-- Metric 1: Pending DSAR -->
         <div
-          class="p-4 rounded-xl border shadow-sm transition-all {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
+          class="p-4 rounded-xl border shadow-sm transition-all {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
         >
           <div class="flex justify-between items-start">
             <span class="text-xs font-mono uppercase tracking-wider opacity-80">ЗАПРОСЫ ДАННЫХ (DSAR)</span>
@@ -905,7 +905,7 @@
 
         <!-- Metric 2: Consent Opt-In Ratio -->
         <div
-          class="p-4 rounded-xl border shadow-sm transition-all {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
+          class="p-4 rounded-xl border shadow-sm transition-all {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
         >
           <div class="flex justify-between items-start">
             <span class="text-xs font-mono uppercase tracking-wider opacity-80">УРОВЕНЬ СОГЛАСИЯ</span>
@@ -920,17 +920,17 @@
 
         <!-- Metric 3: Third-Party Data Processors -->
         <div
-          class="p-4 rounded-xl border shadow-sm transition-all {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
+          class="p-4 rounded-xl border shadow-sm transition-all {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
         >
           <div class="flex justify-between items-start">
             <span class="text-xs font-mono uppercase tracking-wider opacity-80">ОБРАБОТЧИКИ ДАННЫХ</span>
-            <span class="material-symbols-outlined text-sky-400 text-xl" aria-hidden="true">lan</span>
+            <span class="material-symbols-outlined text-[#d4af37] text-xl" aria-hidden="true">lan</span>
           </div>
           <div class="mt-2 flex items-baseline gap-2">
-            <span class="text-2xl font-bold font-mono text-sky-400">3</span>
+            <span class="text-2xl font-bold font-mono text-[#d4af37]">3</span>
             <span class="text-xs opacity-70">проверено</span>
           </div>
-          <span class="text-[11px] font-mono text-sky-400/90 mt-1 block">Шлюзы изолированы</span>
+          <span class="text-[11px] font-mono text-[#d4af37]/90 mt-1 block">Шлюзы изолированы</span>
         </div>
       </section>
 
@@ -947,7 +947,7 @@
         <!-- Queue Item 1: Erasure Request (High Priority) -->
         <div
           id="dsar-item-8821"
-          class="p-4 rounded-xl border transition-all shadow-sm space-y-3 {dsar8821Status === 'deleted' ? 'opacity-60 bg-slate-800/40 border-slate-700' : (theme === 'dark' ? 'bg-[#131b2e] border-red-500/50' : 'bg-white border-red-400')}"
+          class="p-4 rounded-xl border transition-all shadow-sm space-y-3 {dsar8821Status === 'deleted' ? 'opacity-60 bg-slate-800/40 border-slate-700' : (theme === 'dark' ? 'bg-[#13161e] border-red-500/50' : 'bg-white border-red-400')}"
         >
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div class="flex flex-col">
@@ -986,7 +986,7 @@
             <button
               id="dsar-8821-review-btn"
               type="button"
-              class="h-9 px-4 border rounded text-xs font-semibold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center gap-1.5 {theme === 'dark' ? 'border-[#1f2433] bg-[#1a233a] hover:bg-[#25304e] text-white' : 'border-[#c6c6cd] bg-slate-100 hover:bg-slate-200 text-[#0b1c30]'}"
+              class="h-9 px-4 border rounded text-xs font-semibold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center gap-1.5 {theme === 'dark' ? 'border-[#1f2433] bg-[#171a24] hover:bg-[#25304e] text-white' : 'border-[#c6c6cd] bg-slate-100 hover:bg-slate-200 text-[#0b1c30]'}"
             >
               <span class="material-symbols-outlined text-sm" aria-hidden="true">visibility</span>
               Детали запроса
@@ -1014,13 +1014,13 @@
         <!-- Queue Item 2: Export Data Request -->
         <div
           id="dsar-item-8819"
-          class="p-4 rounded-xl border shadow-sm {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
+          class="p-4 rounded-xl border shadow-sm {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
         >
           <div class="flex justify-between items-start">
             <div class="flex flex-col">
               <div class="flex items-center gap-2">
                 <span class="font-mono text-xs font-bold">#DSAR-8819</span>
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 font-bold border border-sky-500/30">
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#d4af37]/20 text-[#d4af37] font-bold border border-[#d4af37]/30">
                   В ОБРАБОТКЕ
                 </span>
               </div>
@@ -1030,7 +1030,7 @@
             <button
               id="dsar-8819-export-btn"
               type="button"
-              class="px-3 py-1.5 rounded border text-xs font-mono font-semibold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {theme === 'dark' ? 'border-sky-500/30 bg-[#1a233a] hover:bg-sky-500/20 text-sky-400' : 'border-sky-300 bg-sky-50 hover:bg-sky-100 text-sky-700'}"
+              class="px-3 py-1.5 rounded border text-xs font-mono font-semibold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {theme === 'dark' ? 'border-[#d4af37]/30 bg-[#171a24] hover:bg-[#d4af37]/20 text-[#d4af37]' : 'border-sky-300 bg-sky-50 hover:bg-sky-100 text-sky-700'}"
             >
               Скачать
             </button>
@@ -1040,7 +1040,7 @@
         <!-- Queue Item 3: Rectification Request -->
         <div
           id="dsar-item-8814"
-          class="p-4 rounded-xl border shadow-sm {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
+          class="p-4 rounded-xl border shadow-sm {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
         >
           <div class="flex justify-between items-start">
             <div class="flex flex-col">
@@ -1065,13 +1065,13 @@
       <section id="system-isolation-section" class="space-y-4 pt-2">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-sky-400 text-2xl" aria-hidden="true">lock</span>
+            <span class="material-symbols-outlined text-[#d4af37] text-2xl" aria-hidden="true">lock</span>
             <h2 class="text-lg font-bold tracking-tight">Изоляция систем и аудит безопасности</h2>
           </div>
-          <span class="font-mono text-xs text-sky-400 font-semibold">Zero-Trust V2</span>
+          <span class="font-mono text-xs text-[#d4af37] font-semibold">Zero-Trust V2</span>
         </div>
 
-        <div class="p-4 rounded-xl border shadow-sm space-y-4 {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}">
+        <div class="p-4 rounded-xl border shadow-sm space-y-4 {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}">
           <div class="flex items-center justify-between border-b pb-3 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
@@ -1082,9 +1082,9 @@
 
           <div class="space-y-2">
             <!-- Gateway 1 -->
-            <div class="p-3 rounded border flex items-center justify-between {theme === 'dark' ? 'bg-[#1a233a] border-[#1f2433]' : 'bg-slate-50 border-[#e2e8f0]'}">
+            <div class="p-3 rounded border flex items-center justify-between {theme === 'dark' ? 'bg-[#171a24] border-[#1f2433]' : 'bg-slate-50 border-[#e2e8f0]'}">
               <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-sky-400 text-xl" aria-hidden="true">key</span>
+                <span class="material-symbols-outlined text-[#d4af37] text-xl" aria-hidden="true">key</span>
                 <div>
                   <span class="text-xs font-bold block">Токенизация базы персональных данных (PII)</span>
                   <span class="text-[11px] opacity-80 font-sans">Хранилище с шифрованием полей AES-256</span>
@@ -1096,9 +1096,9 @@
             </div>
 
             <!-- Gateway 2 -->
-            <div class="p-3 rounded border flex items-center justify-between {theme === 'dark' ? 'bg-[#1a233a] border-[#1f2433]' : 'bg-slate-50 border-[#e2e8f0]'}">
+            <div class="p-3 rounded border flex items-center justify-between {theme === 'dark' ? 'bg-[#171a24] border-[#1f2433]' : 'bg-slate-50 border-[#e2e8f0]'}">
               <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-sky-400 text-xl" aria-hidden="true">sync_alt</span>
+                <span class="material-symbols-outlined text-[#d4af37] text-xl" aria-hidden="true">sync_alt</span>
                 <div>
                   <span class="text-xs font-bold block">Изолированные пайплайны телеметрии</span>
                   <span class="text-[11px] opacity-80 font-sans">Строгое обезличивание IP активно</span>
@@ -1110,9 +1110,9 @@
             </div>
 
             <!-- Gateway 3 -->
-            <div class="p-3 rounded border flex items-center justify-between {theme === 'dark' ? 'bg-[#1a233a] border-[#1f2433]' : 'bg-slate-50 border-[#e2e8f0]'}">
+            <div class="p-3 rounded border flex items-center justify-between {theme === 'dark' ? 'bg-[#171a24] border-[#1f2433]' : 'bg-slate-50 border-[#e2e8f0]'}">
               <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-sky-400 text-xl" aria-hidden="true">history</span>
+                <span class="material-symbols-outlined text-[#d4af37] text-xl" aria-hidden="true">history</span>
                 <div>
                   <span class="text-xs font-bold block">Журнал холодного удаления данных</span>
                   <span class="text-[11px] opacity-80 font-sans">Криптографическая цепочка SHA-256</span>
@@ -1125,17 +1125,17 @@
           </div>
 
           <div class="pt-3 border-t flex flex-wrap items-center justify-between font-mono text-xs opacity-90 gap-2 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
-            <span>Хеш реестра: <strong class="text-sky-400">#7f8c...3a19</strong></span>
+            <span>Хеш реестра: <strong class="text-[#d4af37]">#7f8c...3a19</strong></span>
             <div class="flex items-center gap-2">
               <button
                 id="admin-view-gqm-btn"
                 type="button"
                 on:click={() => (showGqmDetails = !showGqmDetails)}
-                class="px-2.5 py-1 rounded border text-xs font-mono font-bold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {showGqmDetails ? 'bg-sky-500 text-white border-sky-400' : 'border-sky-500/40 text-sky-400 hover:bg-sky-500/10'}"
+                class="px-2.5 py-1 rounded border text-xs font-mono font-bold transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {showGqmDetails ? 'bg-[#d4af37] text-white border-sky-400' : 'border-[#d4af37]/40 text-[#d4af37] hover:bg-[#d4af37]/10'}"
               >
                 {showGqmDetails ? 'Скрыть аудит телеметрии' : 'Показать аудит телеметрии'}
               </button>
-              <button id="admin-audit-ledger-btn" type="button" class="text-sky-400 hover:underline flex items-center gap-0.5 focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none rounded px-1">
+              <button id="admin-audit-ledger-btn" type="button" class="text-[#d4af37] hover:underline flex items-center gap-0.5 focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none rounded px-1">
                 <span>Журнал аудита</span>
                 <span class="material-symbols-outlined text-sm" aria-hidden="true">open_in_new</span>
               </button>
@@ -1145,8 +1145,8 @@
       </section>
 
       {#if showGqmDetails}
-        <section id="admin-telemetry-details" class="p-4 rounded-xl border bg-[#0a0e18] border-sky-500/30 space-y-4">
-          <h3 class="text-sm font-bold font-mono text-sky-400">[ПРИВАТНЫЙ АУДИТ ТЕЛЕМЕТРИИ]</h3>
+        <section id="admin-telemetry-details" class="p-4 rounded-xl border bg-[#0a0e18] border-[#d4af37]/30 space-y-4">
+          <h3 class="text-sm font-bold font-mono text-[#d4af37]">[ПРИВАТНЫЙ АУДИТ ТЕЛЕМЕТРИИ]</h3>
           <GqmTelemetryView />
         </section>
       {/if}
@@ -1159,13 +1159,13 @@
     <nav
       id="admin-bottom-nav"
       aria-label="Admin Navigation Tabs"
-      class="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center h-16 border-t shadow-lg transition-colors {theme === 'dark' ? 'bg-[#131b2e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
+      class="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center h-16 border-t shadow-lg transition-colors {theme === 'dark' ? 'bg-[#13161e] border-[#1f2433]' : 'bg-white border-[#c6c6cd]'}"
     >
       <button
         id="admin-tab-overview"
         type="button"
         on:click={() => (activeNav = 'overview')}
-        class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'overview' ? 'text-sky-400 font-bold bg-sky-500/10' : 'opacity-70 hover:opacity-100'}"
+        class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'overview' ? 'text-[#d4af37] font-bold bg-[#d4af37]/10' : 'opacity-70 hover:opacity-100'}"
       >
         <span class="material-symbols-outlined text-xl" aria-hidden="true">dashboard</span>
         <span class="text-[11px] font-mono">Обзор (Overview)</span>
@@ -1175,7 +1175,7 @@
         id="admin-tab-requests"
         type="button"
         on:click={() => (activeNav = 'requests')}
-        class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'requests' ? 'text-sky-400 font-bold bg-sky-500/10' : 'opacity-70 hover:opacity-100'}"
+        class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'requests' ? 'text-[#d4af37] font-bold bg-[#d4af37]/10' : 'opacity-70 hover:opacity-100'}"
       >
         <span class="material-symbols-outlined text-xl" aria-hidden="true">assignment_turned_in</span>
         <span class="text-[11px] font-mono">Запросы (Requests)</span>
@@ -1185,7 +1185,7 @@
         id="admin-tab-consent"
         type="button"
         on:click={() => (activeNav = 'consent')}
-        class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'consent' ? 'text-sky-400 font-bold bg-sky-500/10' : 'opacity-70 hover:opacity-100'}"
+        class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'consent' ? 'text-[#d4af37] font-bold bg-[#d4af37]/10' : 'opacity-70 hover:opacity-100'}"
       >
         <span class="material-symbols-outlined text-xl" aria-hidden="true">tune</span>
         <span class="text-[11px] font-mono">Согласия (Consent)</span>
@@ -1195,7 +1195,7 @@
         id="admin-tab-audit"
         type="button"
         on:click={() => (activeNav = 'audit')}
-        class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'audit' ? 'text-sky-400 font-bold bg-sky-500/10' : 'opacity-70 hover:opacity-100'}"
+        class="flex flex-col items-center justify-center py-1 px-3 rounded transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {activeNav === 'audit' ? 'text-[#d4af37] font-bold bg-[#d4af37]/10' : 'opacity-70 hover:opacity-100'}"
       >
         <span class="material-symbols-outlined text-xl" aria-hidden="true">history_toggle_off</span>
         <span class="text-[11px] font-mono">Журнал аудита (Audit Logs)</span>
@@ -1215,7 +1215,7 @@
     >
       <div
         id="delete-modal-container"
-        class="w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-5 font-sans {theme === 'dark' ? 'bg-[#131b2e] border-red-500/60 text-[#f8f9ff]' : 'bg-white border-red-400 text-[#0b1c30]'}"
+        class="w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-5 font-sans {theme === 'dark' ? 'bg-[#13161e] border-red-500/60 text-[#f8f9ff]' : 'bg-white border-red-400 text-[#0b1c30]'}"
       >
         <div class="flex items-center gap-3 border-b pb-3 border-red-500/30">
           <span class="material-symbols-outlined text-3xl text-red-500" aria-hidden="true">warning</span>
@@ -1251,7 +1251,7 @@
             type="button"
             bind:this={cancelBtnRef}
             on:click={closeDeleteModal}
-            class="px-4 py-2 rounded text-xs font-semibold border transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {theme === 'dark' ? 'border-[#1f2433] bg-[#1a233a] hover:bg-[#25304e] text-white' : 'border-[#c6c6cd] bg-slate-100 hover:bg-slate-200 text-[#0b1c30]'}"
+            class="px-4 py-2 rounded text-xs font-semibold border transition-all focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none {theme === 'dark' ? 'border-[#1f2433] bg-[#171a24] hover:bg-[#25304e] text-white' : 'border-[#c6c6cd] bg-slate-100 hover:bg-slate-200 text-[#0b1c30]'}"
           >
             Отмена (Cancel)
           </button>
