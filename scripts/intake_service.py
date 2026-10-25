@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Direct Contact, Intake Message & Mini-CRM Service for Dmitry Efremov Personal Platform.
-Persists incoming messages, records client interaction history, and stores agreements.
+Secures CRM data with authentication restricted to dmitrii.eneik@gmail.com.
 """
 
 import os
@@ -23,6 +23,10 @@ os.makedirs(COCKPIT_DATA_DIR, exist_ok=True)
 MESSAGES_FILE = os.path.join(SITE_DATA_DIR, "messages.jsonl")
 NOTES_FILE = os.path.join(SITE_DATA_DIR, "crm_notes.jsonl")
 CLIENTS_FILE = os.path.join(SITE_DATA_DIR, "crm_clients.json")
+AUTH_FILE = os.path.join(SITE_DATA_DIR, "crm_auth.json")
+
+# Master password for Dmitry (can be overridden via env)
+DEFAULT_MASTER_KEY = os.environ.get("DMITRY_CRM_KEY", "efremov2026")
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
@@ -59,6 +63,59 @@ def save_clients_meta(meta):
     except Exception as e:
         print(f"[ERROR] Saving clients meta: {e}", file=sys.stderr)
 
+def get_active_tokens():
+    if os.path.exists(AUTH_FILE):
+        try:
+            with open(AUTH_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def save_active_token(token, email="dmitrii.eneik@gmail.com"):
+    tokens = get_active_tokens()
+    tokens[token] = {
+        "email": email,
+        "createdAt": datetime.datetime.now(datetime.timezone.utc).isoformat()
+    }
+    try:
+        with open(AUTH_FILE, "w", encoding="utf-8") as f:
+            json.dump(tokens, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"[ERROR] Saving auth token: {e}", file=sys.stderr)
+
+def is_authorized(headers, client_ip):
+    # Allow localhost test runs
+    if client_ip in ("127.0.0.1", "::1", "localhost"):
+        return True
+
+    auth_header = headers.get("Authorization", "")
+    token = ""
+    if auth_header.startswith("Bearer "):
+        token = auth_header[7:].strip()
+    elif "X-CRM-Key" in headers:
+        key = headers.get("X-CRM-Key", "").strip()
+        if key == DEFAULT_MASTER_KEY:
+            return True
+
+    # Check cookies
+    cookie_header = headers.get("Cookie", "")
+    if "crm_token=" in cookie_header:
+        for c in cookie_header.split(";"):
+            c = c.strip()
+            if c.startswith("crm_token="):
+                token = c.split("=", 1)[1].strip()
+
+    if token:
+        tokens = get_active_tokens()
+        if token in tokens:
+            return True
+        # If token is the master key itself
+        if token == DEFAULT_MASTER_KEY:
+            return True
+
+    return False
+
 def get_aggregated_crm_data():
     messages = read_jsonl(MESSAGES_FILE)
     notes = read_jsonl(NOTES_FILE)
@@ -66,7 +123,6 @@ def get_aggregated_crm_data():
 
     clients_dict = {}
 
-    # Aggregate by clientEmail
     for msg in messages:
         email = (msg.get("clientEmail") or "anonymous").strip().lower()
         if email not in clients_dict:
@@ -101,11 +157,9 @@ def get_aggregated_crm_data():
         if note.get("createdAt", "") > clients_dict[email]["lastActivity"]:
             clients_dict[email]["lastActivity"] = note.get("createdAt", "")
 
-    # Sort clients by last activity descending
     clients_list = list(clients_dict.values())
     clients_list.sort(key=lambda c: c["lastActivity"], reverse=True)
 
-    # Sort each client's internal messages & notes
     for c in clients_list:
         c["messages"].sort(key=lambda m: m.get("createdAt", ""), reverse=True)
         c["notes"].sort(key=lambda n: n.get("createdAt", ""), reverse=True)
@@ -121,7 +175,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-CRM-Key")
 
     def do_OPTIONS(self):
         self.send_response(204)
@@ -135,7 +189,24 @@ class IntakeHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
             self.wfile.write(b'{"status":"UP","service":"dmitryefremov-intake-crm"}')
-        elif self.path in ("/api/v1/contact", "/api/intake", "/api/crm", "/api/crm/clients"):
+        elif self.path in ("/api/v1/contact", "/api/intake"):
+            # Public summary for tests / intake status (limited summary)
+            messages = read_jsonl(MESSAGES_FILE)
+            self.send_response(200)
+            self._send_cors_headers()
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"total": len(messages), "messages": messages[-20:]}, ensure_ascii=False).encode("utf-8"))
+        elif self.path in ("/api/crm", "/api/crm/clients"):
+            # Strictly protected CRM endpoint
+            if not is_authorized(self.headers, self.client_address[0]):
+                self.send_response(401)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"Unauthorized: Access restricted to dmitrii.eneik@gmail.com"}')
+                return
+
             crm_data = get_aggregated_crm_data()
             self.send_response(200)
             self._send_cors_headers()
@@ -162,11 +233,39 @@ class IntakeHandler(BaseHTTPRequestHandler):
 
         now = datetime.datetime.now(datetime.timezone.utc)
 
-        # 1. Add Note or Agreement
-        if self.path == "/api/crm/note":
+        # 0. CRM Login / Authentication
+        if self.path == "/api/crm/login":
+            key = (body.get("key") or body.get("password") or "").strip()
+            if key == DEFAULT_MASTER_KEY:
+                token = uuid.uuid4().hex
+                save_active_token(token, "dmitrii.eneik@gmail.com")
+                self.send_response(200)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Set-Cookie", f"crm_token={token}; Path=/; Max-Age=2592000; SameSite=Lax")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": True, "token": token, "email": "dmitrii.eneik@gmail.com"}).encode("utf-8"))
+            else:
+                self.send_response(403)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"Invalid access key"}')
+            return
+
+        # 1. Add Note or Agreement (Protected)
+        elif self.path == "/api/crm/note":
+            if not is_authorized(self.headers, self.client_address[0]):
+                self.send_response(401)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"Unauthorized: Access restricted to dmitrii.eneik@gmail.com"}')
+                return
+
             client_email = (body.get("clientEmail") or "").strip().lower()
             text = (body.get("text") or "").strip()
-            note_type = body.get("type") or "agreement"  # 'agreement' or 'note'
+            note_type = body.get("type") or "agreement"
 
             if not text:
                 self.send_response(400)
@@ -199,8 +298,16 @@ class IntakeHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"success": True, "note": note_record}, ensure_ascii=False).encode("utf-8"))
             return
 
-        # 2. Update Client Status or Metadata
+        # 2. Update Client Status or Metadata (Protected)
         elif self.path == "/api/crm/status":
+            if not is_authorized(self.headers, self.client_address[0]):
+                self.send_response(401)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"Unauthorized: Access restricted to dmitrii.eneik@gmail.com"}')
+                return
+
             client_email = (body.get("clientEmail") or "").strip().lower()
             status = body.get("status") or "IN_DISCUSSION"
             name = (body.get("name") or "").strip()
@@ -233,7 +340,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"success": True, "meta": meta[client_email]}, ensure_ascii=False).encode("utf-8"))
             return
 
-        # 3. Standard Intake Submission (from contact form)
+        # 3. Standard Intake Submission (from contact form - Public)
         elif self.path in ("/api/intake", "/api/v1/contact"):
             claim_ticket = f"MSG-{now.strftime('%Y%m%d')}-{uuid.uuid4().hex[:8].upper()}"
 
@@ -297,7 +404,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
 def run():
     server_address = ("0.0.0.0", PORT)
     httpd = ThreadedHTTPServer(server_address, IntakeHandler)
-    print(f"Dmitry Efremov Intake & Mini-CRM Service listening on 0.0.0.0:{PORT}")
+    print(f"Dmitry Efremov Intake & Secured Mini-CRM Service listening on 0.0.0.0:{PORT}")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

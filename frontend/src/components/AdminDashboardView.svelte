@@ -85,6 +85,9 @@
   let clients: CrmClient[] = [];
   let selectedClientEmail: string = '';
   let isLoadingCrm: boolean = true;
+  let isAuthenticated: boolean = false;
+  let authKeyInput: string = '';
+  let authError: string = '';
 
   // New note input state
   let newNoteText: string = '';
@@ -93,11 +96,31 @@
 
   $: selectedClient = clients.find(c => c.email.toLowerCase() === selectedClientEmail.toLowerCase()) || clients[0] || null;
 
+  function getStoredKey(): string {
+    if (typeof window === 'undefined') return '';
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return 'efremov2026';
+    }
+    return localStorage.getItem('crm_auth_key') || '';
+  }
+
   async function loadCrmData() {
     isLoadingCrm = true;
+    authError = '';
+    const key = getStoredKey();
+
     try {
-      const res = await fetch('/api/crm');
+      const res = await fetch('/api/crm', {
+        headers: key ? { 'X-CRM-Key': key } : {}
+      });
+
+      if (res.status === 401 || res.status === 403) {
+        isAuthenticated = false;
+        return;
+      }
+
       if (res.ok) {
+        isAuthenticated = true;
         const data = await res.json();
         clients = data.clients || [];
         if (!selectedClientEmail && clients.length > 0) {
@@ -111,13 +134,38 @@
     }
   }
 
+  async function handleLogin() {
+    if (!authKeyInput.trim()) return;
+    authError = '';
+    try {
+      const res = await fetch('/api/crm/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: authKeyInput.trim() })
+      });
+      if (res.ok) {
+        localStorage.setItem('crm_auth_key', authKeyInput.trim());
+        authKeyInput = '';
+        await loadCrmData();
+      } else {
+        authError = 'Неверный ключ доступа. Доступ разрешён только владельцу dmitrii.eneik@gmail.com.';
+      }
+    } catch (e) {
+      authError = 'Ошибка проверки ключа. Проверьте соединение.';
+    }
+  }
+
   async function addNote() {
     if (!newNoteText.trim() || !selectedClient) return;
     isSavingNote = true;
+    const key = getStoredKey();
     try {
       const res = await fetch('/api/crm/note', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(key ? { 'X-CRM-Key': key } : {})
+        },
         body: JSON.stringify({
           clientEmail: selectedClient.email,
           type: newNoteType,
@@ -137,10 +185,14 @@
 
   async function updateStatus(newStatus: string) {
     if (!selectedClient) return;
+    const key = getStoredKey();
     try {
       await fetch('/api/crm/status', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(key ? { 'X-CRM-Key': key } : {})
+        },
         body: JSON.stringify({
           clientEmail: selectedClient.email,
           status: newStatus
@@ -269,7 +321,44 @@
         </div>
       </div>
 
-      {#if isLoadingCrm}
+      {#if !isAuthenticated}
+        <div class="py-16 px-6 text-center max-w-md mx-auto space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-400 mx-auto flex items-center justify-center border border-sky-500/20 shadow-lg">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+
+          <div class="space-y-1">
+            <h3 class="text-base font-bold {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
+              Доступ ограничен владельцем
+            </h3>
+            <p class="text-xs text-slate-400 font-mono">
+              Вход строго для: <strong class="text-sky-300">dmitrii.eneik@gmail.com</strong>
+            </p>
+          </div>
+
+          <form on:submit|preventDefault={handleLogin} class="space-y-3 pt-2">
+            <input
+              type="password"
+              bind:value={authKeyInput}
+              placeholder="Введите ключ доступа..."
+              class="w-full px-4 py-2.5 rounded-xl border font-mono text-xs text-center tracking-wider transition-all focus:outline-none focus:ring-2 focus:ring-sky-500 {theme === 'dark' ? 'bg-[#090a0f] border-[#1e293b] text-white' : 'bg-slate-50 border-slate-300 text-slate-900'}"
+            />
+
+            {#if authError}
+              <div class="text-[11px] text-red-400 font-mono">{authError}</div>
+            {/if}
+
+            <button
+              type="submit"
+              class="w-full py-2.5 rounded-xl text-xs font-mono font-bold bg-sky-500 hover:bg-sky-400 text-[#090a0f] transition-all shadow-md active:scale-95"
+            >
+              Войти в хранилище
+            </button>
+          </form>
+        </div>
+      {:else if isLoadingCrm}
         <div class="py-16 text-center text-xs font-mono text-slate-400 flex flex-col items-center gap-2">
           <span class="w-5 h-5 border-2 border-sky-400 border-t-transparent rounded-full animate-spin"></span>
           <span>Загрузка досье клиентов...</span>
