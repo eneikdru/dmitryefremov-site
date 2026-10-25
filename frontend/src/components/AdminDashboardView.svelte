@@ -53,7 +53,37 @@
     }
   }
 
+  interface IntakeMessage {
+    id: number;
+    claimTicket: string;
+    status: string;
+    classification: string;
+    title: string;
+    narrative: string;
+    clientEmail: string;
+    createdAt: string;
+  }
+
+  let messages: IntakeMessage[] = [];
+  let isLoadingMessages: boolean = true;
+
+  async function loadMessages() {
+    isLoadingMessages = true;
+    try {
+      const res = await fetch('/api/intake');
+      if (res.ok) {
+        const data = await res.json();
+        messages = (data.messages || []).slice().reverse();
+      }
+    } catch (e) {
+      console.error('Failed to load messages', e);
+    } finally {
+      isLoadingMessages = false;
+    }
+  }
+
   onMount(() => {
+    loadMessages();
     window.addEventListener('keydown', handleKeydown);
     return () => {
       window.removeEventListener('keydown', handleKeydown);
@@ -109,6 +139,104 @@
 
   <!-- Main Content Canvas -->
   <main id="admin-main-content" class="w-full max-w-4xl mx-auto pt-20 pb-16 px-4 sm:px-6 space-y-6">
+    <!-- Incoming Messages Vault Section (Dmitry's Private Inbox) -->
+    <section
+      id="messages-inbox-section"
+      class="p-5 sm:p-6 rounded-2xl border transition-all shadow-xl {theme === 'dark' ? 'bg-[#101728] border-sky-500/30' : 'bg-white border-sky-400'}"
+    >
+      <div class="flex items-center justify-between pb-4 border-b {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400 border border-sky-500/20">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-base sm:text-lg font-bold tracking-tight {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
+              Входящие сообщения с сайта
+            </h2>
+            <p class="text-xs font-mono text-slate-400">Прямое защищенное хранилище (Vault)</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+            {messages.length} обращений
+          </span>
+          <button
+            type="button"
+            on:click={loadMessages}
+            title="Обновить список"
+            class="px-3 py-1 text-xs font-mono rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors flex items-center gap-1 active:scale-95"
+          >
+            <span>↻</span>
+            <span class="hidden sm:inline">Обновить</span>
+          </button>
+        </div>
+      </div>
+
+      {#if isLoadingMessages}
+        <div class="py-10 text-center text-xs font-mono text-slate-400 flex flex-col items-center gap-2">
+          <span class="w-4 h-4 border-2 border-sky-400 border-t-transparent rounded-full animate-spin"></span>
+          <span>Чтение реестра сообщений...</span>
+        </div>
+      {:else if messages.length === 0}
+        <div class="py-10 text-center text-xs font-mono text-slate-400">
+          Сообщений пока нет. Любое новое обращение через форму сайта появится здесь мгновенно.
+        </div>
+      {:else}
+        <div class="divide-y {theme === 'dark' ? 'divide-[#1f2433]' : 'divide-[#e2e8f0]'} mt-1">
+          {#each messages as msg}
+            <div class="py-4 space-y-2.5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-mono text-xs font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
+                    {msg.claimTicket}
+                  </span>
+                  <span class="text-[11px] px-2 py-0.5 rounded font-mono text-slate-300 bg-slate-800 border border-slate-700">
+                    {msg.classification || 'general'}
+                  </span>
+                  <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                    {msg.status || 'NEW'}
+                  </span>
+                </div>
+                <span class="text-xs font-mono text-slate-400">
+                  {new Date(msg.createdAt).toLocaleString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                </span>
+              </div>
+
+              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                <div class="space-y-1">
+                  <div class="text-sm sm:text-base font-bold {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
+                    {msg.title || '(Без темы)'}
+                  </div>
+                  <div class="text-xs font-mono text-slate-400">
+                    Отправитель: <strong class="text-sky-300 font-semibold">{msg.clientEmail || 'Анонимно'}</strong>
+                  </div>
+                </div>
+
+                {#if msg.clientEmail}
+                  <a
+                    href="mailto:{msg.clientEmail}?subject=Re: {encodeURIComponent(msg.title || 'Сообщение с dmitryefremov.com')}"
+                    class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-sky-500 hover:bg-sky-400 text-[#090a0f] transition-all shadow-sm flex items-center gap-1.5"
+                  >
+                    <span>Ответить</span>
+                    <span>→</span>
+                  </a>
+                {/if}
+              </div>
+
+              {#if msg.narrative}
+                <div class="p-3.5 rounded-xl {theme === 'dark' ? 'bg-[#090a0f] border border-white/5' : 'bg-slate-50 border border-slate-200'} font-sans text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">
+                  {msg.narrative}
+                </div>
+              {/if}
+            </div>
+          {/each}
+        </div>
+      {/if}
+    </section>
+
     <!-- Status Anchor & Sub-Header Banner -->
     <section
       id="statutory-benchmark-banner"

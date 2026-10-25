@@ -123,7 +123,7 @@
   }
 </script>
 
-{#if currentPath === '/admin' || (typeof window !== 'undefined' && window.location.hash === '#/admin')}
+{#if currentPath === '/admin' || currentPath === '/inbox' || (typeof window !== 'undefined' && (window.location.hash === '#/admin' || window.location.hash === '#/inbox' || window.location.hash === '#inbox'))}
   <AdminDashboardView {theme} />
 {:else if currentPath === '/telemetry-hud' || (typeof window !== 'undefined' && (window.location.hash === '#/telemetry-hud' || window.location.hash === '#telemetry-hud')) || activeTab === 'hud'}
   <TelemetryHudView {theme} />
