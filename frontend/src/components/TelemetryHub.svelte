@@ -291,8 +291,14 @@
 
       <!-- Footer -->
       <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-[#1f2433] text-[#94a3b8]' : 'border-[#e2e8f0] text-[#64748b]'}">
-        <div>
+        <div class="flex flex-col gap-2">
           <span>© {new Date().getFullYear()} Дмитрий Ефремов (Dmitry Efremov). Все права защищены.</span>
+          <div class="flex items-center gap-4 mt-2">
+            <a href="https://linkedin.com/in/dmitryefremov" target="_blank" rel="noopener noreferrer" class="hover:text-current transition-colors" aria-label="Official LinkedIn Profile">LinkedIn</a>
+            <a href="https://github.com/dmitryefremov" target="_blank" rel="noopener noreferrer" class="hover:text-current transition-colors" aria-label="Official GitHub Repository">GitHub</a>
+            <a href="https://t.me/efremov_mvp" target="_blank" rel="noopener noreferrer" class="hover:text-current transition-colors" aria-label="Telegram Channel">Telegram</a>
+            <a href="https://youtube.com/@dmitrii.efremov" target="_blank" rel="noopener noreferrer" class="hover:text-current transition-colors" aria-label="YouTube Channel">YouTube</a>
+          </div>
         </div>
         <div class="flex items-center gap-6">
           <button

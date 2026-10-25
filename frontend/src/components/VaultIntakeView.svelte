@@ -395,7 +395,7 @@
           <span>Submitter Safeguard Controls</span>
         </h3>
 
-        <label class="flex items-start justify-between cursor-pointer space-x-3 text-xs">
+        <label for="toggle-discard-metadata" class="flex items-start justify-between cursor-pointer space-x-3 text-xs">
           <div class="flex-1">
             <div class="font-semibold text-[#0b1c30]">Discard IP & User-Agent from receipt</div>
             <p class="text-[11px] text-[#434655] mt-0.5">Enclave will zero-fill connection metadata headers before generating immutable proof.</p>
@@ -411,7 +411,7 @@
 
         <div class="h-px bg-[#c3c6d7]/40"></div>
 
-        <label class="flex items-start justify-between cursor-pointer space-x-3 text-xs">
+        <label for="toggle-recovery-phrase" class="flex items-start justify-between cursor-pointer space-x-3 text-xs">
           <div class="flex-1">
             <div class="font-semibold text-[#0b1c30]">Require two-part recovery phrase</div>
             <p class="text-[11px] text-[#434655] mt-0.5">Splits verification token using Shamir's Secret Sharing (2-of-3 threshold).</p>

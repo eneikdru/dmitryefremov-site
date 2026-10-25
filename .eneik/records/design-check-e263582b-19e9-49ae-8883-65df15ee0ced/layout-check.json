@@ -1,0 +1,23 @@
+[
+  {
+    "id": "main-footer",
+    "left": 16,
+    "top": 2457,
+    "width": 343,
+    "height": 129
+  },
+  {
+    "id": "vault-intake-root",
+    "left": 16,
+    "top": 920.5,
+    "width": 343,
+    "height": 1496.5
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 23,
+    "top": 702.5,
+    "width": 176.625,
+    "height": 36
+  }
+]
