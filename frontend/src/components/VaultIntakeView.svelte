@@ -131,8 +131,8 @@
   
 
   <!-- Main Card -->
-  <section class="bg-[#090a0f] rounded-xl p-6 border border-[#1f2433] shadow-2xl relative">
-    <header class="mb-6 border-b border-[#1f2433] pb-4">
+  <section class="bg-[#090a0f] rounded-xl p-6 border border-white/10 shadow-2xl relative">
+    <header class="mb-6 border-b border-white/10 pb-4">
       <h2 class="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
          Написать прямо на сайт Дмитрию Ефремову
       </h2>
@@ -143,8 +143,8 @@
 
     {#if submitSuccess}
             <!-- Success Feedback Screen -->
-      <div id="intake-success-feedback" class="bg-[#12151e] border border-[#38bdf8]/50 rounded-xl p-6 space-y-4 text-center animate-fade-in">
-        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#38bdf8]/10 text-[#38bdf8] text-2xl font-bold mb-2">
+      <div id="intake-success-feedback" class="bg-[#0d1118] border border-[#38bdf8]/50 rounded-xl p-6 space-y-4 text-center animate-fade-in">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-400/10 text-[#38bdf8] text-2xl font-bold mb-2">
           ✓
         </div>
         <h3 class="text-lg font-bold text-white">Сообщение успешно отправлено</h3>
@@ -184,21 +184,21 @@
             <button
               type="button"
               on:click={() => setClassification('collaboration')}
-              class="px-3 py-2 text-xs font-mono rounded-lg border transition-all text-center {classification === 'collaboration' ? 'bg-[#38bdf8]/10 border-[#38bdf8] text-[#38bdf8] font-bold' : 'bg-[#12151e] border-[#1f2433] text-[#94a3b8] hover:text-white'}"
+              class="px-3 py-2 text-xs font-mono rounded-lg border transition-all text-center {classification === 'collaboration' ? 'bg-amber-400/10 border-amber-400 text-amber-400 font-bold' : 'bg-[#0d1118] border-white/10 text-[#94a3b8] hover:text-white'}"
             >
               Сотрудничество
             </button>
             <button
               type="button"
               on:click={() => setClassification('systems_audit')}
-              class="px-3 py-2 text-xs font-mono rounded-lg border transition-all text-center {classification === 'systems_audit' ? 'bg-[#38bdf8]/10 border-[#38bdf8] text-[#38bdf8] font-bold' : 'bg-[#12151e] border-[#1f2433] text-[#94a3b8] hover:text-white'}"
+              class="px-3 py-2 text-xs font-mono rounded-lg border transition-all text-center {classification === 'systems_audit' ? 'bg-amber-400/10 border-amber-400 text-amber-400 font-bold' : 'bg-[#0d1118] border-white/10 text-[#94a3b8] hover:text-white'}"
             >
               Аудит систем
             </button>
             <button
               type="button"
               on:click={() => setClassification('general_inquiry')}
-              class="px-3 py-2 text-xs font-mono rounded-lg border transition-all text-center {classification === 'general_inquiry' ? 'bg-[#38bdf8]/10 border-[#38bdf8] text-[#38bdf8] font-bold' : 'bg-[#12151e] border-[#1f2433] text-[#94a3b8] hover:text-white'}"
+              class="px-3 py-2 text-xs font-mono rounded-lg border transition-all text-center {classification === 'general_inquiry' ? 'bg-amber-400/10 border-amber-400 text-amber-400 font-bold' : 'bg-[#0d1118] border-white/10 text-[#94a3b8] hover:text-white'}"
             >
               Вопрос автору
             </button>
@@ -216,7 +216,7 @@
             bind:value={title}
             on:input={handleInput}
             placeholder="Тема обращения, проекта или вопроса..."
-            class="w-full bg-[#12151e] border border-[#1f2433] focus:border-[#38bdf8] rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-[#64748b] font-mono focus:outline-none transition-colors"
+            class="w-full bg-[#0d1118] border border-white/10 focus:border-amber-400 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-[#64748b] font-mono focus:outline-none transition-colors"
           />
         </div>
 
@@ -231,7 +231,7 @@
             bind:value={email}
             on:input={handleInput}
             placeholder="name@domain.com или @username"
-            class="w-full bg-[#12151e] border border-[#1f2433] focus:border-[#38bdf8] rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-[#64748b] font-mono focus:outline-none transition-colors"
+            class="w-full bg-[#0d1118] border border-white/10 focus:border-amber-400 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-[#64748b] font-mono focus:outline-none transition-colors"
           />
         </div>
 
@@ -246,7 +246,7 @@
             on:input={handleInput}
             rows="5"
             placeholder="Опишите ваш проект, архитектурную задачу или вопрос для обсуждения..."
-            class="w-full bg-[#12151e] border border-[#1f2433] focus:border-[#38bdf8] rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-[#64748b] font-mono focus:outline-none transition-colors resize-y leading-relaxed"
+            class="w-full bg-[#0d1118] border border-white/10 focus:border-amber-400 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-[#64748b] font-mono focus:outline-none transition-colors resize-y leading-relaxed"
           ></textarea>
         </div>
 
@@ -255,7 +255,7 @@
           <button
             type="submit"
             disabled={isSubmitting}
-            class="w-full py-3 px-4 bg-[#38bdf8] hover:bg-[#0284c7] text-[#090a0f] font-mono font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+            class="w-full py-3 px-4 bg-amber-400 hover:bg-amber-300 text-black font-extrabold font-mono font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {#if isSubmitting}
               <span class="w-3.5 h-3.5 border-2 border-[#090a0f] border-t-transparent rounded-full animate-spin"></span>

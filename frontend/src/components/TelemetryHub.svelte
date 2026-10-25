@@ -158,7 +158,7 @@
 
             <div class="flex items-center gap-2.5 font-mono text-xs tracking-wider uppercase font-semibold {theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}">
               <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
-              <span class="text-white font-bold tracking-widest">EFREMOV // NODE</span>
+              <span class="text-white font-bold tracking-widest">ДМИТРИЙ ЕФРЕМОВ</span>
               <span class="opacity-30">•</span>
               <span class="hidden sm:inline">AUTONOMOUS SYSTEMS ARCHITECTURE</span>
             </div>
@@ -236,11 +236,7 @@
                   imgClass="w-full h-full object-cover object-top filter grayscale contrast-110 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
                   loading="eager"
                 />
-                <!-- Subtle technical overlay coordinate -->
-                <div class="absolute bottom-2 left-2 right-2 px-2 py-1 rounded bg-black/75 backdrop-blur-sm border border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-300 uppercase">
-                  <span>DMITRY EFREMOV</span>
-                  <span class="text-amber-400 font-bold">4K MASTER</span>
-                </div>
+
               </div>
             </div>
 
@@ -248,7 +244,7 @@
             <div class="lg:col-span-8 space-y-6 text-center lg:text-left">
               <div class="space-y-3">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded font-mono text-xs uppercase tracking-widest font-bold border {theme === 'dark' ? 'bg-amber-400/10 text-amber-300 border-amber-400/30' : 'bg-amber-50 text-amber-900 border-amber-300'}">
-                  <span>КОНТУР 01 // ОНТОЛОГИЯ ДЕЙСТВИЯ</span>
+                  <span>АВТОНОМНЫЕ СИСТЕМЫ И ДЕЙСТВИЕ</span>
                 </div>
 
                 <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight uppercase leading-[0.95] {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
@@ -312,50 +308,45 @@
           <button
             id="tab-btn-podcast"
             type="button"
-            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
+            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex items-center justify-center cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'podcast')}
           >
-            <span class="text-[10px] opacity-70">01 //</span>
             <span>{t($currentLanguage).nav_podcast}</span>
           </button>
 
           <button
             id="tab-btn-article"
             type="button"
-            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
+            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex items-center justify-center cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'article')}
           >
-            <span class="text-[10px] opacity-70">02 //</span>
             <span>{t($currentLanguage).nav_article}</span>
           </button>
 
           <button
             id="tab-btn-sparks"
             type="button"
-            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
+            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex items-center justify-center cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'sparks')}
           >
-            <span class="text-[10px] opacity-70">03 //</span>
             <span>{t($currentLanguage).nav_sparks}</span>
           </button>
 
           <button
             id="tab-btn-canon"
             type="button"
-            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
+            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex items-center justify-center cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'canon')}
           >
-            <span class="text-[10px] opacity-70">04 //</span>
             <span>{t($currentLanguage).nav_canon}</span>
           </button>
 
           <button
             id="tab-btn-contact"
             type="button"
-            class="col-span-2 sm:col-span-1 py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
+            class="col-span-2 sm:col-span-1 py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex items-center justify-center cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'contact')}
           >
-            <span class="text-[10px] opacity-70">05 //</span>
             <span>{t($currentLanguage).nav_contact}</span>
           </button>
         </nav>

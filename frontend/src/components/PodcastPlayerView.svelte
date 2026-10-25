@@ -164,9 +164,7 @@
   <!-- Architectural Header: Title & Subscription Coordinates -->
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
     <div class="space-y-1">
-      <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">
-        <span>МОДУЛЬ 01 // АУДИОКОНТУР</span>
-      </div>
+
       <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white uppercase">
         {$currentLanguage === 'ru' 
           ? 'Подкаст «Системы и реальность»' 
@@ -224,7 +222,7 @@
               on:click={() => handleSelectEpisode(ep.id)}
             >
               <div class="flex justify-between items-center text-xs font-mono mb-2">
-                <span class="font-bold text-amber-400 uppercase tracking-widest">ВЫПУСК {String(ep.id).padStart(2, '0')}</span>
+                <span class="font-bold text-amber-400 uppercase tracking-widest">ВЫПУСК</span>
                 <span class="text-slate-400">{formatTime(ep.durationSeconds)}</span>
               </div>
               <h3 class="font-bold text-white text-base mb-2 hover:text-amber-300 transition-colors leading-snug">
@@ -253,7 +251,7 @@
               <div class="space-y-2">
                 <div class="flex items-center justify-between gap-2">
                   <span class="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">
-                    ВЫПУСК {String(currentEpisode.id).padStart(2, '0')}
+                    ВЫПУСК
                   </span>
                   <span class="text-xs font-mono text-slate-400">{currentEpisode.publishedAt}</span>
                 </div>

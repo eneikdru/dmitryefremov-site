@@ -396,7 +396,7 @@
     <div class="flex items-center space-x-4">
       <div class="flex flex-col">
         <div class="flex items-center gap-3">
-          <span class="font-mono text-sm tracking-widest uppercase font-bold text-amber-400">EFREMOV // CORE</span>
+          <span class="font-mono text-sm tracking-widest uppercase font-bold text-amber-400">ДМИТРИЙ ЕФРЕМОВ</span>
           <span class="h-3 w-px bg-white/20"></span>
           <h1 class="text-sm sm:text-base font-bold tracking-tight {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
             ЛИЧНЫЙ КАБИНЕТ ОПЕРАТОРА
@@ -455,7 +455,7 @@
               <div class="flex items-center gap-2">
                 <span class="h-2 w-2 rounded-full bg-amber-400"></span>
                 <h2 class="text-sm font-mono uppercase tracking-widest font-bold text-amber-400">
-                  РУКОВОДСТВО ОПЕРАТОРА // РЕГЛАМЕНТ РАБОТЫ
+                  РУКОВОДСТВО ПО РАБОТЕ С ЗАЯВКАМИ
                 </h2>
               </div>
               <button
@@ -473,28 +473,28 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
               <div class="p-3.5 rounded-lg border {theme === 'dark' ? 'bg-[#090c10] border-white/10' : 'bg-slate-50 border-slate-200'}">
-                <div class="font-mono text-xs uppercase font-bold text-amber-400 mb-1">01. САММАРИ</div>
+                <div class="font-mono text-xs uppercase font-bold text-amber-400 mb-1">САММАРИ</div>
                 <div class="text-xs leading-relaxed {theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}">
                   Генерация аналитической выжимки контекста и истории клиента в один клик.
                 </div>
               </div>
 
               <div class="p-3.5 rounded-lg border {theme === 'dark' ? 'bg-[#090c10] border-white/10' : 'bg-slate-50 border-slate-200'}">
-                <div class="font-mono text-xs uppercase font-bold text-emerald-400 mb-1">02. ДОГОВОРЁННОСТИ</div>
+                <div class="font-mono text-xs uppercase font-bold text-emerald-400 mb-1">ДОГОВОРЁННОСТИ</div>
                 <div class="text-xs leading-relaxed {theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}">
                   Фиксация согласованных условий, бюджетов, дедлайнов и обязательств.
                 </div>
               </div>
 
               <div class="p-3.5 rounded-lg border {theme === 'dark' ? 'bg-[#090c10] border-white/10' : 'bg-slate-50 border-slate-200'}">
-                <div class="font-mono text-xs uppercase font-bold text-sky-400 mb-1">03. СТАТУСЫ</div>
+                <div class="font-mono text-xs uppercase font-bold text-sky-400 mb-1">СТАТУСЫ</div>
                 <div class="text-xs leading-relaxed {theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}">
                   Чёткий жизненный цикл: Новый → В диалоге → Договорились → Архив.
                 </div>
               </div>
 
               <div class="p-3.5 rounded-lg border {theme === 'dark' ? 'bg-[#090c10] border-white/10' : 'bg-slate-50 border-slate-200'}">
-                <div class="font-mono text-xs uppercase font-bold text-red-400 mb-1">04. ОЧИСТКА</div>
+                <div class="font-mono text-xs uppercase font-bold text-red-400 mb-1">ОЧИСТКА</div>
                 <div class="text-xs leading-relaxed {theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}">
                   Полное удаление тестовых обращений или единичных карточек без следа.
                 </div>
