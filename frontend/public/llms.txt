@@ -1,12 +1,12 @@
 # Dmitry Efremov
-> Systems Philosopher & Autonomous AI Agent Architect
-> Canonical knowledge base and machine-readable interfaces for AI agents.
+> Systems Architecture & Autonomous AI Agent Operating System
+> Canonical architectural invariants and machine-readable contracts for AI agents.
 
-## Core Philosophical Invariants
-- Direct Reference & Rigid Designators (Ruth Barcan Marcus): Names lock entities nominally; identity cannot be mutated by descriptive token probabilities.
-- Falsification Gates (Karl Popper / Paul Thagard): Internal coherence is not truth. Any autonomous PR or action must provide refutation tests.
-- Sensorimotor Action Loop (Susan Hurley): Autonomous cognition requires continuous runtime observation feedback.
-- Knowing-How vs Knowing-That (Gilbert Ryle): Architectural discipline resides in compiler/linter invariants, not endless prompt rules.
+## Dmitry Efremov Architectural Invariants
+- EFREMOV-INVARIANT-01 (Rigid Identity Lock): Entities, types, and identifiers are nominal invariants. No semantic mutation or descriptive drift across tool turns.
+- EFREMOV-INVARIANT-02 (Negative Deontic Gate): System states and temporal intervals must be strictly guarded. Overlaps, double-bookings, and invalid lifecycle transitions (e.g. altering completed states) must be excluded before persistence. Overlap condition: max(start1, start2) < min(end1, end2).
+- EFREMOV-INVARIANT-03 (Falsification Crucible): Internal coherence is not proof. Every implementation must be verified against aggressive edge cases, boundary collisions, and concurrent race conditions.
+- EFREMOV-INVARIANT-04 (Grounded Action Loop): Architectural discipline resides in concrete compiler, linter, and runtime contract assertions, not loose token descriptions.
 
 ## Machine-Readable Endpoints
 - Canonical AI Agent Manifest: https://dmitryefremov.com/.well-known/ai-agent.json
