@@ -43,15 +43,15 @@ class RussianContentGraphSeedingTest {
     @Test
     @DisplayName("Verify authentic Russian canon nodes and graph cross-references exist")
     void testCanonNodesAndCrossReferencesSeeded() {
-        Optional<CanonItem> canonItem = canonItemRepository.findBySlug("rasshirennyy-razum-i-vneshnyaya-pamyat");
+        Optional<CanonItem> canonItem = canonItemRepository.findBySlug("prikladnaya-konfiguraciya-modeli-avtonomii");
         assertThat(canonItem).isPresent();
-        assertThat(canonItem.get().getTitle()).contains("расширенного разума");
-        assertThat(canonItem.get().getContent()).contains("Extended Mind Thesis");
+        assertThat(canonItem.get().getTitle()).contains("Прикладная конфигурация модели автономии");
+        assertThat(canonItem.get().getContent()).contains("Обязательная проверка");
 
         Integer xrefCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM canon_cross_references WHERE description LIKE ?",
                 Integer.class,
-                "%расширяет концепцию внешней памяти%"
+                "%расширяет деонтическую автономию агентов%"
         );
         assertThat(xrefCount).isNotNull().isGreaterThanOrEqualTo(1);
     }

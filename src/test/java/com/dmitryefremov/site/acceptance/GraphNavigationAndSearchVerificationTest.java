@@ -58,7 +58,7 @@ class GraphNavigationAndSearchVerificationTest {
                 .andExpect(jsonPath("$.title", containsString("Выпуск 05")));
 
         // 2. Fetch connected canon item
-        Optional<CanonItem> canonOpt = canonItemRepository.findBySlug("rasshirennyy-razum-i-vneshnyaya-pamyat");
+        Optional<CanonItem> canonOpt = canonItemRepository.findBySlug("prikladnaya-konfiguraciya-modeli-avtonomii");
         assertThat(canonOpt).isPresent();
         CanonItem canonItem = canonOpt.get();
 
@@ -74,14 +74,14 @@ class GraphNavigationAndSearchVerificationTest {
 
         CanonItem connectedCanon = linksFromPodcast.get(0).getCanonItem();
         String canonSlug = connectedCanon.getSlug();
-        assertThat(canonSlug).isEqualTo("rasshirennyy-razum-i-vneshnyaya-pamyat");
+        assertThat(canonSlug).isEqualTo("prikladnaya-konfiguraciya-modeli-avtonomii");
 
         // 4. Verify target canon concept permanent URL loads with correct attributes
         mockMvc.perform(get("/api/v1/canon/" + canonSlug)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.slug", is(canonSlug)))
-                .andExpect(jsonPath("$.title", containsString("расширенного разума")));
+                .andExpect(jsonPath("$.title", containsString("Прикладная конфигурация модели автономии")));
 
         // 5. Reverse Traversal: From canon concept back to podcast media link
         List<ConceptMediaLink> linksFromCanon = conceptMediaLinkRepository.findByCanonItemId(connectedCanon.getId());
@@ -92,10 +92,10 @@ class GraphNavigationAndSearchVerificationTest {
     @DisplayName("Given search query, when searching for known canon/podcast keywords, then correct nodes are returned")
     void testInstantSearchQueryNodes() throws Exception {
         mockMvc.perform(get("/api/v1/canon")
-                        .param("domain", "PHILOSOPHY_OF_MIND")
+                        .param("domain", "AUTONOMOUS_ENGINEERING")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$.content[0].slug", is("rasshirennyy-razum-i-vneshnyaya-pamyat")));
+                .andExpect(jsonPath("$.content[0].slug", is("prikladnaya-konfiguraciya-modeli-avtonomii")));
     }
 }
