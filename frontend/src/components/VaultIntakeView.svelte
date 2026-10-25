@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { telemetry } from '../lib/telemetry';
 
   export let apiEndpoint: string = '/api/intake';
 
@@ -105,6 +106,10 @@
       claimTicket = resData.claimTicket || `0x${Math.random().toString(16).slice(2, 10)}...31bc`;
       submitSuccess = true;
       acknowledgementEmailSent = true;
+      telemetry.trackCanonSubmitConverted(claimTicket, 0, {
+        classification,
+        client_email: email.trim() || undefined
+      });
       clearDraft();
     } catch (err: any) {
       // Network failure or API error - draft is retained so nothing typed is lost

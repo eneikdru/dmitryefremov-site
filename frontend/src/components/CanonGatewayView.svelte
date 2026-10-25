@@ -88,7 +88,12 @@
     testOrderResult = 'Отправка...';
     const res = await submitAgentOrder(testOrderForm);
     if (res.success) {
-      testOrderResult = `Успешно (201 Created)! ID: ${res.data?.orderId || res.data?.id || 'ORD-9821'}`;
+      const orderId = res.data?.orderId || res.data?.id || 'ORD-9821';
+      testOrderResult = `Успешно (201 Created)! ID: ${orderId}`;
+      telemetry.trackCanonSubmitConverted(orderId, 0, {
+        client_name: testOrderForm.clientName,
+        service_type: testOrderForm.serviceType
+      });
     } else {
       testOrderResult = `Ошибка: ${res.error}`;
     }

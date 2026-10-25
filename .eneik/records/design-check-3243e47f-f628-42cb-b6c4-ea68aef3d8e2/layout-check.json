@@ -1,0 +1,86 @@
+[
+  {
+    "id": "sys-core-badge",
+    "left": 176,
+    "top": 37,
+    "width": 127,
+    "height": 26
+  },
+  {
+    "id": "cmd-k-trigger-btn",
+    "left": 980,
+    "top": 32,
+    "width": 137,
+    "height": 36
+  },
+  {
+    "id": "theme-toggle-btn",
+    "left": 1129,
+    "top": 35,
+    "width": 135,
+    "height": 30
+  },
+  {
+    "id": "hero-section",
+    "left": 176,
+    "top": 109,
+    "width": 1088,
+    "height": 304
+  },
+  {
+    "id": "hero-title",
+    "left": 449,
+    "top": 168,
+    "width": 782,
+    "height": 48
+  },
+  {
+    "id": "nav-tabs",
+    "left": 176,
+    "top": 437,
+    "width": 865,
+    "height": 50
+  },
+  {
+    "id": "tab-btn-podcast",
+    "left": 183,
+    "top": 444,
+    "width": 185,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-article",
+    "left": 376,
+    "top": 444,
+    "width": 141,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-contact",
+    "left": 694,
+    "top": 444,
+    "width": 177,
+    "height": 36
+  },
+  {
+    "id": "tab-btn-canon",
+    "left": 879,
+    "top": 444,
+    "width": 155,
+    "height": 36
+  },
+  {
+    "id": "vault-intake-root",
+    "left": 0,
+    "top": 0,
+    "width": 0,
+    "height": 0
+  },
+  {
+    "id": "main-footer",
+    "left": 176,
+    "top": 1330,
+    "width": 1088,
+    "height": 49
+  }
+]
