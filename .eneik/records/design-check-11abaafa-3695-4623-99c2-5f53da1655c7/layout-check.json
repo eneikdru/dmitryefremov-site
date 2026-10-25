@@ -1,0 +1,23 @@
+[
+  {
+    "id": "header",
+    "left": 16,
+    "top": -688,
+    "width": 343,
+    "height": 890.5
+  },
+  {
+    "id": "main-footer",
+    "left": 16,
+    "top": 1517.5,
+    "width": 343,
+    "height": 129
+  },
+  {
+    "id": "contact-terminal-root",
+    "left": 16,
+    "top": 242.5,
+    "width": 343,
+    "height": 1235
+  }
+]

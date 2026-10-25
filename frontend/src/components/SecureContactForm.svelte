@@ -2,14 +2,14 @@
   import { onMount } from 'svelte';
   import { telemetry } from '../lib/telemetry';
 
-  export let apiEndpoint: string = '/api/intake';
+  export let apiEndpoint: string = '/api/contact';
 
   type Classification = 'confidential' | 'whistleblower' | 'security';
 
   let classification: Classification = 'confidential';
   let email: string = '';
-  let title: string = 'Unauthorized telemetry egress in core subsystem';
-  let narrative: string = 'Observed unauthorized TLS 1.2 handshake initiated from production pod node-04b targeting unmapped external endpoint [REDACTED_IP]. Handshake payload contained periodic serialized ledger memory segments.';
+  let title: string = '';
+  let narrative: string = '';
   let discardMetadata: boolean = true;
   let requireRecoveryPhrase: boolean = true;
 
@@ -21,7 +21,7 @@
 
   let isTooltipExpanded: boolean = false;
 
-  const STORAGE_KEY = 'vault_intake_draft';
+  const STORAGE_KEY = 'secure_contact_draft';
 
   onMount(() => {
     try {
@@ -107,7 +107,7 @@
       submitSuccess = true;
       acknowledgementEmailSent = true;
 
-      telemetry.trackFormValidationPassed('vault_intake_submit', 12, 2);
+      telemetry.trackFormValidationPassed('secure_contact_submit', 12, 2);
       telemetry.trackCanonSubmitConverted(claimTicket, 0, {
         classification,
         title: title.trim(),
@@ -134,7 +134,7 @@
   }
 </script>
 
-<div id="vault-intake-root" class="w-full max-w-xl mx-auto space-y-6 font-sans text-[#0b1c30]">
+<div id="secure-contact-root" class="w-full max-w-xl mx-auto space-y-6 font-sans text-[#0b1c30]">
   <!-- Header / Telemetry Bar -->
   <div class="flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-[#c3c6d7]/50 shadow-sm">
     <div class="flex items-center space-x-2">
@@ -233,7 +233,7 @@
   {#if submitSuccess}
     <!-- SUCCESS CONFIRMATION PANEL -->
     <div
-      id="intake-success-feedback"
+      id="contact-success-feedback"
       role="status"
       aria-live="polite"
       class="bg-[#eff4ff] border-2 border-[#006c49] p-6 rounded-xl space-y-4 shadow-lg text-[#0b1c30]"
@@ -262,30 +262,30 @@
 
       <div class="pt-2">
         <button
-          id="intake-reset-btn"
+          id="contact-reset-btn"
           type="button"
           on:click={resetForm}
           class="w-full py-2.5 px-4 bg-[#004ac6] hover:bg-[#2563eb] text-white font-semibold rounded-lg text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-[#004ac6]"
         >
-          Submit Another Intake Request
+          Submit Another Request
         </button>
       </div>
     </div>
   {:else}
-    <!-- INTAKE FORM -->
-    <form id="vault-intake-form" on:submit|preventDefault={handleSubmit} class="space-y-5 bg-white p-6 rounded-xl border border-[#c3c6d7]/70 shadow-sm">
+    <!-- CONTACT FORM -->
+    <form id="secure-contact-form" on:submit|preventDefault={handleSubmit} class="space-y-5 bg-white p-6 rounded-xl border border-[#c3c6d7]/70 shadow-sm">
       {#if submitError}
-        <div id="intake-error-banner" role="alert" class="p-3 bg-[#ffdad6] border border-[#ba1a1a] text-[#93000a] text-xs rounded-lg flex items-start space-x-2">
+        <div id="contact-error-banner" role="alert" class="p-3 bg-[#ffdad6] border border-[#ba1a1a] text-[#93000a] text-xs rounded-lg flex items-start space-x-2">
           <span class="font-bold">⚠️</span>
-          <p id="intake-error-message">{submitError}</p>
+          <p id="contact-error-message">{submitError}</p>
         </div>
       {/if}
 
       <!-- Classification Selector -->
-      <div class="space-y-1.5">
-        <span id="label-classification" class="block text-xs font-semibold text-[#0b1c30]">
+      <fieldset class="space-y-1.5 border-0 p-0 m-0">
+        <legend id="label-classification" class="block text-xs font-semibold text-[#0b1c30]">
           Submission Classification <span class="text-[#ba1a1a]" aria-hidden="true">*</span>
-        </span>
+        </legend>
         <div class="grid grid-cols-3 gap-1.5 bg-[#e5eeff] p-1 rounded-xl border border-[#c3c6d7]/60" role="radiogroup" aria-labelledby="label-classification">
           <button
             type="button"
@@ -317,7 +317,7 @@
             Security<br/>Vulnerability
           </button>
         </div>
-      </div>
+      </fieldset>
 
       <!-- Optional Client Email for Acknowledgement -->
       <div class="space-y-1.5">
@@ -429,7 +429,7 @@
       <!-- Action Button -->
       <div class="pt-2">
         <button
-          id="submit-intake-btn"
+          id="submit-contact-btn"
           type="submit"
           disabled={isSubmitting}
           class="w-full h-12 bg-[#004ac6] hover:bg-[#2563eb] text-white font-semibold rounded-xl flex flex-col items-center justify-center shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-[#004ac6] disabled:opacity-50 cursor-pointer"
