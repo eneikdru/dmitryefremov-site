@@ -32,20 +32,24 @@ public class AdminDashboardController {
         return ResponseEntity.ok(telemetryLogRepository.findAll());
     }
 
-    @PostMapping("/gdpr/export")
+    @RequestMapping(value = {"/gdpr/export", "/gdpr/export/{userId}", "/v1/admin/gdpr/export/{userId}", "/v1/admin/gdpr/export"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<UserDataExportDto> exportUserData(
-            @RequestParam(value = "userId", required = false) String userId,
+            @PathVariable(value = "userId", required = false) String pathUserId,
+            @RequestParam(value = "userId", required = false) String queryUserId,
             @RequestParam(value = "email", required = false) String email) {
-        String identifier = (email != null && !email.isBlank()) ? email : userId;
+        String identifier = (pathUserId != null && !pathUserId.isBlank()) ? pathUserId
+                : ((email != null && !email.isBlank()) ? email : queryUserId);
         UserDataExportDto exportData = complianceService.exportUserData(identifier);
         return ResponseEntity.ok(exportData);
     }
 
-    @DeleteMapping("/gdpr/erasure")
+    @RequestMapping(value = {"/gdpr/erasure", "/gdpr/erasure/{userId}", "/v1/admin/gdpr/erasure/{userId}", "/v1/admin/gdpr/erasure"}, method = {RequestMethod.DELETE, RequestMethod.POST})
     public ResponseEntity<ErasureResponseDto> eraseUserData(
-            @RequestParam(value = "userId", required = false) String userId,
+            @PathVariable(value = "userId", required = false) String pathUserId,
+            @RequestParam(value = "userId", required = false) String queryUserId,
             @RequestParam(value = "email", required = false) String email) {
-        String identifier = (email != null && !email.isBlank()) ? email : userId;
+        String identifier = (pathUserId != null && !pathUserId.isBlank()) ? pathUserId
+                : ((email != null && !email.isBlank()) ? email : queryUserId);
         ErasureResponseDto result = complianceService.eraseUserData(identifier);
         return ResponseEntity.ok(result);
     }

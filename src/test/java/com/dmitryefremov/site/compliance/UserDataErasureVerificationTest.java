@@ -14,6 +14,8 @@ import com.dmitryefremov.site.compliance.dto.ErasureResponseDto;
 import com.dmitryefremov.site.compliance.repository.DirectMessageRepository;
 import com.dmitryefremov.site.compliance.repository.ServiceOrderRepository;
 import com.dmitryefremov.site.compliance.service.UserDataComplianceService;
+import com.dmitryefremov.site.admin.domain.ConsentRecord;
+import com.dmitryefremov.site.admin.repository.ConsentRecordRepository;
 import com.dmitryefremov.site.intake.domain.ClientIntake;
 import com.dmitryefremov.site.intake.domain.IntakeRequest;
 import com.dmitryefremov.site.intake.repository.ClientIntakeRepository;
@@ -63,6 +65,9 @@ class UserDataErasureVerificationTest {
     private IntakeRequestRepository intakeRequestRepository;
 
     @Autowired
+    private ConsentRecordRepository consentRecordRepository;
+
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private static final String TARGET_SUBJECT = "erasure-target@example.com";
@@ -78,6 +83,7 @@ class UserDataErasureVerificationTest {
         agentMessageRepository.deleteAll();
         clientIntakeRepository.deleteAll();
         intakeRequestRepository.deleteAll();
+        consentRecordRepository.deleteAll();
     }
 
     @Test
@@ -99,6 +105,7 @@ class UserDataErasureVerificationTest {
 
         clientIntakeRepository.saveAndFlush(new ClientIntake("Target User", TARGET_SUBJECT, "Acme Corp", "Intake details", fixedClock));
         intakeRequestRepository.saveAndFlush(new IntakeRequest("Target Client", TARGET_SUBJECT, "Consulting", "Request details", fixedClock));
+        consentRecordRepository.saveAndFlush(new ConsentRecord(TARGET_SUBJECT, "ANALYTICS", true, "127.0.0.1"));
 
         // 2. Populate tables for CONTROL_SUBJECT
         serviceOrderRepository.saveAndFlush(new ServiceOrder(CONTROL_SUBJECT, "MVP", "Control order 1", "PENDING", fixedTime));
@@ -112,6 +119,7 @@ class UserDataErasureVerificationTest {
 
         clientIntakeRepository.saveAndFlush(new ClientIntake("Control User", CONTROL_SUBJECT, "Beta Corp", "Control Intake details", fixedClock));
         intakeRequestRepository.saveAndFlush(new IntakeRequest("Control Client", CONTROL_SUBJECT, "Audit", "Control Request details", fixedClock));
+        consentRecordRepository.saveAndFlush(new ConsentRecord(CONTROL_SUBJECT, "ANALYTICS", true, "127.0.0.1"));
 
         // Pre-erasure verification using raw SQL assertions
         assertThat(countRowsBySql("service_orders", "user_id", TARGET_SUBJECT)).isEqualTo(2);
@@ -122,6 +130,7 @@ class UserDataErasureVerificationTest {
         assertThat(countRowsBySql("agent_messages", "sender_email", TARGET_SUBJECT)).isEqualTo(1);
         assertThat(countRowsBySql("client_intakes", "client_email", TARGET_SUBJECT)).isEqualTo(1);
         assertThat(countRowsBySql("intake_requests", "client_email", TARGET_SUBJECT)).isEqualTo(1);
+        assertThat(countRowsBySql("consent_records", "user_id", TARGET_SUBJECT)).isEqualTo(1);
 
         // Act: Execute erasure operation
         ErasureResponseDto response = complianceService.eraseUserData(TARGET_SUBJECT);
@@ -139,6 +148,7 @@ class UserDataErasureVerificationTest {
         assertThat(countRowsBySql("agent_messages", "sender_email", TARGET_SUBJECT)).isZero();
         assertThat(countRowsBySql("client_intakes", "client_email", TARGET_SUBJECT)).isZero();
         assertThat(countRowsBySql("intake_requests", "client_email", TARGET_SUBJECT)).isZero();
+        assertThat(countRowsBySql("consent_records", "user_id", TARGET_SUBJECT)).isZero();
 
         // Control Subject Verification: Prove CONTROL_SUBJECT data remains completely intact
         assertThat(countRowsBySql("service_orders", "user_id", CONTROL_SUBJECT)).isEqualTo(1);
@@ -149,6 +159,7 @@ class UserDataErasureVerificationTest {
         assertThat(countRowsBySql("agent_messages", "sender_email", CONTROL_SUBJECT)).isEqualTo(1);
         assertThat(countRowsBySql("client_intakes", "client_email", CONTROL_SUBJECT)).isEqualTo(1);
         assertThat(countRowsBySql("intake_requests", "client_email", CONTROL_SUBJECT)).isEqualTo(1);
+        assertThat(countRowsBySql("consent_records", "user_id", CONTROL_SUBJECT)).isEqualTo(1);
     }
 
     private Integer countRowsBySql(String tableName, String columnName, String identifier) {
