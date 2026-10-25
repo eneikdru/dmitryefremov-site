@@ -116,10 +116,10 @@
               type="button"
               on:click={toggleTheme}
               aria-label="Toggle theme"
-              class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
-            >
-              <span>ТЕМА:</span>
-              <span class="font-bold text-[#38bdf8]">{theme === 'dark' ? 'Dark Void' : 'Light Monochrome'}</span>
+              title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+              class="px-2.5 py-1.5 rounded-lg text-xs font-mono border transition-all flex items-center gap-1.5 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}">
+              <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
+              <span class="font-medium text-[11px]">{theme === 'dark' ? 'Тёмная' : 'Светлая'}</span>
             </button>
           </div>
         </div>

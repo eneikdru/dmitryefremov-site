@@ -1,5 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+
+  function getYouTubeEmbedUrl(url?: string): string | null {
+    if (!url) return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/);
+    return match ? `https://www.youtube-nocookie.com/embed/${match[1]}?rel=0` : null;
+  }
   import { telemetry } from '../lib/telemetry';
   import {
     PODCAST_EPISODES,
@@ -154,10 +160,11 @@
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2433] pb-4">
     <div>
       <div class="flex items-center gap-2 mb-1 flex-wrap">
-        <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
-          [PODCAST_CATALOG]
+        <span class="text-xs font-mono text-[#34d399] font-medium tracking-wide">
+          АВТОРСКИЙ ЦИКЛ
         </span>
-        <span class="text-xs font-mono text-[#94a3b8]">Выпусков: {episodes.length}</span>
+        <span class="text-xs font-mono text-[#64748b]">•</span>
+        <span class="text-xs font-mono text-[#94a3b8]">{episodes.length} {episodes.length === 1 ? 'выпуск' : (episodes.length > 1 && episodes.length < 5 ? 'выпуска' : 'выпусков')}</span>
       </div>
       <h2 class="text-xl font-bold tracking-tight text-white break-words">Подкаст «Системы и реальность»</h2>
     </div>
@@ -264,6 +271,22 @@
                 «{currentEpisode.thesis}»
               </blockquote>
             </header>
+
+            <!-- YouTube Video Embed -->
+            {#if currentEpisode && currentEpisode.youtubeUrl}
+              {@const ytEmbedUrl = getYouTubeEmbedUrl(currentEpisode.youtubeUrl)}
+              {#if ytEmbedUrl}
+                <div id="youtube-embed-wrapper" class="rounded-xl overflow-hidden border border-[#1f2433] bg-black aspect-video shadow-lg">
+                  <iframe
+                    src={ytEmbedUrl}
+                    title={currentEpisode.title}
+                    class="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              {/if}
+            {/if}
 
             <!-- Hidden Native HTML5 Audio Element for Playback State -->
             <audio

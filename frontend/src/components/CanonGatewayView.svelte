@@ -2,7 +2,9 @@
   import { onMount } from 'svelte';
   import {
     CANON_ROUTES,
+    CANON_PATTERNS,
     type CanonRoute,
+    type CanonPattern,
     fetchLlmsTxt,
     fetchWellKnownAiAgentJson,
     fetchAgentTelemetry,
@@ -86,6 +88,19 @@
     }
   }
 
+  let copiedPatternId: string | null = null;
+  function copyPattern(p: CanonPattern) {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(p.directivePrompt);
+    }
+    copiedPatternId = p.id;
+    setTimeout(() => {
+      if (copiedPatternId === p.id) {
+        copiedPatternId = null;
+      }
+    }, 2000);
+  }
+
   function copyBaseEndpoint() {
     const base = typeof window !== 'undefined' ? `${window.location.origin}/llms.txt` : 'https://dmitryefremov.com/llms.txt';
     navigator.clipboard.writeText(base);
@@ -128,6 +143,52 @@
       </div>
     </div>
   </header>
+
+  <!-- CANON PROMPT PATTERNS FOR AGENTS (TIER 1 ARCHITECTURE) -->
+  <section id="canon-patterns-section" class="bg-[#12151e] border border-[#3a494b]/50 rounded-2xl p-6 space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1f2433] pb-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/30">
+            ПАТТЕРНЫ АВТОНОМИИ
+          </span>
+          <span class="text-xs font-mono text-[#94a3b8]">4 мыслителя</span>
+        </div>
+        <h2 class="text-lg font-bold text-white tracking-tight">Канонические системные директивы для AI-агентов</h2>
+      </div>
+      <span class="text-xs font-mono text-[#67f4b7]">Prompt-Ready · Zero Hallucination</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {#each CANON_PATTERNS as pattern}
+        <div class="bg-[#0a0e16] border border-[#1f2433] hover:border-[#38bdf8]/50 rounded-xl p-4 flex flex-col justify-between space-y-3 transition-colors">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-[#38bdf8] font-bold">{pattern.philosopher}</span>
+              <span class="text-[10px] text-[#64748b]">[{pattern.directiveName}]</span>
+            </div>
+            <h3 class="font-bold text-white text-sm leading-snug">{pattern.title}</h3>
+            <p class="text-xs text-[#94a3b8] leading-relaxed">{pattern.useCase}</p>
+            <div class="p-2.5 rounded bg-[#07090e] border border-[#1f2433] font-mono text-[11px] text-[#cbd5e1] leading-relaxed break-words whitespace-pre-wrap">
+              {pattern.directivePrompt}
+            </div>
+          </div>
+          <button
+            type="button"
+            on:click={() => copyPattern(pattern)}
+            class="w-full py-2 px-3 rounded-lg text-xs font-mono font-bold border transition-all flex items-center justify-center gap-2 {copiedPatternId === pattern.id ? 'bg-[#34d399] text-[#090a0f] border-[#34d399]' : 'bg-[#181c24] text-[#38bdf8] border-[#3a494b] hover:bg-[#38bdf8] hover:text-[#090a0f]'}"
+          >
+            {#if copiedPatternId === pattern.id}
+              <span>✓ СКОПИРОВАНО ДЛЯ АГЕНТА</span>
+            {:else}
+              <span>📋 [COPY FOR AGENT PROMPT]</span>
+            {/if}
+          </button>
+        </div>
+      {/each}
+    </div>
+  </section>
+
 
   <!-- Ingress Gateway Overview Card -->
   <section id="ingress-gateway-card" class="bg-[#1c2028] border border-[#3a494b]/40 rounded-xl p-5 space-y-4 shadow-xl">
