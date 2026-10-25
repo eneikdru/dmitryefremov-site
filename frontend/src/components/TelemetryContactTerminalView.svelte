@@ -15,7 +15,7 @@
         on:click={() => activeSection = 'card'}
         class="px-4 py-2 rounded-md font-semibold transition-all {activeSection === 'card' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
       >
-        🌐 DIRECT CHANNELS & MATRIX
+        🌐 ПРЯМЫЕ КОНТАКТЫ
       </button>
       <button
         id="contact-tab-intake-btn"
@@ -23,7 +23,7 @@
         on:click={() => activeSection = 'intake'}
         class="px-4 py-2 rounded-md font-semibold transition-all {activeSection === 'intake' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
       >
-        🔒 SECURE INTAKE FORM
+        ✍️ НАПИСАТЬ НАПРЯМУЮ НА САЙТ
       </button>
     </div>
   </div>

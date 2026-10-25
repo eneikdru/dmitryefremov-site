@@ -227,7 +227,7 @@
             class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'contact')}
           >
-            <span>✉️ КОНТАКТЫ & ИНТЕЙК</span>
+            <span>✉️ КОНТАКТЫ & СВЯЗЬ</span>
           </button>
           <button
             id="tab-btn-canon"
