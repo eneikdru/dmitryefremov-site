@@ -1,0 +1,65 @@
+[
+  {
+    "id": "telemetry-hud-header",
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 56
+  },
+  {
+    "id": "terminal-icon-btn",
+    "left": 16,
+    "top": 11,
+    "width": 27,
+    "height": 33
+  },
+  {
+    "id": "hud-subheader",
+    "left": 0,
+    "top": 56,
+    "width": 1440,
+    "height": 47
+  },
+  {
+    "id": "hud-goal-banner",
+    "left": 360,
+    "top": 127,
+    "width": 720,
+    "height": 184
+  },
+  {
+    "id": "hud-viewport-preview",
+    "left": 360,
+    "top": 335,
+    "width": 720,
+    "height": 424
+  },
+  {
+    "id": "btn-start-trial-primary",
+    "left": 385,
+    "top": 669,
+    "width": 670,
+    "height": 42
+  },
+  {
+    "id": "hud-event-stream-section",
+    "left": 360,
+    "top": 783,
+    "width": 720,
+    "height": 190
+  },
+  {
+    "id": "hud-events-feed",
+    "left": 361,
+    "top": 876,
+    "width": 718,
+    "height": 64
+  },
+  {
+    "id": "hud-bottom-nav",
+    "left": 0,
+    "top": 836,
+    "width": 1440,
+    "height": 64
+  }
+]
