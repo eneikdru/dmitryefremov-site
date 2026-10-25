@@ -340,6 +340,162 @@ class IntakeHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"success": True, "meta": meta[client_email]}, ensure_ascii=False).encode("utf-8"))
             return
 
+        # 2b. Delete Client or Purge All Clients (Protected)
+        elif self.path in ("/api/crm/delete_client", "/api/crm/client/delete"):
+            if not is_authorized(self.headers, self.client_address[0]):
+                self.send_response(401)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"Unauthorized: Access restricted to dmitrii.eneik@gmail.com"}')
+                return
+
+            client_email = (body.get("clientEmail") or "").strip().lower()
+            purge_all = bool(body.get("purgeAll", False))
+
+            if purge_all:
+                with open(MESSAGES_FILE, "w", encoding="utf-8") as f:
+                    pass
+                with open(NOTES_FILE, "w", encoding="utf-8") as f:
+                    pass
+                save_clients_meta({})
+                print("[CRM] Purged all clients, messages, and notes")
+                self.send_response(200)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": True, "message": "Все клиенты и переписки очищены"}, ensure_ascii=False).encode("utf-8"))
+                return
+
+            if not client_email:
+                self.send_response(400)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"clientEmail is required"}')
+                return
+
+            all_msgs = read_jsonl(MESSAGES_FILE)
+            kept_msgs = [m for m in all_msgs if (m.get("clientEmail") or "anonymous").strip().lower() != client_email]
+            with open(MESSAGES_FILE, "w", encoding="utf-8") as f:
+                for m in kept_msgs:
+                    f.write(json.dumps(m, ensure_ascii=False) + "\n")
+
+            all_notes = read_jsonl(NOTES_FILE)
+            kept_notes = [n for n in all_notes if (n.get("clientEmail") or "anonymous").strip().lower() != client_email]
+            with open(NOTES_FILE, "w", encoding="utf-8") as f:
+                for n in kept_notes:
+                    f.write(json.dumps(n, ensure_ascii=False) + "\n")
+
+            meta = read_clients_meta()
+            if client_email in meta:
+                del meta[client_email]
+                save_clients_meta(meta)
+
+            print(f"[CRM] Deleted client {client_email}")
+
+            self.send_response(200)
+            self._send_cors_headers()
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "deleted": client_email}, ensure_ascii=False).encode("utf-8"))
+            return
+
+        # 2c. Smart CRM Client Summary (Protected)
+        elif self.path == "/api/crm/summary":
+            if not is_authorized(self.headers, self.client_address[0]):
+                self.send_response(401)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"Unauthorized: Access restricted to dmitrii.eneik@gmail.com"}')
+                return
+
+            client_email = (body.get("clientEmail") or "").strip().lower()
+            if not client_email:
+                self.send_response(400)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"clientEmail is required"}')
+                return
+
+            crm_data = get_aggregated_crm_data()
+            client = None
+            for c in crm_data.get("clients", []):
+                if c["email"].lower() == client_email:
+                    client = c
+                    break
+
+            if not client:
+                self.send_response(404)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b'{"error":"Client not found"}')
+                return
+
+            msgs = client.get("messages", [])
+            notes = client.get("notes", [])
+            agreements = [n for n in notes if n.get("type") == "agreement"]
+            internal_notes = [n for n in notes if n.get("type") == "note"]
+
+            status_map = {
+                "NEW": "Новый клиент (требует первичного ответа)",
+                "IN_DISCUSSION": "В активном обсуждении",
+                "AGREED": "Договорённость достигнута (в работе)",
+                "ARCHIVED": "В архиве (завершён или отложен)"
+            }
+            status_text = status_map.get(client.get("status"), client.get("status"))
+
+            summary_parts = []
+            summary_parts.append(f"📌 **Текущий статус:** {status_text}")
+
+            if msgs:
+                topics = []
+                for m in msgs:
+                    t = m.get("title") or "Обращение с сайта"
+                    desc = m.get("narrative") or ""
+                    snippet = f"«{t}»" + (f": {desc[:120]}..." if len(desc) > 120 else f": {desc}" if desc else "")
+                    topics.append(snippet)
+                summary_parts.append(f"📬 **Суть обращений ({len(msgs)} сообщений):**\n" + "\n".join(f"• {t}" for t in topics))
+            else:
+                summary_parts.append("📬 **Обращения:** Прямых сообщений с формы не зафиксировано.")
+
+            if agreements:
+                summary_parts.append(f"🤝 **Зафиксированные договорённости ({len(agreements)}):**\n" + "\n".join(f"• {a.get('text')} ({a.get('createdAt', '')[:10]})" for a in agreements))
+            else:
+                summary_parts.append("🤝 **Договорённости:** Пока нет зафиксированных договорённостей. Нажмите кнопку «🤝 Договорённость», чтобы закрепить условия.")
+
+            if internal_notes:
+                summary_parts.append(f"📝 **Личные заметки ({len(internal_notes)}):**\n" + "\n".join(f"• {n.get('text')}" for n in internal_notes))
+
+            if client.get("status") == "NEW":
+                next_step = "Ответить клиенту по email и согласовать детали."
+            elif client.get("status") == "IN_DISCUSSION":
+                next_step = "Согласовать условия и зафиксировать договорённость."
+            elif client.get("status") == "AGREED":
+                next_step = "Выполнение проекта / обязательств."
+            else:
+                next_step = "Клиент находится в архиве."
+            summary_parts.append(f"🎯 **Рекомендуемый следующий шаг:** {next_step}")
+
+            full_summary = "\n\n".join(summary_parts)
+
+            self.send_response(200)
+            self._send_cors_headers()
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True,
+                "clientEmail": client_email,
+                "summary": full_summary,
+                "totalMessages": len(msgs),
+                "totalAgreements": len(agreements),
+                "status": client.get("status")
+            }, ensure_ascii=False).encode("utf-8"))
+            return
+
         # 3. Standard Intake Submission (from contact form - Public)
         elif self.path in ("/api/intake", "/api/v1/contact"):
             claim_ticket = f"MSG-{now.strftime('%Y%m%d')}-{uuid.uuid4().hex[:8].upper()}"
