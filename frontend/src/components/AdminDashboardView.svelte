@@ -53,7 +53,7 @@
     }
   }
 
-  interface IntakeMessage {
+  interface CrmMessage {
     id: number;
     claimTicket: string;
     status: string;
@@ -64,26 +64,119 @@
     createdAt: string;
   }
 
-  let messages: IntakeMessage[] = [];
-  let isLoadingMessages: boolean = true;
+  interface CrmNote {
+    id: number;
+    clientEmail: string;
+    type: 'agreement' | 'note';
+    text: string;
+    createdAt: string;
+  }
 
-  async function loadMessages() {
-    isLoadingMessages = true;
+  interface CrmClient {
+    email: string;
+    name: string;
+    status: string;
+    company: string;
+    lastActivity: string;
+    messages: CrmMessage[];
+    notes: CrmNote[];
+  }
+
+  let clients: CrmClient[] = [];
+  let selectedClientEmail: string = '';
+  let isLoadingCrm: boolean = true;
+
+  // New note input state
+  let newNoteText: string = '';
+  let newNoteType: 'agreement' | 'note' = 'agreement';
+  let isSavingNote: boolean = false;
+
+  $: selectedClient = clients.find(c => c.email.toLowerCase() === selectedClientEmail.toLowerCase()) || clients[0] || null;
+
+  async function loadCrmData() {
+    isLoadingCrm = true;
     try {
-      const res = await fetch('/api/intake');
+      const res = await fetch('/api/crm');
       if (res.ok) {
         const data = await res.json();
-        messages = (data.messages || []).slice().reverse();
+        clients = data.clients || [];
+        if (!selectedClientEmail && clients.length > 0) {
+          selectedClientEmail = clients[0].email;
+        }
       }
     } catch (e) {
-      console.error('Failed to load messages', e);
+      console.error('Failed to load CRM data', e);
     } finally {
-      isLoadingMessages = false;
+      isLoadingCrm = false;
     }
   }
 
+  async function addNote() {
+    if (!newNoteText.trim() || !selectedClient) return;
+    isSavingNote = true;
+    try {
+      const res = await fetch('/api/crm/note', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientEmail: selectedClient.email,
+          type: newNoteType,
+          text: newNoteText.trim()
+        })
+      });
+      if (res.ok) {
+        newNoteText = '';
+        await loadCrmData();
+      }
+    } catch (e) {
+      console.error('Failed to save note', e);
+    } finally {
+      isSavingNote = false;
+    }
+  }
+
+  async function updateStatus(newStatus: string) {
+    if (!selectedClient) return;
+    try {
+      await fetch('/api/crm/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientEmail: selectedClient.email,
+          status: newStatus
+        })
+      });
+      await loadCrmData();
+    } catch (e) {
+      console.error('Failed to update status', e);
+    }
+  }
+
+  function getClientTimeline(client: CrmClient) {
+    const items = [
+      ...client.messages.map(m => ({
+        type: 'message' as const,
+        id: `msg-${m.id}`,
+        title: m.title || 'Обращение с сайта',
+        text: m.narrative,
+        ticket: m.claimTicket,
+        createdAt: m.createdAt
+      })),
+      ...client.notes.map(n => ({
+        type: n.type as 'agreement' | 'note',
+        id: `note-${n.id}`,
+        title: n.type === 'agreement' ? 'Зафиксированная договорённость' : 'Заметка',
+        text: n.text,
+        ticket: null,
+        createdAt: n.createdAt
+      }))
+    ];
+    items.sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
+    return items;
+  }
+
   onMount(() => {
-    loadMessages();
+    loadCrmData();
     window.addEventListener('keydown', handleKeydown);
     return () => {
       window.removeEventListener('keydown', handleKeydown);
@@ -139,34 +232,35 @@
 
   <!-- Main Content Canvas -->
   <main id="admin-main-content" class="w-full max-w-4xl mx-auto pt-20 pb-16 px-4 sm:px-6 space-y-6">
-    <!-- Incoming Messages Vault Section (Dmitry's Private Inbox) -->
+    <!-- Sovereign Mini-CRM Section: Client Dossier & Agreements Log -->
     <section
       id="messages-inbox-section"
-      class="p-5 sm:p-6 rounded-2xl border transition-all shadow-xl {theme === 'dark' ? 'bg-[#101728] border-sky-500/30' : 'bg-white border-sky-400'}"
+      class="rounded-2xl border transition-all shadow-2xl overflow-hidden {theme === 'dark' ? 'bg-[#0f1523] border-[#1e293b]' : 'bg-white border-slate-200'}"
     >
-      <div class="flex items-center justify-between pb-4 border-b {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
+      <!-- CRM Header -->
+      <div class="px-5 py-4 border-b flex flex-wrap items-center justify-between gap-3 {theme === 'dark' ? 'bg-[#131c31] border-[#1e293b]' : 'bg-slate-50 border-slate-200'}">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400 border border-sky-500/20">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
           <div>
             <h2 class="text-base sm:text-lg font-bold tracking-tight {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
-              Входящие сообщения с сайта
+              Мини-CRM • Клиенты и договорённости
             </h2>
-            <p class="text-xs font-mono text-slate-400">Прямое защищенное хранилище (Vault)</p>
+            <p class="text-xs font-mono text-slate-400">История переписок, условия и фиксация договоренностей</p>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
           <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
-            {messages.length} обращений
+            {clients.length} клиентов
           </span>
           <button
             type="button"
-            on:click={loadMessages}
-            title="Обновить список"
+            on:click={loadCrmData}
+            title="Обновить данные"
             class="px-3 py-1 text-xs font-mono rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors flex items-center gap-1 active:scale-95"
           >
             <span>↻</span>
@@ -175,64 +269,198 @@
         </div>
       </div>
 
-      {#if isLoadingMessages}
-        <div class="py-10 text-center text-xs font-mono text-slate-400 flex flex-col items-center gap-2">
-          <span class="w-4 h-4 border-2 border-sky-400 border-t-transparent rounded-full animate-spin"></span>
-          <span>Чтение реестра сообщений...</span>
+      {#if isLoadingCrm}
+        <div class="py-16 text-center text-xs font-mono text-slate-400 flex flex-col items-center gap-2">
+          <span class="w-5 h-5 border-2 border-sky-400 border-t-transparent rounded-full animate-spin"></span>
+          <span>Загрузка досье клиентов...</span>
         </div>
-      {:else if messages.length === 0}
-        <div class="py-10 text-center text-xs font-mono text-slate-400">
-          Сообщений пока нет. Любое новое обращение через форму сайта появится здесь мгновенно.
+      {:else if clients.length === 0}
+        <div class="py-16 text-center text-xs font-mono text-slate-400">
+          Клиентов пока нет. Как только кто-то отправит сообщение через сайт, здесь появится карточка клиента.
         </div>
       {:else}
-        <div class="divide-y {theme === 'dark' ? 'divide-[#1f2433]' : 'divide-[#e2e8f0]'} mt-1">
-          {#each messages as msg}
-            <div class="py-4 space-y-2.5">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span class="font-mono text-xs font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
-                    {msg.claimTicket}
-                  </span>
-                  <span class="text-[11px] px-2 py-0.5 rounded font-mono text-slate-300 bg-slate-800 border border-slate-700">
-                    {msg.classification || 'general'}
-                  </span>
-                  <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                    {msg.status || 'NEW'}
-                  </span>
-                </div>
-                <span class="text-xs font-mono text-slate-400">
-                  {new Date(msg.createdAt).toLocaleString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                </span>
-              </div>
-
-              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                <div class="space-y-1">
-                  <div class="text-sm sm:text-base font-bold {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
-                    {msg.title || '(Без темы)'}
-                  </div>
-                  <div class="text-xs font-mono text-slate-400">
-                    Отправитель: <strong class="text-sky-300 font-semibold">{msg.clientEmail || 'Анонимно'}</strong>
-                  </div>
-                </div>
-
-                {#if msg.clientEmail}
-                  <a
-                    href="mailto:{msg.clientEmail}?subject=Re: {encodeURIComponent(msg.title || 'Сообщение с dmitryefremov.com')}"
-                    class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-sky-500 hover:bg-sky-400 text-[#090a0f] transition-all shadow-sm flex items-center gap-1.5"
-                  >
-                    <span>Ответить</span>
-                    <span>→</span>
-                  </a>
-                {/if}
-              </div>
-
-              {#if msg.narrative}
-                <div class="p-3.5 rounded-xl {theme === 'dark' ? 'bg-[#090a0f] border border-white/5' : 'bg-slate-50 border border-slate-200'} font-sans text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">
-                  {msg.narrative}
-                </div>
-              {/if}
+        <!-- Two Column Layout: Clients List (Left) + Dossier & History (Right) -->
+        <div class="grid grid-cols-1 md:grid-cols-12 min-h-[500px]">
+          <!-- Left Column: Clients List -->
+          <div class="md:col-span-5 border-r {theme === 'dark' ? 'border-[#1e293b] bg-[#0c111d]' : 'border-slate-200 bg-slate-50/50'} p-3 space-y-2 overflow-y-auto max-h-[650px]">
+            <div class="px-2 py-1 text-[11px] font-mono uppercase tracking-wider text-slate-400 flex justify-between">
+              <span>Список клиентов</span>
+              <span>{clients.length}</span>
             </div>
-          {/each}
+
+            {#each clients as client}
+              <button
+                type="button"
+                on:click={() => (selectedClientEmail = client.email)}
+                class="w-full text-left p-3 rounded-xl border transition-all duration-150 flex flex-col gap-1.5 focus:outline-none {selectedClient?.email.toLowerCase() === client.email.toLowerCase() ? (theme === 'dark' ? 'bg-[#18233c] border-sky-500/60 shadow-md ring-1 ring-sky-500/30' : 'bg-white border-sky-500 shadow-md ring-1 ring-sky-500/30') : (theme === 'dark' ? 'bg-[#121929] border-[#1e293b] hover:border-slate-600' : 'bg-white border-slate-200 hover:border-slate-300')}"
+              >
+                <div class="flex items-center justify-between gap-1">
+                  <span class="text-xs font-bold truncate {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
+                    {client.email === 'anonymous' ? 'Анонимный контакт' : client.email}
+                  </span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold {client.status === 'AGREED' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : client.status === 'IN_DISCUSSION' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : client.status === 'ARCHIVED' ? 'bg-slate-700/50 text-slate-400' : 'bg-sky-500/20 text-sky-400 border border-sky-500/30'}">
+                    {client.status === 'AGREED' ? 'ДОГОВОРИЛИСЬ' : client.status === 'IN_DISCUSSION' ? 'В ДИАЛОГЕ' : client.status === 'ARCHIVED' ? 'АРХИВ' : 'НОВЫЙ'}
+                  </span>
+                </div>
+
+                <div class="text-[11px] text-slate-400 truncate">
+                  {#if client.notes.length > 0}
+                    📝 {client.notes[0].text}
+                  {:else if client.messages.length > 0}
+                    📩 {client.messages[0].title || client.messages[0].narrative || 'Обращение'}
+                  {:else}
+                    (Нет записей)
+                  {/if}
+                </div>
+
+                <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1 border-t {theme === 'dark' ? 'border-white/5' : 'border-slate-100'}">
+                  <span>{client.messages.length} сообщ. • {client.notes.length} дог.</span>
+                  <span>{new Date(client.lastActivity).toLocaleDateString('ru-RU', { day: '2-digit', month: 'short' })}</span>
+                </div>
+              </button>
+            {/each}
+          </div>
+
+          <!-- Right Column: Selected Client Dossier & Timeline -->
+          <div class="md:col-span-7 p-4 sm:p-6 flex flex-col justify-between space-y-5 overflow-y-auto max-h-[650px] {theme === 'dark' ? 'bg-[#0f1523]' : 'bg-white'}">
+            {#if selectedClient}
+              <!-- Client Dossier Header -->
+              <div class="space-y-3 pb-4 border-b {theme === 'dark' ? 'border-[#1e293b]' : 'border-slate-200'}">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h3 class="text-base sm:text-lg font-bold {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
+                      {selectedClient.email}
+                    </h3>
+                    <p class="text-xs font-mono text-slate-400 mt-0.5">
+                      Последняя активность: {new Date(selectedClient.lastActivity).toLocaleString('ru-RU')}
+                    </p>
+                  </div>
+
+                  {#if selectedClient.email && selectedClient.email !== 'anonymous'}
+                    <a
+                      href="mailto:{selectedClient.email}?subject=Dmitry Efremov — продолжение диалога"
+                      class="self-start sm:self-auto px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-sky-500 hover:bg-sky-400 text-[#090a0f] transition-all flex items-center gap-1.5 shadow-sm"
+                    >
+                      <span>✉ Написать письмо</span>
+                    </a>
+                  {/if}
+                </div>
+
+                <!-- Status Selector Bar -->
+                <div class="flex items-center gap-1.5 flex-wrap pt-1">
+                  <span class="text-xs font-mono text-slate-400 mr-1">Статус:</span>
+                  {#each [['NEW', 'Новый'], ['IN_DISCUSSION', 'В диалоге'], ['AGREED', 'Договорились'], ['ARCHIVED', 'Архив']] as [stCode, stLabel]}
+                    <button
+                      type="button"
+                      on:click={() => updateStatus(stCode)}
+                      class="px-2.5 py-1 rounded-md text-xs font-mono transition-all {selectedClient.status === stCode ? 'bg-sky-500 text-[#090a0f] font-bold shadow-sm' : (theme === 'dark' ? 'bg-[#18233c] text-slate-300 hover:bg-[#202e4d]' : 'bg-slate-100 text-slate-700 hover:bg-slate-200')}"
+                    >
+                      {stLabel}
+                    </button>
+                  {/each}
+                </div>
+              </div>
+
+              <!-- Fast Agreement / Note Recording Box -->
+              <div class="p-4 rounded-xl border space-y-3 {theme === 'dark' ? 'bg-[#131b2e] border-sky-500/20' : 'bg-slate-50 border-slate-200'}">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold font-mono text-sky-400 uppercase tracking-wide">
+                    + Зафиксировать договорённость или заметку
+                  </span>
+                  <div class="flex items-center gap-1 bg-black/20 p-0.5 rounded-lg border border-white/5 text-[11px] font-mono">
+                    <button
+                      type="button"
+                      on:click={() => (newNoteType = 'agreement')}
+                      class="px-2 py-0.5 rounded {newNoteType === 'agreement' ? 'bg-emerald-500 text-[#090a0f] font-bold' : 'text-slate-400 hover:text-white'}"
+                    >
+                      🤝 Договорённость
+                    </button>
+                    <button
+                      type="button"
+                      on:click={() => (newNoteType = 'note')}
+                      class="px-2 py-0.5 rounded {newNoteType === 'note' ? 'bg-sky-500 text-[#090a0f] font-bold' : 'text-slate-400 hover:text-white'}"
+                    >
+                      📝 Заметка
+                    </button>
+                  </div>
+                </div>
+
+                <textarea
+                  bind:value={newNoteText}
+                  rows="2"
+                  placeholder={newNoteType === 'agreement' ? 'Зафиксируйте условия, дату звонка, бюджет, сроки или договоренность...' : 'Заметка по клиенту или контекст...'}
+                  class="w-full p-2.5 rounded-lg text-xs font-mono transition-colors focus:outline-none focus:ring-1 focus:ring-sky-400 {theme === 'dark' ? 'bg-[#090a0f] border border-[#1e293b] text-slate-100 placeholder-slate-500' : 'bg-white border border-slate-300 text-slate-900 placeholder-slate-400'}"
+                ></textarea>
+
+                <div class="flex justify-end">
+                  <button
+                    type="button"
+                    disabled={isSavingNote || !newNoteText.trim()}
+                    on:click={addNote}
+                    class="px-4 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed {newNoteType === 'agreement' ? 'bg-emerald-500 hover:bg-emerald-400 text-[#090a0f]' : 'bg-sky-500 hover:bg-sky-400 text-[#090a0f]'}"
+                  >
+                    {#if isSavingNote}
+                      <span>Сохранение...</span>
+                    {:else}
+                      <span>{newNoteType === 'agreement' ? 'Зафиксировать договорённость' : 'Сохранить заметку'}</span>
+                    {/if}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Unified Timeline (Messages + Agreements + Notes) -->
+              <div class="space-y-3">
+                <div class="text-xs font-mono uppercase tracking-wider text-slate-400">
+                  Хронология переписки и договорённостей:
+                </div>
+
+                <div class="space-y-3">
+                  {#each getClientTimeline(selectedClient) as item}
+                    <div class="p-3.5 rounded-xl border space-y-2 {item.type === 'agreement' ? (theme === 'dark' ? 'bg-emerald-950/20 border-emerald-500/40' : 'bg-emerald-50 border-emerald-300') : item.type === 'note' ? (theme === 'dark' ? 'bg-sky-950/20 border-sky-500/30' : 'bg-sky-50 border-sky-200') : (theme === 'dark' ? 'bg-[#121929] border-[#1e293b]' : 'bg-slate-50 border-slate-200')}">
+                      <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <div class="flex items-center gap-2">
+                          {#if item.type === 'agreement'}
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                              🤝 ДОГОВОРЁННОСТЬ
+                            </span>
+                          {:else if item.type === 'note'}
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                              📝 ЗАМЕТКА
+                            </span>
+                          {:else}
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-700 text-slate-200">
+                              📩 СООБЩЕНИЕ С САЙТА
+                            </span>
+                            {#if item.ticket}
+                              <span class="text-[11px] font-mono text-sky-400">{item.ticket}</span>
+                            {/if}
+                          {/if}
+                        </div>
+
+                        <span class="text-[11px] font-mono text-slate-400">
+                          {new Date(item.createdAt).toLocaleString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+
+                      {#if item.type === 'message' && item.title}
+                        <div class="text-xs font-bold text-slate-100">
+                          Тема: {item.title}
+                        </div>
+                      {/if}
+
+                      <div class="text-xs leading-relaxed whitespace-pre-wrap font-sans {theme === 'dark' ? 'text-slate-200' : 'text-slate-800'}">
+                        {item.text || '(Пустое сообщение)'}
+                      </div>
+                    </div>
+                  {/each}
+                </div>
+              </div>
+            {:else}
+              <div class="py-20 text-center text-xs font-mono text-slate-400">
+                Выберите клиента из списка слева, чтобы открыть досье.
+              </div>
+            {/if}
+          </div>
         </div>
       {/if}
     </section>
