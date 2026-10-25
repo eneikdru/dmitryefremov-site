@@ -1,7 +1,7 @@
-import TelemetryHub from './components/TelemetryHub.svelte';
+import ModelOpsPlaygroundView from './components/ModelOpsPlaygroundView.svelte';
 import { mount } from 'svelte';
 
-const app = mount(TelemetryHub, {
+const app = mount(ModelOpsPlaygroundView, {
   target: document.getElementById('app')!
 });
 
