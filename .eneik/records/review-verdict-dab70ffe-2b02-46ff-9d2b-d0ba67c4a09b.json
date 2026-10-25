@@ -1,0 +1,16 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "The PR diff includes edits to the ROOT .gitignore, violating the strict instruction: \"Never edit the ROOT .gitignore (the top-level file... Add or extend a nested .gitignore scoped to your own package/directory... never the shared root file.\"",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "block",
+      "criticalReason": "The PR diff includes edits to the ROOT .gitignore, violating the strict instruction: \"Never edit the ROOT .gitignore (the top-level file... Add or extend a nested .gitignore scoped to your own package/directory... never the shared root file.\"",
+      "concerns": []
+    }
+  ]
+}
