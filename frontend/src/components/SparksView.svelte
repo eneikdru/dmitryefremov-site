@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import {
     getInitialSparks,
     fetchSparksFromApi,
@@ -17,6 +17,7 @@
   export let sparks: SparkItem[] = [];
 
   let streamMode: StreamMode = 'HYPER';
+  let sparksPollingInterval: ReturnType<typeof setInterval> | null = null;
 
   onMount(async () => {
     if (!sparks || sparks.length === 0) {
@@ -25,6 +26,14 @@
         sparks = fetched;
       }
     }
+    const pollSparks = async () => {
+      const fetched = await fetchSparksFromApi();
+      if (fetched && fetched.length > 0) {
+        sparks = fetched;
+      }
+      sparksPollingInterval = setTimeout(pollSparks, 5000) as unknown as ReturnType<typeof setInterval>;
+    };
+    sparksPollingInterval = setTimeout(pollSparks, 5000) as unknown as ReturnType<typeof setInterval>;
   });
   let selectedCategory: string = 'All Sparks';
   let searchQuery: string = '';
@@ -79,6 +88,10 @@
     }
     return count.toString();
   }
+
+  onDestroy(() => {
+    if (sparksPollingInterval) clearTimeout(sparksPollingInterval as unknown as ReturnType<typeof setTimeout>);
+  });
 </script>
 
 <div

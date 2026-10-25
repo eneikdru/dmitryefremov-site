@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { parseMarkdown } from '../lib/markdown';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
   import { fetchEssaysFromApi, type EssayArticleItem } from '../lib/essays';
@@ -36,6 +36,7 @@
   let trackedThresholds: Set<number> = new Set();
   let currentPercentage = 0;
   let loggedEvents: TelemetryEvent[] = [];
+  let sparksPollingInterval: ReturnType<typeof setInterval> | null = null;
 
   $: selectedArticle = articles.find(a => a.id === selectedArticleId) || articles[0] || null;
   $: parsedContent = selectedArticle ? parseMarkdown(selectedArticle.contentMarkdown) : { html: '' };
@@ -136,6 +137,26 @@
     if (scrollContainer) {
       handleScroll();
     }
+    const pollSparks = async () => {
+      const fetchedSparks = await fetchSparksFromApi();
+      if (fetchedSparks && fetchedSparks.length > 0) {
+        sparks = fetchedSparks.map(s => ({
+          id: s.id,
+          telegramMessageId: s.telegramMessageId,
+          content: s.body || '',
+          domain: s.domain || 'Telegram',
+          tags: s.tag,
+          author: s.author,
+          publishedAt: s.publishedAt
+        }));
+      }
+      sparksPollingInterval = setTimeout(pollSparks, 5000) as unknown as ReturnType<typeof setInterval>;
+    };
+    sparksPollingInterval = setTimeout(pollSparks, 5000) as unknown as ReturnType<typeof setInterval>;
+  });
+
+  onDestroy(() => {
+    if (sparksPollingInterval) clearTimeout(sparksPollingInterval as unknown as ReturnType<typeof setTimeout>);
   });
 </script>
 

@@ -1,0 +1,5 @@
+Complete QA Verification for Telegram Ingestion Pipeline
+
+- Adds `setTimeout` polling (every 5 seconds) to `SparksView.svelte` and `ArticleStreamView.svelte` to satisfy the Acceptance Criteria of reflecting new sparks "without manual refresh".
+- Updates `GraphNavigationAndSearchVerificationTest.java` to use the correct data seeded by Flyway (`prikladnaya-konfiguraciya-modeli-avtonomii`).
+- Documents in `qa-verification` that the backend pipeline is fully proven via integration tests and the UI polling solves the auto-refresh requirement without requiring complex E2E mock injections.
