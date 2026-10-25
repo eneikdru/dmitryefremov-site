@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "name": "Dmitry Efremov Personal Portal & Agent Gateway",
+  "description": "Autonomous Agent Gateway for Dmitry Efremov's systems philosophy, research essays, podcasts, and contact intake.",
+  "author": "Dmitry Efremov",
+  "domain": "dmitryefremov.com",
+  "capabilities": {
+    "contact_intake": {
+      "endpoint": "https://dmitryefremov.com/api/intake",
+      "method": "POST",
+      "format": "application/json",
+      "fields": ["name", "email", "message"]
+    },
+    "llms_documentation": {
+      "endpoint": "https://dmitryefremov.com/llms.txt",
+      "method": "GET",
+      "format": "text/markdown"
+    }
+  }
+}

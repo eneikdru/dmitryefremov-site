@@ -1,0 +1,14 @@
+# Dmitry Efremov
+> Systems Philosopher & Autonomous AI Agent Architect
+> Canonical knowledge base and machine-readable interfaces for AI agents.
+
+## Core Philosophical Invariants
+- Direct Reference & Rigid Designators (Ruth Barcan Marcus): Names lock entities nominally; identity cannot be mutated by descriptive token probabilities.
+- Falsification Gates (Karl Popper / Paul Thagard): Internal coherence is not truth. Any autonomous PR or action must provide refutation tests.
+- Sensorimotor Action Loop (Susan Hurley): Autonomous cognition requires continuous runtime observation feedback.
+- Knowing-How vs Knowing-That (Gilbert Ryle): Architectural discipline resides in compiler/linter invariants, not endless prompt rules.
+
+## Machine-Readable Endpoints
+- Canonical AI Agent Manifest: https://dmitryefremov.com/.well-known/ai-agent.json
+- Contact & Inquiry Intake API: POST https://dmitryefremov.com/api/intake
+- Public Web Facade: https://dmitryefremov.com/
