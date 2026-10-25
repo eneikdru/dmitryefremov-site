@@ -1,0 +1,13 @@
+{
+  "testsRun": 8,
+  "testsPassed": 8,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given a full public build When crawling the live site Then no routes or links pointing to /admin or containing system tags are reachable",
+    "Given the UI When visually inspected Then the layout adheres to the strict monochromatic design without popups",
+    "Given automated accessibility checks When run on the public facade Then all UI views meet WCAG 2.1 AA compliance (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast)"
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified public facade isolation using src/lib/publicFacadeIsolation.test.ts"
+}
