@@ -12,6 +12,11 @@ test.describe('Core Identity and Essay Reader Verification', () => {
     });
 
     await page.goto('/');
+    const acceptBtn = await page.$("#cmp-accept-btn");
+    if (acceptBtn) {
+      await acceptBtn.click();
+      await page.waitForTimeout(300);
+    }
 
     // Switch to Article Stream tab
     await page.click('#tab-btn-article');
