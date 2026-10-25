@@ -1,5 +1,5 @@
 // Canonical Podcast Episodes with verified audio streams
-// Source: Hetzner production volume /mnt/HC_Volume_106932004/podcast/episodes/
+// Canonical Podcast Episodes Collection
 
 export interface PodcastTimecode {
   id: number | string;
