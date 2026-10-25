@@ -107,9 +107,15 @@
               class="px-2.5 py-1 rounded text-xs font-mono border border-[#1f2433] bg-[#090a0f] text-[#94a3b8] hover:text-white hover:border-[#38bdf8] transition-colors flex items-center gap-1 focus:outline-none focus:ring-1 focus:ring-[#38bdf8]"
             >
               {#if copiedFeedbackId === link.id}
-                <span class="text-[#38bdf8] font-bold">COPIED ✓</span>
+                <span class="text-[#38bdf8] font-bold">
+                  <span class="sr-only">COPIED ✓</span>
+                  <span>Скопировано ✓</span>
+                </span>
               {:else}
-                <span>COPY</span>
+                <span>
+                  <span class="sr-only">COPY</span>
+                  <span>Копировать</span>
+                </span>
               {/if}
             </button>
             {#if activeFeedbackId === link.id}

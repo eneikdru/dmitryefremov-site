@@ -16,18 +16,18 @@
   const releases: ReleaseItem[] = [
     {
       id: 'ep-04-ryle',
-      title: 'Выпуск 04: Навык в действии против «призрака в машине»',
+      title: 'Навык в действии против «призрака в машине»',
       platform: 'Podcast',
-      status: 'in_recording',
-      statusLabel: 'В СЪЁМКЕ (СТУДИЯ)',
-      dateOrTiming: 'Октябрь 2026',
+      status: 'released',
+      statusLabel: 'В ЭФИРЕ',
+      dateOrTiming: '2026-10-16',
       thesis: 'Категориальная ошибка дуализма: разум — это не скрытая субстанция внутри шестеренок, а слаженная диспозиция поведения всей системы. Различие между Знанием-Что и Знанием-Как в эпоху автономных агентов.',
       tag: 'Подкаст «Системы и реальность»',
-      link: 'https://www.youtube.com/@dmitrii.efremov'
+      link: 'https://youtu.be/Pj5_BBLTiOM'
     },
     {
       id: 'ep-05-dennett',
-      title: 'Выпуск #05: Интенциональная установка и эволюция разума',
+      title: 'Интенциональная установка и эволюция разума',
       platform: 'Podcast',
       status: 'in_recording',
       statusLabel: 'В СЪЁМКЕ (СТУДИЯ)',
@@ -51,42 +51,42 @@
       id: 'art-deontic-systems',
       title: 'Деонтические инварианты в распределенных агентах: запрет как код',
       platform: 'Article',
-      status: 'scheduled',
-      statusLabel: 'ГОТОВИТСЯ К ПУБЛИКАЦИИ',
-      dateOrTiming: 'Скоро',
+      status: 'released',
+      statusLabel: 'ОПУБЛИКОВАНО',
+      dateOrTiming: '2026-09-26',
       thesis: 'Математическая формализация нормативных состояний систем: обязательства, разрешения и исключающие запреты (exclusionary reasons).',
-      tag: 'Thought Stream',
-      link: '#'
+      tag: 'Эссе и статьи',
+      link: 'https://dmitrii.eneik.com'
     },
     {
       id: 'ep-01-marcus',
-      title: 'Выпуск 01: Модальная логика и неизменность контрактов',
+      title: 'Модальная логика и неизменность контрактов',
       platform: 'Podcast',
       status: 'released',
       statusLabel: 'В ЭФИРЕ',
-      dateOrTiming: '2026-09-20',
+      dateOrTiming: '2026-09-25',
       thesis: 'Модальная необходимость как математический мост между возможными мирами и инвариантами автономных систем. Если нечто возможно необходимо, оно существует.',
       tag: 'Подкаст «Системы и реальность»',
       link: 'https://youtu.be/1qiPT9UxKNM'
     },
     {
       id: 'ep-02-thagard',
-      title: 'Выпуск #02: Вычислительная когерентность и преодоление галлюцинаций',
+      title: 'Вычислительная когерентность и преодоление галлюцинаций',
       platform: 'Podcast',
       status: 'released',
       statusLabel: 'В ЭФИРЕ',
-      dateOrTiming: '2026-09-22',
+      dateOrTiming: '2026-10-01',
       thesis: 'Объяснительная когерентность (ECHO) как математическая модель преодоления галлюцинаций в сложных информационных сетях.',
       tag: 'Подкаст «Системы и реальность»',
       link: 'https://youtu.be/jUbOF_YvkfI'
     },
     {
       id: 'ep-03-hurley',
-      title: 'Выпуск 03: Сознание в действии и обратная связь среды',
+      title: 'Сознание в действии и обратная связь среды',
       platform: 'Podcast',
       status: 'released',
       statusLabel: 'В ЭФИРЕ',
-      dateOrTiming: '2026-09-25',
+      dateOrTiming: '2026-10-08',
       thesis: 'Критика сэндвич-модели. Сознание рождается в непрерывной сенсомоторной петле сопротивления физической и цифровой реальности.',
       tag: 'Подкаст «Системы и реальность»',
       link: 'https://youtu.be/mLJm6YKm0ds'

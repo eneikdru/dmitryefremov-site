@@ -26,30 +26,6 @@
   };
 
   let copySuccess: boolean = false;
-  let testOrderModalOpen: boolean = false;
-  let testOrderForm = {
-    clientName: 'Agent_Auto_Test',
-    clientEmail: 'agent@test.io',
-    serviceType: 'MVP',
-    requirements: 'Automated architectural review test'
-  };
-  let testOrderResult: string | null = null;
-  let recentInvocations = [
-    { agent: 'LangChain_Agent_04', route: 'GET /llms.txt', status: '200 OK', latency: '18ms' },
-    { agent: 'Claude_Codex_Sync', route: 'GET /.well-known/ai-agent.json', status: '200 OK', latency: '24ms' },
-    { agent: 'AutoGPT_Runner', route: 'POST /api/v1/agent/orders', status: '201 Created', latency: '42ms' }
-  ];
-
-  onMount(async () => {
-    // Load live telemetry if available
-    const telemetry = await fetchAgentTelemetry();
-    if (telemetry && telemetry.totalInvocations) {
-      recentInvocations = [
-        { agent: 'Live_Agent_Service', route: 'GET /api/v1/agent/telemetry', status: '200 OK', latency: '12ms' },
-        ...recentInvocations
-      ];
-    }
-  });
 
   $: filteredRoutes = CANON_ROUTES.filter(route => {
     if (activeFilter === 'all') return true;
@@ -74,17 +50,21 @@
       routeTestData[route.id] = JSON.stringify(json, null, 2);
       expandedSchemas[route.id] = true;
     } else if (route.path === '/api/v1/agent/orders') {
-      testOrderModalOpen = true;
-    }
-  }
-
-  async function handleTestOrderSubmit() {
-    testOrderResult = 'Отправка...';
-    const res = await submitAgentOrder(testOrderForm);
-    if (res.success) {
-      testOrderResult = `Успешно (201 Created)! ID: ${res.data?.orderId || res.data?.id || 'ORD-9821'}`;
-    } else {
-      testOrderResult = `Ошибка: ${res.error}`;
+      routeTestData[route.id] = JSON.stringify({
+        endpoint: '/api/v1/agent/orders',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Canon-Agent-Key': '<CANON_AGENT_KEY>'
+        },
+        payloadContract: {
+          clientName: 'string',
+          clientEmail: 'string (valid email)',
+          serviceType: 'MVP | AUDIT | AUTOMATION',
+          requirements: 'string (min 10 chars)'
+        }
+      }, null, 2);
+      expandedSchemas[route.id] = true;
     }
   }
 
@@ -102,7 +82,7 @@
   }
 
   function copyBaseEndpoint() {
-    const base = typeof window !== 'undefined' ? `${window.location.origin}/llms.txt` : 'https://dmitryefremov.com/llms.txt';
+    const base = typeof window !== 'undefined' ? `${window.location.origin}/llms.txt` : 'https://dmitrii.eneik.com/llms.txt';
     navigator.clipboard.writeText(base);
     copySuccess = true;
     setTimeout(() => {
@@ -197,7 +177,7 @@
       <div class="truncate">
         <span class="text-[10px] font-mono text-[#b9cacb] block">BASE ROUTING ENDPOINT</span>
         <code class="text-xs font-mono text-[#00f2fe] tracking-tight block truncate mt-0.5">
-          https://dmitryefremov.com/llms.txt
+          https://dmitrii.eneik.com/llms.txt
         </code>
       </div>
       <button
@@ -206,24 +186,17 @@
         aria-label="Copy Base Endpoint"
         class="px-3 py-1.5 bg-[#262a33] hover:bg-[#31353e] text-[#00f2fe] text-xs font-mono rounded border border-[#3a494b]/40 transition-colors cursor-pointer shrink-0"
       >
-        {copySuccess ? 'Скопировано!' : 'Copy URL'}
+        {copySuccess ? 'Скопировано!' : 'Скопировать URL'}
       </button>
     </div>
 
-    <!-- Connected Agents & Status -->
+    <!-- Machine-Readable Spec Note -->
     <div class="flex flex-wrap items-center justify-between pt-2 border-t border-[#3a494b]/20 gap-2">
-      <div class="flex items-center gap-2">
-        <div class="flex -space-x-1.5">
-          <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#262a33] border border-[#3a494b]/40 text-[10px] font-mono text-[#00f2fe]">CL</span>
-          <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#3131c0] border border-[#3a494b]/40 text-[10px] font-mono text-white">AG</span>
-          <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#353942] border border-[#3a494b]/40 text-[10px] font-mono text-[#00f2fe]">LC</span>
-          <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#31353e] border border-[#3a494b]/40 text-[10px] font-mono text-[#e1ffec]">CB</span>
-        </div>
-        <span class="text-xs font-mono font-medium text-[#dfe2ee]">4 External Agents Active</span>
-      </div>
-
-      <span class="text-xs font-mono text-[#e1ffec] flex items-center gap-1">
-        ✓ Zero Drops · 100% Availability
+      <span class="text-xs font-mono text-[#b9cacb]">
+        Машиночитаемый индекс канона стандартизирован для интеграции с автономными агентами.
+      </span>
+      <span class="text-xs font-mono text-[#67f4b7] flex items-center gap-1">
+        ✓ Стандарт OpenAPI / llms.txt
       </span>
     </div>
   </section>
@@ -235,28 +208,32 @@
       on:click={() => (activeFilter = 'all')}
       class="px-3 py-1 rounded-full transition-colors cursor-pointer whitespace-nowrap {activeFilter === 'all' ? 'bg-[#00f2fe]/20 text-[#00f2fe] border border-[#00f2fe]/50 font-bold' : 'bg-[#181c24] text-[#b9cacb] border border-[#3a494b]/30 hover:text-white'}"
     >
-      All Routes ({CANON_ROUTES.length})
+      <span class="sr-only">All Routes</span>
+      <span>Все маршруты ({CANON_ROUTES.length})</span>
     </button>
     <button
       type="button"
       on:click={() => (activeFilter = 'read')}
       class="px-3 py-1 rounded-full transition-colors cursor-pointer whitespace-nowrap {activeFilter === 'read' ? 'bg-[#00f2fe]/20 text-[#00f2fe] border border-[#00f2fe]/50 font-bold' : 'bg-[#181c24] text-[#b9cacb] border border-[#3a494b]/30 hover:text-white'}"
     >
-      Read-Only (2)
+      <span class="sr-only">Read-Only</span>
+      <span>Чтение (2)</span>
     </button>
     <button
       type="button"
       on:click={() => (activeFilter = 'query')}
       class="px-3 py-1 rounded-full transition-colors cursor-pointer whitespace-nowrap {activeFilter === 'query' ? 'bg-[#00f2fe]/20 text-[#00f2fe] border border-[#00f2fe]/50 font-bold' : 'bg-[#181c24] text-[#b9cacb] border border-[#3a494b]/30 hover:text-white'}"
     >
-      Query / Orders (1)
+      <span class="sr-only">Query / Orders</span>
+      <span>Запросы (1)</span>
     </button>
     <button
       type="button"
       on:click={() => (activeFilter = 'webhooks')}
       class="px-3 py-1 rounded-full transition-colors cursor-pointer whitespace-nowrap {activeFilter === 'webhooks' ? 'bg-[#00f2fe]/20 text-[#00f2fe] border border-[#00f2fe]/50 font-bold' : 'bg-[#181c24] text-[#b9cacb] border border-[#3a494b]/30 hover:text-white'}"
     >
-      Telemetry (1)
+      <span class="sr-only">Telemetry</span>
+      <span>Телеметрия (1)</span>
     </button>
   </div>
 
@@ -327,7 +304,8 @@
               on:click={() => testRoute(route)}
               class="px-2.5 py-1 bg-[#00f2fe] hover:brightness-110 text-[#00373a] font-bold rounded transition-all cursor-pointer"
             >
-              Test Route
+              <span class="sr-only">Test Route</span>
+              <span>Проверить маршрут</span>
             </button>
           </div>
         </div>
@@ -363,116 +341,9 @@
       </div>
       <div class="bg-[#0a0e16] border border-[#3a494b]/30 rounded p-2.5 flex items-center justify-between">
         <span class="text-[#b9cacb]">CORS Origins:</span>
-        <code class="text-[#dfe2ee] truncate max-w-[220px]">agents.mesh.network, dmitryefremov.com, localhost:*</code>
+        <code class="text-[#dfe2ee] truncate max-w-[220px]">agents.mesh.network, dmitrii.eneik.com, localhost:*</code>
       </div>
     </div>
 
-    <!-- Recent Agent Invocations Feed -->
-    <div class="pt-3 border-t border-[#3a494b]/20 space-y-2">
-      <div class="flex items-center justify-between font-mono text-xs">
-        <span class="text-[#b9cacb] uppercase tracking-wider text-[10px]">Recent Agent Invocations</span>
-        <span class="text-[#67f4b7] flex items-center gap-1.5 text-[11px]">
-          <span class="w-2 h-2 rounded-full bg-[#67f4b7] animate-pulse"></span>
-          Live Stream
-        </span>
-      </div>
-
-      <div class="space-y-2 font-mono text-xs">
-        {#each recentInvocations as inv}
-          <div class="bg-[#0a0e16] border border-[#3a494b]/20 rounded p-2 flex items-center justify-between gap-2">
-            <div class="truncate">
-              <span class="text-[#00f2fe] font-medium">{inv.agent}</span>
-              <span class="text-[#b9cacb] block text-[10px]">{inv.route}</span>
-            </div>
-            <div class="text-right shrink-0">
-              <span class="text-[#67f4b7] font-medium">{inv.status}</span>
-              <span class="text-[#b9cacb] block text-[10px]">{inv.latency}</span>
-            </div>
-          </div>
-        {/each}
-      </div>
-    </div>
   </section>
-
-  <!-- Interactive Test Order Modal -->
-  {#if testOrderModalOpen}
-    <div id="test-order-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div class="max-w-md w-full bg-[#12151e] border border-[#3a494b] rounded-2xl p-6 space-y-4 font-mono text-xs text-[#e2e8f0] shadow-2xl">
-        <div class="flex justify-between items-center border-b border-[#1f2433] pb-3">
-          <h3 class="text-sm font-bold text-[#00f2fe]">TEST API ROUTE: POST /api/v1/agent/orders</h3>
-          <button
-            type="button"
-            on:click={() => (testOrderModalOpen = false)}
-            class="px-2 py-1 rounded bg-[#1f2433] hover:bg-[#2e364f]"
-          >
-            ✕
-          </button>
-        </div>
-
-        <form on:submit|preventDefault={handleTestOrderSubmit} class="space-y-3">
-          <div>
-            <label class="block text-[#b9cacb] text-[10px] mb-1" for="input-client-name">CLIENT / AGENT NAME</label>
-            <input
-              id="input-client-name"
-              type="text"
-              bind:value={testOrderForm.clientName}
-              class="w-full bg-[#0a0e16] border border-[#3a494b] rounded p-2 text-xs text-white"
-            />
-          </div>
-          <div>
-            <label class="block text-[#b9cacb] text-[10px] mb-1" for="input-client-email">CONTACT EMAIL</label>
-            <input
-              id="input-client-email"
-              type="email"
-              bind:value={testOrderForm.clientEmail}
-              class="w-full bg-[#0a0e16] border border-[#3a494b] rounded p-2 text-xs text-white"
-            />
-          </div>
-          <div>
-            <label class="block text-[#b9cacb] text-[10px] mb-1" for="input-service-type">SERVICE TYPE</label>
-            <select
-              id="input-service-type"
-              bind:value={testOrderForm.serviceType}
-              class="w-full bg-[#0a0e16] border border-[#3a494b] rounded p-2 text-xs text-white"
-            >
-              <option value="MVP">MVP</option>
-              <option value="AUDIT">AUDIT</option>
-              <option value="AUTOMATION">AUTOMATION</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-[#b9cacb] text-[10px] mb-1" for="input-requirements">REQUIREMENTS</label>
-            <textarea
-              id="input-requirements"
-              bind:value={testOrderForm.requirements}
-              rows="2"
-              class="w-full bg-[#0a0e16] border border-[#3a494b] rounded p-2 text-xs text-white"
-            ></textarea>
-          </div>
-
-          {#if testOrderResult}
-            <div class="p-2 rounded bg-[#0a0e16] border border-[#00f2fe]/40 text-[#00f2fe] text-[11px]">
-              {testOrderResult}
-            </div>
-          {/if}
-
-          <div class="flex justify-end gap-2 pt-2">
-            <button
-              type="button"
-              on:click={() => (testOrderModalOpen = false)}
-              class="px-3 py-1.5 rounded bg-[#262a33] text-[#b9cacb]"
-            >
-              Закрыть
-            </button>
-            <button
-              type="submit"
-              class="px-3 py-1.5 rounded bg-[#00f2fe] text-[#00373a] font-bold hover:brightness-110"
-            >
-              Отправить запрос
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  {/if}
 </div>

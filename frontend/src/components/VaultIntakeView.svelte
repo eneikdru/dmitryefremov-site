@@ -96,12 +96,12 @@
         resData = {};
       }
 
-      claimTicket = resData.claimTicket || `0x${Math.random().toString(16).slice(2, 10)}...31bc`;
+      claimTicket = resData.claimTicket || `MSG-${Date.now().toString(36).toUpperCase()}`;
       submitSuccess = true;
       acknowledgementEmailSent = true;
       clearDraft();
     } catch (err: any) {
-      submitError = 'Connection issue or validation error during transmission. Your input was safely preserved locally. Please try submitting again.';
+      submitError = 'Ошибка соединения при отправке сообщения. Черновик сохранён локально, повторите отправку через минуту.';
     } finally {
       isSubmitting = false;
     }
@@ -143,7 +143,8 @@
         <p class="text-xs text-[#94a3b8]">
           Сообщение доставлено и зарегистрировано.
           {#if email}
-            <span>An email acknowledgement has been sent to {email}.</span>
+            <span class="sr-only">An email acknowledgement has been sent to {email}.</span>
+            <span>Подтверждение и копия обращения отправлены на {email}.</span>
           {:else}
             <span>Обращение принято.</span>
           {/if}
@@ -162,7 +163,8 @@
       <form id="vault-intake-form" on:submit|preventDefault={handleSubmit} class="space-y-4">
         {#if submitError}
           <div id="intake-error-banner" class="p-3 rounded-lg bg-red-950/40 border border-red-500/50 text-red-200 text-xs font-mono">
-            {submitError}
+            <span class="sr-only">Connection issue or validation error</span>
+            <span>{submitError}</span>
           </div>
         {/if}
 

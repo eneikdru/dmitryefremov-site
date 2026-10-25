@@ -85,8 +85,8 @@
 {:else}
   <SeoMeta
     title="Дмитрий Ефремов — Архитектура систем, философия сознания и автономные процессы"
-    description="Суверенный интеллектуальный узел Дмитрия Ефремова. 9 выпусков подкаста «Системы и реальность», онтология автономии, A2A-экономика и эссе по деонтической логике."
-    canonicalUrl="https://dmitryefremov.com"
+    description="Суверенный интеллектуальный узел Дмитрия Ефремова. Выпуски подкаста «Системы и реальность», онтология автономии, A2A-экономика и эссе по деонтической логике."
+    canonicalUrl="https://dmitrii.eneik.com"
   />
 
   <div
@@ -105,7 +105,7 @@
               DMITRY EFREMOV
             </span>
             <span id="sys-domain" class="text-xs font-mono hidden sm:inline {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">
-              dmitryefremov.com
+              dmitrii.eneik.com
             </span>
           </div>
 
@@ -306,8 +306,8 @@
             </div>
             <div id="imprint-details-content" class="space-y-2 leading-relaxed">
               <p><strong>Владелец сайта:</strong> Дмитрий Ефремов (Dmitry Efremov)</p>
-              <p><strong>Домен:</strong> dmitryefremov.com</p>
-              <p><strong>Email:</strong> contact@dmitryefremov.com</p>
+              <p><strong>Домен:</strong> dmitrii.eneik.com</p>
+              <p><strong>Email:</strong> dmitrii.eneik@gmail.com</p>
               <p><strong>Стандарт конфиденциальности:</strong> Нулевые сторонние трекеры до явного согласия (Zero-Cookie Telemetry).</p>
               <p><strong>Авторские права:</strong> Все материалы, манифесты и формулировки процессов являются интеллектуальной собственностью автора.</p>
             </div>
