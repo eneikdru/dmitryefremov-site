@@ -38,6 +38,10 @@ public class CanonService {
     }
 
     public CanonPageDto getCanonItems(CanonDomain domain, CanonType type, int page, int size) {
+        return getCanonItems(domain, type, null, page, size);
+    }
+
+    public CanonPageDto getCanonItems(CanonDomain domain, CanonType type, String query, int page, int size) {
         if (page < 0) {
             throw new IllegalArgumentException("Page index must not be less than zero");
         }
@@ -48,7 +52,9 @@ public class CanonService {
         Pageable pageable = PageRequest.of(page, size);
         Page<CanonItem> canonPage;
 
-        if (domain != null && type != null) {
+        if (query != null && !query.isBlank()) {
+            canonPage = canonItemRepository.searchByQuery(query.trim(), pageable);
+        } else if (domain != null && type != null) {
             canonPage = canonItemRepository.findByDomainAndTypeOrderByPublishedAtDesc(domain, type, pageable);
         } else if (domain != null) {
             canonPage = canonItemRepository.findByDomainOrderByPublishedAtDesc(domain, pageable);

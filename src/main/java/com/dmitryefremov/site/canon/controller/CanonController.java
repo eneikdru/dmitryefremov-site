@@ -34,13 +34,31 @@ public class CanonController {
     public ResponseEntity<CanonPageDto> listCanonItems(
             @RequestParam(required = false) String domain,
             @RequestParam(required = false) String type,
+            @RequestParam(required = false) String query,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
 
         CanonDomain canonDomain = domain != null && !domain.isBlank() ? CanonDomain.fromString(domain) : null;
         CanonType canonType = type != null && !type.isBlank() ? CanonType.fromString(type) : null;
 
-        CanonPageDto result = canonService.getCanonItems(canonDomain, canonType, page, size);
+        CanonPageDto result = (query != null && !query.isBlank())
+                ? canonService.getCanonItems(canonDomain, canonType, query, page, size)
+                : canonService.getCanonItems(canonDomain, canonType, page, size);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<CanonPageDto> searchCanonItems(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) String domain,
+            @RequestParam(required = false) String type,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+
+        CanonDomain canonDomain = domain != null && !domain.isBlank() ? CanonDomain.fromString(domain) : null;
+        CanonType canonType = type != null && !type.isBlank() ? CanonType.fromString(type) : null;
+
+        CanonPageDto result = canonService.getCanonItems(canonDomain, canonType, query, page, size);
         return ResponseEntity.ok(result);
     }
 
