@@ -82,7 +82,6 @@
     }
   }
 
-  
   function handleGlobalShortcut(e: KeyboardEvent) {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
@@ -99,6 +98,8 @@
     const savedTheme = localStorage.getItem('theme-preference') as 'dark' | 'light' | null;
     if (savedTheme) {
       theme = savedTheme;
+    } else {
+      theme = 'dark';
     }
 
     fetchPodcastsFromApi().then(eps => {
@@ -115,9 +116,7 @@
     theme = theme === 'dark' ? 'light' : 'dark';
     try {
       localStorage.setItem('theme-preference', theme);
-    } catch {
-      // Storage restricted environments
-    }
+    } catch {}
   }
 
   function toggleImprint() {
@@ -139,40 +138,42 @@
   <TelemetryHudView {theme} />
 {:else}
   <SeoMeta
-    title="Дмитрий Ефремов — Архитектура систем, философия сознания и автономные процессы"
+    title="Дмитрий Ефремов — Архитектура систем, философия мышления и автономные процессы"
     description="Суверенный интеллектуальный узел Дмитрия Ефремова. Выпуски подкаста «Системы и реальность», онтология автономии, A2A-экономика и эссе по деонтической логике."
     canonicalUrl="https://dmitryefremov.com"
   />
 
   <div
     id="telemetry-hub-root"
-    class="min-h-screen transition-colors duration-200 {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
+    class="min-h-screen transition-colors duration-200 selection:bg-amber-400 selection:text-black {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
   >
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-      <!-- Top System & Status Bar -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+      <!-- Architectural Masthead & System Bar -->
       <header class="space-y-6">
-        <div class="flex items-center justify-between gap-4 border-b pb-4 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
+        <div class="flex items-center justify-between gap-4 border-b pb-5 {theme === 'dark' ? 'border-white/[0.08]' : 'border-slate-200'}">
+          <!-- Identity Coordinates -->
           <div class="flex items-center gap-3">
-            <span
-              id="sys-core-badge"
-              class="sr-only"
-            >
-              DMITRY EFREMOV
-            </span>
-            <span id="sys-domain" class="sr-only">
-              dmitryefremov.com
-            </span>
+            <span id="sys-core-badge" class="sr-only">DMITRY EFREMOV</span>
+            <span id="sys-domain" class="sr-only">dmitryefremov.com</span>
+
+            <div class="flex items-center gap-2.5 font-mono text-xs tracking-wider uppercase font-semibold {theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}">
+              <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+              <span class="text-white font-bold tracking-widest">EFREMOV // NODE</span>
+              <span class="opacity-30">•</span>
+              <span class="hidden sm:inline">AUTONOMOUS SYSTEMS ARCHITECTURE</span>
+            </div>
           </div>
 
-          <div class="flex items-center gap-3">
+          <!-- Utility Console: Language | Search | Theme -->
+          <div class="flex items-center gap-2.5">
             <!-- Language Selector: RU | EN | KA -->
-            <div id="language-switcher" class="flex items-center rounded-lg border font-mono text-xs overflow-hidden {theme === 'dark' ? 'border-[#1f2433] bg-[#12151e]' : 'border-[#cbd5e1] bg-white'}">
+            <div id="language-switcher" class="flex items-center rounded-lg border font-mono text-xs overflow-hidden {theme === 'dark' ? 'border-white/10 bg-[#0e1219]' : 'border-slate-300 bg-white shadow-sm'}">
               <button
                 type="button"
                 id="lang-btn-ru"
                 aria-label="Переключить на русский язык"
                 on:click={() => setLanguage('ru')}
-                class="px-2 py-1 transition-all cursor-pointer {$currentLanguage === 'ru' ? (theme === 'dark' ? 'bg-[#d4af37] text-[#090a0f] font-bold shadow-sm' : 'bg-[#181c26] text-white font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+                class="px-2.5 py-1.5 transition-all cursor-pointer font-bold {$currentLanguage === 'ru' ? (theme === 'dark' ? 'bg-amber-400 text-black shadow-sm' : 'bg-slate-900 text-white shadow-sm') : (theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black')}"
               >
                 RU
               </button>
@@ -181,7 +182,7 @@
                 id="lang-btn-en"
                 aria-label="Switch to English"
                 on:click={() => setLanguage('en')}
-                class="px-2 py-1 transition-all cursor-pointer {$currentLanguage === 'en' ? (theme === 'dark' ? 'bg-[#d4af37] text-[#090a0f] font-bold shadow-sm' : 'bg-[#181c26] text-white font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+                class="px-2.5 py-1.5 transition-all cursor-pointer font-bold {$currentLanguage === 'en' ? (theme === 'dark' ? 'bg-amber-400 text-black shadow-sm' : 'bg-slate-900 text-white shadow-sm') : (theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black')}"
               >
                 EN
               </button>
@@ -190,21 +191,21 @@
                 id="lang-btn-ka"
                 aria-label="ქართულ ენაზე გადართვა"
                 on:click={() => setLanguage('ka')}
-                class="px-2 py-1 transition-all cursor-pointer {$currentLanguage === 'ka' ? (theme === 'dark' ? 'bg-[#d4af37] text-[#090a0f] font-bold shadow-sm' : 'bg-[#181c26] text-white font-bold shadow-sm') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
+                class="px-2.5 py-1.5 transition-all cursor-pointer font-bold {$currentLanguage === 'ka' ? (theme === 'dark' ? 'bg-amber-400 text-black shadow-sm' : 'bg-slate-900 text-white shadow-sm') : (theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black')}"
               >
                 KA
               </button>
             </div>
 
-            <!-- Clean Search Trigger (Accessible, no misleading browser shortcut prompt) -->
+            <!-- Clean Search Button (Authoritative, Accessible) -->
             <button
               id="cmd-k-trigger-btn"
               type="button"
               on:click={() => (isSearchModalOpen = true)}
               aria-label="Поиск по Канону (Cmd+K)"
-              class="px-4 py-2 rounded-xl text-sm font-semibold border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#d4af37] shadow-sm {theme === 'dark' ? 'bg-[#161c28] text-[#f1f5f9] border-[#2d3748] hover:border-[#d4af37]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#181c26]'}"
+              class="px-4 py-1.5 rounded-lg text-xs font-mono font-bold tracking-widest uppercase border transition-all cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-400 {theme === 'dark' ? 'bg-[#0e1219] text-amber-300 border-white/10 hover:border-amber-400/50' : 'bg-white text-slate-900 border-slate-300 hover:border-slate-500 shadow-sm'}"
             >
-              <span class="font-bold tracking-wide">ПОИСК</span>
+              <span>ПОИСК</span>
               <span class="sr-only">Cmd+K</span>
             </button>
 
@@ -214,81 +215,90 @@
               type="button"
               on:click={toggleTheme}
               aria-label="Toggle theme"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#d4af37] {theme === 'dark' ? 'bg-[#12151d] text-[#cbd5e1] border-[#1f2433] hover:border-[#d4af37]/60' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
+              class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider border transition-all cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-400 {theme === 'dark' ? 'bg-[#0e1219] text-slate-300 border-white/10 hover:text-white hover:border-white/20' : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100 shadow-sm'}"
             >
               <span>{theme === 'dark' ? t($currentLanguage).theme_dark : t($currentLanguage).theme_light}</span>
             </button>
           </div>
         </div>
 
-        <!-- Hero Section with Real 4K Studio Photography -->
-        <section id="hero-section" class="p-6 sm:p-8 rounded-2xl border transition-all {theme === 'dark' ? 'bg-[#0f1118] border-[#1f2433] shadow-xl' : 'bg-white border-[#e2e8f0] shadow-sm'}">
-          <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
-            <!-- Author Studio Portrait -->
-            <div id="hero-avatar-container" class="w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 shrink-0 rounded-2xl overflow-hidden border-2 {theme === 'dark' ? 'border-[#d4af37]/30 shadow-2xl shadow-[#d4af37]/5' : 'border-[#b78e20]/30 shadow-md'}">
-              <ResponsivePicture
-                id="hero-avatar-img"
-                assetKey="dmitry_efremov_studio"
-                alt="Официальный студийный портрет Дмитрия Ефремова"
-                imgClass="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
-                loading="eager"
-              />
+        <!-- Monumental Hero Section: Confident, Intellectual, Tactile -->
+        <section id="hero-section" class="p-8 sm:p-10 lg:p-12 rounded-xl border transition-all relative {theme === 'dark' ? 'bg-[#0d1118] border-white/[0.09] shadow-2xl' : 'bg-white border-slate-300 shadow-sm'}">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+            <!-- Author Studio Portrait: Industrial Bezel Framing -->
+            <div class="lg:col-span-4 flex justify-center lg:justify-start">
+              <div id="hero-avatar-container" class="relative group w-44 h-44 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-lg overflow-hidden border border-white/15 bg-black shadow-2xl">
+                <ResponsivePicture
+                  id="hero-avatar-img"
+                  assetKey="dmitry_efremov_studio"
+                  alt="Официальный студийный портрет Дмитрия Ефремова"
+                  imgClass="w-full h-full object-cover object-top filter grayscale contrast-110 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  loading="eager"
+                />
+                <!-- Subtle technical overlay coordinate -->
+                <div class="absolute bottom-2 left-2 right-2 px-2 py-1 rounded bg-black/75 backdrop-blur-sm border border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-300 uppercase">
+                  <span>DMITRY EFREMOV</span>
+                  <span class="text-amber-400 font-bold">4K MASTER</span>
+                </div>
+              </div>
             </div>
 
-            <!-- Bio & Manifest -->
-            <div class="space-y-4 flex-1 text-center md:text-left">
-              <div class="space-y-1.5">
-                <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-mono">
-                  <span class="px-2 py-0.5 rounded bg-[#d4af37]/15 text-[#e5c158] font-medium border border-[#d4af37]/25">
-                    {$currentLanguage === 'ru' ? 'Архитектор автономных систем' : ($currentLanguage === 'ka' ? 'ავტონომიური სისტემების არქიტექტორი' : 'Autonomous Systems Architect')}
-                  </span>
-                  <span class="{theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">•</span>
-                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
-                    {$currentLanguage === 'ru' ? 'A2A Экономика' : ($currentLanguage === 'ka' ? 'A2A ეკონომიკა' : 'A2A Economy')}
-                  </span>
-                  <span class="{theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">•</span>
-                  <span class="{theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
-                    {$currentLanguage === 'ru' ? 'Философия действия' : ($currentLanguage === 'ka' ? 'მოქმედების ფილოსოფია' : 'Philosophy of Action')}
-                  </span>
+            <!-- Monumental Typographic Manifest & Core Thesis -->
+            <div class="lg:col-span-8 space-y-6 text-center lg:text-left">
+              <div class="space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded font-mono text-xs uppercase tracking-widest font-bold border {theme === 'dark' ? 'bg-amber-400/10 text-amber-300 border-amber-400/30' : 'bg-amber-50 text-amber-900 border-amber-300'}">
+                  <span>КОНТУР 01 // ОНТОЛОГИЯ ДЕЙСТВИЯ</span>
                 </div>
-                <h1 id="hero-title" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
+
+                <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight uppercase leading-[0.95] {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
                   {t($currentLanguage).hero_name}
                 </h1>
-                <p id="hero-subtitle" class="text-lg sm:text-xl font-mono font-semibold {theme === 'dark' ? 'text-[#e5c158]' : 'text-[#9c7816]'}">
+
+                <p id="hero-subtitle" class="text-base sm:text-xl font-mono font-semibold tracking-tight {theme === 'dark' ? 'text-amber-300' : 'text-amber-800'}">
                   {t($currentLanguage).hero_tagline}
                 </p>
               </div>
 
-              <blockquote id="hero-manifest" class="p-5 sm:p-6 rounded-2xl border-l-4 italic text-base sm:text-lg leading-relaxed {theme === 'dark' ? 'bg-[#12151d] border-[#d4af37] text-[#cbd5e1]' : 'bg-[#f8fafc] border-[#b78e20] text-[#334155]'}">
+              <!-- Authoritative Philosophical Axiom -->
+              <blockquote id="hero-manifest" class="p-5 sm:p-6 rounded-lg border-l-2 text-base sm:text-lg leading-relaxed {theme === 'dark' ? 'bg-[#080a0e] border-amber-400 text-[#e2e8f0]' : 'bg-slate-50 border-slate-800 text-slate-800'}">
                 {t($currentLanguage).hero_manifest}
               </blockquote>
 
-              <!-- Quick Action Links -->
-              <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2 text-xs font-mono">
+              <!-- Tactile Mechanical Action Console -->
+              <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2 text-xs font-mono font-bold uppercase tracking-wider">
+                <button
+                  type="button"
+                  on:click={() => (activeTab = 'podcast')}
+                  class="px-5 py-2.5 rounded-lg transition-all cursor-pointer bg-amber-400 text-black hover:bg-amber-300 shadow-md"
+                >
+                  СЛУШАТЬ ПОДКАСТ
+                </button>
+
                 <a
                   href="https://t.me/efremov_mvp"
                   target="_blank"
                   rel="noopener noreferrer"
                   on:click={() => handleOutboundClick('https://t.me/efremov_mvp', 'Telegram @efremov_mvp', 'Telegram')}
-                  class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 bg-[#d4af37] text-[#090a0f] hover:bg-[#e2c15e] shadow-sm"
+                  class="px-4 py-2.5 rounded-lg border transition-all flex items-center gap-2 {theme === 'dark' ? 'bg-[#12161f] text-white border-white/10 hover:border-white/30 hover:bg-[#181e2b]' : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50'}"
                 >
                   <span>Telegram @efremov_mvp</span>
-                  
                 </a>
+
                 <a
                   href="https://www.youtube.com/@dmitrii.efremov"
                   target="_blank"
                   rel="noopener noreferrer"
                   on:click={() => handleOutboundClick('https://www.youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
-                  class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 border {theme === 'dark' ? 'bg-[#141824] text-white border-[#1f2433] hover:border-[#ef4444]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#ef4444]'}"
+                  class="px-4 py-2.5 rounded-lg border transition-all flex items-center gap-2 {theme === 'dark' ? 'bg-[#12161f] text-white border-white/10 hover:border-red-500/50 hover:bg-[#181e2b]' : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50'}"
                 >
-                  <span class="text-[#ef4444]">YouTube</span>
-                  
+                  <span>YouTube</span>
                 </a>
+
                 <button
                   type="button"
                   on:click={() => (activeTab = 'contact')}
-                  class="px-3.5 py-2 rounded-lg transition-colors border {theme === 'dark' ? 'bg-[#141824] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7]'}"
+                  class="px-4 py-2.5 rounded-lg border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#12161f] text-slate-300 border-white/10 hover:text-white hover:border-white/30' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}"
                 >
                   {$currentLanguage === 'ru' ? 'Прямая связь & Заявки' : ($currentLanguage === 'ka' ? 'პირდაპირი კავშირი და განაცხადები' : 'Direct Contact & Inquiries')}
                 </button>
@@ -297,52 +307,61 @@
           </div>
         </section>
 
-        <!-- Navigation Bar: Large, Comfortable, Touch-Friendly -->
-        <nav id="nav-tabs" aria-label="Main Navigation" class="flex flex-wrap gap-2.5 p-2 rounded-2xl border text-sm sm:text-base font-semibold w-full sm:w-fit shadow-md {theme === 'dark' ? 'bg-[#131824] border-[#283248]' : 'bg-white border-[#cbd5e1]'}">
+        <!-- Architectural Navigation Grid: Numbered Operational Modules -->
+        <nav id="nav-tabs" aria-label="Main Navigation" class="grid grid-cols-2 sm:grid-cols-5 gap-2 p-1.5 rounded-xl border text-xs sm:text-sm font-mono font-bold uppercase tracking-wider w-full shadow-lg {theme === 'dark' ? 'bg-[#0d1118] border-white/[0.08]' : 'bg-white border-slate-300'}">
           <button
             id="tab-btn-podcast"
             type="button"
-            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'podcast')}
           >
+            <span class="text-[10px] opacity-70">01 //</span>
             <span>{t($currentLanguage).nav_podcast}</span>
           </button>
+
           <button
             id="tab-btn-article"
             type="button"
-            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'article')}
           >
+            <span class="text-[10px] opacity-70">02 //</span>
             <span>{t($currentLanguage).nav_article}</span>
           </button>
+
           <button
             id="tab-btn-sparks"
             type="button"
-            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'sparks')}
           >
+            <span class="text-[10px] opacity-70">03 //</span>
             <span>{t($currentLanguage).nav_sparks}</span>
           </button>
-          <button
-            id="tab-btn-contact"
-            type="button"
-            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
-            on:click={() => (activeTab = 'contact')}
-          >
-            <span>{t($currentLanguage).nav_contact}</span>
-          </button>
+
           <button
             id="tab-btn-canon"
             type="button"
-            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#222b3d] text-white font-bold shadow-md ring-1 ring-[#d4af37]/40' : 'bg-[#181c26] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#cbd5e1] hover:text-white hover:bg-[#1a2130]' : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
             on:click={() => (activeTab = 'canon')}
           >
+            <span class="text-[10px] opacity-70">04 //</span>
             <span>{t($currentLanguage).nav_canon}</span>
+          </button>
+
+          <button
+            id="tab-btn-contact"
+            type="button"
+            class="col-span-2 sm:col-span-1 py-3 px-3 sm:px-4 rounded-lg transition-all text-center flex flex-col items-center justify-center gap-0.5 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-amber-400 text-black font-extrabold shadow' : 'bg-slate-900 text-white font-extrabold shadow') : (theme === 'dark' ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-black hover:bg-slate-100')}"
+            on:click={() => (activeTab = 'contact')}
+          >
+            <span class="text-[10px] opacity-70">05 //</span>
+            <span>{t($currentLanguage).nav_contact}</span>
           </button>
         </nav>
       </header>
 
-      <!-- Main Content Area -->
+      <!-- Main Operational Viewport -->
       <section id="content-view" class="space-y-8">
         {#if activeTab === 'podcast'}
           <div class="space-y-6">
@@ -367,8 +386,8 @@
         {/if}
       </section>
 
-      <!-- Footer -->
-      <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-[#1f2433] text-[#94a3b8]' : 'border-[#e2e8f0] text-[#64748b]'}">
+      <!-- Architectural Sovereign Footer -->
+      <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-white/10 text-slate-400' : 'border-slate-300 text-slate-600'}">
         <div>
           <span>© {new Date().getFullYear()} {t($currentLanguage).footer_rights}</span>
         </div>
@@ -377,7 +396,7 @@
             id="cmp-persistent-link"
             type="button"
             on:click={toggleCmpModal}
-            class="underline hover:text-current transition-colors cursor-pointer"
+            class="underline hover:text-white transition-colors cursor-pointer"
           >
             <span class="sr-only">Приватность (CMP)</span>
             <span>{t($currentLanguage).footer_privacy}</span>
@@ -386,7 +405,7 @@
             id="imprint-toggle-btn"
             type="button"
             on:click={toggleImprint}
-            class="underline hover:text-current transition-colors cursor-pointer"
+            class="underline hover:text-white transition-colors cursor-pointer"
           >
             {t($currentLanguage).footer_imprint}
           </button>
@@ -395,15 +414,15 @@
 
       <!-- Imprint Modal -->
       {#if showImprintModal}
-        <div id="imprint-modal" role="dialog" aria-labelledby="imprint-title" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div class="max-w-md w-full p-6 rounded-2xl border shadow-2xl space-y-4 font-mono text-xs {theme === 'dark' ? 'bg-[#12151e] border-[#1f2433] text-[#e2e8f0]' : 'bg-white border-[#cbd5e1] text-[#0f172a]'}">
-            <div class="flex justify-between items-center border-b pb-3 {theme === 'dark' ? 'border-[#1f2433]' : 'border-[#e2e8f0]'}">
-              <h2 id="imprint-title" class="text-sm font-bold">{t($currentLanguage).imprint_title}</h2>
+        <div id="imprint-modal" role="dialog" aria-labelledby="imprint-title" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div class="max-w-md w-full p-6 rounded-xl border space-y-4 font-mono text-xs {theme === 'dark' ? 'bg-[#0d1118] border-white/15 text-[#e2e8f0]' : 'bg-white border-slate-300 text-[#0f172a] shadow-2xl'}">
+            <div class="flex justify-between items-center border-b pb-3 {theme === 'dark' ? 'border-white/10' : 'border-slate-200'}">
+              <h2 id="imprint-title" class="text-sm font-bold uppercase tracking-wider">{t($currentLanguage).imprint_title}</h2>
               <button
                 id="imprint-close-btn"
                 type="button"
                 on:click={toggleImprint}
-                class="px-2 py-1 rounded border {theme === 'dark' ? 'bg-[#1f2433] hover:bg-[#2e364f]' : 'bg-[#f1f5f9] hover:bg-[#e2e8f0]'}"
+                class="px-2 py-1 rounded border {theme === 'dark' ? 'bg-[#181e2b] border-white/10 hover:bg-[#232b3d]' : 'bg-slate-100 border-slate-300 hover:bg-slate-200'}"
               >
                 ✕
               </button>
