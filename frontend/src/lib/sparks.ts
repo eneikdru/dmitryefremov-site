@@ -33,12 +33,20 @@ export interface SparkItem {
   theoremContrast?: TheoremContrast;
   isFired?: boolean;
   isBookmarked?: boolean;
+  link?: string;
+  domain?: string;
+  telegramMessageId?: number;
+  publishedAt?: string;
+  audioUrl?: string;
+  audioDuration?: string;
 }
 
 export type StreamMode = 'HYPER' | 'FOCUS';
 
 export const SPARK_CATEGORIES = [
   'All Sparks',
+  '#leadership',
+  '#systems',
   '#mental-models',
   '#system-design',
   '#ai-futures',
@@ -366,6 +374,77 @@ export const CANONICAL_SPARKS: SparkItem[] = [
     body: 'Любая строчка логики фиксирует диспозицию её создателя и перекладывает риск на пользователя. Алгоритм не несет моральной ответственности сам по себе: вся полнота риска всегда остается на архитекторе решения.',
     isFired: true,
     isBookmarked: true
+  },
+  // --- БЛОК LINKEDIN: ПУБЛИКАЦИИ ДМИТРИЯ ЕФРЕМОВА (#LEADERSHIP & #SYSTEMS) ---
+  {
+    id: 'spk-li-leadership-01',
+    author: 'Dmitry Efremov (LinkedIn)',
+    authorInitial: 'D',
+    timestamp: '2026-10-24 11:00',
+    tag: '#leadership',
+    type: 'insight',
+    sparksCount: 264,
+    readTime: '30s',
+    title: 'Лидерство в эпоху автономных AI-агентов: от микроменеджмента к архитектуре деонтических ограничений',
+    body: 'Традиционный инженерный менеджмент строился на распределении тикетов и ручном контроле статусов. В эпоху, когда автономные агенты генерируют код со скоростью сотен строк в секунду, такой подход мгновенно коллапсирует.\n\nНастоящее лидерство сегодня — это не раздача задач, а проектирование жестких деонтических инвариантов и контрактных границ системы. Лидер становится конституционным архитектором: он определяет то, что системе категорически ЗАПРЕЩЕНО делать, создавая безопасное пространство для автономного действия агентов.\n\nВаша архитектура — это точные границы вашей воли, зафиксированные в коде.\n\nLinkedIn: https://www.linkedin.com/in/dmitrii-efremov-87b816349/',
+    link: 'https://www.linkedin.com/in/dmitrii-efremov-87b816349/',
+    isFired: true,
+    isBookmarked: true
+  },
+  {
+    id: 'spk-li-systems-02',
+    author: 'Dmitry Efremov (LinkedIn)',
+    authorInitial: 'D',
+    timestamp: '2026-10-22 15:30',
+    tag: '#systems',
+    type: 'theorem',
+    sparksCount: 312,
+    readTime: '35s',
+    title: 'Закон Конвея наоборот: почему архитектура интерфейсов определяет скорость бизнеса',
+    body: 'Сложность в распределенных системах почти никогда не является чисто технической. Это социальная структура вашей организации, застывшая в коде и схемах баз данных.\n\nLinkedIn: https://www.linkedin.com/in/dmitrii-efremov-87b816349/',
+    theoremContrast: {
+      linear: 'Чтобы ускорить разработку, нужно нанять больше людей и поставить им таск-трекер с искусственным интеллектом.',
+      nonLinear: 'Инвертируйте закон Конвея: спроектируйте чистые детерминированные контракты между модулями — и организация сама перестроится вокруг непрерывного потока ценности.'
+    },
+    link: 'https://www.linkedin.com/in/dmitrii-efremov-87b816349/',
+    isFired: true,
+    isBookmarked: false
+  },
+  {
+    id: 'spk-li-systems-03',
+    author: 'Dmitry Efremov (LinkedIn)',
+    authorInitial: 'D',
+    timestamp: '2026-10-20 09:45',
+    tag: '#systems',
+    type: 'framework',
+    sparksCount: 198,
+    readTime: '40s',
+    title: 'Инженерная честность: отказ от иллюзорной связности ради устойчивости рантайма',
+    body: 'Протокол выявления узких мест по Теории Ограничений (TOC) при интеграции нейросетевых агентов.\n\nLinkedIn: https://www.linkedin.com/in/dmitrii-efremov-87b816349/',
+    frameworkSteps: [
+      { id: 1, text: 'Выявление единственного системного ограничения в цепочке обратной связи (bottleneck identification).' },
+      { id: 2, text: 'Подчинение темпа генерации кода реальной пропускной способности верификационного шлюза (subordinate).' },
+      { id: 3, text: 'Отказ от иллюзорной связности: принудительный тест на фальсификацию любого правдоподобного объяснения ошибки.' },
+      { id: 4, text: 'Расширение пропускной способности ограничения через детерминированные сенсомоторные пробы рантайма.' }
+    ],
+    link: 'https://www.linkedin.com/in/dmitrii-efremov-87b816349/',
+    isFired: false,
+    isBookmarked: false
+  },
+  {
+    id: 'spk-li-leadership-04',
+    author: 'Dmitry Efremov (LinkedIn)',
+    authorInitial: 'D',
+    timestamp: '2026-10-18 17:15',
+    tag: '#leadership',
+    type: 'quote',
+    sparksCount: 420,
+    readTime: '15s',
+    title: 'Ответственность архитектора',
+    body: '«Лидер не может делегировать нейросети ответственность за компромиссы. Если архитектурное решение привело к деградации системы под нагрузкой, вина лежит на том, кто спроектировал границы допустимого, а не на статистической модели.» — Дмитрий Ефремов\n\nLinkedIn: https://www.linkedin.com/in/dmitrii-efremov-87b816349/',
+    link: 'https://www.linkedin.com/in/dmitrii-efremov-87b816349/',
+    isFired: true,
+    isBookmarked: false
   }
 ];
 
@@ -412,7 +491,11 @@ export function filterSparks(sparks: SparkItem[], selectedCategory: string, sear
     const cleanCategory = selectedCategory.replace(/^#/, '').toLowerCase();
     result = result.filter(spark => {
       const sparkTag = spark.tag.replace(/^#/, '').toLowerCase();
-      return sparkTag === cleanCategory || spark.tag.toLowerCase() === selectedCategory.toLowerCase();
+      if (sparkTag === cleanCategory || spark.tag.toLowerCase() === selectedCategory.toLowerCase()) {
+        return true;
+      }
+      const tags = spark.tag.split(/[,\s]+/).map(t => t.replace(/^#/, '').toLowerCase());
+      return tags.includes(cleanCategory);
     });
   }
 

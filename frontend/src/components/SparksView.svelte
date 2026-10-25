@@ -233,6 +233,17 @@
                 <span class="text-[11px] font-mono px-2 py-0.5 rounded {theme === 'dark' ? 'bg-[#1a1c20] text-[#ffb300]/80' : 'bg-[#f1f5f9] text-[#0284c7]'}">
                   {spark.tag}
                 </span>
+                {#if spark.link}
+                  <a
+                    href={spark.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-[11px] font-mono text-[#00d6e3] hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>LinkedIn</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                {/if}
               </div>
 
               <div class="flex items-center space-x-2">

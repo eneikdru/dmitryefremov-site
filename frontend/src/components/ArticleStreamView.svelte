@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { parseMarkdown } from '../lib/markdown';
   import { telemetry, calculateScrollPercentage, type TelemetryEvent } from '../lib/telemetry';
-  import { fetchEssaysFromApi, type EssayArticleItem } from '../lib/essays';
+  import { fetchEssaysFromApi, INITIAL_ESSAYS, type EssayArticleItem } from '../lib/essays';
   import { fetchSparksFromApi } from '../lib/sparks';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import SeoMeta from './SeoMeta.svelte';
@@ -25,9 +25,10 @@
     tags?: string;
     author?: string;
     publishedAt: string;
+    link?: string;
   }
 
-  export let articles: Article[] = [];
+  export let articles: Article[] = INITIAL_ESSAYS;
   export let sparks: SparkItem[] = [];
   export let selectedArticleId: string | undefined = undefined;
   export let filterTopic: 'all' | 'deontic' | 'toc' | 'autonomous' | 'systems' = 'all';
@@ -92,10 +93,11 @@
           id: s.id,
           telegramMessageId: s.telegramMessageId,
           content: s.body || '',
-          domain: s.domain || 'Telegram',
+          domain: s.domain || (s.link ? 'LinkedIn' : 'Telegram'),
           tags: s.tag,
           author: s.author,
-          publishedAt: s.publishedAt
+          publishedAt: s.publishedAt || s.timestamp,
+          link: s.link
         }));
       }
     }
@@ -164,6 +166,13 @@
         on:click={() => (filterTopic = 'autonomous')}
       >
         Autonomous Systems
+      </button>
+      <button
+        type="button"
+        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'systems' ? 'bg-[#38bdf8] text-[#090a0f] font-bold border-[#38bdf8]' : 'bg-[#12151e] text-[#94a3b8] border-[#1f2433] hover:text-white'}"
+        on:click={() => (filterTopic = 'systems')}
+      >
+        Systems Architecture
       </button>
     </div>
   </div>
@@ -236,6 +245,19 @@
                 <p class="text-[#e2e8f0] font-sans leading-relaxed text-xs">
                   {spark.content}
                 </p>
+                {#if spark.link}
+                  <div class="pt-1">
+                    <a
+                      href={spark.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-[11px] text-[#38bdf8] hover:underline inline-flex items-center gap-1 font-mono"
+                    >
+                      <span>LinkedIn Profile</span>
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                {/if}
                 <div class="flex justify-between items-center text-[10px] text-[#64748b]">
                   <span>{spark.author || '@efremov_mvp'}</span>
                   <span>{spark.publishedAt}</span>
