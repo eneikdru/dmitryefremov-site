@@ -129,7 +129,7 @@
       <span class="font-mono text-xs font-semibold text-[#38bdf8] uppercase tracking-wider">Прямой защищённый шлюз · dmitrii.eneik.com</span>
     </div>
     <div class="flex items-center space-x-1.5 text-[#94a3b8] bg-[#090a0f] px-2.5 py-1 rounded border border-[#1f2433] font-mono text-[11px]">
-      <span class="text-[#38bdf8]">✉️</span>
+      
       <span>DIRECT-DATABASE // TLS-1.3</span>
     </div>
   </div>
@@ -267,7 +267,7 @@
               <span class="w-3.5 h-3.5 border-2 border-[#090a0f] border-t-transparent rounded-full animate-spin"></span>
               <span>ОТПРАВКА НАПРЯМУЮ...</span>
             {:else}
-              <span>ОТПРАВИТЬ СООБЩЕНИЕ НАПРЯМУЮ ↗</span>
+              <span>Отправить сообщение</span>
             {/if}
           </button>
         </div>

@@ -12,7 +12,8 @@ export interface CanonRoute {
 
 export interface CanonPattern {
   id: string;
-  philosopher: string;
+  philosopher?: string;
+  category: string;
   title: string;
   directiveName: string;
   directivePrompt: string;
@@ -22,7 +23,7 @@ export interface CanonPattern {
 export const CANON_PATTERNS: CanonPattern[] = [
   {
     id: 'pattern-barcan-rigid-identity',
-    philosopher: 'Рут Баркан Маркус',
+    category: 'Деонтические контракты',
     title: 'Rigid Contract Identity (Жесткая референция контрактов)',
     directiveName: 'RIGID_CONTRACT_IDENTITY',
     useCase: 'Защита системных контрактов от контекстуального размывания и непрерывный учет неудаляемых обязательств (moral remainder).',
@@ -31,7 +32,7 @@ You must enforce rigid designation across all possible system states. Once an en
   },
   {
     id: 'pattern-thagard-coherence-falsification',
-    philosopher: 'Пол Таггард',
+    category: 'Фальсификация гипотез',
     title: 'Explanatory Coherence & Falsification (ECHO & Фальсификация)',
     directiveName: 'EXPLANATORY_COHERENCE_ECHO',
     useCase: 'Взвешивание конкурирующих гипотез, защита от корпоративной пропаганды и красивой лжи через жесткий вопрос фальсификации.',
@@ -40,7 +41,7 @@ Evaluate competing hypotheses using strict coherence criteria: (1) Symmetrical e
   },
   {
     id: 'pattern-hurley-sensorimotor-loop',
-    philosopher: 'Сьюзан Хёрли',
+    category: 'Воплощенное действие',
     title: 'Sensorimotor Loop & Shared Circuits (Действие в мире)',
     directiveName: 'SENSORIMOTOR_LOOP_EXECUTION',
     useCase: 'Двухуровневая обратная связь с упреждающей моделью отклика среды (Forward Model) вместо слепого одноразового вывода.',
@@ -49,7 +50,7 @@ Do not treat reasoning as an isolated deliberation step preceding execution. Imp
   },
   {
     id: 'pattern-ryle-knowing-how',
-    philosopher: 'Гилберт Райл',
+    category: 'Практический навык',
     title: 'Knowing-How & Anti-Category Error (Навык против призраков)',
     directiveName: 'KNOWING_HOW_ANTI_REGRESS',
     useCase: 'Предотвращение бесконечного регресса инструкций и отказ от поиска вымышленных скрытых сущностей (призрак в машине).',
@@ -84,10 +85,10 @@ export const CANON_ROUTES: CanonRoute[] = [
         articles: [{ title: "Деонтическая логика в автономии", slug: "deontic-logic", url: "/api/v1/articles/deontic-logic" }],
         essays: [{ title: "Онтология автономии", slug: "ontology-autonomy", url: "/api/v1/essays/ontology-autonomy" }],
         podcasts: [
-          { title: "Рут Баркан Маркус: Имя не равно описанию", slug: "01-ruth-barcan-marcus", url: "/api/v1/podcasts/01-ruth-barcan-marcus" },
-          { title: "Пол Таггард: Почему логичная ложь побеждает факты?", slug: "02-paul-thagard", url: "/api/v1/podcasts/02-paul-thagard" },
-          { title: "Сьюзан Хёрли: Почему мы копируем других?", slug: "03-susan-hurley", url: "/api/v1/podcasts/03-susan-hurley" },
-          { title: "Гилберт Райл: Знать — не значит уметь", slug: "04-gilbert-ryle", url: "/api/v1/podcasts/04-gilbert-ryle" }
+          { title: "Выпуск 01: Имя не равно описанию", slug: "01-ruth-barcan-marcus", url: "/api/v1/podcasts/01-ruth-barcan-marcus" },
+          { title: "Выпуск 02: Почему логичная ложь побеждает факты?", slug: "02-paul-thagard", url: "/api/v1/podcasts/02-paul-thagard" },
+          { title: "Выпуск 03: Почему мы копируем других?", slug: "03-susan-hurley", url: "/api/v1/podcasts/03-susan-hurley" },
+          { title: "Выпуск 04: Знать — не значит уметь", slug: "04-gilbert-ryle", url: "/api/v1/podcasts/04-gilbert-ryle" }
         ]
       },
       null,

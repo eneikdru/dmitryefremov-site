@@ -16,7 +16,7 @@
   const releases: ReleaseItem[] = [
     {
       id: 'ep-04-ryle',
-      title: 'Выпуск #04: Гилберт Райл — «Призрак в машине» и процедурное знание',
+      title: 'Выпуск 04: Навык в действии против «призрака в машине»',
       platform: 'Podcast',
       status: 'in_recording',
       statusLabel: 'В СЪЁМКЕ (СТУДИЯ)',
@@ -60,7 +60,7 @@
     },
     {
       id: 'ep-01-marcus',
-      title: 'Выпуск #01: Рут Баркан Маркус — Модальная логика и деонтические инварианты',
+      title: 'Выпуск 01: Модальная логика и неизменность контрактов',
       platform: 'Podcast',
       status: 'released',
       statusLabel: 'В ЭФИРЕ',
@@ -82,7 +82,7 @@
     },
     {
       id: 'ep-03-hurley',
-      title: 'Выпуск #03: Сюзан Хёрли — Сознание в действии и обратная связь среды',
+      title: 'Выпуск 03: Сознание в действии и обратная связь среды',
       platform: 'Podcast',
       status: 'released',
       statusLabel: 'В ЭФИРЕ',
@@ -126,7 +126,7 @@
         on:click={() => (selectedPlatform = 'Podcast')}
         class="px-2.5 py-1.5 rounded-lg transition-colors {selectedPlatform === 'Podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold' : 'bg-[#0284c7] text-white font-bold') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]')}"
       >
-        🎙️ ПОДКАСТ
+        Подкаст
       </button>
       <button
         type="button"
@@ -191,7 +191,7 @@
               class="self-start px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all shrink-0 flex items-center gap-1.5 {theme === 'dark' ? 'bg-[#141824] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] hover:bg-[#1a2032]' : 'bg-[#f1f5f9] text-[#0284c7] border border-[#cbd5e1] hover:border-[#0284c7] hover:bg-[#e2e8f0]'}"
             >
               <span>Смотреть / Слушать</span>
-              <span>↗</span>
+              
             </a>
           {/if}
         </div>

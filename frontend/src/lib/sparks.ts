@@ -48,11 +48,11 @@ export const SPARK_CATEGORIES = [
 ] as const;
 
 export const CANONICAL_SPARKS: SparkItem[] = [
-  // --- РУТ БАРКАН МАРКУС (5 SPARKS) ---
+  // --- БЛОК 1: ДЕОНТИЧЕСКИЕ ИНВАРИАНТЫ И ИМЕНОВАНИЕ (5 SPARKS) ---
   {
     id: 'spk-barcan-01',
-    author: 'Рут Баркан Маркус',
-    authorInitial: 'Р',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-09-25 18:00',
     tag: '#mental-models',
     type: 'theorem',
@@ -69,8 +69,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-barcan-02',
-    author: 'Рут Баркан Маркус',
-    authorInitial: 'Р',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-09-26 12:30',
     tag: '#system-design',
     type: 'framework',
@@ -89,8 +89,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-barcan-03',
-    author: 'Рут Баркан Маркус',
-    authorInitial: 'Р',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-09-27 09:15',
     tag: '#philosophy',
     type: 'insight',
@@ -103,22 +103,22 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-barcan-04',
-    author: 'Рут Баркан Маркус',
-    authorInitial: 'Р',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-09-28 15:40',
     tag: '#heuristics',
     type: 'quote',
     sparksCount: 215,
     readTime: '10s',
-    title: 'Формула Баркан',
+    title: 'Модальный инвариант возможностей',
     body: '«Если нечто возможно необходимо, то оно необходимо возможно. Возможности не возникают из ниоткуда в середине выполнения — они должны быть заложены в фундаментальное пространство состояний системы.»',
     isFired: false,
     isBookmarked: false
   },
   {
     id: 'spk-barcan-05',
-    author: 'Рут Баркан Маркус',
-    authorInitial: 'Р',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-09-29 11:00',
     tag: '#product-craft',
     type: 'insight',
@@ -130,11 +130,11 @@ export const CANONICAL_SPARKS: SparkItem[] = [
     isBookmarked: false
   },
 
-  // --- ПОЛ ТАГГАРД (5 SPARKS) ---
+  // --- БЛОК 2: СВЯЗНОСТЬ И ФАЛЬСИФИКАЦИЯ (5 SPARKS) ---
   {
     id: 'spk-thagard-01',
-    author: 'Пол Таггард',
-    authorInitial: 'П',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-01 18:00',
     tag: '#mental-models',
     type: 'insight',
@@ -147,8 +147,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-thagard-02',
-    author: 'Пол Таггард',
-    authorInitial: 'П',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-02 14:20',
     tag: '#system-design',
     type: 'framework',
@@ -167,8 +167,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-thagard-03',
-    author: 'Пол Таггард',
-    authorInitial: 'П',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-03 10:10',
     tag: '#heuristics',
     type: 'quote',
@@ -181,8 +181,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-thagard-04',
-    author: 'Пол Таггард',
-    authorInitial: 'П',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-04 16:45',
     tag: '#ai-futures',
     type: 'insight',
@@ -195,8 +195,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-thagard-05',
-    author: 'Пол Таггард',
-    authorInitial: 'П',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-05 13:00',
     tag: '#product-craft',
     type: 'insight',
@@ -208,11 +208,11 @@ export const CANONICAL_SPARKS: SparkItem[] = [
     isBookmarked: false
   },
 
-  // --- СЬЮЗАН ХЁРЛИ (5 SPARKS) ---
+  // --- БЛОК 3: ВОПЛОЩЕННОЕ ДЕЙСТВИЕ И СЕНСОМОТОРИКА (5 SPARKS) ---
   {
     id: 'spk-hurley-01',
-    author: 'Сьюзан Хёрли',
-    authorInitial: 'С',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-08 18:00',
     tag: '#mental-models',
     type: 'insight',
@@ -225,14 +225,14 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-hurley-02',
-    author: 'Сьюзан Хёрли',
-    authorInitial: 'С',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-09 11:30',
     tag: '#system-design',
     type: 'framework',
     sparksCount: 167,
     readTime: '25s',
-    title: 'Shared Circuits Model: Двухуровневая обратная связь',
+    title: 'Shared Circuits: Двухуровневая обратная связь',
     body: 'Архитектура агентного действия через упреждающее предсказание отклика среды.',
     frameworkSteps: [
       { id: 1, text: 'Генерация моторного импульса и формирование параллельной эфферентной копии (Forward Model).' },
@@ -245,8 +245,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-hurley-03',
-    author: 'Сьюзан Хёрли',
-    authorInitial: 'С',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-10 15:15',
     tag: '#heuristics',
     type: 'quote',
@@ -259,8 +259,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-hurley-04',
-    author: 'Сьюзан Хёрли',
-    authorInitial: 'С',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-11 17:00',
     tag: '#philosophy',
     type: 'insight',
@@ -273,8 +273,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-hurley-05',
-    author: 'Сьюзан Хёрли',
-    authorInitial: 'С',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-12 12:45',
     tag: '#product-craft',
     type: 'insight',
@@ -286,11 +286,11 @@ export const CANONICAL_SPARKS: SparkItem[] = [
     isBookmarked: false
   },
 
-  // --- ГИЛБЕРТ РАЙЛ (5 SPARKS) ---
+  // --- БЛОК 4: ПРАКТИЧЕСКИЙ НАВЫК И ДЕЙСТВИЕ (5 SPARKS) ---
   {
     id: 'spk-ryle-01',
-    author: 'Гилберт Райл',
-    authorInitial: 'Г',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-16 18:00',
     tag: '#mental-models',
     type: 'theorem',
@@ -307,8 +307,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-ryle-02',
-    author: 'Гилберт Райл',
-    authorInitial: 'Г',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-17 11:20',
     tag: '#system-design',
     type: 'insight',
@@ -321,8 +321,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-ryle-03',
-    author: 'Гилберт Райл',
-    authorInitial: 'Г',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-18 14:00',
     tag: '#heuristics',
     type: 'quote',
@@ -335,8 +335,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-ryle-04',
-    author: 'Гилберт Райл',
-    authorInitial: 'Г',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-19 16:30',
     tag: '#product-craft',
     type: 'framework',
@@ -355,8 +355,8 @@ export const CANONICAL_SPARKS: SparkItem[] = [
   },
   {
     id: 'spk-ryle-05',
-    author: 'Гилберт Райл',
-    authorInitial: 'Г',
+    author: '@efremov_mvp',
+    authorInitial: 'E',
     timestamp: '2026-10-20 10:45',
     tag: '#system-design',
     type: 'insight',
@@ -382,7 +382,7 @@ export async function fetchSparksFromApi(customFetch = fetch): Promise<SparkItem
     if (rawList.length === 0) return CANONICAL_SPARKS;
     return rawList.map((spk: any) => {
       const author = spk.author || '@efremov_mvp';
-      const authorInitial = author.replace(/^@/, '').charAt(0).toUpperCase() || 'D';
+      const authorInitial = author.replace(/^@/, '').charAt(0).toUpperCase() || 'E';
       return {
         id: String(spk.id || spk.telegramMessageId || `spk-${Math.random()}`),
         telegramMessageId: spk.telegramMessageId,

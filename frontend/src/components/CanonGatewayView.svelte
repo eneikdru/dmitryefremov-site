@@ -119,7 +119,7 @@
   <header id="canon-gateway-header" class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#181c24] border border-[#3a494b]/40 rounded-xl p-4 shadow-md">
     <div class="flex items-center gap-3">
       <div class="p-2 rounded-lg bg-[#00f2fe]/10 border border-[#00f2fe]/30 text-[#00f2fe]">
-        <span class="font-mono text-xl font-bold">⚙️</span>
+        
       </div>
       <div>
         <h1 id="gateway-header-title" class="text-xl font-bold tracking-tight text-[#e0fdff]">
@@ -132,15 +132,7 @@
     </div>
 
     <div class="flex items-center gap-3">
-      <div class="flex items-center gap-2 bg-[#0a0e16] border border-[#3a494b]/40 rounded-lg px-3 py-1.5">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#67f4b7] opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-[#67f4b7]"></span>
-        </span>
-        <span class="text-xs font-mono font-semibold text-[#e1ffec] tracking-wider">
-          PUBLIC ROUTING {isMasterActive ? 'ACTIVE' : 'PAUSED'}
-        </span>
-      </div>
+      
     </div>
   </header>
 
@@ -148,25 +140,16 @@
   <section id="canon-patterns-section" class="bg-[#12151e] border border-[#3a494b]/50 rounded-2xl p-6 space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1f2433] pb-4">
       <div>
-        <div class="flex items-center gap-2 mb-1">
-          <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/30">
-            ПАТТЕРНЫ АВТОНОМИИ
-          </span>
-          <span class="text-xs font-mono text-[#94a3b8]">4 мыслителя</span>
-        </div>
-        <h2 class="text-lg font-bold text-white tracking-tight">Канонические системные директивы для AI-агентов</h2>
+        <h2 class="text-lg font-bold text-white tracking-tight">Системные директивы для автономных агентов</h2>
       </div>
-      <span class="text-xs font-mono text-[#67f4b7]">Prompt-Ready · Zero Hallucination</span>
+      
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       {#each CANON_PATTERNS as pattern}
         <div class="bg-[#0a0e16] border border-[#1f2433] hover:border-[#38bdf8]/50 rounded-xl p-4 flex flex-col justify-between space-y-3 transition-colors">
           <div class="space-y-2">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="text-[#38bdf8] font-bold">{pattern.philosopher}</span>
-              <span class="text-[10px] text-[#64748b]">[{pattern.directiveName}]</span>
-            </div>
+            <div class="flex items-center justify-between text-xs font-mono"><span class="text-[#38bdf8] font-bold">{pattern.category || pattern.directiveName}</span></div>
             <h3 class="font-bold text-white text-sm leading-snug">{pattern.title}</h3>
             <p class="text-xs text-[#94a3b8] leading-relaxed">{pattern.useCase}</p>
             <div class="p-2.5 rounded bg-[#07090e] border border-[#1f2433] font-mono text-[11px] text-[#cbd5e1] leading-relaxed break-words whitespace-pre-wrap">
@@ -179,9 +162,9 @@
             class="w-full py-2 px-3 rounded-lg text-xs font-mono font-bold border transition-all flex items-center justify-center gap-2 {copiedPatternId === pattern.id ? 'bg-[#34d399] text-[#090a0f] border-[#34d399]' : 'bg-[#181c24] text-[#38bdf8] border-[#3a494b] hover:bg-[#38bdf8] hover:text-[#090a0f]'}"
           >
             {#if copiedPatternId === pattern.id}
-              <span>✓ СКОПИРОВАНО ДЛЯ АГЕНТА</span>
+              <span>Директива скопирована</span>
             {:else}
-              <span>📋 [COPY FOR AGENT PROMPT]</span>
+              <span>Скопировать директиву</span>
             {/if}
           </button>
         </div>
@@ -316,7 +299,7 @@
             rel="noopener noreferrer"
             class="text-sm font-mono font-semibold text-[#00f2fe] hover:underline block"
           >
-            {route.path} ↗
+            {route.path}
           </a>
           <p class="text-xs font-mono text-[#b9cacb] mt-1 leading-relaxed">
             {route.description}
@@ -325,7 +308,7 @@
 
         <div class="flex items-center justify-between text-xs font-mono text-[#b9cacb] pt-2 border-t border-[#3a494b]/20 flex-wrap gap-2">
           <span class="flex items-center gap-1 text-[11px]">
-            ⚡ {route.rateLimit}
+            {route.rateLimit}
           </span>
 
           <div class="flex items-center gap-2">

@@ -159,13 +159,6 @@
   <!-- Header & Domain Indicator -->
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1f2433] pb-4">
     <div>
-      <div class="flex items-center gap-2 mb-1 flex-wrap">
-        <span class="text-xs font-mono text-[#34d399] font-medium tracking-wide">
-          АВТОРСКИЙ ЦИКЛ
-        </span>
-        <span class="text-xs font-mono text-[#64748b]">•</span>
-        <span class="text-xs font-mono text-[#94a3b8]">{episodes.length} {episodes.length === 1 ? 'выпуск' : (episodes.length > 1 && episodes.length < 5 ? 'выпуска' : 'выпусков')}</span>
-      </div>
       <h2 class="text-xl font-bold tracking-tight text-white break-words">Подкаст «Системы и реальность»</h2>
     </div>
 
@@ -180,7 +173,7 @@
         class="px-2.5 py-1 rounded bg-[#12151e] text-[#ef4444] border border-[#1f2433] hover:border-[#ef4444] transition-colors flex items-center gap-1"
       >
         <span>YouTube</span>
-        <span>↗</span>
+        
       </a>
       <a
         href={currentEpisode?.telegramUrl || 'https://t.me/efremov_mvp'}
@@ -191,7 +184,7 @@
         class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] transition-colors flex items-center gap-1"
       >
         <span>Telegram</span>
-        <span>↗</span>
+        
       </a>
       <a
         href="/feed.xml"
@@ -208,7 +201,7 @@
   <!-- Main Grid: Episodes List (Left) & Active Player / Timecodes (Right) -->
   {#if episodes.length === 0}
     <div id="podcast-empty-state" class="p-12 text-center rounded-2xl border border-dashed border-[#1f2433] bg-[#090a0f] space-y-3 font-mono">
-      <div class="text-[#34d399] text-3xl">🎙️</div>
+      
       <div class="text-white font-bold text-base">Выпуски подкаста отсутствуют</div>
       <div class="text-xs text-[#94a3b8]">На данный момент в системе нет опубликованных выпусков подкаста.</div>
     </div>
@@ -216,10 +209,7 @@
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
       <!-- Episode List Section -->
       <div id="podcast-episodes-section" class="md:col-span-5 space-y-3">
-        <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
-          <span>КАТАЛОГ ВЫПУСКОВ ({episodes.length})</span>
-          <span>ВЫБЕРИТЕ ВЫПУСК</span>
-        </div>
+        <div class="text-xs font-mono text-[#94a3b8] mb-2">Каталог выпусков</div>
 
         <div class="space-y-3" role="list" aria-label="Podcast Episodes Catalog">
           {#each episodes as ep}
@@ -230,9 +220,7 @@
               on:click={() => handleSelectEpisode(ep.id)}
             >
               <div class="flex justify-between items-center text-xs font-mono mb-2">
-                <span class="px-2 py-0.5 rounded bg-[#1f2433] text-[#34d399] uppercase font-bold text-[11px]">
-                  {ep.philosopher}
-                </span>
+                <span class="px-2 py-0.5 rounded bg-[#1f2433] text-[#34d399] font-mono text-[11px]">Выпуск {String(ep.id).padStart(2, '0')}</span>
                 <span class="text-[#64748b]">{formatTime(ep.durationSeconds)}</span>
               </div>
               <h3 class="font-bold text-white text-sm mb-1.5 hover:text-[#34d399] transition-colors leading-snug">
@@ -243,7 +231,7 @@
               </p>
               <div class="mt-3 text-[11px] font-mono text-[#64748b] flex justify-between items-center">
                 <span>{(ep.timecodes || []).length} таймкодов</span>
-                <span class="text-[#34d399] font-medium">{selectedEpisodeId === ep.id ? '● АКТИВЕН' : 'СЛУШАТЬ →'}</span>
+                <span class="text-[#34d399] font-medium">{selectedEpisodeId === ep.id ? 'Активен' : 'Слушать'}</span>
               </div>
             </button>
           {/each}
@@ -259,9 +247,7 @@
               <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div class="flex-1 space-y-1">
                   <div class="flex items-center justify-between gap-2 mb-1">
-                    <span class="bg-[#12151e] text-[#34d399] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono font-medium">
-                      {currentEpisode.philosopher}
-                    </span>
+                    <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono font-medium">Выпуск {String(currentEpisode.id).padStart(2, '0')}</span>
                     <span class="text-xs font-mono text-[#94a3b8]">{currentEpisode.publishedAt}</span>
                   </div>
                   <h1 id="podcast-title" class="text-lg sm:text-xl font-bold tracking-tight text-white leading-tight">{currentEpisode.title}</h1>
@@ -332,10 +318,7 @@
 
               <!-- Waveform Visualization -->
               <div class="space-y-1.5">
-                <div class="flex justify-between items-center text-[11px] font-mono text-[#64748b]">
-                  <span>ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ</span>
-                  <span>КЛИКНИТЕ ДЛЯ ПЕРЕМОТКИ</span>
-                </div>
+                <div class="text-[11px] font-mono text-[#64748b]">ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ</div>
 
                 <div
                   id="waveform-container"
@@ -371,10 +354,7 @@
             <!-- Timecodes List Section -->
             {#if currentEpisode.timecodes && currentEpisode.timecodes.length > 0}
               <div id="timecodes-section" class="border-t border-[#1f2433] pt-4 space-y-3">
-                <div class="flex items-center justify-between text-xs font-mono text-[#94a3b8]">
-                  <span>ТАЙМКОДЫ И ТЕМЫ ({currentEpisode.timecodes.length})</span>
-                  <span class="text-[#38bdf8]">КЛИКНИТЕ ДЛЯ ПЕРЕХОДА</span>
-                </div>
+                <div class="text-xs font-mono text-[#94a3b8]">ТАЙМКОДЫ И ТЕМЫ</div>
 
                 <ul id="timecodes-list" class="space-y-2" aria-label="Episode Timecodes">
                   {#each currentEpisode.timecodes as tc}
@@ -387,7 +367,7 @@
                         class="timecode-item w-full p-2.5 rounded-lg border transition-all text-left flex items-start gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#38bdf8] focus:ring-offset-2 focus:ring-offset-[#090a0f] {isActive ? 'bg-[#12151e] border-[#38bdf8] text-white shadow-sm' : 'bg-[#090a0f] border-[#1f2433] text-[#94a3b8] hover:border-[#38bdf8]/50 hover:text-white hover:bg-[#12151e]/60'}"
                       >
                         <span class="font-mono text-xs font-bold px-2 py-0.5 rounded shrink-0 {isActive ? 'bg-[#38bdf8] text-[#090a0f]' : 'bg-[#1f2433] text-[#34d399]'}">
-                          [{formatTime(tc.timeOffsetSeconds)}]
+                          {formatTime(tc.timeOffsetSeconds)}
                         </span>
                         <div class="min-w-0 flex-1">
                           <div class="font-bold text-xs flex items-center justify-between">

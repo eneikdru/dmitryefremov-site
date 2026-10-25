@@ -134,7 +134,7 @@
     <div>
       <div class="flex items-center gap-2 mb-1">
         <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
-          [THOUGHT_STREAM]
+          
         </span>
         <span class="text-xs font-mono text-[#94a3b8]">Articles: {articles.length} | Telegram Sparks: {sparks.length}</span>
       </div>
@@ -221,7 +221,7 @@
       <!-- Telegram Sparks Stream (Tier 3 Quantized Thoughts) -->
       <div id="sparks-stream-section" class="pt-4 border-t border-[#1f2433] space-y-3">
         <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
-          <span class="text-[#38bdf8] font-bold">[TELEGRAM_SPARKS_STREAM]</span>
+          <span class="sr-only">[TELEGRAM_SPARKS_STREAM]</span><span class="text-[#38bdf8] font-bold">Telegram Sparks</span>
           <span>QUANTIZED_THOUGHTS ({sparks.length})</span>
         </div>
 
@@ -265,7 +265,7 @@
           <header id="article-header" class="border-b border-[#1f2433] pb-4 mb-4 space-y-3">
             <div class="flex items-center justify-between gap-2">
               <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
-                [SYS_ARTICLE]
+                
               </span>
               <span class="text-xs font-mono text-[#94a3b8]">{selectedArticle.id}</span>
             </div>
@@ -314,7 +314,7 @@
           <!-- Telemetry Event Log -->
           <footer id="article-telemetry-log" class="mt-6 pt-4 border-t border-[#1f2433]">
             <div class="text-xs font-mono text-[#94a3b8] mb-2 flex items-center justify-between">
-              <span>[TELEMETRY_EVENT_FEED]</span>
+              <span>События телеметрии</span>
               <span class="text-[#34d399]">ZERO_COOKIE_ACTIVE</span>
             </div>
             <div class="bg-[#12151e] p-3 rounded border border-[#1f2433] font-mono text-xs max-h-28 overflow-y-auto space-y-1 text-[#a7f3d0]">
@@ -324,9 +324,9 @@
                 {#each loggedEvents as evt}
                   <div class="flex justify-between border-b border-[#1f2433] pb-1">
                     {#if evt.type === 'essay_view'}
-                      <span>[VIEW] {evt.payload.articleId}</span>
+                      <span>Просмотр: {evt.payload.articleId}</span>
                     {:else}
-                      <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
+                      <span>Глубина: {evt.payload.depth}% {evt.payload.articleId}</span>
                     {/if}
                     <span class="text-[#64748b]">{evt.timestamp.slice(11, 19)}</span>
                   </div>

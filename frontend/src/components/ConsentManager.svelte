@@ -89,7 +89,7 @@
       <div class="flex items-center justify-between border-b pb-3 {theme === 'dark' ? 'border-[#1e293b]' : 'border-[#e2e8f0]'}">
         <div class="flex items-center gap-2">
           <span id="cmp-badge" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider border {theme === 'dark' ? 'bg-[#1e293b] text-[#38bdf8] border-[#38bdf8]/40' : 'bg-[#f0f9ff] text-[#0284c7] border-[#0284c7]/30'}">
-            [TRUSTGUARD_CMP]
+            
           </span>
           <h2 id="cmp-title" class="font-bold text-sm tracking-tight {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">
             Privacy & Consent Management
@@ -147,7 +147,7 @@
               <span class="font-bold text-xs {theme === 'dark' ? 'text-white' : 'text-[#0f172a]'}">Strictly Necessary</span>
               <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/30">Always Active</span>
             </div>
-            <span class="text-[10px] font-mono {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">[LOCKED]</span>
+            <span class="text-[10px] font-mono {theme === 'dark' ? 'text-[#64748b]' : 'text-[#94a3b8]'}">Обязательно</span>
           </div>
           <p class="text-[11px] leading-normal {theme === 'dark' ? 'text-[#94a3b8]' : 'text-[#64748b]'}">
             Required for secure navigation, session integrity, and layout persistence. Cannot be disabled.
@@ -227,7 +227,7 @@
           on:click={handleDecline}
           class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#1e1b2e] border-[#ef4444]/60 text-[#fca5a5] hover:bg-[#ef4444]/20' : 'bg-red-50 border-red-300 text-red-700 hover:bg-red-100'}"
         >
-          [DECLINE_TRACKERS]
+          Отклонить
         </button>
 
         <button
@@ -236,7 +236,7 @@
           on:click={handleAccept}
           class="w-full h-11 px-4 rounded-lg font-bold text-xs border transition-all text-center focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#0284c7] border-[#38bdf8] text-white hover:bg-[#0369a1]' : 'bg-[#0284c7] border-[#0284c7] text-white hover:bg-[#0369a1]'}"
         >
-          [ACCEPT_TRACKERS]
+          Принять
         </button>
       </div>
 

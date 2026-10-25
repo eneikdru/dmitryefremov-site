@@ -116,10 +116,9 @@
               type="button"
               on:click={toggleTheme}
               aria-label="Toggle theme"
-              title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
-              class="px-2.5 py-1.5 rounded-lg text-xs font-mono border transition-all flex items-center gap-1.5 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}">
-              <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
-              <span class="font-medium text-[11px]">{theme === 'dark' ? 'Тёмная' : 'Светлая'}</span>
+              class="px-2.5 py-1.5 rounded-lg text-xs font-mono border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
+            >
+              <span>{theme === 'dark' ? 'Тёмная' : 'Светлая'}</span>
             </button>
           </div>
         </div>
@@ -170,7 +169,7 @@
                   class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 bg-[#38bdf8] text-[#090a0f] hover:bg-[#7dd3fc]"
                 >
                   <span>Telegram @efremov_mvp</span>
-                  <span>↗</span>
+                  
                 </a>
                 <a
                   href="https://www.youtube.com/@dmitrii.efremov"
@@ -180,7 +179,7 @@
                   class="px-3.5 py-2 rounded-lg font-bold transition-colors flex items-center gap-1.5 border {theme === 'dark' ? 'bg-[#141824] text-white border-[#1f2433] hover:border-[#ef4444]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#ef4444]'}"
                 >
                   <span class="text-[#ef4444]">YouTube</span>
-                  <span>↗</span>
+                  
                 </a>
                 <button
                   type="button"
@@ -199,43 +198,42 @@
           <button
             id="tab-btn-podcast"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'podcast' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'podcast')}
           >
-            <span>🎙️ ПОДКАСТ</span>
-            <span class="px-1.5 py-0.2 rounded text-[10px] {activeTab === 'podcast' ? 'bg-white/20' : 'bg-black/10'}">{podcastCount} {podcastCount === 1 ? 'выпуск' : (podcastCount > 1 && podcastCount < 5 ? 'выпуска' : 'выпусков')}</span>
+            <span>Подкаст</span>
           </button>
           <button
             id="tab-btn-article"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'article' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'article')}
           >
-            <span>📖 ЭССЕ & МЫСЛИ</span>
+            <span>Эссе и мысли</span>
           </button>
           <button
             id="tab-btn-sparks"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'sparks' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'sparks')}
           >
-            <span>⚡ SPARKS (TIER 3)</span>
+            <span>Sparks</span>
           </button>
           <button
             id="tab-btn-contact"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'contact' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'contact')}
           >
-            <span>✉️ КОНТАКТЫ & СВЯЗЬ</span>
+            <span>Контакты</span>
           </button>
           <button
             id="tab-btn-canon"
             type="button"
-            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            class="px-4 py-2 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'canon' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
             on:click={() => (activeTab = 'canon')}
           >
-            <span>🤖 КАНОН & AI API</span>
+            <span>Канон & API</span>
           </button>
         </nav>
       </header>
