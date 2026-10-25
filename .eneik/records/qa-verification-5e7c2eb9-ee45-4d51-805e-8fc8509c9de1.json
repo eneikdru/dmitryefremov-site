@@ -1,0 +1,13 @@
+{
+  "testsRun": 12,
+  "testsPassed": 12,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "Given the API endpoints, When integration tests run, Then they verify structured error responses for invalid payloads.",
+    "Given the rate limiter, When tested under load, Then it correctly blocks excessive requests.",
+    "Given the manifest URLs, When fetched, Then they return valid configurations."
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified integration tests cover structured error responses, rate limiter under load, and manifest URLs fetching. Out-of-scope test GraphNavigationAndSearchVerificationTest failed but is ignored as per instructions."
+}
