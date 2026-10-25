@@ -202,8 +202,15 @@
       <!-- Search Results Area -->
       <div id="canon-search-results" class="max-h-96 overflow-y-auto p-2 space-y-1" role="listbox" aria-label="Результаты поиска">
         {#if filteredResults.length === 0}
-          <div class="p-8 text-center text-xs font-mono text-[#849495]">
-            Ничего не найдено по запросу «{searchQuery}»
+          <div class="p-8 text-center text-xs font-mono text-[#849495] flex flex-col items-center gap-3">
+            <p>Ничего не найдено по запросу «{searchQuery}»</p>
+            <button
+              type="button"
+              on:click={() => { searchQuery = ''; searchInputEl?.focus(); }}
+              class="px-3 py-1.5 rounded-lg border border-[#00f0ff]/30 text-[#00f0ff] hover:bg-[#00f0ff]/10 focus:outline-none focus:ring-2 focus:ring-[#00f0ff] transition-colors"
+            >
+              Сбросить фильтры
+            </button>
           </div>
         {:else}
           {#each filteredResults as node, index (node.id)}

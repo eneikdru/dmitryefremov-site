@@ -1,0 +1,30 @@
+[
+  {
+    "id": "cmd-k-search-modal",
+    "left": 384,
+    "top": 136,
+    "width": 672,
+    "height": 243
+  },
+  {
+    "id": "canon-search-input",
+    "left": 435,
+    "top": 153,
+    "width": 526,
+    "height": 28
+  },
+  {
+    "id": "canon-search-results",
+    "left": 385,
+    "top": 198,
+    "width": 670,
+    "height": 138
+  },
+  {
+    "id": "cmd-k-modal-backdrop",
+    "left": 0,
+    "top": 40,
+    "width": 1440,
+    "height": 860
+  }
+]
