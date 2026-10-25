@@ -10,7 +10,78 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "inverse-on-surface": "#283044",
+              "on-tertiary-fixed": "#002113",
+              "on-primary-container": "#0d0096",
+              "primary": "#c0c1ff",
+              "on-surface-variant": "#c7c4d7",
+              "surface-tint": "#c0c1ff",
+              "secondary-container": "#03b5d3",
+              "on-secondary-fixed-variant": "#004e5c",
+              "tertiary": "#4edea3",
+              "surface-dim": "#0b1326",
+              "primary-fixed": "#e1e0ff",
+              "on-tertiary-fixed-variant": "#005236",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "surface-container-low": "#131b2e",
+              "error-container": "#93000a",
+              "inverse-primary": "#494bd6",
+              "primary-fixed-dim": "#c0c1ff",
+              "surface-container-lowest": "#060e20",
+              "on-tertiary-container": "#000703",
+              "outline-variant": "#464554",
+              "on-background": "#dae2fd",
+              "on-secondary-fixed": "#001f26",
+              "tertiary-fixed-dim": "#4edea3",
+              "tertiary-fixed": "#6ffbbe",
+              "on-surface": "#dae2fd",
+              "secondary-fixed-dim": "#4cd7f6",
+              "surface": "#0b1326",
+              "surface-variant": "#2d3449",
+              "surface-container-high": "#222a3d",
+              "secondary": "#4cd7f6",
+              "surface-container-highest": "#2d3449",
+              "tertiary-container": "#00885d",
+              "on-error": "#690005",
+              "on-error-container": "#ffdad6",
+              "surface-container": "#171f33",
+              "inverse-surface": "#dae2fd",
+              "outline": "#908fa0",
+              "background": "#0b1326",
+              "primary-container": "#8083ff",
+              "on-tertiary": "#003824",
+              "error": "#ffb4ab",
+              "secondary-fixed": "#acedff",
+              "surface-bright": "#31394d",
+              "on-secondary-container": "#00424e",
+              "on-primary-fixed": "#07006c",
+              "on-secondary": "#003640",
+              "on-primary": "#1000a9"
+            },
+            "fontFamily": {
+              "label-sm": ["JetBrains Mono", "monospace"],
+              "code-sm": ["JetBrains Mono", "monospace"],
+              "headline-sm": ["Geist", "sans-serif"],
+              "headline-lg": ["Geist", "sans-serif"],
+              "headline-md": ["Geist", "sans-serif"],
+              "code-md": ["JetBrains Mono", "monospace"],
+              "label-md": ["JetBrains Mono", "monospace"],
+              "body-lg": ["Geist", "sans-serif"],
+              "headline-lg-mobile": ["Geist", "sans-serif"],
+              "body-sm": ["Geist", "sans-serif"],
+              "body-md": ["Geist", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
   </head>
   <body class="bg-[#090a0f] text-[#e2e8f0]">
     <div id="app"></div>

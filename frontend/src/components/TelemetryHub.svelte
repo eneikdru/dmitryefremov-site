@@ -12,11 +12,12 @@
   import AdminDashboardView from './AdminDashboardView.svelte';
   import CanonGatewayView from './CanonGatewayView.svelte';
   import TelemetryHudView from './TelemetryHudView.svelte';
+  import ModelOpsPlayground from './ModelOpsPlayground.svelte';
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'playground' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'playground' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -261,6 +262,14 @@
           >
             <span>🤖 КАНОН & AI API</span>
           </button>
+          <button
+            id="tab-btn-playground"
+            type="button"
+            class="px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 cursor-pointer {activeTab === 'playground' ? (theme === 'dark' ? 'bg-[#1f2433] text-white font-bold shadow-md' : 'bg-[#0284c7] text-white font-bold shadow-md') : (theme === 'dark' ? 'text-[#94a3b8] hover:text-white hover:bg-[#12151e]' : 'text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9]')}"
+            on:click={() => (activeTab = 'playground')}
+          >
+            <span>🎛️ PLAYGROUND</span>
+          </button>
         </nav>
       </header>
 
@@ -285,6 +294,10 @@
         {:else if activeTab === 'canon'}
           <div class="space-y-6">
             <CanonGatewayView {theme} />
+          </div>
+        {:else if activeTab === 'playground'}
+          <div class="space-y-6">
+            <ModelOpsPlayground />
           </div>
         {/if}
       </section>
