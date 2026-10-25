@@ -1,0 +1,65 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c19ada93-abd4-4f81-9271-55359d5de80d",
+      "title": "Privacy Consent Management",
+      "jtbd": "When a visitor arrives on the site, I want to be asked for consent before any non-essential trackers load, so that my privacy preferences are respected and the site complies with ePrivacy regulations.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "consent choice recording success rate",
+      "tocConstraintRef": "third-party script interception",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Integrate an established Consent Management Platform (CMP) rather than a hand-rolled banner to manage user consent.",
+        "R2: Block all non-essential cookies and trackers from loading prior to explicit user opt-in.",
+        "R3: Provide consent controls where refusing consent is exactly as easy as accepting it.",
+        "R4: Record the user's consent choice persistently and provide a mechanism to revoke or change consent later.",
+        "R5: Comply with §25 TDDDG (German market) and ePrivacy Directive requirements for cookie consent.",
+        "R6: Configure realistic initial consent copy matching the product domain to ensure the interaction path is walkable on a fresh install.",
+        "R7: Update all existing end-to-end tests to explicitly accept or dismiss the consent overlay before interacting with underlying page elements."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Implement CMP integration and tracker interception",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the CMP UI for this epic, I want to integrate the consent platform and configure script interception, so that the privacy consent management outcome is achieved.",
+          "acceptanceCriteria": "Given the user visits the site for the first time\nWhen the page loads\nThen the CMP banner is displayed before any non-essential tracker loads, it is fully usable on a phone screen, and refusing is as easy as accepting.\nGiven the user navigates the CMP banner\nWhen using a keyboard or assistive technology\nThen all controls are keyboard operable, have visible focus, are properly labelled, and maintain 4.5:1 text contrast.\nGiven the user interacts with the CMP\nWhen they accept or reject\nThen there is immediate visible feedback, the choice is recorded, and trackers load only if accepted.\nGiven a fresh deployment of the site\nWhen the application starts\nThen it loads realistic domain-specific consent copy to ensure the path is walkable.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "frontend script execution blocking",
+          "sixSigmaMetric": "CMP load and interaction latency",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        },
+        {
+          "title": "End-to-end verification of privacy consent flows",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA testing for this epic, I want to verify that trackers are correctly blocked and consent state is preserved, so that the privacy consent management outcome is achieved.",
+          "acceptanceCriteria": "Given the E2E test suite starts a new visitor session\nWhen the initial page loads\nThen the test asserts that no non-essential tracker network requests are made before consent.\nGiven existing E2E tests are executed\nWhen the consent banner appears as a global overlay\nThen the tests explicitly accept or dismiss the overlay before interacting with underlying elements to prevent pointer interception failures.\nGiven a user has previously given consent\nWhen the test uses the revocation control to withdraw consent\nThen the test verifies the new state is recorded and future tracker loads are prevented.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "E2E browser network interception",
+          "sixSigmaMetric": "test flakiness rate on third-party domains",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6",
+            "R7"
+          ]
+        }
+      ]
+    }
+  ]
+}
