@@ -1,0 +1,13 @@
+{
+  "testsRun": 11,
+  "testsPassed": 11,
+  "testsFailed": 0,
+  "acceptanceCriteriaVerified": [
+    "AC1: Given a new visitor on the site, CMP banner appears and blocks non-essential scripts",
+    "AC2: Given the banner is declined, no tracking cookies are set",
+    "AC3: Given the banner is accepted, scripts load correctly and consent is recorded"
+  ],
+  "coverageDeltaPercent": null,
+  "verdict": "pass",
+  "notes": "Verified privacy consent CMP banner, script blocking, cookie absence on decline, and consent persistence on accept across Vitest unit tests and Playwright E2E tests."
+}

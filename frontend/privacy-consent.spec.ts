@@ -1,14 +1,19 @@
 import { test, expect } from '@playwright/test';
 import { spawn, ChildProcess } from 'child_process';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 test.describe('Fresh Visitor Privacy Consent Verification', () => {
   let previewProcess: ChildProcess;
 
   test.beforeAll(async () => {
+    const frontendDir = __dirname;
     // Build frontend
     const buildProcess = spawn('npx', ['vite', 'build'], {
-      cwd: path.resolve('.'),
+      cwd: frontendDir,
       stdio: 'ignore'
     });
 
@@ -21,7 +26,7 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
 
     // Start preview server on 4173
     previewProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
-      cwd: path.resolve('.'),
+      cwd: frontendDir,
       stdio: 'ignore'
     });
 
@@ -120,6 +125,11 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
 
       const acceptStatus = await acceptPage.evaluate(() => localStorage.getItem('cmp_consent_status'));
       expect(acceptStatus).toBe('accepted');
+
+      // Verify CMP modal overlay closes after acceptance
+      await acceptPage.waitForSelector('#cmp-modal-overlay', { state: 'detached' });
+      const bannerVisible = await acceptPage.locator('#cmp-modal-overlay').isVisible();
+      expect(bannerVisible).toBe(false);
     } finally {
       await acceptContext.close();
     }
