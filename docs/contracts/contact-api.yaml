@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: Contact API Contract
+  description: API specification for Dmitry Efremov's direct contact submissions and email acknowledgement system.
+  version: 1.0.0
+servers:
+  - url: /
+    description: Current server environment
+
+paths:
+  /api/v1/contact:
+    post:
+      summary: Submit a direct contact message
+      description: Receives and saves direct contact submissions from web visitors or clients, and triggers an email acknowledgement dispatch to the sender.
+      operationId: submitContactMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+      responses:
+        '201':
+          description: Contact message submitted and processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '400':
+          description: Invalid request payload or validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/contact:
+    post:
+      summary: Direct contact submission alias
+      description: Legacy/Direct entry alias endpoint for contact message submissions.
+      operationId: submitContactMessageAlias
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+      responses:
+        '201':
+          description: Contact message submitted and processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '400':
+          description: Invalid request payload or validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/contact/{id}:
+    get:
+      summary: Get contact message details by ID
+      description: Retrieves details of a specific contact submission by its unique identifier.
+      operationId: getContactById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique numeric ID of the contact message
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Contact message found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '404':
+          description: Contact message not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ContactRequest:
+      type: object
+      required:
+        - senderName
+        - senderEmail
+        - content
+      properties:
+        senderName:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: "Alice Smith"
+          description: Full name or pseudonym of the sender
+        senderEmail:
+          type: string
+          format: email
+          maxLength: 255
+          example: "alice@example.com"
+          description: Sender email address to receive acknowledgement
+        subject:
+          type: string
+          maxLength: 255
+          example: "Collaboration inquiry"
+          description: Optional subject or topic of the message
+        content:
+          type: string
+          minLength: 1
+          maxLength: 10000
+          example: "Hello Dmitry, I would like to discuss potential collaboration opportunities."
+          description: Main body or message content submitted
+
+    ContactResponse:
+      type: object
+      required:
+        - id
+        - senderName
+        - senderEmail
+        - content
+        - status
+        - acknowledgementSent
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 101
+        senderName:
+          type: string
+          example: "Alice Smith"
+        senderEmail:
+          type: string
+          format: email
+          example: "alice@example.com"
+        subject:
+          type: string
+          example: "Collaboration inquiry"
+        content:
+          type: string
+          example: "Hello Dmitry, I would like to discuss potential collaboration opportunities."
+        status:
+          type: string
+          example: "PROCESSED"
+        acknowledgementSent:
+          type: boolean
+          example: true
+          description: Indicates if an email acknowledgement was dispatched
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-10-25T00:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-10-25T00:00:00Z"
+
+    ValidationError:
+      type: object
+      required:
+        - field
+        - message
+      properties:
+        field:
+          type: string
+          example: "senderEmail"
+        message:
+          type: string
+          example: "must be a well-formed email address"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Validation failed for contact request payload"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-25T00:00:00Z"
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          nullable: true
