@@ -60,25 +60,16 @@
   <!-- Header / Visual Identity Branding -->
   <header id="identity-card-header" class="border-b border-[#1f2433] pb-6 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
     <div class="space-y-1">
-      <div class="flex items-center gap-2">
-        <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono font-semibold tracking-wide">[IDENTITY_CARD]</span>
-        <span class="text-xs font-mono text-[#94a3b8]">VERIFIED_PRESENCE</span>
-      </div>
+      
       <h2 id="identity-name" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Дмитрий Ефремов</h2>
       <p id="identity-bio" class="text-xs sm:text-sm text-[#94a3b8] font-mono leading-relaxed">Systems Architect & Deontic Logic Researcher</p>
     </div>
-    <div class="px-3 py-1.5 rounded-lg bg-[#12151e] border border-[#1f2433] text-right font-mono text-xs">
-      <span class="text-[#64748b] block">STATUS</span>
-      <span class="text-[#38bdf8] font-bold flex items-center gap-1.5 justify-end">
-        <span class="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse"></span>
-        ACTIVE_ONLINE
-      </span>
-    </div>
+    
   </header>
 
   <!-- Interactive Contact Links Grid -->
   <section id="identity-links-section" aria-label="Contact Channels" class="space-y-4 mb-6">
-    <h3 class="text-xs font-mono text-[#94a3b8] uppercase tracking-wider mb-2">Verified Channels & Matrix</h3>
+    <h3 class="text-xs font-mono text-[#94a3b8] uppercase tracking-wider mb-2">Каналы связи</h3>
     <div id="identity-links-grid" class="grid grid-cols-1 gap-3">
       {#each contactLinks as link}
         <div
@@ -95,7 +86,7 @@
             class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm font-mono focus:outline-none"
           >
             <div class="flex items-center gap-3 min-w-0">
-              <span class="text-[#f43f5e] text-xs font-bold shrink-0">{link.tag}</span>
+              
               <div class="min-w-0">
                 <span class="text-white font-semibold group-hover:text-[#38bdf8] transition-colors block truncate">{link.label}</span>
                 <span class="text-xs text-[#64748b] group-hover:text-[#94a3b8] transition-colors block truncate">{link.description}</span>
@@ -132,8 +123,5 @@
   </section>
 
   <!-- High-End Dark Clean Footer / Identity Note -->
-  <footer id="identity-card-footer" class="pt-4 border-t border-[#1f2433] flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#64748b] gap-2">
-    <span>[DEONTIC_SPEC_2026]</span>
-    <span class="text-[#94a3b8]">Zero debug logging on facade · Clean Brand Identity</span>
-  </footer>
+  
 </div>

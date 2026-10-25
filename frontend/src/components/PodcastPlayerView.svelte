@@ -230,7 +230,7 @@
                 {ep.thesis}
               </p>
               <div class="mt-3 text-[11px] font-mono text-[#64748b] flex justify-between items-center">
-                <span>{(ep.timecodes || []).length} таймкодов</span>
+                <span></span>
                 <span class="text-[#34d399] font-medium">{selectedEpisodeId === ep.id ? 'Активен' : 'Слушать'}</span>
               </div>
             </button>
@@ -309,11 +309,7 @@
                 </div>
 
                 <!-- Volume / Progress Indicator -->
-                <div class="flex items-center gap-2 text-xs font-mono text-[#94a3b8]">
-                  <span class="bg-[#1f2433] px-2.5 py-1 rounded-md text-[#38bdf8] font-bold">
-                    {progressPercent.toFixed(0)}%
-                  </span>
-                </div>
+                
               </div>
 
               <!-- Waveform Visualization -->

@@ -365,7 +365,7 @@
                 </span>
                 <span class="text-[#9e8e78] flex items-center">
                   
-                  {formatSparksCount(spark.sparksCount)} sparks
+                  Отклик
                 </span>
               </div>
 

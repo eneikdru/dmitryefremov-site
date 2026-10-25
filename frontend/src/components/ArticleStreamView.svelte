@@ -136,7 +136,7 @@
         <span class="bg-[#12151e] text-[#38bdf8] border border-[#1f2433] px-2 py-0.5 rounded text-xs font-mono">
           
         </span>
-        <span class="text-xs font-mono text-[#94a3b8]">Articles: {articles.length} | Telegram Sparks: {sparks.length}</span>
+        
       </div>
       <h2 class="text-xl font-bold tracking-tight text-white">Articles & Thought Stream</h2>
     </div>
@@ -179,10 +179,11 @@
     <!-- Available Longreads List & Telegram Sparks Feed -->
     <div id="longreads-list-section" class="md:col-span-5 space-y-6">
       <div class="space-y-3">
-        <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
-          <span>AVAILABLE_LONGREADS ({filteredArticles.length})</span>
-          <span>SELECT_TO_READ</span>
-        </div>
+              <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
+        <span class="sr-only">AVAILABLE_LONGREADS ({filteredArticles.length})</span>
+        <span class="font-medium text-white">Статьи</span>
+        <span>SELECT_TO_READ</span>
+      </div>
 
         {#if filteredArticles.length === 0}
           <div id="articles-empty-state" class="p-8 text-center rounded-xl border border-dashed border-[#1f2433] bg-[#090a0f] font-mono text-sm text-[#94a3b8]">
@@ -222,7 +223,7 @@
       <div id="sparks-stream-section" class="pt-4 border-t border-[#1f2433] space-y-3">
         <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
           <span class="sr-only">[TELEGRAM_SPARKS_STREAM]</span><span class="text-[#38bdf8] font-bold">Telegram Sparks</span>
-          <span>QUANTIZED_THOUGHTS ({sparks.length})</span>
+          <span>Мысли</span>
         </div>
 
         {#if sparks.length === 0}

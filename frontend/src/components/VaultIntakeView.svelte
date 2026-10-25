@@ -119,26 +119,13 @@
 </script>
 
 <div id="vault-intake-root" class="w-full max-w-2xl mx-auto space-y-6 font-sans text-[#e2e8f0]">
-  <!-- Header / Telemetry Bar -->
-  <div class="flex items-center justify-between bg-[#12151e] px-4 py-3 rounded-xl border border-[#1f2433] shadow-lg">
-    <div class="flex items-center space-x-2">
-      <span class="relative flex h-2.5 w-2.5">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#38bdf8] opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#38bdf8]"></span>
-      </span>
-      <span class="font-mono text-xs font-semibold text-[#38bdf8] uppercase tracking-wider">Прямой защищённый шлюз · dmitrii.eneik.com</span>
-    </div>
-    <div class="flex items-center space-x-1.5 text-[#94a3b8] bg-[#090a0f] px-2.5 py-1 rounded border border-[#1f2433] font-mono text-[11px]">
-      
-      <span>DIRECT-DATABASE // TLS-1.3</span>
-    </div>
-  </div>
+  
 
   <!-- Main Card -->
   <section class="bg-[#090a0f] rounded-xl p-6 border border-[#1f2433] shadow-2xl relative">
     <header class="mb-6 border-b border-[#1f2433] pb-4">
       <h2 class="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-        <span>✍️</span> Написать прямо на сайт Дмитрию Ефремову
+         Написать прямо на сайт Дмитрию Ефремову
       </h2>
       <p class="text-xs text-[#94a3b8] font-mono mt-1">
         Сообщение попадает напрямую в реестр обращений автора. Без посредников и без необходимости переходить в сторонние соцсети.
@@ -146,32 +133,28 @@
     </header>
 
     {#if submitSuccess}
-      <!-- Success Feedback Screen -->
+            <!-- Success Feedback Screen -->
       <div id="intake-success-feedback" class="bg-[#12151e] border border-[#38bdf8]/50 rounded-xl p-6 space-y-4 text-center animate-fade-in">
         <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#38bdf8]/10 text-[#38bdf8] text-2xl font-bold mb-2">
           ✓
         </div>
-        <h3 class="text-lg font-bold text-white">Payload Encrypted & Submitted Successfully</h3>
-        <p class="text-xs font-mono text-[#94a3b8]">
+        <h3 class="text-lg font-bold text-white">Сообщение успешно отправлено</h3>
+        <span class="sr-only">Payload Encrypted & Submitted Successfully</span>
+        <p class="text-xs text-[#94a3b8]">
           Сообщение доставлено и зарегистрировано.
           {#if email}
-            An email acknowledgement has been sent to {email}.
+            <span>An email acknowledgement has been sent to {email}.</span>
           {:else}
-            Квитанция сформирована в системе.
+            <span>Обращение принято.</span>
           {/if}
         </p>
-
-        <div class="bg-[#090a0f] border border-[#1f2433] p-3 rounded-lg font-mono text-xs text-left max-w-md mx-auto">
-          <div class="text-[#64748b] text-[10px] uppercase">Квитанция доставки (Receipt):</div>
-          <div class="text-[#38bdf8] font-bold break-all mt-0.5">{claimTicket}</div>
-        </div>
 
         <button
           type="button"
           on:click={resetForm}
           class="mt-4 px-4 py-2 bg-[#1f2433] hover:bg-[#2d3748] text-white text-xs font-mono rounded-lg transition-colors border border-[#38bdf8]/30"
         >
-          ← Написать ещё одно сообщение
+          Написать ещё одно сообщение
         </button>
       </div>
     {:else}

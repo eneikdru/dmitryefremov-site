@@ -13,17 +13,17 @@
         id="contact-tab-card-btn"
         type="button"
         on:click={() => activeSection = 'card'}
-        class="px-4 py-2 rounded-md font-semibold transition-all {activeSection === 'card' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
+        class="px-4 py-2 rounded-md font-medium transition-all {activeSection === 'card' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
       >
-        🌐 ПРЯМЫЕ КОНТАКТЫ
+        Прямые контакты
       </button>
       <button
         id="contact-tab-intake-btn"
         type="button"
         on:click={() => activeSection = 'intake'}
-        class="px-4 py-2 rounded-md font-semibold transition-all {activeSection === 'intake' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
+        class="px-4 py-2 rounded-md font-medium transition-all {activeSection === 'intake' ? 'bg-[#004ac6] text-white shadow-sm' : 'text-[#94a3b8] hover:text-white'}"
       >
-        ✍️ НАПИСАТЬ НАПРЯМУЮ НА САЙТ
+        Написать сообщение
       </button>
     </div>
   </div>
