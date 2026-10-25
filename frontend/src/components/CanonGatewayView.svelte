@@ -116,7 +116,7 @@
   }
 
   function copyBaseEndpoint() {
-    const base = typeof window !== 'undefined' ? `${window.location.origin}/llms.txt` : 'https://dmitrii.eneik.com/llms.txt';
+    const base = typeof window !== 'undefined' ? `${window.location.origin}/llms.txt` : 'https://dmitryefremov.com/llms.txt';
     navigator.clipboard.writeText(base);
     copySuccess = true;
     setTimeout(() => {
@@ -319,7 +319,7 @@
       <div class="truncate">
         <span class="text-[10px] font-mono text-[#b9cacb] block">BASE ROUTING ENDPOINT</span>
         <code class="text-xs font-mono text-[#00f2fe] tracking-tight block truncate mt-0.5">
-          https://dmitrii.eneik.com/llms.txt
+          https://dmitryefremov.com/llms.txt
         </code>
       </div>
       <button
@@ -483,7 +483,7 @@
       </div>
       <div class="bg-[#0a0e16] border border-[#3a494b]/30 rounded p-2.5 flex items-center justify-between">
         <span class="text-[#b9cacb]">CORS Origins:</span>
-        <code class="text-[#dfe2ee] truncate max-w-[220px]">agents.mesh.network, dmitrii.eneik.com, localhost:*</code>
+        <code class="text-[#dfe2ee] truncate max-w-[220px]">agents.mesh.network, dmitryefremov.com, localhost:*</code>
       </div>
     </div>
 

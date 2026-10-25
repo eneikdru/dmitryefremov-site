@@ -56,7 +56,7 @@
       dateOrTiming: '2026-09-26',
       thesis: 'Математическая формализация нормативных состояний систем: обязательства, разрешения и исключающие запреты (exclusionary reasons).',
       tag: 'Эссе и статьи',
-      link: 'https://dmitrii.eneik.com'
+      link: 'https://dmitryefremov.com'
     },
     {
       id: 'ep-01-marcus',

@@ -156,7 +156,7 @@
     title="{selectedArticle.title} | Дмитрий Ефремов"
     description={selectedArticle.summary}
     type="article"
-    url="https://dmitrii.eneik.com/article/{selectedArticle.id}"
+    url="https://dmitryefremov.com/article/{selectedArticle.id}"
     publishedAt={selectedArticle.publishedAt}
     keywords={[selectedArticle.topic, 'Архитектура систем', 'Деонтическая логика', 'Автономные процессы']}
   />
