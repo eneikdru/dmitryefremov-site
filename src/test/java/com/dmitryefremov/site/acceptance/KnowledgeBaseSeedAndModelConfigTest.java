@@ -33,7 +33,7 @@ class KnowledgeBaseSeedAndModelConfigTest {
 
         CanonItem modelConfig = modelConfigOpt.get();
         assertThat(modelConfig.getType().name()).isEqualTo("MODEL_CONFIG");
-        assertThat(modelConfig.getDomain().name()).isEqualTo("AUTONOMOUS_ENGINEERING");
+        assertThat(modelConfig.getDomain().name()).isEqualTo("PHILOSOPHY_OF_MIND");
         assertThat(modelConfig.getTitle()).contains("Прикладная конфигурация модели автономии");
         assertThat(modelConfig.getContent()).contains("dmitrii.eneik.com");
         assertThat(modelConfig.getContent()).contains("O(A)");
