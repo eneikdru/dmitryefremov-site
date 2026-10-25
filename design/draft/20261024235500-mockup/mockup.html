@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TelemetryHUD - Event Tracking &amp; Epic Measurement</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface": "#dae2fd",
+            "inverse-surface": "#dae2fd",
+            "inverse-primary": "#006c49",
+            "secondary-container": "#3131c0",
+            "tertiary-fixed-dim": "#d0bcff",
+            "outline": "#86948a",
+            "tertiary": "#d0bcff",
+            "on-error-container": "#ffdad6",
+            "on-secondary-container": "#b0b2ff",
+            "surface-container-highest": "#2d3449",
+            "on-tertiary-fixed-variant": "#5516be",
+            "on-tertiary": "#3c0091",
+            "secondary-fixed": "#e1e0ff",
+            "outline-variant": "#3c4a42",
+            "surface-variant": "#2d3449",
+            "surface-container": "#171f33",
+            "on-secondary": "#1000a9",
+            "secondary-fixed-dim": "#c0c1ff",
+            "surface-bright": "#31394d",
+            "error": "#ffb4ab",
+            "secondary": "#c0c1ff",
+            "on-surface-variant": "#bbcabf",
+            "surface-container-lowest": "#060e20",
+            "surface-container-high": "#222a3d",
+            "primary-fixed-dim": "#4edea3",
+            "on-error": "#690005",
+            "on-background": "#dae2fd",
+            "tertiary-fixed": "#e9ddff",
+            "surface-dim": "#0b1326",
+            "surface-container-low": "#131b2e",
+            "on-tertiary-fixed": "#23005c",
+            "on-secondary-fixed-variant": "#2f2ebe",
+            "on-tertiary-container": "#4600a7",
+            "surface": "#0b1326",
+            "primary-container": "#10b981",
+            "surface-tint": "#4edea3",
+            "on-primary-fixed-variant": "#005236",
+            "on-primary-container": "#00422b",
+            "error-container": "#93000a",
+            "inverse-on-surface": "#283044",
+            "on-primary": "#003824",
+            "on-secondary-fixed": "#07006c",
+            "tertiary-container": "#b090ff",
+            "primary": "#4edea3",
+            "on-primary-fixed": "#002113",
+            "primary-fixed": "#6ffbbe",
+            "background": "#0b1326"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "gutter-mobile": "0.5rem",
+            "space-lg": "1.25rem",
+            "space-md": "0.75rem",
+            "margin-mobile": "0.75rem",
+            "space-xl": "1.75rem",
+            "gutter": "0.75rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-xl-mobile": ["Geist"],
+            "headline-sm": ["Geist"],
+            "label-lg": ["JetBrains Mono"],
+            "headline-lg": ["Geist"],
+            "label-md": ["JetBrains Mono"],
+            "body-lg": ["Geist"],
+            "code-block": ["JetBrains Mono"],
+            "body-md": ["Geist"],
+            "headline-xl": ["Geist"],
+            "label-sm": ["JetBrains Mono"],
+            "body-sm": ["Geist"],
+            "headline-md": ["Geist"]
+          },
+          "fontSize": {
+            "headline-xl-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-sm": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "headline-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "code-block": ["12px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+    @keyframes radar-pulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.65); opacity: 0.3; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+    .beacon-pulse::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 9999px;
+      background-color: rgba(78, 222, 163, 0.4);
+      animation: radar-pulse 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+      z-index: 0;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #3c4a42;
+      border-radius: 2px;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-dim text-on-surface antialiased font-body-md min-h-screen pb-20 selection:bg-primary selection:text-on-primary">
+<!-- TOP APP BAR (from Shared Components JSON) -->
+<header class="sticky top-0 z-40 flex justify-between items-center w-full px-space-md py-space-sm h-14 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-space-sm">
+<button class="p-1 rounded text-primary hover:bg-surface-container active:scale-95 transition-transform duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</button>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg tracking-wider text-primary font-bold uppercase">TelemetryHUD</span>
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-primary-container/10 border border-primary/40 text-primary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+          LIVE RECORDING
+        </span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="hidden sm:flex items-center bg-surface-container px-2 py-1 rounded border border-outline-variant text-on-surface-variant font-label-sm text-label-sm">
+<span class="text-primary font-bold">2.4k</span> evt/sec
+      </div>
+<button class="p-1.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface active:scale-95 transition-transform duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+</header>
+<!-- SUBHEADER / EPIC NAVIGATION CONTEXT -->
+<section class="bg-surface-container-lowest px-margin-mobile py-2.5 border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 overflow-x-auto custom-scrollbar whitespace-nowrap text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">EPIC TARGET</span>
+<span class="text-outline-variant">/</span>
+<div class="flex items-center gap-1.5 px-2 py-1 bg-surface-container-high rounded border border-outline-variant text-on-surface font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-medium">Onboarding &amp; Checkout</span>
+<span class="px-1 py-0.2 rounded bg-surface-container-lowest text-primary font-label-sm text-label-sm">v2.4</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-outline">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="sensors">sensors</span>
+<span>3 Pings Active</span>
+</div>
+</section>
+<!-- MAIN HUD CONTENT -->
+<main class="p-margin-mobile space-y-space-md max-w-3xl mx-auto">
+<!-- HUD METRIC BANNER: GOAL EVALUATION -->
+<section class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md relative overflow-hidden">
+<!-- Glow ambient backdrop -->
+<div class="absolute -right-8 -top-8 w-36 h-36 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-outline-variant/60 pb-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Primary Success Metric</span>
+<span class="px-1.5 py-0.5 rounded bg-primary-container/20 text-primary border border-primary/30 font-label-sm text-label-sm font-semibold">TARGET REACHED</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">31.4%</h2>
+<span class="font-label-md text-label-md text-primary flex items-center font-semibold">
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_upward">arrow_upward</span>
+              +3.4% Uplift
+            </span>
+<span class="font-label-sm text-label-sm text-outline">vs Epic Baseline 28.0%</span>
+</div>
+</div>
+<!-- Mini Sparkline Progress Bar -->
+<div class="flex-1 max-w-xs">
+<div class="flex justify-between font-label-sm text-label-sm text-outline-variant mb-1">
+<span>Activation Progress</span>
+<span class="text-on-surface">112% of Goal</span>
+</div>
+<div class="w-full h-2 rounded bg-surface-container-highest overflow-hidden p-0.5">
+<div class="h-full bg-gradient-to-r from-secondary to-primary rounded" style="width: 82%;"></div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-outline mt-1 font-label-sm">
+<span>Threshold: 28%</span>
+<span>N = 4,821 sessions</span>
+</div>
+</div>
+</div>
+<!-- Quick KPI Chips -->
+<div class="grid grid-cols-3 gap-2 pt-3 text-center">
+<div class="bg-surface-container-lowest/80 p-2 rounded border border-outline-variant/50">
+<div class="font-label-sm text-label-sm text-outline">Drop-off Pt. 2</div>
+<div class="font-label-md text-label-md text-on-surface font-bold mt-0.5">4.8% <span class="text-primary font-normal">(-1.1%)</span></div>
+</div>
+<div class="bg-surface-container-lowest/80 p-2 rounded border border-outline-variant/50">
+<div class="font-label-sm text-label-sm text-outline">Median TTF (Sec)</div>
+<div class="font-label-md text-label-md text-on-surface font-bold mt-0.5">42.8s <span class="text-primary font-normal">Fast</span></div>
+</div>
+<div class="bg-surface-container-lowest/80 p-2 rounded border border-outline-variant/50">
+<div class="font-label-sm text-label-sm text-outline">Schema Validity</div>
+<div class="font-label-md text-label-md text-primary font-bold mt-0.5">99.98%</div>
+</div>
+</div>
+</section>
+<!-- INTERACTIVE EPIC MOCK SCREEN PREVIEW WITH RADAR PINGS -->
+<section class="bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden">
+<!-- Frame Title Bar -->
+<div class="bg-surface-container px-space-md py-2 border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono ml-2">Device Viewport: Mobile App Flow</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container-lowest rounded text-primary border border-primary/30 font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="visibility">visibility</span>
+            Telemetry Overlay Active
+          </span>
+</div>
+</div>
+<!-- Simulated App Surface Canvas -->
+<div class="relative bg-surface-container-lowest p-4 md:p-6 min-h-[380px] flex flex-col justify-between">
+<!-- Radar Grid Visual Backdrop -->
+<div class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#3c4a42_1px,transparent_1px)] [background-size:16px_16px]"></div>
+<!-- Simulated Mobile App Top Header -->
+<div class="relative z-10 flex items-center justify-between border-b border-outline-variant/30 pb-3">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-primary/20 border border-primary/40 flex items-center justify-center text-primary font-bold text-xs">A</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">ApexCloud</span>
+</div>
+<span class="px-2 py-0.5 text-xs bg-surface-container-highest rounded text-on-surface-variant font-label-sm">Step 2 of 3</span>
+</div>
+<!-- SIMULATED APP COMPONENT 1: Checkout Tier Selector (With Event #2 Ping) -->
+<div class="relative z-10 my-4 space-y-3">
+<div class="text-center space-y-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Select your deployment tier</h3>
+<p class="font-body-sm text-body-sm text-outline">Production grade isolated telemetry worker.</p>
+</div>
+<!-- Tier Card Component -->
+<div class="relative border-2 border-primary/80 bg-surface-container-high/90 rounded-xl p-3.5 shadow-lg">
+<!-- EVENT #2 RADAR BADGE & TOOLTIP -->
+<div class="absolute -top-3 -right-2 z-20 flex flex-col items-end">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-secondary-container text-secondary-fixed border border-secondary font-label-sm text-label-sm shadow-md font-semibold cursor-pointer hover:scale-105 transition-transform">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></span>
+<span>#2 plan_tier_selected</span>
+</div>
+<!-- Tooltip Tag -->
+<div class="mt-1 bg-surface-container-lowest/95 border border-secondary/60 rounded px-2 py-1 shadow-xl font-label-sm text-label-sm text-on-surface backdrop-blur-md">
+<span class="text-tertiary">{tier:</span> <span class="text-primary">'pro_annual'</span>, <span class="text-tertiary">value:</span> <span class="text-secondary">180</span><span class="text-tertiary">}</span>
+</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/30 font-label-sm text-label-sm uppercase">Recommended</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">Pro Architecture</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Unlimited custom metrics &amp; raw JSON traces</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md text-primary font-bold">$180</span>
+<span class="font-label-sm text-label-sm text-outline block">/ annual</span>
+</div>
+</div>
+</div>
+<!-- Checkout Step Progress (With Event #3 Ping) -->
+<div class="relative pt-2">
+<!-- EVENT #3 RADAR BADGE -->
+<div class="absolute -top-2 left-1/2 -translate-x-1/2 z-20">
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-highest border border-primary/50 text-primary font-label-sm text-label-sm shadow cursor-pointer">
+<span class="material-symbols-outlined text-[12px] text-primary" data-icon="check_circle">check_circle</span>
+<span>#3 checkout_step_completed (step: 2)</span>
+</div>
+</div>
+<div class="flex items-center gap-2 px-1 pt-3">
+<div class="h-1 flex-1 bg-primary rounded"></div>
+<div class="h-1 flex-1 bg-primary rounded"></div>
+<div class="h-1 flex-1 bg-surface-container-highest rounded"></div>
+</div>
+</div>
+</div>
+<!-- SIMULATED APP COMPONENT 2: CTA Action (With Event #1 Radar Ping Beacon) -->
+<div class="relative z-10 pt-2">
+<!-- Pulsating Beacon Marker Event #1 -->
+<div class="relative">
+<!-- Ping indicator anchored to top-left of CTA -->
+<div class="absolute -top-3.5 left-4 z-30 flex items-center gap-1.5">
+<div class="relative flex items-center justify-center">
+<div class="w-4 h-4 rounded-full bg-primary beacon-pulse flex items-center justify-center text-on-primary font-bold text-[9px] z-10">
+                  1
+                </div>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold shadow-md uppercase tracking-wider">
+                Event #1: cta_primary_click
+              </span>
+</div>
+<!-- The Target CTA Button -->
+<button class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary-fixed-dim text-on-primary font-label-md text-label-md font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-[0.98] border border-primary-fixed shadow-[0_0_15px_rgba(78,222,163,0.25)]">
+<span>Start Free Trial</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-outline font-label-sm text-label-sm mt-2 px-1">
+<span>Instant activation • Cancel anytime</span>
+<span class="text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="verified_user">verified_user</span>
+              Telemetry Verified
+            </span>
+</div>
+</div>
+</div>
+</section>
+<!-- TELEMETRY STREAM & EVENT LOG DRAWER SECTION -->
+<section class="bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden">
+<!-- Drawer Header & Filters Toolbar -->
+<div class="bg-surface-container p-space-md border-b border-outline-variant space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="stream">stream</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Live Event Log Inspector</h3>
+<span class="px-2 py-0.2 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant font-label-sm text-label-sm">4 Events captured</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="px-2.5 py-1 bg-surface-container-highest hover:bg-surface-bright text-on-surface border border-outline-variant rounded font-label-sm text-label-sm flex items-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[14px]" data-icon="file_download">file_download</span>
+<span class="hidden sm:inline">Export Event Spec</span>
+</button>
+<button class="px-2.5 py-1 bg-primary text-on-primary font-bold rounded font-label-sm text-label-sm flex items-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[14px]" data-icon="play_arrow">play_arrow</span>
+<span>Trigger Test Event</span>
+</button>
+</div>
+</div>
+<!-- Filter Toggles Pill Bar -->
+<div class="flex items-center gap-1.5 pt-1 overflow-x-auto custom-scrollbar">
+<span class="font-label-sm text-label-sm text-outline mr-1">Filter:</span>
+<button class="px-2 py-0.5 rounded bg-primary-container/20 text-primary border border-primary/40 font-label-sm text-label-sm font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            Core Goals
+          </button>
+<button class="px-2 py-0.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface-variant border border-outline-variant font-label-sm text-label-sm flex items-center gap-1">
+            Clicks
+          </button>
+<button class="px-2 py-0.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface-variant border border-outline-variant font-label-sm text-label-sm flex items-center gap-1">
+            Pageviews
+          </button>
+<button class="px-2 py-0.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface-variant border border-outline-variant font-label-sm text-label-sm flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+            Errors (0)
+          </button>
+<button class="ml-auto text-outline hover:text-on-surface text-xs flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="filter_list">filter_list</span>
+            Clear
+          </button>
+</div>
+</div>
+<!-- Real-Time Event Stream List -->
+<div class="divide-y divide-outline-variant/60">
+<!-- Event Row 1: Primary Click -->
+<article class="p-space-md hover:bg-surface-container transition-colors">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-primary/20 text-primary border border-primary/40 flex items-center justify-center font-label-sm text-label-sm font-bold">1</span>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-bold text-primary font-mono">cta_primary_click</span>
+<span class="px-1.5 py-0.2 rounded bg-primary-container/15 text-primary border border-primary/30 font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[11px]" data-icon="check">check</span>
+                    Schema Valid
+                  </span>
+<span class="px-1.5 py-0.2 rounded bg-secondary-container/20 text-secondary border border-secondary/30 font-label-sm text-label-sm">Goal: Activation</span>
+</div>
+<div class="font-body-sm text-body-sm text-outline mt-0.5 flex items-center gap-2 font-mono text-[11px]">
+<span>path: /onboarding/checkout</span>
+<span>•</span>
+<span>DOM: button#start-trial-primary</span>
+</div>
+</div>
+</div>
+<div class="text-right whitespace-nowrap">
+<span class="font-label-sm text-label-sm text-primary font-mono font-medium">0.4s ago</span>
+<span class="block text-outline font-label-sm text-label-sm">seq: #88412</span>
+</div>
+</div>
+<!-- Payload Code Block Expander -->
+<div class="mt-2.5 bg-surface-container-lowest p-2.5 rounded border border-outline-variant font-code-block text-code-block overflow-x-auto custom-scrollbar">
+<div class="flex items-center justify-between text-outline text-[11px] mb-1.5 pb-1 border-b border-outline-variant/40">
+<span>PAYLOAD INSPECT (JSON)</span>
+<button class="hover:text-primary flex items-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[13px]" data-icon="content_copy">content_copy</span>
+                Copy
+              </button>
+</div>
+<pre class="text-on-surface font-mono leading-relaxed"><span class="text-tertiary">"event"</span>: <span class="text-primary">"cta_primary_click"</span>,
+<span class="text-tertiary">"properties"</span>: {
+  <span class="text-tertiary">"button_label"</span>: <span class="text-primary">"Start Free Trial"</span>,
+  <span class="text-tertiary">"epic_id"</span>: <span class="text-primary">"epic_onboarding_checkout_v2.4"</span>,
+  <span class="text-tertiary">"step_index"</span>: <span class="text-secondary">2</span>,
+  <span class="text-tertiary">"is_primary"</span>: <span class="text-secondary">true</span>
+}</pre>
+</div>
+</article>
+<!-- Event Row 2: Plan Selected -->
+<article class="p-space-md hover:bg-surface-container transition-colors">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-secondary-container/40 text-secondary border border-secondary/40 flex items-center justify-center font-label-sm text-label-sm font-bold">2</span>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-bold text-secondary font-mono">plan_tier_selected</span>
+<span class="px-1.5 py-0.2 rounded bg-primary-container/15 text-primary border border-primary/30 font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[11px]" data-icon="check">check</span>
+                    Schema Valid
+                  </span>
+</div>
+<div class="font-body-sm text-body-sm text-outline mt-0.5 flex items-center gap-2 font-mono text-[11px]">
+<span>tier: pro_annual</span>
+<span>•</span>
+<span>amount: $180.00</span>
+<span>•</span>
+<span>currency: USD</span>
+</div>
+</div>
+</div>
+<div class="text-right whitespace-nowrap">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">1.2s ago</span>
+<span class="block text-outline font-label-sm text-label-sm">seq: #88411</span>
+</div>
+</div>
+</article>
+<!-- Event Row 3: Step Completed -->
+<article class="p-space-md hover:bg-surface-container transition-colors">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-surface-container-highest text-on-surface-variant border border-outline-variant flex items-center justify-center font-label-sm text-label-sm font-bold">3</span>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-bold text-on-surface font-mono">checkout_step_completed</span>
+<span class="px-1.5 py-0.2 rounded bg-primary-container/15 text-primary border border-primary/30 font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[11px]" data-icon="check">check</span>
+                    Schema Valid
+                  </span>
+</div>
+<div class="font-body-sm text-body-sm text-outline mt-0.5 flex items-center gap-2 font-mono text-[11px]">
+<span>step: 2 of 3</span>
+<span>•</span>
+<span>duration_ms: 1840</span>
+</div>
+</div>
+</div>
+<div class="text-right whitespace-nowrap">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">3.8s ago</span>
+<span class="block text-outline font-label-sm text-label-sm">seq: #88410</span>
+</div>
+</div>
+</article>
+</div>
+<!-- Drawer Footer status -->
+<div class="bg-surface-container-lowest px-space-md py-2 border-t border-outline-variant flex items-center justify-between text-outline font-label-sm text-label-sm">
+<span class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          Ingestion Channel: telemetry.eu-central.prod (TLS 1.3)
+        </span>
+<button class="hover:text-primary transition-colors flex items-center gap-0.5">
+<span>Auto-scroll</span>
+<span class="text-primary font-bold">ON</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BOTTOM NAVIGATION BAR (from Shared Components JSON) -->
+<!-- Active state is 'Events' matching the page's exact intent: event tracking & schema inspector -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-sm py-space-xs h-16 bg-surface-container-lowest border-t border-outline-variant">
+<!-- Item 1: Flows (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-space-sm py-space-xs hover:bg-surface-container hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="schema">schema</span>
+<span class="font-label-sm text-label-sm mt-0.5">Flows</span>
+</button>
+<!-- Item 2: Stream (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-space-sm py-space-xs hover:bg-surface-container hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="stream">stream</span>
+<span class="font-label-sm text-label-sm mt-0.5">Stream</span>
+</button>
+<!-- Item 3: Events (ACTIVE) - Semantic match to 'Event Tracking on Key Interactions' -->
+<button class="flex flex-col items-center justify-center bg-surface-container-high text-primary rounded-xl px-space-sm py-space-xs border border-outline-variant active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="data_object" data-weight="fill" style="font-variation-settings: 'FILL' 1;">data_object</span>
+<span class="font-label-sm text-label-sm font-semibold mt-0.5">Events</span>
+</button>
+<!-- Item 4: Metrics (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-space-sm py-space-xs hover:bg-surface-container hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-sm text-label-sm mt-0.5">Metrics</span>
+</button>
+</nav>
+</body></html>

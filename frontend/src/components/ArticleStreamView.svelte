@@ -61,6 +61,14 @@
     }
   }
 
+  function handleCrossLinkClick(targetNodeId: string, targetNodeType: string, label: string) {
+    const sourceNodeId = selectedArticleId || 'article-node';
+    const evt = telemetry.trackCrossLinkClick(sourceNodeId, targetNodeId, targetNodeType, label);
+    if (evt) {
+      loggedEvents = [...loggedEvents, evt];
+    }
+  }
+
   function handleScroll() {
     if (!scrollContainer) return;
     const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
@@ -78,11 +86,25 @@
     }
   }
 
+  const DEFAULT_FALLBACK_ARTICLES: Article[] = [
+    {
+      id: 'deontic-process-autonomy',
+      title: 'Деонтическая логика в автономии',
+      topic: 'deontic',
+      readTime: '6 min read',
+      publishedAt: '2026-03-12',
+      summary: 'Формализация нормативных ограничений и модальных операторов должествования.',
+      contentMarkdown: '# Деонтическая логика\n\nМодальные операторы O(p) и P(p) в автономных системах.'
+    }
+  ];
+
   onMount(async () => {
     if (articles.length === 0) {
       const fetchedEssays = await fetchEssaysFromApi();
       if (fetchedEssays && fetchedEssays.length > 0) {
         articles = fetchedEssays;
+      } else {
+        articles = DEFAULT_FALLBACK_ARTICLES;
       }
     }
     if (sparks.length === 0) {
@@ -283,6 +305,45 @@
               <span>Author: Dmitry Efremov</span>
               <span>Scroll Depth Logged: {trackedThresholds.size}/4</span>
             </div>
+
+            <!-- Canon Cross-Links for Concept Navigation -->
+            <div id="article-cross-links" class="pt-3 border-t border-[#1f2433] space-y-2">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-[#38bdf8] block">
+                Связанные узлы Канона (Cross-Links)
+              </span>
+              <div class="flex flex-wrap gap-2 text-xs font-mono">
+                <button
+                  id={`crosslink-deontic-${selectedArticle.id}`}
+                  type="button"
+                  on:click={() => handleCrossLinkClick('concept-deontic-logic', 'concept', 'Деонтическая логика')}
+                  aria-label="Перейти к узлу Деонтическая логика"
+                  class="px-2.5 py-1 rounded bg-[#12151e] text-[#38bdf8] border border-[#1f2433] hover:border-[#38bdf8] focus:outline-none focus:ring-2 focus:ring-[#38bdf8] transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <span>🔗</span>
+                  <span>Деонтическая логика</span>
+                </button>
+                <button
+                  id={`crosslink-toc-${selectedArticle.id}`}
+                  type="button"
+                  on:click={() => handleCrossLinkClick('concept-theory-of-constraints', 'concept', 'Теория ограничений')}
+                  aria-label="Перейти к узлу Теория ограничений"
+                  class="px-2.5 py-1 rounded bg-[#12151e] text-[#34d399] border border-[#1f2433] hover:border-[#34d399] focus:outline-none focus:ring-2 focus:ring-[#34d399] transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <span>🔗</span>
+                  <span>Теория ограничений (TOC)</span>
+                </button>
+                <button
+                  id={`crosslink-podcast-${selectedArticle.id}`}
+                  type="button"
+                  on:click={() => handleCrossLinkClick('podcast-ep-01', 'podcast', 'Выпуск 01: Системы и реальность')}
+                  aria-label="Перейти к подкасту Выпуск 01"
+                  class="px-2.5 py-1 rounded bg-[#12151e] text-[#a7f3d0] border border-[#1f2433] hover:border-[#a7f3d0] focus:outline-none focus:ring-2 focus:ring-[#a7f3d0] transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <span>🎙️</span>
+                  <span>Выпуск 01</span>
+                </button>
+              </div>
+            </div>
           </header>
 
           <!-- Progress Indicator -->
@@ -325,6 +386,8 @@
                   <div class="flex justify-between border-b border-[#1f2433] pb-1">
                     {#if evt.type === 'essay_view'}
                       <span>[VIEW] {evt.payload.articleId}</span>
+                    {:else if evt.type === 'cross_link_click'}
+                      <span class="text-[#38bdf8]">[CROSS_LINK] {evt.payload.source_node_id} → {evt.payload.target_node_id}</span>
                     {:else}
                       <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
                     {/if}

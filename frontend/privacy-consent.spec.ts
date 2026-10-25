@@ -75,9 +75,9 @@ test.describe('Fresh Visitor Privacy Consent Verification', () => {
     expect(cookies).toBe('');
 
     // 4. Perform user actions (scrolling, tab navigation) WITHOUT clicking CMP banner
-    await page.click('#tab-btn-contact');
+    await page.click('#tab-btn-contact', { force: true });
     await page.waitForTimeout(200);
-    await page.click('#tab-btn-article');
+    await page.click('#tab-btn-article', { force: true });
     await page.waitForTimeout(200);
 
     // Verify still zero tracking cookies set and consent status remains null

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NOOSPHERE / Navigator</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-container": "#03b5d3",
+            "surface": "#0f131c",
+            "on-tertiary-container": "#5b0017",
+            "on-background": "#dfe2ee",
+            "primary-fixed-dim": "#c0c1ff",
+            "on-surface-variant": "#c7c4d7",
+            "outline-variant": "#464554",
+            "inverse-primary": "#494bd6",
+            "inverse-on-surface": "#2c3039",
+            "surface-container-lowest": "#0a0e16",
+            "secondary": "#4cd7f6",
+            "tertiary-container": "#ff516a",
+            "on-primary": "#1000a9",
+            "on-error": "#690005",
+            "on-primary-fixed": "#07006c",
+            "on-secondary-fixed": "#001f26",
+            "surface-container-low": "#181c24",
+            "surface-variant": "#31353e",
+            "primary-container": "#8083ff",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-fixed": "#40000d",
+            "surface-container": "#1c2028",
+            "surface-bright": "#353942",
+            "on-secondary-fixed-variant": "#004e5c",
+            "inverse-surface": "#dfe2ee",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "primary-fixed": "#e1e0ff",
+            "surface-container-highest": "#31353e",
+            "surface-dim": "#0f131c",
+            "primary": "#c0c1ff",
+            "error-container": "#93000a",
+            "outline": "#908fa0",
+            "tertiary-fixed": "#ffdadb",
+            "on-primary-container": "#0d0096",
+            "secondary-fixed": "#acedff",
+            "tertiary": "#ffb2b7",
+            "secondary-fixed-dim": "#4cd7f6",
+            "on-surface": "#dfe2ee",
+            "on-tertiary": "#67001b",
+            "error": "#ffb4ab",
+            "on-secondary-container": "#00424e",
+            "tertiary-fixed-dim": "#ffb2b7",
+            "surface-container-high": "#262a33",
+            "surface-tint": "#c0c1ff",
+            "background": "#0f131c",
+            "on-tertiary-fixed-variant": "#92002a",
+            "on-secondary": "#003640"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin-lg": "4rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "margin-sm": "1rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "gutter-sm": "1rem",
+            "gutter-lg": "2rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Space Mono"],
+            "headline-md": ["Newsreader"],
+            "body-md": ["Geist"],
+            "display-lg-mobile": ["Newsreader"],
+            "headline-xl": ["Newsreader"],
+            "body-sm": ["Geist"],
+            "headline-sm": ["Newsreader"],
+            "display-lg": ["Newsreader"],
+            "headline-lg": ["Newsreader"],
+            "headline-xl-mobile": ["Newsreader"],
+            "body-xl": ["Geist"],
+            "label-lg": ["Space Mono"],
+            "label-md": ["Space Mono"]
+          },
+          "fontSize": {
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.06em", "fontWeight": "400" }],
+            "headline-md": ["1.5rem", { "lineHeight": "2rem", "fontWeight": "500" }],
+            "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "display-lg-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-xl": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.015em", "fontWeight": "400" }],
+            "body-sm": ["0.8125rem", { "lineHeight": "1.375rem", "fontWeight": "400" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "fontWeight": "600" }],
+            "display-lg": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "fontWeight": "500" }],
+            "headline-xl-mobile": ["1.75rem", { "lineHeight": "2.25rem", "fontWeight": "400" }],
+            "body-xl": ["1.125rem", { "lineHeight": "1.875rem", "fontWeight": "400" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Subtle bioluminescent halos */
+    .glow-indigo {
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.25);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    }
+    .text-glow-cyan {
+      text-shadow: 0 0 10px rgba(76, 215, 246, 0.5);
+    }
+    
+    /* Hide scrollbars for crisp terminal vibe */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container min-h-screen pb-24 overflow-x-hidden">
+<!-- TopAppBar (from Shared Components JSON) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-gutter py-space-sm h-14 bg-surface/85 backdrop-blur-md shadow-none">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary hover:text-secondary transition-colors duration-150 cursor-pointer" data-icon="hub">hub</span>
+<span class="font-label-lg text-label-lg tracking-widest text-primary font-bold">NOOSPHERE</span>
+<span class="font-label-sm text-label-sm text-outline px-1">/</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-wider">NAVIGATOR</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Search Repository" class="flex items-center justify-center p-1 rounded hover:text-secondary text-primary transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-16 px-gutter-sm max-w-md mx-auto flex flex-col gap-space-md">
+<!-- Concept Query Bar -->
+<section class="mt-2">
+<div class="relative flex items-center bg-surface-container-low border border-outline-variant/40 rounded px-3 py-2.5 shadow-inner focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary/40 transition-all">
+<span class="material-symbols-outlined text-outline text-[18px] mr-2" data-icon="terminal">terminal</span>
+<input class="w-full bg-transparent border-none p-0 text-on-surface placeholder:text-outline-variant font-label-md text-label-md focus:ring-0 focus:outline-none" placeholder="Search concepts, treatises, authors..." type="text"/>
+<div class="flex items-center gap-1.5 ml-1">
+<button class="text-outline hover:text-secondary transition-colors" title="Voice Query">
+<span class="material-symbols-outlined text-[18px]" data-icon="mic">mic</span>
+</button>
+<div class="h-3 w-px bg-outline-variant/40 mx-0.5"></div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-surface-variant text-secondary font-label-sm text-[10px] tracking-tight">
+            ⌘K
+          </span>
+</div>
+</div>
+<!-- Dynamic Filter Telemetry -->
+<div class="flex items-center justify-between mt-2 px-1">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-secondary">ACTIVE VECTOR:</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">CYBERNETICS // ONTOLOGY</span>
+</div>
+<button class="font-label-sm text-[10px] text-outline hover:text-secondary underline decoration-dotted transition-colors">
+          RESET
+        </button>
+</div>
+</section>
+<!-- Thematic Concept Tags (Horizontal Scroll) -->
+<section class="no-scrollbar overflow-x-auto -mx-gutter-sm px-gutter-sm py-1 flex items-center gap-2">
+<!-- Active Pill -->
+<button class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-container-high border border-secondary text-secondary font-label-sm text-label-sm glow-cyan transition-all">
+<span class="w-1 h-1 rounded-full bg-secondary"></span>
+<span>All</span>
+<span class="bg-secondary-container/20 text-secondary px-1 rounded text-[10px]">42</span>
+</button>
+<button class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:border-secondary/60 hover:text-on-surface font-label-sm text-label-sm transition-all">
+<span>Cybernetics</span>
+<span class="text-outline text-[10px]">12</span>
+</button>
+<button class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:border-secondary/60 hover:text-on-surface font-label-sm text-label-sm transition-all">
+<span>Accelerationism</span>
+<span class="text-outline text-[10px]">8</span>
+</button>
+<button class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:border-secondary/60 hover:text-on-surface font-label-sm text-label-sm transition-all">
+<span>Post-Humanism</span>
+<span class="text-outline text-[10px]">14</span>
+</button>
+<button class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:border-secondary/60 hover:text-on-surface font-label-sm text-label-sm transition-all">
+<span>Digital Commons</span>
+<span class="text-outline text-[10px]">7</span>
+</button>
+<button class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:border-secondary/60 hover:text-on-surface font-label-sm text-label-sm transition-all">
+<span>Solipsism</span>
+<span class="text-outline text-[10px]">3</span>
+</button>
+</section>
+<!-- Interactive Concept Radar / Constellation Canvas Card -->
+<section class="relative bg-surface-container-lowest border border-outline-variant/40 rounded overflow-hidden p-4">
+<div class="flex items-center justify-between mb-3 border-b border-outline-variant/20 pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="grain">grain</span>
+<h2 class="font-label-sm text-label-sm tracking-wider uppercase text-on-surface">SEMANTIC RADAR // LVL 01</h2>
+</div>
+<div class="flex items-center gap-1 text-outline font-label-sm text-[10px]">
+<span class="material-symbols-outlined text-xs" data-icon="sync">sync</span>
+<span>5 SYNAPSES</span>
+</div>
+</div>
+<!-- Constellation Simulation Canvas -->
+<div class="relative w-full h-56 bg-surface-dim/80 rounded border border-outline-variant/20 overflow-hidden flex items-center justify-center">
+<!-- Background Grid Rings -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-48 h-48 rounded-full border border-outline-variant/15 border-dashed"></div>
+<div class="absolute w-32 h-32 rounded-full border border-outline-variant/20"></div>
+<div class="absolute w-16 h-16 rounded-full border border-secondary/20 bg-secondary/5"></div>
+<div class="absolute w-full h-px bg-outline-variant/10"></div>
+<div class="absolute h-full w-px bg-outline-variant/10"></div>
+</div>
+<!-- Node Connections (SVG Overlays) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<!-- Central links -->
+<line stroke="#03b5d3" stroke-dasharray="2 2" stroke-opacity="0.5" stroke-width="1.2" x1="50%" x2="25%" y1="50%" y2="28%"></line>
+<line stroke="#8083ff" stroke-opacity="0.6" stroke-width="1.5" x1="50%" x2="78%" y1="50%" y2="30%"></line>
+<line stroke="#8083ff" stroke-opacity="0.4" stroke-width="1" x1="50%" x2="20%" y1="50%" y2="76%"></line>
+<line stroke="#03b5d3" stroke-opacity="0.6" stroke-width="1.2" x1="50%" x2="72%" y1="50%" y2="72%"></line>
+<line stroke="#464554" stroke-opacity="0.5" stroke-width="0.8" x1="78%" x2="72%" y1="30%" y2="72%"></line>
+</svg>
+<!-- Dynamic Nodes -->
+<!-- Center Core Node: Ecology of Mind -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center cursor-pointer group">
+<div class="w-3.5 h-3.5 rounded-full bg-secondary border-2 border-background glow-cyan group-hover:scale-125 transition-transform"></div>
+<span class="mt-1 px-1.5 py-0.5 rounded bg-surface/90 border border-secondary/40 font-label-sm text-[9px] text-secondary whitespace-nowrap shadow-sm">
+            Ecology of Mind
+          </span>
+</div>
+<!-- Node 1: Decentralized Intelligence -->
+<div class="absolute top-4 left-4 z-10 flex flex-col items-start cursor-pointer group">
+<div class="flex items-center gap-1">
+<div class="w-2.5 h-2.5 rounded-full bg-primary border border-background glow-indigo group-hover:scale-125 transition-transform"></div>
+<span class="px-1.5 py-0.5 rounded bg-surface-container/90 border border-outline-variant/30 font-label-sm text-[8.5px] text-on-surface whitespace-nowrap">
+              Decentralized Intel.
+            </span>
+</div>
+</div>
+<!-- Node 2: Algorithmic Poetics -->
+<div class="absolute top-5 right-4 z-10 flex flex-col items-end cursor-pointer group">
+<div class="flex items-center gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container/90 border border-primary/40 font-label-sm text-[8.5px] text-primary whitespace-nowrap">
+              Algorithmic Poetics
+            </span>
+<div class="w-2.5 h-2.5 rounded-full bg-primary-fixed border border-background glow-indigo group-hover:scale-125 transition-transform"></div>
+</div>
+</div>
+<!-- Node 3: Technological Subversion -->
+<div class="absolute bottom-5 left-3 z-10 flex flex-col items-start cursor-pointer group">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-outline group-hover:scale-125 transition-transform"></div>
+<span class="px-1.5 py-0.5 rounded bg-surface-container/90 border border-outline-variant/30 font-label-sm text-[8.5px] text-on-surface-variant whitespace-nowrap">
+              Tech Subversion
+            </span>
+</div>
+</div>
+<!-- Node 4: Solarpunk Protocols -->
+<div class="absolute bottom-5 right-4 z-10 flex flex-col items-end cursor-pointer group">
+<div class="flex items-center gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container/90 border border-secondary/40 font-label-sm text-[8.5px] text-secondary whitespace-nowrap">
+              Solarpunk Protocols
+            </span>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed border border-background glow-cyan group-hover:scale-125 transition-transform"></div>
+</div>
+</div>
+<!-- Navigation Guidance Hint -->
+<div class="absolute bottom-1 left-1/2 -translate-x-1/2 flex items-center gap-1 text-[9px] font-label-sm text-outline-variant tracking-tight bg-surface/70 px-2 py-0.5 rounded backdrop-blur-sm pointer-events-none">
+<span class="material-symbols-outlined text-[11px]" data-icon="pinch">pinch</span>
+<span>Drag or pinch to navigate constellation</span>
+</div>
+</div>
+<!-- Radar Footer / Quick Actions -->
+<div class="flex items-center justify-between mt-3 pt-2 text-xs font-label-sm">
+<span class="text-outline">SEMANTIC CLUSTER: <strong class="text-on-surface font-normal">#SYN-088</strong></span>
+<button class="inline-flex items-center gap-1 text-secondary hover:underline">
+<span>Full Graph</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_outward">arrow_outward</span>
+</button>
+</div>
+</section>
+<!-- Section Header: Featured Manifesto -->
+<div class="flex items-baseline justify-between mt-1 px-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface italic">Primary Synthesis</h3>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">CURATED ARCHIVE</span>
+</div>
+<!-- Featured Manifesto Card -->
+<article class="bg-surface-container-low border border-outline-variant/40 rounded p-4 relative overflow-hidden transition-all hover:border-secondary/50">
+<!-- Accent aura line -->
+<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent"></div>
+<!-- Metadata Tagging Header -->
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase">MANIFESTO // 2004</span>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+<span>14 min read</span>
+</div>
+</div>
+<!-- Headline -->
+<h4 class="font-headline-md text-headline-md text-on-surface font-medium leading-snug">
+        A Hacker Manifesto
+      </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic mb-3">
+        McKenzie Wark
+      </p>
+<!-- Manifesto Excerpt -->
+<blockquote class="border-l-2 border-primary/40 pl-3 my-3">
+<p class="font-headline-md text-body-md text-on-surface/90 italic leading-relaxed">
+          “Information wants to be free, but everywhere it is in chains. A hacker is not merely one who breaches code, but anyone who produces new abstractions from existing reality.”
+        </p>
+</blockquote>
+<!-- Core Concept Badges -->
+<div class="flex flex-wrap gap-1.5 my-3">
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/30 text-on-surface font-label-sm text-[10px]">
+          Information Asymmetry
+        </span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/30 text-secondary font-label-sm text-[10px]">
+          Abstraction
+        </span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/30 text-primary font-label-sm text-[10px]">
+          Vectoralist Class
+        </span>
+</div>
+<!-- Action Button (Space Mono primary button per guidelines) -->
+<div class="mt-4 pt-2 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md uppercase font-bold py-2.5 px-4 rounded transition-all duration-150 flex items-center justify-center gap-2 group glow-indigo">
+<span>Explore Synthesis</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform" data-icon="explore">explore</span>
+</button>
+</div>
+</article>
+<!-- Live Concept Stream / Manifesto Feed -->
+<div class="flex items-baseline justify-between mt-3 px-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface italic">Dynamic Trajectories</h3>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">2 ENTRIES</span>
+</div>
+<!-- Feed Card 1: VNS Matrix -->
+<article class="bg-surface-container-low border border-outline-variant/30 rounded p-4 transition-all hover:border-outline-variant">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm text-[10px] text-tertiary uppercase tracking-wider">CYBERFEMINISM // 1991</span>
+<span class="font-label-sm text-[10px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="format_quote">format_quote</span>
+<span>342 Citations</span>
+</span>
+</div>
+<h5 class="font-headline-sm text-headline-sm text-on-surface leading-tight mb-1">
+        A Cyberfeminist Manifesto for the 21st Century
+      </h5>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic mb-2">
+        VNS Matrix (Virginia Barratt, Julianne Pierce, Francesca da Rimini, Josephine Starrs)
+      </p>
+<p class="font-body-sm text-body-sm text-on-surface/80 line-clamp-2 leading-relaxed mb-3">
+        An aggressive poetic disruption seizing telecommunications architecture as an immunological space against patriarchal matrix monopoly.
+      </p>
+<!-- Connected Cluster Tags & Footnote -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/20">
+<div class="flex gap-1.5 overflow-hidden">
+<span class="px-1.5 py-0.5 rounded bg-surface border border-tertiary-container/40 text-tertiary font-label-sm text-[9px]">
+            #wetware
+          </span>
+<span class="px-1.5 py-0.5 rounded bg-surface border border-outline-variant/30 text-outline font-label-sm text-[9px]">
+            #techno-subversion
+          </span>
+</div>
+<button aria-label="Bookmark Manifesto" class="text-secondary hover:text-secondary-fixed transition-colors p-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="bookmark_add">bookmark_add</span>
+</button>
+</div>
+</article>
+<!-- Feed Card 2: Speculative Realism & Modernity -->
+<article class="bg-surface-container-low border border-outline-variant/30 rounded p-4 transition-all hover:border-outline-variant">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm text-[10px] text-primary tracking-wider uppercase">ONTOLOGY // 2007</span>
+<span class="font-label-sm text-[10px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="format_quote">format_quote</span>
+<span>189 Citations</span>
+</span>
+</div>
+<h5 class="font-headline-sm text-headline-sm text-on-surface leading-tight mb-1">
+        Speculative Realism &amp; Post-Kantian Correlationalism
+      </h5>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic mb-2">
+        Goldsmiths Research Consortium
+      </p>
+<p class="font-body-sm text-body-sm text-on-surface/80 line-clamp-2 leading-relaxed mb-3">
+        Dismantling anthropocentric consensus through independent object agency and mathematical ungrounding beyond subjective consciousness.
+      </p>
+<!-- Connected Cluster Tags & Footnote -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/20">
+<div class="flex gap-1.5 overflow-hidden">
+<span class="px-1.5 py-0.5 rounded bg-surface border border-primary/30 text-primary font-label-sm text-[9px]">
+            #object-oriented
+          </span>
+<span class="px-1.5 py-0.5 rounded bg-surface border border-outline-variant/30 text-outline font-label-sm text-[9px]">
+            #non-human
+          </span>
+</div>
+<button aria-label="Bookmark Manifesto" class="text-secondary hover:text-secondary-fixed transition-colors p-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="bookmark_add">bookmark_add</span>
+</button>
+</div>
+</article>
+</main>
+<!-- BottomNavBar (Shared Component JSON - Exactly mapped with 'Explorer' active) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter-sm py-space-xs bg-surface-container-low/90 backdrop-blur-md h-16 shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+<!-- Item 1: Explorer (ACTIVE) -->
+<a class="flex flex-col items-center justify-center gap-0.5 text-secondary dark:text-secondary font-label-sm text-label-sm font-bold active:scale-95 transition-transform duration-150" href="#explorer">
+<span class="material-symbols-outlined" data-icon="scatter_plot" data-weight="fill" style="font-variation-settings: 'FILL' 1;">scatter_plot</span>
+<span>Explorer</span>
+</a>
+<!-- Item 2: Constellation -->
+<a class="flex flex-col items-center justify-center gap-0.5 text-on-surface-variant dark:text-on-surface-variant font-label-sm text-label-sm hover:text-secondary dark:hover:text-secondary transition-colors duration-150 active:scale-95" href="#constellation">
+<span class="material-symbols-outlined" data-icon="grain">grain</span>
+<span>Constellation</span>
+</a>
+<!-- Item 3: Archive -->
+<a class="flex flex-col items-center justify-center gap-0.5 text-on-surface-variant dark:text-on-surface-variant font-label-sm text-label-sm hover:text-secondary dark:hover:text-secondary transition-colors duration-150 active:scale-95" href="#archive">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span>Archive</span>
+</a>
+<!-- Item 4: Bookmarks -->
+<a class="flex flex-col items-center justify-center gap-0.5 text-on-surface-variant dark:text-on-surface-variant font-label-sm text-label-sm hover:text-secondary dark:hover:text-secondary transition-colors duration-150 active:scale-95" href="#bookmarks">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+<span>Bookmarks</span>
+</a>
+</nav>
+<!-- Micro-interaction script for node pulse feedback -->
+<script>
+    document.querySelectorAll('[data-icon="scatter_plot"], [data-icon="grain"]').forEach(icon => {
+      icon.addEventListener('click', () => {
+        icon.classList.add('animate-ping');
+        setTimeout(() => icon.classList.remove('animate-ping'), 600);
+      });
+    });
+  </script>
+</body></html>

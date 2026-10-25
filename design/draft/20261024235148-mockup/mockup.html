@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ModelOps Playground</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Geist & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#283044",
+            "on-tertiary-fixed": "#002113",
+            "on-primary-container": "#0d0096",
+            "primary": "#c0c1ff",
+            "on-surface-variant": "#c7c4d7",
+            "surface-tint": "#c0c1ff",
+            "secondary-container": "#03b5d3",
+            "on-secondary-fixed-variant": "#004e5c",
+            "tertiary": "#4edea3",
+            "surface-dim": "#0b1326",
+            "primary-fixed": "#e1e0ff",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "surface-container-low": "#131b2e",
+            "error-container": "#93000a",
+            "inverse-primary": "#494bd6",
+            "primary-fixed-dim": "#c0c1ff",
+            "surface-container-lowest": "#060e20",
+            "on-tertiary-container": "#000703",
+            "outline-variant": "#464554",
+            "on-background": "#dae2fd",
+            "on-secondary-fixed": "#001f26",
+            "tertiary-fixed-dim": "#4edea3",
+            "tertiary-fixed": "#6ffbbe",
+            "on-surface": "#dae2fd",
+            "secondary-fixed-dim": "#4cd7f6",
+            "surface": "#0b1326",
+            "surface-variant": "#2d3449",
+            "surface-container-high": "#222a3d",
+            "secondary": "#4cd7f6",
+            "surface-container-highest": "#2d3449",
+            "tertiary-container": "#00885d",
+            "on-error": "#690005",
+            "on-error-container": "#ffdad6",
+            "surface-container": "#171f33",
+            "inverse-surface": "#dae2fd",
+            "outline": "#908fa0",
+            "background": "#0b1326",
+            "primary-container": "#8083ff",
+            "on-tertiary": "#003824",
+            "error": "#ffb4ab",
+            "secondary-fixed": "#acedff",
+            "surface-bright": "#31394d",
+            "on-secondary-container": "#00424e",
+            "on-primary-fixed": "#07006c",
+            "on-secondary": "#003640",
+            "on-primary": "#1000a9"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "margin-tablet": "1.5rem",
+            "space-xl": "1.5rem",
+            "margin": "1rem",
+            "gutter-desktop": "1.5rem",
+            "margin-desktop": "2rem",
+            "space-lg": "1rem",
+            "gutter-tablet": "1rem",
+            "space-xs": "0.25rem",
+            "space-md": "0.75rem",
+            "gutter": "0.75rem"
+          },
+          "fontFamily": {
+            "label-sm": ["JetBrains Mono", "monospace"],
+            "code-sm": ["JetBrains Mono", "monospace"],
+            "headline-sm": ["Geist", "sans-serif"],
+            "headline-lg": ["Geist", "sans-serif"],
+            "headline-md": ["Geist", "sans-serif"],
+            "code-md": ["JetBrains Mono", "monospace"],
+            "label-md": ["JetBrains Mono", "monospace"],
+            "body-lg": ["Geist", "sans-serif"],
+            "headline-lg-mobile": ["Geist", "sans-serif"],
+            "body-sm": ["Geist", "sans-serif"],
+            "body-md": ["Geist", "sans-serif"]
+          },
+          "fontSize": {
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "code-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "code-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Ambient glow for active AI runtime elements */
+    .glow-active {
+      box-shadow: 0 0 0 1px #8083ff, 0 4px 20px -2px rgba(128, 131, 255, 0.25);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 0 1px #4cd7f6, 0 4px 16px -2px rgba(76, 215, 246, 0.2);
+    }
+    /* Custom range input styling */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: transparent;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 18px;
+      width: 18px;
+      border-radius: 9999px;
+      background: #c0c1ff;
+      border: 2px solid #060e20;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(192, 193, 255, 0.6);
+      margin-top: -7px;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+      background: #222a3d;
+      border-radius: 2px;
+    }
+    /* Hide scrollbars for slick ribbons */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen pb-24 selection:bg-primary-container selection:text-on-primary-container">
+<!-- TOP APP BAR (Shared Component JSON Blueprint) -->
+<header class="sticky top-0 z-40 bg-surface-container dark:bg-surface-container w-full border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-4 h-14 max-w-7xl mx-auto">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="terminal">terminal</span>
+<span class="text-headline-sm font-headline-sm font-semibold tracking-tight text-on-surface">ModelOps Playground</span>
+</div>
+<div class="flex items-center space-x-2">
+<!-- Live telemetry badge -->
+<div class="hidden sm:flex items-center space-x-1.5 px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant/40">
+<span class="h-1.5 w-1.5 rounded-full bg-tertiary animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-tertiary">42ms | 99.9%</span>
+</div>
+<!-- trailing_action_text -->
+<span class="text-label-md font-label-md px-2 py-0.5 rounded bg-surface-bright text-primary border border-outline-variant/40">v2.4-prod</span>
+</div>
+</div>
+</header>
+<!-- MAIN PLAYGROUND CANVAS -->
+<main class="max-w-7xl mx-auto px-4 pt-4 pb-12 space-y-4">
+<!-- 1. ACTIVE MODEL SELECTOR HORIZONTAL RIBBON -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-primary text-base" data-icon="psychology">psychology</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">ACTIVE INFERENCE ENGINE</span>
+</div>
+<div class="flex items-center space-x-1 text-label-sm font-label-sm text-tertiary">
+<span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span>
+<span>GPU CLUSTER ACTIVE</span>
+</div>
+</div>
+<!-- Segmented Pill Switch -->
+<div class="flex space-x-2 overflow-x-auto no-scrollbar py-1">
+<!-- Inactive Pill 1 -->
+<button class="model-pill flex-shrink-0 px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-on-surface-variant hover:border-primary/50 transition-colors flex items-center space-x-2" onclick="switchModel('Vision-Embed-v2', '4B-ViT', 'Google Cloud TPU', this)">
+<span class="material-symbols-outlined text-sm" data-icon="image">image</span>
+<span class="text-label-md font-label-md">Vision-Embed-v2</span>
+</button>
+<!-- Active Pill (Selected in Prompt) -->
+<button class="model-pill active flex-shrink-0 px-3 py-2 rounded bg-primary-container/20 border border-primary text-primary glow-active flex items-center space-x-2" onclick="switchModel('Text-Extract-XL', '7B-MoE', 'Cerebras Ultra-Core', this)">
+<span class="material-symbols-outlined text-sm" data-icon="text_fields">text_fields</span>
+<span class="text-label-md font-label-md font-semibold">Text-Extract-XL</span>
+<span class="bg-primary/20 text-primary border border-primary/30 px-1.5 py-0.2 rounded text-label-sm font-label-sm">7B-MoE</span>
+</button>
+<!-- Inactive Pill 2 -->
+<button class="model-pill flex-shrink-0 px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-on-surface-variant hover:border-primary/50 transition-colors flex items-center space-x-2" onclick="switchModel('Audio-Transcribe', 'Whisper-L', 'AWS Inferentia', this)">
+<span class="material-symbols-outlined text-sm" data-icon="graphic_eq">graphic_eq</span>
+<span class="text-label-md font-label-md">Audio-Transcribe</span>
+</button>
+<!-- Inactive Pill 3 -->
+<button class="model-pill flex-shrink-0 px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-on-surface-variant hover:border-primary/50 transition-colors flex items-center space-x-2" onclick="switchModel('Code-Gen-4B', '4B-Dense', 'Local TensorRT', this)">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span class="text-label-md font-label-md">Code-Gen-4B</span>
+</button>
+</div>
+<!-- Active Model Meta Bar -->
+<div class="flex items-center justify-between px-3 py-1.5 bg-surface-container-low rounded border border-outline-variant/30 text-label-sm font-label-sm" id="model-meta-bar">
+<div class="flex items-center space-x-3 text-on-surface-variant">
+<span>Provider: <strong class="text-on-surface font-label-sm" id="model-provider">Cerebras Ultra-Core</strong></span>
+<span class="text-outline-variant">|</span>
+<span>Arch: <strong class="text-primary font-label-sm" id="model-arch">7B Mixture-of-Experts</strong></span>
+</div>
+<div class="text-secondary font-label-sm">FP8 Quantized</div>
+</div>
+</section>
+<!-- 2. WORKBENCH & INPUT AREA -->
+<section class="bg-surface-container rounded-xl p-3 sm:p-4 border border-outline-variant/30 space-y-3">
+<!-- Section header with sample presets -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="edit_note">edit_note</span>
+<span class="text-label-md font-label-md text-on-surface font-semibold">PROMPT CONSOLE &amp; PAYLOAD</span>
+</div>
+<!-- Quick Sample Presets -->
+<div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-0.5">
+<span class="text-label-sm font-label-sm text-outline shrink-0">Presets:</span>
+<button class="px-2 py-1 rounded bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm transition-all shrink-0 active:scale-95" onclick="loadPreset('support')">
+            Customer Support QA
+          </button>
+<button class="px-2 py-1 rounded bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm transition-all shrink-0 active:scale-95" onclick="loadPreset('ocr')">
+            Receipt OCR Parse
+          </button>
+<button class="px-2 py-1 rounded bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm transition-all shrink-0 active:scale-95" onclick="loadPreset('sentiment')">
+            Sentiment &amp; Intent
+          </button>
+</div>
+</div>
+<!-- Textarea input field -->
+<div class="relative rounded-lg bg-surface-container-lowest border border-outline-variant/40 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<div class="flex items-center justify-between px-3 py-1.5 border-b border-outline-variant/20 bg-surface-container-low/60">
+<div class="flex items-center space-x-2">
+<span class="text-label-sm font-label-sm text-outline">SYSTEM:</span>
+<span class="text-label-sm font-label-sm text-tertiary">Extraction Engine v4.2 [Strict-JSON]</span>
+</div>
+<button class="text-outline hover:text-error text-label-sm font-label-sm flex items-center space-x-1 transition-colors" onclick="clearPrompt()">
+<span class="material-symbols-outlined text-xs" data-icon="backspace">backspace</span>
+<span>Clear</span>
+</button>
+</div>
+<textarea class="w-full bg-transparent p-3 text-body-md font-body-md text-on-surface placeholder-outline focus:outline-none resize-none border-0 focus:ring-0 leading-relaxed font-code-md text-code-md" id="prompt-input" placeholder="Enter structured prompt or paste raw payload text for extraction..." rows="4">{
+  "user_id": "usr_9402a",
+  "channel": "mobile_in_app_chat",
+  "transcript": "Hello, my order #48192 arrived yesterday but the screen is completely cracked and unresponsive. I need a full immediate refund or expedited replacement sent to 742 Evergreen Terr right away. This is unacceptable."
+}</textarea>
+<!-- Textarea utility bar -->
+<div class="flex items-center justify-between px-3 py-1.5 border-t border-outline-variant/20 text-label-sm font-label-sm bg-surface-container-low/40">
+<span class="text-outline" id="char-token-counter">Tokens: <strong class="text-on-surface font-label-sm">54 / 512</strong></span>
+<span class="text-outline">Mode: <strong class="text-secondary font-label-sm">Entity &amp; Sentiment Extraction</strong></span>
+</div>
+</div>
+<!-- 3. INTERACTIVE HYPERPARAMETER CONTROL DRAWER -->
+<div class="rounded-lg bg-surface-container-low border border-outline-variant/40 overflow-hidden">
+<!-- Accordion trigger -->
+<button class="w-full px-3 py-2.5 flex items-center justify-between bg-surface-container-high/40 hover:bg-surface-container-high/70 transition-colors" onclick="toggleDrawer()">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="tune">tune</span>
+<span class="text-label-md font-label-md text-on-surface font-medium">Hyperparameters &amp; Inference Controls</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant" id="active-summary">T=0.7 | P=0.95 | Max=512</span>
+<span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200" data-icon="expand_more" id="drawer-arrow">expand_more</span>
+</div>
+</button>
+<!-- Collapsible body -->
+<div class="p-3 sm:p-4 space-y-4 border-t border-outline-variant/30" id="drawer-body">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Temperature Slider -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<label class="text-label-sm font-label-sm text-on-surface-variant" for="temp-slider">Temperature</label>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-surface-bright text-primary border border-outline-variant/40" id="temp-val">0.70</span>
+</div>
+<input class="w-full" id="temp-slider" max="1.5" min="0.0" oninput="updateParam('temp', this.value)" step="0.05" type="range" value="0.7"/>
+<div class="flex justify-between text-[9px] text-outline font-label-sm">
+<span>Deterministic</span>
+<span>Creative</span>
+</div>
+</div>
+<!-- Top-P Slider -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<label class="text-label-sm font-label-sm text-on-surface-variant" for="topp-slider">Top-P (Nucleus)</label>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-surface-bright text-secondary border border-outline-variant/40" id="topp-val">0.95</span>
+</div>
+<input class="w-full" id="topp-slider" max="1.0" min="0.1" oninput="updateParam('topp', this.value)" step="0.05" type="range" value="0.95"/>
+<div class="flex justify-between text-[9px] text-outline font-label-sm">
+<span>0.1 (Focused)</span>
+<span>1.0 (Full Corpus)</span>
+</div>
+</div>
+<!-- Max Tokens Slider -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<label class="text-label-sm font-label-sm text-on-surface-variant" for="tokens-slider">Max Output Tokens</label>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-surface-bright text-tertiary border border-outline-variant/40" id="tokens-val">512</span>
+</div>
+<input class="w-full" id="tokens-slider" max="2048" min="64" oninput="updateParam('tokens', this.value)" step="64" type="range" value="512"/>
+<div class="flex justify-between text-[9px] text-outline font-label-sm">
+<span>64 tokens</span>
+<span>2048 tokens</span>
+</div>
+</div>
+</div>
+<!-- Feature Toggles -->
+<div class="pt-2 border-t border-outline-variant/20 grid grid-cols-1 sm:grid-cols-2 gap-3">
+<!-- Toggle 1: Streaming Output -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container border border-outline-variant/30">
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-on-surface font-semibold">Streaming Output</span>
+<span class="text-body-sm font-body-sm text-outline">SSE token stream emission</span>
+</div>
+<button class="w-10 h-6 flex items-center bg-primary-container rounded-full p-1 cursor-pointer transition-colors duration-200" id="toggle-stream" onclick="toggleSwitch(this)">
+<div class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-4 transition-transform duration-200"></div>
+</button>
+</div>
+<!-- Toggle 2: Return Confidence Scores -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container border border-outline-variant/30">
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-on-surface font-semibold">Return Confidence Scores</span>
+<span class="text-body-sm font-body-sm text-outline">Logprobs &amp; entity certainty tags</span>
+</div>
+<button class="w-10 h-6 flex items-center bg-primary-container rounded-full p-1 cursor-pointer transition-colors duration-200" id="toggle-conf" onclick="toggleSwitch(this)">
+<div class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-4 transition-transform duration-200"></div>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. EXECUTION BAR WITH BENCHMARK STATS -->
+<section class="bg-surface-container-high rounded-xl p-3 border border-outline-variant/40 flex flex-col sm:flex-row items-center justify-between gap-3">
+<!-- Runtime stats telemetry -->
+<div class="flex items-center justify-between w-full sm:w-auto space-x-4 text-label-sm font-label-sm">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-outline text-base" data-icon="hourglass_top">hourglass_top</span>
+<span class="text-outline">Est. Latency: <strong class="text-on-surface font-label-sm">~380ms</strong></span>
+</div>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="toll">toll</span>
+<span class="text-outline">Cost: <strong class="text-secondary font-label-sm">12 credits/run</strong></span>
+</div>
+</div>
+<!-- Primary Run Trigger Button -->
+<button class="w-full sm:w-auto min-w-[200px] h-11 px-5 rounded-lg bg-primary text-on-primary-fixed font-label-md font-bold text-label-md flex items-center justify-center space-x-2 shadow-lg shadow-primary/20 hover:brightness-110 active:scale-95 transition-all" id="run-trigger" onclick="runInference()">
+<span class="material-symbols-outlined text-xl" data-icon="play_arrow" id="run-icon">play_arrow</span>
+<span id="run-label">RUN MODEL</span>
+<span class="text-label-sm font-label-sm opacity-70 border border-on-primary-fixed/30 px-1 rounded ml-1">⌘ + ↵</span>
+</button>
+</section>
+<!-- 5. DYNAMIC INTERACTIVE OUTPUT PREVIEW -->
+<section class="bg-surface-container rounded-xl border border-outline-variant/30 overflow-hidden space-y-0">
+<!-- Output Header & Tab Bar -->
+<div class="border-b border-outline-variant/30 bg-surface-container-low px-3 pt-3 flex flex-col space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="h-2 w-2 rounded-full bg-tertiary"></span>
+<span class="text-label-md font-label-md font-bold text-on-surface">INFERENCE RESULTS</span>
+<span class="text-label-sm font-label-sm px-2 py-0.5 rounded bg-tertiary-container/30 text-tertiary border border-tertiary/40" id="speed-chip">114 t/s • eos: stop</span>
+</div>
+<!-- Execution Timestamp -->
+<span class="text-label-sm font-label-sm text-outline">Latency: 342ms</span>
+</div>
+<!-- Output Tabs -->
+<div class="flex space-x-2 overflow-x-auto no-scrollbar pt-1">
+<button class="output-tab active pb-2 border-b-2 border-primary text-primary text-label-sm font-label-sm flex items-center space-x-1 shrink-0" onclick="switchTab('json', this)">
+<span class="material-symbols-outlined text-sm" data-icon="data_object">data_object</span>
+<span>Parsed JSON Output</span>
+</button>
+<button class="output-tab pb-2 border-b-2 border-transparent text-outline hover:text-on-surface text-label-sm font-label-sm flex items-center space-x-1 shrink-0" onclick="switchTab('tokens', this)">
+<span class="material-symbols-outlined text-sm" data-icon="bubble_chart">bubble_chart</span>
+<span>Raw Tokens &amp; Confidence</span>
+</button>
+<button class="output-tab pb-2 border-b-2 border-transparent text-outline hover:text-on-surface text-label-sm font-label-sm flex items-center space-x-1 shrink-0" onclick="switchTab('tree', this)">
+<span class="material-symbols-outlined text-sm" data-icon="account_tree">account_tree</span>
+<span>Interactive Tree</span>
+</button>
+<button class="output-tab pb-2 border-b-2 border-transparent text-outline hover:text-on-surface text-label-sm font-label-sm flex items-center space-x-1 shrink-0" onclick="switchTab('embed', this)">
+<span class="material-symbols-outlined text-sm" data-icon="code">code</span>
+<span>Embed Snippet (&lt;/&gt;)</span>
+</button>
+</div>
+</div>
+<!-- Tab Content Area -->
+<div class="p-3 sm:p-4">
+<!-- View 1: Parsed JSON Output (Default) -->
+<div class="space-y-3" id="tab-view-json">
+<!-- Structured Extraction Highlights Cards (High Density Bento) -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+<!-- Card 1: Intent -->
+<div class="p-2.5 rounded-lg bg-surface-container-high border border-outline-variant/40 space-y-1">
+<span class="text-label-sm font-label-sm text-outline">PRIMARY INTENT</span>
+<div class="flex items-center justify-between">
+<span class="text-body-md font-body-md font-semibold text-primary">Refund Request</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-tertiary-container/40 text-tertiary border border-tertiary/40">98.4%</span>
+</div>
+</div>
+<!-- Card 2: Entity ID -->
+<div class="p-2.5 rounded-lg bg-surface-container-high border border-outline-variant/40 space-y-1">
+<span class="text-label-sm font-label-sm text-outline">DETECTED ENTITIES</span>
+<div class="flex items-center justify-between">
+<span class="text-code-md font-code-md font-semibold text-secondary">Order #48192</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-tertiary-container/40 text-tertiary border border-tertiary/40">99.1%</span>
+</div>
+</div>
+<!-- Card 3: Sentiment -->
+<div class="p-2.5 rounded-lg bg-surface-container-high border border-outline-variant/40 space-y-1">
+<span class="text-label-sm font-label-sm text-outline">SENTIMENT POLARITY</span>
+<div class="flex items-center justify-between">
+<span class="text-body-md font-body-md font-semibold text-error">Frustrated (-0.82)</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-error-container/60 text-error border border-error/40">High Urgency</span>
+</div>
+</div>
+</div>
+<!-- Code View Area -->
+<div class="relative bg-surface-container-lowest rounded-lg p-3 border border-outline-variant/40 overflow-x-auto">
+<pre class="text-code-sm font-code-sm text-on-surface leading-5 font-mono"><span class="text-outline">{</span>
+  <span class="text-secondary">"intent"</span>: <span class="text-tertiary">"refund_request"</span>,
+  <span class="text-secondary">"confidence"</span>: <span class="text-primary">0.984</span>,
+  <span class="text-secondary">"urgency_level"</span>: <span class="text-error">"critical"</span>,
+  <span class="text-secondary">"entities"</span>: <span class="text-outline">[</span>
+    <span class="text-outline">{</span>
+      <span class="text-secondary">"entity"</span>: <span class="text-tertiary">"order_id"</span>,
+      <span class="text-secondary">"value"</span>: <span class="text-primary-fixed">"48192"</span>,
+      <span class="text-secondary">"confidence"</span>: <span class="text-primary">0.991</span>,
+      <span class="text-secondary">"span"</span>: <span class="text-outline">[20, 26]</span>
+    <span class="text-outline">}</span>,
+    <span class="text-outline">{</span>
+      <span class="text-secondary">"entity"</span>: <span class="text-tertiary">"defect_type"</span>,
+      <span class="text-secondary">"value"</span>: <span class="text-primary-fixed">"screen_cracked_unresponsive"</span>,
+      <span class="text-secondary">"confidence"</span>: <span class="text-primary">0.972</span>
+    <span class="text-outline">}</span>,
+    <span class="text-outline">{</span>
+      <span class="text-secondary">"entity"</span>: <span class="text-tertiary">"shipping_address"</span>,
+      <span class="text-secondary">"value"</span>: <span class="text-primary-fixed">"742 Evergreen Terr"</span>,
+      <span class="text-secondary">"confidence"</span>: <span class="text-primary">0.943</span>
+    <span class="text-outline">}</span>
+  <span class="text-outline">]</span>,
+  <span class="text-secondary">"sentiment_score"</span>: <span class="text-error">-0.82</span>,
+  <span class="text-secondary">"suggested_action"</span>: <span class="text-tertiary">"auto_generate_return_label_tier1"</span>
+<span class="text-outline">}</span></pre>
+</div>
+</div>
+<!-- View 2: Raw Tokens & Confidence (Hidden initially) -->
+<div class="hidden space-y-3" id="tab-view-tokens">
+<div class="text-label-sm font-label-sm text-outline mb-1">LOGPROB DENSITY (Tokens color-coded by confidence):</div>
+<div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/40 flex flex-wrap gap-1.5 font-code-sm text-code-sm">
+<span class="px-1.5 py-0.5 rounded bg-tertiary/20 text-tertiary border border-tertiary/40">refund_request (0.984)</span>
+<span class="px-1.5 py-0.5 rounded bg-tertiary/20 text-tertiary border border-tertiary/40">order_id (0.991)</span>
+<span class="px-1.5 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40">48192 (0.992)</span>
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">screen_cracked (0.972)</span>
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">unresponsive (0.965)</span>
+<span class="px-1.5 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40">expedited_replacement (0.923)</span>
+<span class="px-1.5 py-0.5 rounded bg-tertiary/20 text-tertiary border border-tertiary/40">742_Evergreen_Terr (0.943)</span>
+<span class="px-1.5 py-0.5 rounded bg-error/20 text-error border border-error/40">sentiment:negative (-0.82)</span>
+</div>
+</div>
+<!-- View 3: Interactive Tree (Hidden initially) -->
+<div class="hidden space-y-2 font-code-sm text-code-sm" id="tab-view-tree">
+<div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/40 space-y-2 text-on-surface">
+<div class="flex items-center space-x-1 cursor-pointer text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="folder_open">folder_open</span>
+<span>Root: ExtractionResponse</span>
+</div>
+<div class="pl-4 border-l border-outline-variant/40 space-y-1.5">
+<div class="text-tertiary">├─ intent: "refund_request" <span class="text-outline text-label-sm">(float 0.984)</span></div>
+<div class="text-secondary">├─ urgency: "critical"</div>
+<div>
+<span class="text-primary">└─ entities [3 items]</span>
+<div class="pl-4 border-l border-outline-variant/40 space-y-1 text-on-surface-variant">
+<div>[0] { type: "order_id", val: "48192" }</div>
+<div>[1] { type: "defect", val: "screen_cracked" }</div>
+<div>[2] { type: "address", val: "742 Evergreen Terr" }</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- View 4: Embed Snippet (Hidden initially) -->
+<div class="hidden space-y-2" id="tab-view-embed">
+<div class="text-label-sm font-label-sm text-outline">COPY EMBED SCRIPT OR SDK INTEGRATION:</div>
+<div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-x-auto font-code-sm text-code-sm text-secondary leading-relaxed">
+<code>&lt;script src="https://cdn.modelops.io/v2.4/embed.js"&gt;&lt;/script&gt;<br/>
+&lt;model-runner model="Text-Extract-XL" endpoint="cerebras-7b" temp="0.7"&gt;&lt;/model-runner&gt;</code>
+</div>
+</div>
+</div>
+<!-- Quick Action Bar -->
+<div class="p-3 bg-surface-container-low border-t border-outline-variant/30 flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center space-x-2">
+<button class="px-2.5 py-1.5 rounded bg-surface-container border border-outline-variant/40 hover:border-primary text-on-surface hover:text-primary text-label-sm font-label-sm flex items-center space-x-1.5 transition-all active:scale-95" id="copy-btn" onclick="copyOutput()">
+<span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span>
+<span id="copy-text">Copy JSON</span>
+</button>
+<button class="px-2.5 py-1.5 rounded bg-surface-container border border-outline-variant/40 hover:border-secondary text-on-surface hover:text-secondary text-label-sm font-label-sm flex items-center space-x-1.5 transition-all active:scale-95" onclick="rerunNoise()">
+<span class="material-symbols-outlined text-sm" data-icon="casino">casino</span>
+<span>Re-run with Noise</span>
+</button>
+</div>
+<div class="flex items-center space-x-2">
+<button class="px-2.5 py-1.5 rounded bg-surface-container border border-outline-variant/40 hover:border-tertiary text-on-surface hover:text-tertiary text-label-sm font-label-sm flex items-center space-x-1.5 transition-all active:scale-95" onclick="exportCurl()">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span>Export cURL</span>
+</button>
+<button class="px-2.5 py-1.5 rounded bg-primary-container/20 border border-primary/40 text-primary text-label-sm font-label-sm flex items-center space-x-1.5 hover:bg-primary-container/30 transition-all active:scale-95" onclick="shareEmbed()">
+<span class="material-symbols-outlined text-sm" data-icon="share">share</span>
+<span>Share</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BOTTOM NAVIGATION BAR (Shared Component JSON Blueprint) -->
+<!-- Contextual lock: "Playground" active -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-1 h-16 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/20 dark:border-outline-variant/20">
+<!-- Item 1: Playground (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary py-1 px-3 border-t-2 border-primary dark:border-primary rounded-none active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm mt-0.5">Playground</span>
+</a>
+<!-- Item 2: Metrics (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline py-1 px-3 hover:text-on-surface dark:hover:text-on-surface transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="speed">speed</span>
+<span class="text-label-sm font-label-sm mt-0.5">Metrics</span>
+</a>
+<!-- Item 3: Inspect (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline py-1 px-3 hover:text-on-surface dark:hover:text-on-surface transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="data_object">data_object</span>
+<span class="text-label-sm font-label-sm mt-0.5">Inspect</span>
+</a>
+<!-- Item 4: Embed (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline py-1 px-3 hover:text-on-surface dark:hover:text-on-surface transition-colors duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="code">code</span>
+<span class="text-label-sm font-label-sm mt-0.5">Embed</span>
+</a>
+</nav>
+<!-- Interactive Logic -->
+<script>
+    // Hyperparameter State
+    const hyperParams = {
+      temp: 0.70,
+      topp: 0.95,
+      tokens: 512
+    };
+
+    function updateParam(param, val) {
+      hyperParams[param] = val;
+      if (param === 'temp') document.getElementById('temp-val').innerText = parseFloat(val).toFixed(2);
+      if (param === 'topp') document.getElementById('topp-val').innerText = parseFloat(val).toFixed(2);
+      if (param === 'tokens') document.getElementById('tokens-val').innerText = val;
+      document.getElementById('active-summary').innerText = `T=${parseFloat(hyperParams.temp).toFixed(2)} | P=${parseFloat(hyperParams.topp).toFixed(2)} | Max=${hyperParams.tokens}`;
+    }
+
+    // Toggle Hyperparameter Drawer
+    let drawerOpen = true;
+    function toggleDrawer() {
+      drawerOpen = !drawerOpen;
+      const body = document.getElementById('drawer-body');
+      const arrow = document.getElementById('drawer-arrow');
+      if (drawerOpen) {
+        body.classList.remove('hidden');
+        arrow.style.transform = 'rotate(0deg)';
+      } else {
+        body.classList.add('hidden');
+        arrow.style.transform = 'rotate(-90deg)';
+      }
+    }
+
+    // Switch Model Selector
+    function switchModel(name, arch, provider, el) {
+      document.querySelectorAll('.model-pill').forEach(btn => {
+        btn.classList.remove('bg-primary-container/20', 'border-primary', 'text-primary', 'glow-active', 'active');
+        btn.classList.add('bg-surface-container', 'border-outline-variant/40', 'text-on-surface-variant');
+      });
+      el.classList.remove('bg-surface-container', 'border-outline-variant/40', 'text-on-surface-variant');
+      el.classList.add('bg-primary-container/20', 'border-primary', 'text-primary', 'glow-active', 'active');
+
+      document.getElementById('model-provider').innerText = provider;
+      document.getElementById('model-arch').innerText = arch;
+    }
+
+    // Presets
+    const samplePresets = {
+      support: `{\n  "user_id": "usr_9402a",\n  "channel": "mobile_in_app_chat",\n  "transcript": "Hello, my order #48192 arrived yesterday but the screen is completely cracked and unresponsive. I need a full immediate refund or expedited replacement sent to 742 Evergreen Terr right away. This is unacceptable."\n}`,
+      ocr: `{\n  "source_document": "scan_store_receipt_9921.jpg",\n  "raw_ocr_lines": [\n    "WALMART SUPERCENTER #3210",\n    "DATE: 2025-05-12 14:32",\n    "ITEMS: 4K MONITOR $299.99 TAX $24.00",\n    "TOTAL PAID: $323.99 VISA *9912"\n  ]\n}`,
+      sentiment: `{\n  "source_feed": "X/Twitter Realtime",\n  "handle": "@dev_builder",\n  "text": "The new 7B-MoE inference throughput is blazing fast! Went from 35ms to 12ms latency on Cerebras nodes. Incredible release!"\n}`
+    };
+
+    function loadPreset(key) {
+      const textarea = document.getElementById('prompt-input');
+      textarea.value = samplePresets[key];
+      document.getElementById('char-token-counter').innerHTML = `Tokens: <strong class="text-on-surface font-label-sm">${Math.floor(textarea.value.length / 4)} / 512</strong>`;
+    }
+
+    function clearPrompt() {
+      document.getElementById('prompt-input').value = '';
+      document.getElementById('char-token-counter').innerHTML = `Tokens: <strong class="text-on-surface font-label-sm">0 / 512</strong>`;
+    }
+
+    // Toggle switch handler
+    function toggleSwitch(btn) {
+      const thumb = btn.querySelector('div');
+      const isActive = btn.classList.contains('bg-primary-container');
+      if (isActive) {
+        btn.classList.remove('bg-primary-container');
+        btn.classList.add('bg-surface-container-high');
+        thumb.classList.remove('translate-x-4');
+        thumb.classList.add('translate-x-0');
+      } else {
+        btn.classList.add('bg-primary-container');
+        btn.classList.remove('bg-surface-container-high');
+        thumb.classList.add('translate-x-4');
+        thumb.classList.remove('translate-x-0');
+      }
+    }
+
+    // Tab Switching
+    function switchTab(tabKey, el) {
+      document.querySelectorAll('.output-tab').forEach(t => {
+        t.classList.remove('border-primary', 'text-primary');
+        t.classList.add('border-transparent', 'text-outline');
+      });
+      el.classList.add('border-primary', 'text-primary');
+      el.classList.remove('border-transparent', 'text-outline');
+
+      ['json', 'tokens', 'tree', 'embed'].forEach(k => {
+        const view = document.getElementById(`tab-view-${k}`);
+        if (k === tabKey) {
+          view.classList.remove('hidden');
+        } else {
+          view.classList.add('hidden');
+        }
+      });
+    }
+
+    // Run inference mock state
+    function runInference() {
+      const runBtn = document.getElementById('run-trigger');
+      const runIcon = document.getElementById('run-icon');
+      const runLabel = document.getElementById('run-label');
+      const speedChip = document.getElementById('speed-chip');
+
+      runBtn.classList.add('opacity-80', 'pointer-events-none');
+      runIcon.innerText = 'sync';
+      runIcon.classList.add('animate-spin');
+      runLabel.innerText = 'INFERRING...';
+
+      setTimeout(() => {
+        runBtn.classList.remove('opacity-80', 'pointer-events-none');
+        runIcon.innerText = 'play_arrow';
+        runIcon.classList.remove('animate-spin');
+        runLabel.innerText = 'RUN MODEL';
+        speedChip.innerText = `${Math.floor(110 + Math.random() * 20)} t/s • eos: stop`;
+        speedChip.classList.add('glow-cyan');
+        setTimeout(() => speedChip.classList.remove('glow-cyan'), 1200);
+      }, 420);
+    }
+
+    // Keyboard shortcut CMD/CTRL + ENTER to run
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        runInference();
+      }
+    });
+
+    // Copy Feedback
+    function copyOutput() {
+      const btnText = document.getElementById('copy-text');
+      btnText.innerText = 'Copied!';
+      setTimeout(() => btnText.innerText = 'Copy JSON', 1500);
+    }
+
+    function rerunNoise() {
+      runInference();
+    }
+
+    function exportCurl() {
+      alert("cURL snippet copied: curl -X POST https://api.modelops.io/v2.4/extract -H 'Authorization: Bearer ops_live_key'");
+    }
+
+    function shareEmbed() {
+      alert("Share URL: https://modelops.io/play/share/7b-moe-48192");
+    }
+  </script>
+</body></html>

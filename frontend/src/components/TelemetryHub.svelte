@@ -11,6 +11,7 @@
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
   import CanonGatewayView from './CanonGatewayView.svelte';
+  import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
 
   export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' = 'podcast';
 
@@ -18,6 +19,7 @@
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
+  let isSearchModalOpen: boolean = false;
   let currentPath: string = typeof window !== 'undefined' ? window.location.pathname : '/';
   let podcastCount: number = 0;
 
@@ -110,13 +112,26 @@
           </div>
 
           <div class="flex items-center gap-3">
+            <!-- Cmd+K Search Trigger -->
+            <button
+              id="cmd-k-trigger-btn"
+              type="button"
+              on:click={() => (isSearchModalOpen = true)}
+              aria-label="Поиск по Канону (Cmd+K)"
+              class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#00f0ff] {theme === 'dark' ? 'bg-[#12151e] text-[#dfe2ef] border-[#1f2433] hover:border-[#00f0ff]' : 'bg-white text-[#0f172a] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
+            >
+              <span class="text-[#00f0ff]">🔍</span>
+              <span>ПОИСК</span>
+              <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] rounded font-mono border text-[#849495] {theme === 'dark' ? 'bg-[#0a0e17] border-[#3b494b]/40 text-[#00f0ff]' : 'bg-[#e2e8f0] border-[#cbd5e1]'}">Cmd+K</kbd>
+            </button>
+
             <!-- Theme Toggle -->
             <button
               id="theme-toggle-btn"
               type="button"
               on:click={toggleTheme}
               aria-label="Toggle theme"
-              class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
+              class="px-3 py-1.5 rounded text-xs font-mono border transition-all flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#00f0ff] {theme === 'dark' ? 'bg-[#12151e] text-[#cbd5e1] border-[#1f2433] hover:border-[#38bdf8]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#0284c7] shadow-sm'}"
             >
               <span>ТЕМА:</span>
               <span class="font-bold text-[#38bdf8]">{theme === 'dark' ? 'Dark Void' : 'Light Monochrome'}</span>
@@ -317,6 +332,16 @@
       {/if}
 
       <ConsentManager {theme} bind:isOpen={isCmpModalOpen} />
+      <CanonSearchModal
+        bind:isOpen={isSearchModalOpen}
+        {theme}
+        onSelectNode={(node) => {
+          if (node.type === 'concept') activeTab = 'canon';
+          else if (node.type === 'podcast') activeTab = 'podcast';
+          else if (node.type === 'essay') activeTab = 'article';
+          else if (node.type === 'spark') activeTab = 'sparks';
+        }}
+      />
     </main>
   </div>
 {/if}
