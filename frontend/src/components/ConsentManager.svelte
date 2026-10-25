@@ -22,13 +22,15 @@
   let declineBtnRef: HTMLButtonElement | null = null;
   let containerRef: HTMLDivElement | null = null;
 
+  let isDismissed: boolean = false;
+
   const unsubscribe = consentStore.subscribe((value) => {
     currentStatus = value;
   });
 
   onMount(async () => {
     function handleKeydown(e: KeyboardEvent) {
-      if (e.key === 'Escape' && showBannerOrModal && currentStatus !== null) {
+      if (e.key === 'Escape' && showBannerOrModal) {
         handleClose();
       }
     }
@@ -47,7 +49,11 @@
     };
   });
 
-  $: showBannerOrModal = isOpen || currentStatus === null;
+  $: showBannerOrModal = (isOpen || currentStatus === null) && !isDismissed;
+
+  $: if (isOpen) {
+    isDismissed = false;
+  }
 
   $: if (showBannerOrModal && currentStatus === null) {
     tick().then(() => {
@@ -88,6 +94,7 @@
   }
 
   function handleClose() {
+    isDismissed = true;
     isOpen = false;
   }
 
@@ -109,22 +116,20 @@
     <!-- TopAppBar -->
     <header class="bg-surface dark:bg-on-background flex justify-between items-center w-full px-margin h-14 sticky top-0 z-40 border-b border-surface-container">
       <div class="flex items-center gap-space-sm">
-        {#if currentStatus !== null}
-        <button on:click={handleClose} aria-label="Close" class="w-10 h-10 flex items-center justify-center text-primary dark:text-inverse-primary hover:bg-surface-container-high dark:hover:bg-tertiary-container rounded-lg active:scale-95 transition-all duration-150" type="button">
-          <span class="material-symbols-outlined" data-icon="close">close</span>
-        </button>
-        {:else}
-        <button aria-label="Shield" class="w-10 h-10 flex items-center justify-center text-primary dark:text-inverse-primary rounded-lg" type="button" disabled>
-          <span class="material-symbols-outlined" data-icon="shield">shield</span>
-        </button>
-        {/if}
+        <div class="w-10 h-10 flex items-center justify-center text-primary dark:text-sky-400 rounded-lg">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
         <div class="flex flex-col">
           <span id="cmp-title" class="font-headline-sm text-headline-sm font-bold text-on-surface dark:text-inverse-on-surface leading-tight">Consent Preferences</span>
           <span class="font-body-sm text-body-sm text-on-surface-variant">Manage purpose-based tracking permissions</span>
         </div>
       </div>
-      <button aria-label="Audit Log History" class="w-10 h-10 flex items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-high dark:hover:bg-tertiary-container rounded-lg active:scale-95 transition-all duration-150" type="button">
-        <span class="material-symbols-outlined" data-icon="history">history</span>
+      <button on:click={handleClose} aria-label="Close" class="w-10 h-10 flex items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-high dark:hover:bg-tertiary-container rounded-lg active:scale-95 transition-all duration-150" type="button">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
       </button>
     </header>
 
