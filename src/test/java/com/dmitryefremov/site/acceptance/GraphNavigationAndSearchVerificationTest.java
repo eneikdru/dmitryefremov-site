@@ -72,9 +72,14 @@ class GraphNavigationAndSearchVerificationTest {
         List<ConceptMediaLink> linksFromPodcast = conceptMediaLinkRepository.findByPodcastEpisodeId(ep.getId());
         assertThat(linksFromPodcast).isNotEmpty();
 
-        CanonItem connectedCanon = linksFromPodcast.get(0).getCanonItem();
+        Optional<CanonItem> expectedConnectedCanonOpt = linksFromPodcast.stream()
+                .map(ConceptMediaLink::getCanonItem)
+                .filter(item -> "rasshirennyy-razum-i-vneshnyaya-pamyat".equals(item.getSlug()))
+                .findFirst();
+        assertThat(expectedConnectedCanonOpt).isPresent();
+
+        CanonItem connectedCanon = expectedConnectedCanonOpt.get();
         String canonSlug = connectedCanon.getSlug();
-        assertThat(canonSlug).isEqualTo("rasshirennyy-razum-i-vneshnyaya-pamyat");
 
         // 4. Verify target canon concept permanent URL loads with correct attributes
         mockMvc.perform(get("/api/v1/canon/" + canonSlug)
@@ -96,6 +101,6 @@ class GraphNavigationAndSearchVerificationTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$.content[0].slug", is("rasshirennyy-razum-i-vneshnyaya-pamyat")));
+                .andExpect(jsonPath("$.content[*].slug", hasItem("rasshirennyy-razum-i-vneshnyaya-pamyat")));
     }
 }

@@ -1,6 +1,5 @@
 package com.dmitryefremov.site.contact.controller;
 
-import com.dmitryefremov.site.contact.dto.ContactMessagePage;
 import com.dmitryefremov.site.contact.dto.ContactSubmissionRequest;
 import com.dmitryefremov.site.contact.dto.ContactSubmissionResponse;
 import com.dmitryefremov.site.contact.service.ContactService;
@@ -24,21 +23,5 @@ public class ContactController {
             @Valid @RequestBody ContactSubmissionRequest request) {
         ContactSubmissionResponse response = contactService.submitMessage(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public ResponseEntity<ContactMessagePage> listContactMessages(
-            @RequestParam(required = false) String senderEmail,
-            @RequestParam(required = false) String status,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        ContactMessagePage response = contactService.listMessages(senderEmail, status, page, size);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ContactSubmissionResponse> getContactMessageById(@PathVariable Long id) {
-        ContactSubmissionResponse response = contactService.getMessageById(id);
-        return ResponseEntity.ok(response);
     }
 }

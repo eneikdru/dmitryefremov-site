@@ -1,6 +1,5 @@
 package com.dmitryefremov.site.contact.controller;
 
-import com.dmitryefremov.site.contact.exception.ResourceNotFoundException;
 import com.dmitryefremov.site.contact.dto.ErrorResponseDto;
 import com.dmitryefremov.site.contact.dto.ErrorResponseDto.ValidationErrorDto;
 import org.springframework.http.HttpStatus;
@@ -39,18 +38,6 @@ public class ContactExceptionHandler {
         );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        log.info("Contact resource not found: {}", ex.getMessage());
-        ErrorResponseDto errorResponse = new ErrorResponseDto(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage(),
-                OffsetDateTime.now()
-        );
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
