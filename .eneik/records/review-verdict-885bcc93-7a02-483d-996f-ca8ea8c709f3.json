@@ -1,0 +1,81 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR has com.eneik.generated packages, which may violate the Tarski Demarcation boundary.",
+          "severity": "low"
+        }
+      ]
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR has com.eneik.generated packages, which may violate the Tarski Demarcation boundary.",
+          "severity": "low"
+        }
+      ]
+    },
+    {
+      "sourceIndex": 2,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR has com.eneik.generated packages, which may violate the Tarski Demarcation boundary.",
+          "severity": "low"
+        }
+      ]
+    },
+    {
+      "sourceIndex": 3,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR has com.eneik.generated packages, which may violate the Tarski Demarcation boundary.",
+          "severity": "low"
+        }
+      ]
+    },
+    {
+      "sourceIndex": 4,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR has com.eneik.generated packages, which may violate the Tarski Demarcation boundary.",
+          "severity": "low"
+        }
+      ]
+    },
+    {
+      "sourceIndex": 5,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR has com.eneik.generated packages, which may violate the Tarski Demarcation boundary.",
+          "severity": "low"
+        }
+      ]
+    },
+    {
+      "sourceIndex": 6,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "The PR has com.eneik.generated packages, which may violate the Tarski Demarcation boundary.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
