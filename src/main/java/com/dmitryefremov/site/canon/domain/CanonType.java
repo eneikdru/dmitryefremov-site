@@ -3,7 +3,8 @@ package com.dmitryefremov.site.canon.domain;
 public enum CanonType {
     MANIFESTO("Manifesto"),
     GLOSSARY_TERM("Glossary Term"),
-    ONTOLOGY("Ontology");
+    ONTOLOGY("Ontology"),
+    MODEL_CONFIG("Model Configuration");
 
     private final String displayName;
 
