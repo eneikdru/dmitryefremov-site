@@ -145,6 +145,9 @@
       <span class="text-[16px] text-[#0051d5]">✓</span>
       <span>Profile Cryptographically Verified</span>
     </div>
-    <p class="text-[11px] text-outline leading-tight">Zero debug logging on facade · Clean Brand Identity</p>
+    <div class="text-[11px] text-outline leading-tight">
+      <p>Zero debug logging on facade · Clean Brand Identity</p>
+      <a href="#impressum" class="underline hover:text-on-surface-variant transition-colors mt-1 inline-block" id="impressum-link">Impressum / Legal</a>
+    </div>
   </footer>
 </section>
