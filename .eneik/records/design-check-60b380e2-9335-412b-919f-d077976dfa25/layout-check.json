@@ -1,0 +1,27 @@
+[
+  {
+    "id": "header"
+  },
+  {
+    "id": "main",
+    "x": 0,
+    "y": 0,
+    "width": 375,
+    "height": 2588.5,
+    "top": 0,
+    "right": 375,
+    "bottom": 2588.5,
+    "left": 0
+  },
+  {
+    "id": "nav",
+    "x": 0,
+    "y": 748,
+    "width": 375,
+    "height": 64,
+    "top": 748,
+    "right": 375,
+    "bottom": 812,
+    "left": 0
+  }
+]
