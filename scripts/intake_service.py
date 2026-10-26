@@ -220,6 +220,95 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
             return
 
+        if path.rstrip("/") in ("/api", "/api/v1", "/api/docs", "/api/spec") or path in ("/api/openapi.json",):
+            openapi_spec = {
+                "openapi": "3.0.3",
+                "info": {
+                    "title": "Dmitry Efremov Systems Architecture Hub & Agent Gateway API",
+                    "version": "1.2.0",
+                    "description": "Canonical machine-readable interfaces for AI agents (Google Jules, Claude Code, Cursor, Codex) to synthesize tailored architectural invariants via Spreading Activation and submit inquiries."
+                },
+                "servers": [
+                    {"url": "https://dmitryefremov.com", "description": "Production Gateway"}
+                ],
+                "paths": {
+                    "/api/v1/canon/context": {
+                        "get": {
+                            "summary": "Synthesize tailored architectural invariants via Spreading Activation (lambda=0.70)",
+                            "parameters": [
+                                {
+                                    "name": "task",
+                                    "in": "query",
+                                    "required": True,
+                                    "schema": {"type": "string"},
+                                    "description": "Technical task description (e.g. 'stripe payments webhook idempotency' or 'master schedule in tbilisi tz')"
+                                },
+                                {
+                                    "name": "budget",
+                                    "in": "query",
+                                    "required": False,
+                                    "schema": {"type": "integer", "default": 1500},
+                                    "description": "Token budget cap for invariant slice"
+                                },
+                                {
+                                    "name": "format",
+                                    "in": "query",
+                                    "required": False,
+                                    "schema": {"type": "string", "enum": ["markdown", "json"], "default": "markdown"},
+                                    "description": "Response format: 'markdown' (ready for agent prompt) or 'json' (with node weights)"
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Tailored Invariant Slice with Deontic Gates and Verification Obligations"
+                                }
+                            }
+                        }
+                    },
+                    "/api/intake": {
+                        "post": {
+                            "summary": "Submit inquiry or architectural consulting request to Dmitry Efremov",
+                            "requestBody": {
+                                "required": True,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {"type": "string"},
+                                                "clientEmail": {"type": "string"},
+                                                "title": {"type": "string"},
+                                                "narrative": {"type": "string"}
+                                            },
+                                            "required": ["narrative"]
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "201": {
+                                    "description": "Message registered and claim ticket generated"
+                                }
+                            }
+                        }
+                    },
+                    "/health": {
+                        "get": {
+                            "summary": "Service health check",
+                            "responses": {
+                                "200": {"description": "Service is UP"}
+                            }
+                        }
+                    }
+                }
+            }
+            self.send_response(200)
+            self._send_cors_headers()
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(openapi_spec, ensure_ascii=False, indent=2).encode("utf-8"))
+            return
+
         if self.path in ("/health", "/api/health"):
             self.send_response(200)
             self._send_cors_headers()
