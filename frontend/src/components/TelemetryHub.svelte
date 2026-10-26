@@ -258,30 +258,19 @@
       <section id="hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
         <!-- Studio Portrait Column (Order 1 on mobile, Order 2 on desktop) -->
         <div class="lg:col-span-5 flex justify-center order-1 lg:order-2">
-          <div id="hero-avatar-container" class="relative w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[380px] bg-[#11141c] border border-white/15 p-2 sm:p-2.5 rounded-2xl shadow-2xl transition-all">
-            <!-- Leica optical machined rim top bar -->
-            <div class="flex items-center justify-between pb-1.5 px-1 text-[9px] sm:text-[10px] font-mono text-slate-400 border-b border-white/10 mb-2">
-              <span class="flex items-center gap-1.5 text-[#f2ca50] font-bold">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#f2ca50] animate-pulse"></span>
-                LEICA 50MM F/1.4
-              </span>
-              <span class="tracking-widest">TBILISI // EST. 2026</span>
-            </div>
-            <!-- Portrait Viewport -->
-            <div class="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-black border border-white/10 shadow-inner">
-              <picture>
-                <source type="image/avif" srcset="/assets/images/dmitry_efremov_studio/dmitry_efremov_studio_768w.avif" />
-                <source type="image/webp" srcset="/assets/images/dmitry_efremov_studio/dmitry_efremov_studio_768w.webp" />
-                <img
-                  id="hero-avatar-img"
-                  src="/images/portrait-hero.png"
-                  alt="Дмитрий Ефремов — Официальный студийный портрет"
-                  class="w-full h-full object-cover object-top hover:scale-[1.01] transition-transform duration-500 ease-out"
-                  loading="eager"
-                  fetchpriority="high"
-                />
-              </picture>
-            </div>
+          <div id="hero-avatar-container" class="relative w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[380px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/15 bg-black/40 shadow-2xl transition-all">
+            <picture>
+              <source type="image/avif" srcset="/assets/images/dmitry_efremov_studio/dmitry_efremov_studio_768w.avif" />
+              <source type="image/webp" srcset="/assets/images/dmitry_efremov_studio/dmitry_efremov_studio_768w.webp" />
+              <img
+                id="hero-avatar-img"
+                src="/images/portrait-hero.png"
+                alt="Дмитрий Ефремов — Официальный студийный портрет"
+                class="w-full h-full object-cover object-top hover:scale-[1.02] transition-transform duration-500 ease-out"
+                loading="eager"
+                fetchpriority="high"
+              />
+            </picture>
           </div>
         </div>
 
