@@ -1140,6 +1140,8 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 "success": True,
                 "client_email": client_email,
                 "assigned_repo": assigned_repo,
+                "slug": repo_slug,
+                "live_preview_url": f"https://dmitryefremov.com/api/preview/{repo_slug}",
                 "handshake_endpoint": "https://dmitryefremov.com/api/v1/bridge/handshake",
                 "updates_endpoint": "https://dmitryefremov.com/api/v1/updates",
                 "session_id": session_id,

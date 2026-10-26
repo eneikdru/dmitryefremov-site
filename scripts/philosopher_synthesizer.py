@@ -148,18 +148,31 @@ PATTERN_ONTOLOGY = {
     },
     # Specialized Domain Extensions
     "NODE_PERISHABLE_INVENTORY": {
-        "pattern": "Резервирование скоропортящихся остатков и штучных изделий (Perishable Inventory & Finite Stock Reservation)",
+        "pattern": "Резервирование скоропортящихся остатков флористики (Perishable Inventory & Fresh Flower Stock Reservation)",
         "axes": [
-            "flower", "flowers", "bouquet", "doll", "dolls", "stock", "shelf", "freshness", "warehouse",
-            "цветы", "букет", "флорист", "свежесть", "кукла", "куклы", "кукол", "кукольный", "ручная",
-            "работа", "остатки", "склад", "порча", "кафе", "десерт", "выпечка", "ингредиенты", "авторск", "штучн", "издели", "коллекц", "пошив"
+            "flower", "flowers", "bouquet", "stock", "shelf", "freshness", "warehouse", "florist",
+            "цветы", "букет", "флорист", "свежесть", "лепестки", "розы", "растения",
+            "остатки", "склад", "порча", "кафе", "десерт", "выпечка", "ингредиенты"
         ],
         "advice": (
-            "Моделируйте учет физических штучных товаров и скоропортящихся позиций через временные блокировки инвентаря (Inventory Hold with TTL). "
-            "При добавлении редкой авторской куклы или букета в корзину позиция резервируется на фиксированное время (например, 15 минут). "
-            "Если оплата не поступила, резерв автоматически снимается без блокировки склада."
+            "Моделируйте учет свежесрезанных цветов и скоропортящихся букетов через временные блокировки инвентаря (Inventory Hold with TTL). "
+            "При добавлении букета в корзину позиция резервируется на фиксированное время (например, 15 минут) с привязкой к складу флориста. "
+            "Если оплата не поступила, резерв автоматически снимается без блокировки холодильной витрины."
         ),
-        "checklist": "Остаток товара уменьшается атомарно; истечение TTL корзины возвращает позицию в открытый каталог."
+        "checklist": "Остаток букетов уменьшается атомарно; истечение TTL корзины возвращает позицию в открытый каталог."
+    },
+    "NODE_ARTISAN_BESPOKE_CRAFT": {
+        "pattern": "Штучное авторское ремесло и предзаказ у мастеров (Bespoke Artisan Commission & Unique Item Escrow)",
+        "axes": [
+            "doll", "dolls", "craft", "artisan", "bespoke", "handmade", "masterpiece", "commission", "unique", "author",
+            "кукла", "куклы", "кукол", "авторск", "ручн", "пошив", "ремесло", "штучн", "издели", "коллекц", "мастерская", "предзаказ", "автор"
+        ],
+        "advice": (
+            "Штучные коллекционные изделия и работа на заказ (авторские куклы, кастомные изделия) моделируются как уникальные единичные сущности (One-of-a-Kind Entities). "
+            "В отличие от серийного инвентаря, карточка товара переходит в статус 'В резерве у мастера' с этапами согласования материалов, "
+            "фотофиксацией промежуточных стадий и эскроу-холдом предоплаты до момента одобрения заказчиком."
+        ),
+        "checklist": "Попытка повторного оформления штучной куклы отклоняется с указанием статуса резерва мастера."
     },
     "NODE_FLIGHT_EXTERNAL_TELEMETRY": {
         "pattern": "Асинхронная сверка внешней телеметрии рейсов (Asynchronous Telemetry Ingestion & Polling Reconciliation)",
@@ -279,6 +292,7 @@ GRAPH_EDGES = {
     "NODE_GRACEFUL_IDENTITY_FALLBACK": ["NODE_CLIENT_LOCALIZATION", "NODE_SELF_SEEDING_VERIFICATION"],
     "NODE_MULTI_TENANT_ISOLATION": ["NODE_TEMPORAL_INTERVAL", "NODE_SCOPE_ISOLATION"],
     "NODE_PERISHABLE_INVENTORY": ["NODE_STATE_MACHINE", "NODE_NOMINAL_IDENTIFIERS", "NODE_CONCURRENCY_MUTEX"],
+    "NODE_ARTISAN_BESPOKE_CRAFT": ["NODE_STATE_MACHINE", "NODE_NOMINAL_IDENTIFIERS"],
     "NODE_FLIGHT_EXTERNAL_TELEMETRY": ["NODE_TEMPORAL_INTERVAL", "NODE_CLIENT_LOCALIZATION"],
     "NODE_DEPOSIT_COLLATERAL_ESCROW": ["NODE_STATE_MACHINE", "NODE_NOMINAL_IDENTIFIERS", "NODE_CONCURRENCY_MUTEX"],
     "NODE_CAPACITY_CONSTRAINED_RESOURCE": ["NODE_CONCURRENCY_MUTEX", "NODE_TEMPORAL_INTERVAL"],
