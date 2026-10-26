@@ -1,24 +1,40 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Дмитрий Ефремов — Системы, логика мышления и автономные процессы</title>
+    <title>Дмитрий Ефремов — Архитектура систем, логика мышления и автономные процессы</title>
     <!-- Material Symbols Outlined -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <!-- Typography: Geist, Inter & JetBrains Mono for High-Legibility & Zero Ocular Strain -->
+    <!-- Typography: Space Grotesk, Inter & JetBrains Mono for High-Legibility & Zero Ocular Strain -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
     
     <script>
       tailwind = {
         config: {
+          darkMode: 'class',
           theme: {
             extend: {
               fontFamily: {
-                sans: ['Geist', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                grotesk: ['Space Grotesk', 'sans-serif'],
                 mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+              },
+              colors: {
+                surface: {
+                  lowest: '#0c0e12',
+                  dim: '#111318',
+                  container: '#1e2024',
+                  high: '#282a2e',
+                  highest: '#333539'
+                },
+                gold: {
+                  DEFAULT: '#f2ca50',
+                  container: '#d4af37',
+                  dim: '#e7c364'
+                }
               }
             }
           }
@@ -28,9 +44,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-      /* High-Legibility & Neurophysiological Ergonomics */
+      /* High-Legibility & Ergonomics */
       :root {
-        --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-grotesk: 'Space Grotesk', sans-serif;
         --font-mono: 'JetBrains Mono', monospace;
       }
 
@@ -47,19 +64,19 @@
         font-family: var(--font-sans);
         letter-spacing: -0.015em;
         line-height: 1.65;
-        background-color: #090a0f;
-        color: #e2e8f0;
+        background-color: #0c0e12;
+        color: #e2e2e8;
       }
 
-      /* Eye-friendly non-glaring selection */
+      /* Eye-friendly non-glaring gold selection */
       ::selection {
-        background: rgba(212, 175, 55, 0.35);
-        color: #ffffff;
+        background: #d4af37;
+        color: #0c0e12;
       }
 
       /* Architectural typography hierarchy */
       h1, h2, h3, h4 {
-        letter-spacing: -0.03em;
+        letter-spacing: -0.025em;
         font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
       }
 
@@ -89,7 +106,7 @@
       }
     </style>
   </head>
-  <body class="bg-[#090a0f] text-[#e2e8f0]">
+  <body class="bg-[#0c0e12] text-[#e2e2e8] min-h-screen">
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

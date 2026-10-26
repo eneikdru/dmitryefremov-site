@@ -29,7 +29,7 @@ export interface PodcastEpisode {
   timecodes: PodcastTimecode[];
 }
 
-export const PODCAST_EPISODES: PodcastEpisode[] = [];
+
 
 export const CANONICAL_EPISODES: PodcastEpisode[] = [
   {
@@ -133,6 +133,8 @@ export const CANONICAL_EPISODES: PodcastEpisode[] = [
     ]
   }
 ];
+
+export const PODCAST_EPISODES: PodcastEpisode[] = [];
 
 export async function fetchPodcastsFromApi(customFetch = fetch): Promise<PodcastEpisode[]> {
   try {
