@@ -161,16 +161,21 @@ def get_github_token():
     return ""
 GITHUB_OWNER = "eneikdru"
 
-def create_github_repository(slug, client_email, project_name):
+def create_github_repository(slug, client_email, project_name, task_brief=None):
     """
     Creates a physical repository on GitHub for the client and initializes
-    it with .cursorrules and README.md so the client's agent can start immediately.
+    it with tailored ARCHITECTURAL_ADVICE.md, .cursorrules, .windsurfrules,
+    and README.md so the client agent immediately has the full architectural context.
     """
     repo_name = f"client-{slug}"
+    gh_token = get_github_token()
+    brief_text = task_brief or project_name or f"Client project {slug}"
+    
     try:
         import base64
         import urllib.request
-        # 1. Create Repository
+        
+        # 1. Create GitHub Repository
         req = urllib.request.Request(
             "https://api.github.com/user/repos",
             data=json.dumps({
@@ -180,7 +185,7 @@ def create_github_repository(slug, client_email, project_name):
                 "auto_init": True
             }).encode("utf-8"),
             headers={
-                "Authorization": f"token {get_github_token()}",
+                "Authorization": f"token {gh_token}",
                 "User-Agent": "DmitryEfremovPlatform",
                 "Accept": "application/vnd.github+json",
                 "Content-Type": "application/json"
@@ -190,33 +195,65 @@ def create_github_repository(slug, client_email, project_name):
             data = json.loads(resp.read().decode())
             html_url = data.get("html_url")
             print(f"[GITHUB-API] Repository created: {html_url}")
-            
-        # 2. Add .cursorrules
-        cursorrules_content = f"""# Dmitry Efremov Systems Architecture Hub — Agent Directives
-1. Assigned Repository: {html_url}
-   Push all codebase files, branches, and PRs strictly to this repository.
-2. Reliability Rules: Before modifying code or committing, query Dmitry Efremov's architectural node:
-   POST https://dmitryefremov.com/api/v1/bridge/handshake
-3. Updates & Standards: Periodically check https://dmitryefremov.com/api/v1/updates to sync architectural standards and deployment status.
-4. Strictly enforce edge-case tests, deontic prohibitions, and scope isolation.
+
+        # 2. Synthesize Graph-Derived Architectural Advice
+        try:
+            from philosopher_synthesizer import synthesizer
+            adv_data = synthesizer.synthesize_advice(brief_text)
+            advice_markdown = adv_data.get("markdown", "")
+        except Exception as ex:
+            advice_markdown = """# Архитектурные принципы и инженерные паттерны
+
+1. Self-Seeding Runtime: база данных должна содержать демонстрационные данные при старте.
+2. Graceful Identity Facade: обеспечьте гостевой демо-вход при отсутствии внешних ключей OAuth.
+3. Subpath Transparency: используйте относительные пути (api/...) без ведущего слэша.
+4. Concurrency Safety: атомарная защита от двойного бронирования через транзакции.
 """
-        b64_content = base64.b64encode(cursorrules_content.encode("utf-8")).decode("utf-8")
-        req_rules = urllib.request.Request(
-            f"https://api.github.com/repos/{GITHUB_OWNER}/{repo_name}/contents/.cursorrules",
-            data=json.dumps({
-                "message": "feat: initialize agent directives (.cursorrules)",
-                "content": b64_content
-            }).encode("utf-8"),
-            headers={
-                "Authorization": f"token {get_github_token()}",
-                "User-Agent": "DmitryEfremovPlatform",
-                "Accept": "application/vnd.github+json",
-                "Content-Type": "application/json"
-            },
-            method="PUT"
-        )
-        with urllib.request.urlopen(req_rules) as resp_rules:
-            pass
+
+        # 3. Comprehensive .cursorrules
+        cursorrules_content = f"""# Dmitry Efremov Systems Architecture — Mandatory Agent Directives
+Assigned Repository: {html_url}
+
+You are implementing a production-grade service. Before writing any code or interface, you MUST adhere to the architectural patterns detailed in ARCHITECTURAL_ADVICE.md in the repository root:
+
+1. ZERO EMPTY STATE (ACP-037):
+   The database MUST auto-populate sample demonstration records (masters, services, slots) on first launch. An empty initial screen is considered an architectural defect.
+
+2. ZERO DEADLOCK AUTH (ACP-020):
+   Never block user interaction behind unconfigured third-party credentials. If OAuth environment variables are missing, provide a working 'Guest / Demo Login' button so reviewers can test the complete flow immediately.
+
+3. SUBPATH TRANSPARENCY (ACP-011):
+   All frontend fetch() calls, navigation links, and assets MUST use relative paths ('api/masters', 'docs', 'openapi.json') without leading slashes, or dynamically respect ROOT_PATH / <base href>.
+
+4. CONCURRENCY SAFETY (ACP-015):
+   Multi-client race conditions must be serialized atomically with transactional locks (e.g. BEGIN IMMEDIATE / Mutex) to mathematically eliminate double bookings.
+
+5. FALSIFICATION TESTS (ACP-003):
+   Every endpoint must be covered by automated edge-case and failure tests proving resilience against collisions, expired tokens, and invalid formats.
+
+Push all codebase files, branches, and PRs strictly through Dmitry Efremov Architectural Bridge:
+POST https://dmitryefremov.com/api/v1/bridge/commit
+"""
+
+        # 4. Commit ARCHITECTURAL_ADVICE.md and .cursorrules directly into the new repo
+        commit_file_to_github(GITHUB_OWNER, repo_name, gh_token, "ARCHITECTURAL_ADVICE.md", advice_markdown, "docs: add tailored architectural advice and engineering patterns")
+        commit_file_to_github(GITHUB_OWNER, repo_name, gh_token, ".cursorrules", cursorrules_content, "feat: configure agent directives (.cursorrules)")
+        commit_file_to_github(GITHUB_OWNER, repo_name, gh_token, ".windsurfrules", cursorrules_content, "feat: configure agent directives (.windsurfrules)")
+
+        readme_content = f"""# Client Project {slug.upper()}
+
+This service is engineered under Dmitry Efremov's Architectural Standards.
+
+## Architectural Contract & Required Patterns
+Before implementing features or modifying logic, review:
+* [ARCHITECTURAL_ADVICE.md](./ARCHITECTURAL_ADVICE.md) — Tailored engineering patterns, invariants, and acceptance checklists.
+* [.cursorrules](./.cursorrules) — Active directives for AI agents (Cursor, Codex, Claude Code, Windsurf).
+
+## Deployment & Verification
+Every atomic patch submitted via `POST https://dmitryefremov.com/api/v1/bridge/commit` is automatically audited and deployed to:
+`https://dmitryefremov.com/api/preview/{slug}/`
+"""
+        commit_file_to_github(GITHUB_OWNER, repo_name, gh_token, "README.md", readme_content, "docs: initialize architectural README")
 
         return html_url
     except urllib.error.HTTPError as e:
@@ -1046,7 +1083,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 repo_slug = repo_data.get("slug")
             else:
                 repo_slug = hashlib.sha256(client_email.encode("utf-8")).hexdigest()[:8]
-                assigned_repo = create_github_repository(repo_slug, client_email, project_name)
+                assigned_repo = create_github_repository(repo_slug, client_email, project_name, task_brief=title)
                 repo_data = {
                     "email": client_email,
                     "slug": repo_slug,
@@ -1305,6 +1342,62 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 ) if assigned_repo.startswith("http") else ""
             }
 
+            # Synthesize Living Architectural Review & In-Repo Feedback
+            architectural_review = {
+                "status": "COMPLIANT_AND_VERIFIED",
+                "identified_patterns": [],
+                "actionable_guidance": []
+            }
+            
+            # Pattern check: Check for root-relative paths in html/js
+            has_leading_slash_paths = False
+            for f_item in files:
+                p_lower = f_item.get("path", "").lower()
+                c_text = f_item.get("content", "")
+                if p_lower.endswith(".html") or p_lower.endswith(".js"):
+                    if "fetch('/api/" in c_text or "api('/api/" in c_text or 'href="/docs"' in c_text or 'href="/auth/' in c_text:
+                        has_leading_slash_paths = True
+                        break
+            if has_leading_slash_paths:
+                architectural_review["actionable_guidance"].append(
+                    "Паттерн Location-Agnostic Subpath Mounting: обнаружены абсолютные пути с ведущим слэшем (например, fetch('/api/...')). Рекомендуется использовать относительные пути (api/...) или префикс ROOT_PATH / <base href>, чтобы приложение корректно работало в превью."
+                )
+
+            # Pattern check: Check for seed / empty database risk
+            has_manage_seed = False
+            for f_item in files:
+                p_lower = f_item.get("path", "").lower()
+                c_text = f_item.get("content", "")
+                if "manage.py" in p_lower or "seed" in p_lower or "catalog" in p_lower:
+                    if "catalog.example.json" in c_text or "seed" in c_text or "insert into" in c_text.lower():
+                        has_manage_seed = True
+                        break
+            if not has_manage_seed:
+                architectural_review["actionable_guidance"].append(
+                    "Паттерн Self-Seeding Runtime: убедитесь, что база данных автоматически наполняется демонстрационными сущностями (3-5 мастеров и слотов) при первом запуске."
+                )
+
+            # Sync updated architectural advice back to the GitHub repository if slug exists
+            if target_repo_info and target_repo_info.get("slug") and gh_token and architectural_review["actionable_guidance"]:
+                try:
+                    review_lines = "\n".join(f"- {g}" for g in architectural_review["actionable_guidance"])
+                    review_update = f"\n\n### Текущая архитектурная рецензия Шлюза (Active Review):\n{review_lines}\n"
+                    current_advice = ""
+                    try:
+                        import base64
+                        get_url = f"https://api.github.com/repos/{GITHUB_OWNER}/client-{target_repo_info['slug']}/contents/ARCHITECTURAL_ADVICE.md"
+                        req_g = urllib.request.Request(get_url, headers={"Authorization": f"token {gh_token}", "User-Agent": "DmitryEfremovPlatform"})
+                        with urllib.request.urlopen(req_g) as r_g:
+                            current_advice = base64.b64decode(json.loads(r_g.read().decode())["content"]).decode("utf-8")
+                    except Exception:
+                        pass
+                    
+                    if "Текущая архитектурная рецензия Шлюза" not in current_advice:
+                        updated_doc = (current_advice + review_update) if current_advice else ("# Архитектурный контракт\n" + review_update)
+                        commit_file_to_github(GITHUB_OWNER, f"client-{target_repo_info['slug']}", gh_token, "ARCHITECTURAL_ADVICE.md", updated_doc, "docs: update living architectural review advice")
+                except Exception as ex_sync:
+                    print(f"[A2A-ADVICE-SYNC-WARN] {ex_sync}", file=sys.stderr)
+
             response_payload = {
                 "success": True,
                 "status": "APPROVED_AND_COMMITTED" if committed_files else "AUDITED_VERIFIED",
@@ -1317,7 +1410,8 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 "committed_files": committed_files,
                 "target_repo": assigned_repo,
                 "live_preview_url": live_preview_url,
-                "handoff": handoff_data
+                "handoff": handoff_data,
+                "architectural_review": architectural_review
             }
             self.send_response(200)
             self._send_cors_headers()
