@@ -269,14 +269,18 @@
             </div>
             <!-- Portrait Viewport -->
             <div class="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-black border border-white/10 shadow-inner">
-              <img
-                id="hero-avatar-img"
-                src="/dmitry_efremov_stitch_portrait.jpg"
-                alt="Дмитрий Ефремов — Официальный студийный портрет"
-                class="w-full h-full object-cover object-top hover:scale-[1.01] transition-transform duration-500 ease-out"
-                loading="eager"
-                fetchpriority="high"
-              />
+              <picture>
+                <source type="image/avif" srcset="/assets/images/dmitry_efremov_studio/dmitry_efremov_studio_768w.avif" />
+                <source type="image/webp" srcset="/assets/images/dmitry_efremov_studio/dmitry_efremov_studio_768w.webp" />
+                <img
+                  id="hero-avatar-img"
+                  src="/images/portrait-hero.png"
+                  alt="Дмитрий Ефремов — Официальный студийный портрет"
+                  class="w-full h-full object-cover object-top hover:scale-[1.01] transition-transform duration-500 ease-out"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              </picture>
             </div>
           </div>
         </div>

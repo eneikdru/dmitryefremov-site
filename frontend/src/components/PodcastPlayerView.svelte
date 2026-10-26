@@ -58,22 +58,33 @@
     return acc;
   }, null);
 
-  export function seekTo(seconds: number) {
+  export function seekTo(seconds: number, startPlaying: boolean = true) {
     if (!currentEpisode) return;
     const boundedTime = Math.max(0, Math.min(seconds, currentEpisode.durationSeconds));
     currentTime = boundedTime;
     if (audioElement) {
       audioElement.currentTime = boundedTime;
+      if (startPlaying && audioElement.paused) {
+        play();
+      }
     }
   }
 
   export function play() {
-    if (audioElement && audioElement.paused) {
-      audioElement.play().then(() => {
-        isPlaying = true;
-      }).catch(err => {
-        console.warn('Playback error:', err);
-      });
+    if (!audioElement) return;
+    isLoading = true;
+    const playPromise = audioElement.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          isPlaying = true;
+          isLoading = false;
+        })
+        .catch(err => {
+          console.warn('Playback error:', err);
+          isPlaying = false;
+          isLoading = false;
+        });
     }
   }
 
@@ -92,18 +103,34 @@
     }
   }
 
-  function handleSelectEpisode(epId: number | string) {
+  function handleSelectEpisode(epId: number | string, autoPlay: boolean = true) {
+    const isSame = selectedEpisodeId === epId;
+    if (isSame) {
+      togglePlay();
+      return;
+    }
+
     selectedEpisodeId = epId;
     currentTime = 0;
     isPlaying = false;
-    if (audioElement) {
-      audioElement.currentTime = 0;
-      audioElement.pause();
-    }
+    isLoading = true;
+
+    setTimeout(() => {
+      if (audioElement) {
+        try {
+          audioElement.load();
+        } catch (e) {
+          console.warn('Audio load error:', e);
+        }
+        if (autoPlay) {
+          play();
+        }
+      }
+    }, 60);
   }
 
   function handleTimecodeClick(tc: PodcastTimecode, event?: MouseEvent | KeyboardEvent) {
-    seekTo(tc.timeOffsetSeconds);
+    seekTo(tc.timeOffsetSeconds, true);
     if (event && event.currentTarget) {
       (event.currentTarget as HTMLElement).focus();
     }
@@ -285,7 +312,12 @@
             <!-- Hidden Native HTML5 Audio Element -->
             <audio
               bind:this={audioElement}
-              src={currentEpisode.audioUrl}
+              src={currentEpisode?.audioUrl}
+              on:play={() => (isPlaying = true)}
+              on:pause={() => (isPlaying = false)}
+              on:waiting={() => (isLoading = true)}
+              on:playing={() => { isPlaying = true; isLoading = false; }}
+              on:canplay={() => (isLoading = false)}
               on:timeupdate={handleAudioTimeUpdate}
               on:ended={handleAudioEnded}
               preload="auto"
