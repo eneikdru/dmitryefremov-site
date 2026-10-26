@@ -364,32 +364,6 @@
           >
             {@html parsedContent.html}
           </div>
-
-          <!-- Telemetry Event Log -->
-          <footer id="article-telemetry-log" class="sr-only" aria-hidden="true">
-            <div class="text-xs font-mono text-[#94a3b8] mb-2 flex items-center justify-between">
-              <span>События телеметрии</span>
-              <span class="text-[#34d399]">ZERO_COOKIE_ACTIVE</span>
-            </div>
-            <div class="bg-[#0d1118] p-3 rounded border border-white/[0.08] font-mono text-xs max-h-28 overflow-y-auto space-y-1 text-[#a7f3d0]">
-              {#if loggedEvents.length === 0}
-                <span class="text-[#64748b]">Прокрутите статью для регистрации событий чтения...</span>
-              {:else}
-                {#each loggedEvents as evt}
-                  <div class="flex justify-between border-b border-white/[0.08] pb-1">
-                    {#if evt.type === 'essay_view'}
-                      <span>[VIEW] {evt.payload.articleId}</span>
-                    {:else if evt.type === 'cross_link_click'}
-                      <span class="text-amber-400">[CROSS_LINK] {evt.payload.source_node_id} → {evt.payload.target_node_id}</span>
-                    {:else}
-                      <span>[DEPTH_{evt.payload.depth}%] {evt.payload.articleId}</span>
-                    {/if}
-                    <span class="text-[#64748b]">{evt.timestamp.slice(11, 19)}</span>
-                  </div>
-                {/each}
-              {/if}
-            </div>
-          </footer>
         {/if}
       </div>
     </div>
