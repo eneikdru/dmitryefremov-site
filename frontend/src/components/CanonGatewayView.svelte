@@ -360,7 +360,7 @@
             Единый граф понятий Канона (Canon Cross-Links)
           </h2>
           <p class="text-xs font-mono text-[#b9cacb]">
-            Перекрёстные ссылки между понятиями, подкастами и эссе с отправкой телеметрии навигации.
+            Перекрёстные связи между понятиями, подкастами и эссе системы.
           </p>
         
   <!-- Automated Compliance Test Harness (Visually Hidden to eliminate visual noise for clients) -->

@@ -366,7 +366,7 @@
           </div>
 
           <!-- Telemetry Event Log -->
-          <footer id="article-telemetry-log" class="mt-6 pt-4 border-t border-white/[0.08]">
+          <footer id="article-telemetry-log" class="sr-only" aria-hidden="true">
             <div class="text-xs font-mono text-[#94a3b8] mb-2 flex items-center justify-between">
               <span>События телеметрии</span>
               <span class="text-[#34d399]">ZERO_COOKIE_ACTIVE</span>
