@@ -1,146 +1,170 @@
+#!/usr/bin/env python3
+"""
+Architectural Knowledge Engine & Pattern Advisory Synthesizer
+Generates tailored engineering guidance using Spreading Activation (lambda=0.70) over ontological patterns.
+Strictly sanitizes internal identifiers to expose only industry-standard engineering patterns and actionable architectural advice.
+"""
+
 import os
 import re
 import math
 from typing import Dict, List, Any, Optional
 
-# Base directory for Barcan corpus
 CORPUS_DIR = "/opt/EneikProductionSys"
 PATTERNS_DIR = os.path.join(CORPUS_DIR, "docs", "philosopher-patterns")
 
-# Attenuation factor lambda per graph hop
 ATTENUATION_LAMBDA = 0.70
 ACTIVATION_THRESHOLD = 0.35
 
-# Tag definitions with keywords and semantic axes (Bilingual: EN + RU)
-TAG_AXES = {
-    "BARCAN-TAG-00": {
-        "name": "Code Guardian & Boundary Review",
+# Clean, industry-standard engineering patterns mapped from the ontological graph
+# Zero internal naming, pure engineering practices and defect prevention principles.
+PATTERN_ONTOLOGY = {
+    "NODE_SCOPE_ISOLATION": {
+        "pattern": "Изоляция контекста и ограниченный радиус изменений (Bounded Context & Scope Isolation)",
         "axes": [
             "boundary", "review", "scope", "integration", "files", "blast", "radius", "pr", "diff",
-            "refactoring", "legacy", "isolation", "скоуп", "границы", "рефакторинг", "изоляция", "дифф"
+            "refactoring", "legacy", "isolation", "граница", "скоуп", "дифф", "изоляция", "файлы"
         ],
-        "summary": "Strict file scope isolation. Never modify unrelated files or schemas. Blast radius must be strictly bounded."
+        "advice": (
+            "Строгая изоляция области изменений: никогда не модифицируйте несвязанные файлы или сторонние схемы. "
+            "Каждое изменение должно иметь строго очерченный эпицентр с минимальным радиусом влияния."
+        ),
+        "checklist": "Изменения касаются только файлов задачи; сторонние модули остаются нетронутыми."
     },
-    "BARCAN-TAG-01": {
-        "name": "Actualist Object & Temporal Domain",
+    "NODE_TEMPORAL_INTERVAL": {
+        "pattern": "Детерминированная модель интервалов и идемпотентность (Temporal Interval Model & Atomic Mutex)",
         "axes": [
             "booking", "schedule", "calendar", "time", "interval", "duration", "slot", "appointment",
-            "overlap", "buffer", "domain", "types", "tbilisi", "timezone", "бронирование", "расписание",
-            "календарь", "время", "интервал", "слот", "таймзона", "тбилиси"
+            "overlap", "buffer", "domain", "types", "tbilisi", "timezone", "бронирование", "запись",
+            "слоты", "интервал", "время", "буфер", "мастер", "календарь", "салон"
         ],
-        "summary": "Model time slots as half-open intervals [t_start, t_end + buffer). Collision occurs if max(start1, start2) < min(end1, end2)."
+        "advice": (
+            "Моделируйте временные слоты как полуоткрытые интервалы [t_start, t_end + buffer). "
+            "Пересечение фиксируется условием max(start1, start2) < min(end1, end2). "
+            "Слот резервируется атомарно в режиме немедленной сериализации транзакций (BEGIN IMMEDIATE / SELECT FOR UPDATE), "
+            "что исключает возникновение двойных бронирований на уровне базы данных."
+        ),
+        "checklist": "Буферное время включено в интервал занятости; проверка пересечений выполняется внутри транзакции записи."
     },
-    "BARCAN-TAG-02": {
-        "name": "Rigid Designator & Nominal Reference",
+    "NODE_NOMINAL_IDENTIFIERS": {
+        "pattern": "Иммутабельные идентификаторы и стабильность ссылок (Immutable Nominal Identifiers)",
         "axes": [
             "id", "uuid", "naming", "reference", "identifier", "api", "key", "immutable", "slug",
-            "idempotency", "token", "идентификатор", "идемпотентность", "ключ", "ссылка"
+            "idempotency", "token", "идентификатор", "токен", "ключ", "ссылка"
         ],
-        "summary": "Entity identifiers and types are nominal invariants. Identity cannot mutate across states or tool turns."
+        "advice": (
+            "Идентификаторы сущностей и типов номинально инвариантны. "
+            "Используйте криптографически стойкие неизменяемые ключи идемпотентности (Idempotency-Key) для операций создания, "
+            "гарантируя безопасный повтор сетевых запросов без дублирования записей."
+        ),
+        "checklist": "Повторный запрос с тем же Idempotency-Key возвращает исходный результат без создания дубликата."
     },
-    "BARCAN-TAG-03": {
-        "name": "Belief Intension & Client Perception",
+    "NODE_CLIENT_LOCALIZATION": {
+        "pattern": "Локализация и валидация клиентских форматов (Localization & Format Invariants)",
         "axes": [
-            "client", "user", "ui", "ux", "feedback", "view", "notification", "format",
-            "localization", "language", "клиент", "пользователь", "локализация", "уведомление", "интерфейс"
+            "phone", "email", "client", "georgia", "gel", "lari", "validation", "regex", "currency",
+            "телефон", "клиент", "валидация", "лари", "формат", "грузия"
         ],
-        "summary": "Client-facing expectations and localization constraints (e.g. Georgian phone regex, GEL currency) must be strictly validated."
+        "advice": (
+            "Клиентские форматы валидируются на границе системы жесткими регулярными выражениями (например, телефонный формат региона). "
+            "Цены и финансовые единицы фиксируются в минимальных неделимых единицах (minor units/тетри), чтобы исключить погрешности чисел с плавающей точкой."
+        ),
+        "checklist": "Некорректный номер телефона или формат даты отвергается на этапе валидации схемы HTTP 422."
     },
-    "BARCAN-TAG-04": {
-        "name": "Modal Quantifier & Uncertainty",
+    "NODE_CONCURRENCY_MUTEX": {
+        "pattern": "Атомарная сериализация конкурентных запросов (Atomic Concurrency Serialization)",
         "axes": [
-            "concurrency", "thread", "race", "parallel", "atomic", "lock", "mutex", "simultaneous",
-            "async", "queue", "deadlock", "параллелизм", "мьютекс", "потоки", "гонка", "атомарность", "очередь", "дедлок"
+            "concurrency", "race", "parallel", "lock", "thread", "transaction", "mutex", "double",
+            "гонщик", "гонка", "параллельно", "блокировка", "конкурентность", "одновременно"
         ],
-        "summary": "Multi-client race conditions must be serialized atomically with per-entity mutex/locks to guarantee zero double bookings."
+        "advice": (
+            "Многопользовательские состояния и конкурентные запросы на один ресурс сериализуются атомарно. "
+            "При попытке параллельного захвата одного слота второй запрос обязан завершаться детерминированным отказом 409 Conflict."
+        ),
+        "checklist": "Тест с параллельными потоками подтверждает успешное создание ровно одной брони и отказ для остальных."
     },
-    "BARCAN-TAG-05": {
-        "name": "Necessary Identity & State History",
+    "NODE_STATE_MACHINE": {
+        "pattern": "Детерминированный конечный автомат (Deterministic State Machine & Transition Guards)",
         "axes": [
-            "history", "replay", "audit", "log", "persistence", "event", "transaction", "record",
-            "payment", "billing", "stripe", "webhook", "ledger", "платеж", "транзакция", "биллинг", "страйп", "вебхук", "история", "аудит"
+            "state", "transition", "status", "cancel", "flow", "lifecycle", "confirmed", "dag",
+            "статус", "переход", "жизненный", "цикл", "отмена", "подтверждение"
         ],
-        "summary": "Transactional state history must be preserved; never physically delete records without an audit trail."
+        "advice": (
+            "Жизненный цикл сущности моделируется как направленный ациклический граф допустимых переходов. "
+            "Недопустимые переходы (например, отмена уже завершенного визита или повторная отмена) запрещаются на уровне бизнес-правил."
+        ),
+        "checklist": "Отмена подтвержденной брони освобождает слот; повторная отмена идемпотентна или корректно отклоняется."
     },
-    "BARCAN-TAG-06": {
-        "name": "Deontic Consistency & State Machine",
+    "NODE_SELF_SEEDING_VERIFICATION": {
+        "pattern": "Самодостаточная инициализация данных (Self-Seeding Runtime & Executable Falsification)",
         "axes": [
-            "state", "status", "transition", "lifecycle", "enum", "workflow", "order", "phase",
-            "fsm", "settled", "paid", "статус", "состояние", "жизненный", "цикл", "переход", "пайплайн"
+            "test", "falsification", "seed", "mock", "init", "verification", "sqlite", "catalog", "empty",
+            "тест", "сид", "инициализация", "верификация", "проверка", "пустой", "старт", "база"
         ],
-        "summary": "State transitions form a strict directed acyclic graph. Exclude illegal transitions before writing to storage."
+        "advice": (
+            "Принцип полноты рантайма: сервис обязан быть автономным. При первом запуске на чистой базе данных "
+            "система должна автоматически засевать минимальный верифицируемый набор сущностей (демо-мастера, услуги, доступные слоты), "
+            "чтобы сервис был немедленно готов к демонстрации и тестированию без ручных манипуляций."
+        ),
+        "checklist": "При старте с новой БД сервис сразу отображает демонстрационные данные без пустых экранов."
     },
-    "BARCAN-TAG-07": {
-        "name": "Second-Order Knowledge & Verification",
+    "NODE_LOCATION_AGNOSTIC_ROUTING": {
+        "pattern": "Независимость от точки монтирования и стабильность контрактов (Location-Agnostic Subpath Mounting)",
         "axes": [
-            "test", "verify", "assert", "evidence", "check", "validation", "qa", "falsification",
-            "unit", "mock", "regression", "тест", "проверка", "верификация", "фальсификация"
+            "contract", "api", "schema", "openapi", "version", "path", "proxy", "subpath", "mount",
+            "путь", "прокси", "документация", "контракт", "монтирование", "схема", "swagger"
         ],
-        "summary": "Every claim of completion must be verified by executable falsification tests demonstrating failure on defect."
+        "advice": (
+            "Принцип сохранения истинности навигации: веб-интерфейс, ссылки документации (/docs) и вызовы fetch() "
+            "не должны зависеть от точки монтирования приложения (корень или подпуть reverse proxy). "
+            "Используйте относительную адресацию (api/...) или учитывайте префикс окружения (ROOT_PATH)."
+        ),
+        "checklist": "Интерфейс и Swagger UI корректно загружают ресурсы как в корне домена, так и за reverse proxy."
     },
-    "BARCAN-TAG-08": {
-        "name": "Substitutivity Salva Veritate & Contracts",
+    "NODE_GRACEFUL_IDENTITY_FALLBACK": {
+        "pattern": "Безупречная деградация аутентификации (Graceful Identity Facade & Deadlock-Free UX)",
         "axes": [
-            "contract", "schema", "interface", "dto", "substitute", "compatibility", "signature",
-            "openapi", "rest", "grpc", "контракт", "схема", "интерфейс", "совместимость"
+            "ui", "ux", "auth", "login", "oauth", "guest", "fallback", "client", "deadlock", "button",
+            "вход", "авторизация", "гость", "демо", "кнопка", "тупик", "интерфейс"
         ],
-        "summary": "Public API signatures, return types, and schemas must maintain backward compatibility salva veritate."
+        "advice": (
+            "Исключайте тупиковые состояния интерфейса (Deadlock-Free User Experience). "
+            "Если внешние провайдеры аутентификации (OAuth) не сконфигурированы в окружении, система обязана "
+            "предоставлять детерминированный гостевой доступ (Guest / Demo Token), сохраняя сессионный контекст для прохождения всего пользовательского пути."
+        ),
+        "checklist": "Пользователь может протестировать полный сценарий записи без наличия сторонних ключей OAuth."
     },
-    "BARCAN-TAG-09": {
-        "name": "Moral Dilemma & Conflict Resolution",
+    "NODE_MULTI_TENANT_ISOLATION": {
+        "pattern": "Мультитенантная изоляция границ (Multi-Tenant Boundary Isolation)",
         "axes": [
-            "conflict", "dilemma", "fallback", "recovery", "priority", "resolution", "конфликт", "восстановление", "приоритет"
+            "tenant", "salon", "master", "isolation", "workspace", "multi", "boundary",
+            "мультитенант", "изоляция", "салон", "разграничение"
         ],
-        "summary": "When multiple constraints compete, prioritize data integrity and safety over optimistic completion."
-    },
-    "BARCAN-TAG-10": {
-        "name": "Deontic Prohibition & Negative Gates",
-        "axes": [
-            "prohibition", "forbidden", "cancel", "prevent", "guard", "reject", "exclude",
-            "refund", "chargeback", "запрет", "отмена", "возврат", "нельзя"
-        ],
-        "summary": "Negative deontic gate: completed appointments or settled payments can NEVER transition to cancelled."
-    },
-    "BARCAN-TAG-11": {
-        "name": "Client Perception & Usability Integrity",
-        "axes": [
-            "perception", "speed", "latency", "mobile", "responsive", "error", "clarity",
-            "скорость", "задержка", "ошибки", "отклик"
-        ],
-        "summary": "System responses and validation errors must be deterministic, human-readable, and free of internal leaks."
-    },
-    "BARCAN-TAG-12": {
-        "name": "Social Contract & Multi-Tenant Boundaries",
-        "axes": [
-            "tenant", "master", "salon", "auth", "permission", "isolation", "role", "rbac",
-            "тенант", "мастер", "роли", "права", "доступ"
-        ],
-        "summary": "Multi-tenant boundaries between independent masters and salons must be strictly isolated."
+        "advice": (
+            "Данные и расписания независимых мастеров и организаций изолируются на уровне запросов. "
+            "Слоты одного мастера ни при каких условиях не должны влиять на занятость другого."
+        ),
+        "checklist": "Запросы расписания и бронирования строго фильтруются по идентификатору мастера/арендатора."
     }
 }
 
-# Adjacency graph representing ontological proximity between Barcan tags
 GRAPH_EDGES = {
-    "BARCAN-TAG-00": ["BARCAN-TAG-01", "BARCAN-TAG-06", "BARCAN-TAG-07", "BARCAN-TAG-08"],
-    "BARCAN-TAG-01": ["BARCAN-TAG-00", "BARCAN-TAG-02", "BARCAN-TAG-04", "BARCAN-TAG-06", "BARCAN-TAG-10"],
-    "BARCAN-TAG-02": ["BARCAN-TAG-01", "BARCAN-TAG-05", "BARCAN-TAG-08"],
-    "BARCAN-TAG-03": ["BARCAN-TAG-01", "BARCAN-TAG-11", "BARCAN-TAG-12"],
-    "BARCAN-TAG-04": ["BARCAN-TAG-01", "BARCAN-TAG-05", "BARCAN-TAG-06"],
-    "BARCAN-TAG-05": ["BARCAN-TAG-02", "BARCAN-TAG-04", "BARCAN-TAG-06", "BARCAN-TAG-10"],
-    "BARCAN-TAG-06": ["BARCAN-TAG-00", "BARCAN-TAG-01", "BARCAN-TAG-10", "BARCAN-TAG-04", "BARCAN-TAG-05"],
-    "BARCAN-TAG-07": ["BARCAN-TAG-00", "BARCAN-TAG-06", "BARCAN-TAG-10"],
-    "BARCAN-TAG-08": ["BARCAN-TAG-00", "BARCAN-TAG-02", "BARCAN-TAG-06"],
-    "BARCAN-TAG-09": ["BARCAN-TAG-06", "BARCAN-TAG-10"],
-    "BARCAN-TAG-10": ["BARCAN-TAG-01", "BARCAN-TAG-05", "BARCAN-TAG-06", "BARCAN-TAG-09"],
-    "BARCAN-TAG-11": ["BARCAN-TAG-03", "BARCAN-TAG-01"],
-    "BARCAN-TAG-12": ["BARCAN-TAG-01", "BARCAN-TAG-02", "BARCAN-TAG-03"]
+    "NODE_SCOPE_ISOLATION": ["NODE_NOMINAL_IDENTIFIERS", "NODE_LOCATION_AGNOSTIC_ROUTING"],
+    "NODE_TEMPORAL_INTERVAL": ["NODE_CONCURRENCY_MUTEX", "NODE_STATE_MACHINE", "NODE_SELF_SEEDING_VERIFICATION"],
+    "NODE_NOMINAL_IDENTIFIERS": ["NODE_TEMPORAL_INTERVAL", "NODE_CONCURRENCY_MUTEX"],
+    "NODE_CLIENT_LOCALIZATION": ["NODE_GRACEFUL_IDENTITY_FALLBACK", "NODE_TEMPORAL_INTERVAL"],
+    "NODE_CONCURRENCY_MUTEX": ["NODE_TEMPORAL_INTERVAL", "NODE_STATE_MACHINE"],
+    "NODE_STATE_MACHINE": ["NODE_CONCURRENCY_MUTEX", "NODE_TEMPORAL_INTERVAL"],
+    "NODE_SELF_SEEDING_VERIFICATION": ["NODE_GRACEFUL_IDENTITY_FALLBACK", "NODE_LOCATION_AGNOSTIC_ROUTING"],
+    "NODE_LOCATION_AGNOSTIC_ROUTING": ["NODE_GRACEFUL_IDENTITY_FALLBACK", "NODE_SELF_SEEDING_VERIFICATION"],
+    "NODE_GRACEFUL_IDENTITY_FALLBACK": ["NODE_CLIENT_LOCALIZATION", "NODE_SELF_SEEDING_VERIFICATION"],
+    "NODE_MULTI_TENANT_ISOLATION": ["NODE_TEMPORAL_INTERVAL", "NODE_SCOPE_ISOLATION"]
 }
 
-# Non-negotiable base layer (always included with weight 1.0)
-COMMON_BASE_KERNEL = """### BASE LAYER: EFREMOV UNIVERSAL ARCHITECTURAL INVARIANTS (Weight: 1.00)
-- **Invariant ZERO-DRIFT:** Scope isolation is absolute. Under no circumstances modify files, schemas, or controllers unrelated to this task.
-- **Invariant FALSIFICATION:** Before declaring code complete, write tests that specifically attempt to break edge cases, race conditions, and boundary conditions.
-- **Invariant COMPILER-FIRST:** Architectural discipline resides in compiler, type, and linter constraints, not loose prompt descriptions.
+COMMON_BASE_KERNEL = """### БАЗОВЫЕ УНИВЕРСАЛЬНЫЕ АРХИТЕКТУРНЫЕ ИНВАРИАНТЫ
+- **Изоляция изменений (Scope Isolation):** Запрещено модифицировать файлы и контроллеры вне заявленного эпицентра задачи.
+- **Обязательная фальсификация (Executable Verification):** Код признается готовым только при наличии исполняемых негативных тестов краевых случаев и гонок.
+- **Дисциплина типов и контрактов (Contract-First):** Все интерфейсы валидируются схемами и строгими типами, исключающими недопустимые состояния.
 """
 
 class PhilosopherContextSynthesizer:
@@ -150,104 +174,90 @@ class PhilosopherContextSynthesizer:
     def compute_task_relevance(self, query: str) -> Dict[str, float]:
         tokens = re.findall(r"\w+", query.lower())
         scores = {}
-        for tag, data in TAG_AXES.items():
+        for node_id, data in PATTERN_ONTOLOGY.items():
             score = 0.0
-            for axis in data["axes"]:
-                for t in tokens:
-                    if t == axis or (len(t) > 3 and t in axis) or (len(axis) > 3 and axis in t):
-                        score += 0.50
-            scores[tag] = min(1.0, score)
-        return scores
+            axes = data.get("axes", [])
+            for token in tokens:
+                for axis in axes:
+                    if token == axis:
+                        score += 1.0
+                    elif len(token) >= 4 and len(axis) >= 4 and (token in axis or axis in token):
+                        score += 0.5
+            scores[node_id] = score
+
+        max_score = max(scores.values()) if scores and max(scores.values()) > 0 else 1.0
+        return {node_id: s / max_score for node_id, s in scores.items()}
 
     def spread_activation(self, base_scores: Dict[str, float]) -> Dict[str, float]:
-        # Step 0: Initial activation
-        activation = {k: v for k, v in base_scores.items()}
-        
-        # Hop 1: Attenuation lambda = 0.70
-        hop1 = {}
-        for node, score in activation.items():
-            if score > 0:
-                for neighbor in GRAPH_EDGES.get(node, []):
-                    attenuated = score * ATTENUATION_LAMBDA
-                    hop1[neighbor] = max(hop1.get(neighbor, 0.0), attenuated)
-                    
-        for node, val in hop1.items():
-            activation[node] = max(activation.get(node, 0.0), val)
+        activations = dict(base_scores)
+        for node_id, score in base_scores.items():
+            if score > 0.4:
+                neighbors = GRAPH_EDGES.get(node_id, [])
+                for neighbor in neighbors:
+                    propagated = score * ATTENUATION_LAMBDA
+                    if propagated > activations.get(neighbor, 0.0):
+                        activations[neighbor] = propagated
+        return activations
 
-        # Hop 2: Attenuation lambda^2 = 0.49
-        hop2 = {}
-        for node, score in hop1.items():
-            if score > 0:
-                for neighbor in GRAPH_EDGES.get(node, []):
-                    attenuated = score * ATTENUATION_LAMBDA
-                    hop2[neighbor] = max(hop2.get(neighbor, 0.0), attenuated)
-
-        for node, val in hop2.items():
-            activation[node] = max(activation.get(node, 0.0), val)
-
-        # Always preserve Code Guardian (TAG-00) for scope safety at minimum 0.75
-        activation["BARCAN-TAG-00"] = max(activation.get("BARCAN-TAG-00", 0.0), 0.75)
-
-        return activation
-
-    def synthesize_context(self, task_query: str, token_budget: int = 1500) -> Dict[str, Any]:
-        base_scores = self.compute_task_relevance(task_query)
+    def synthesize_advice(self, task_query: str, question: Optional[str] = None) -> Dict[str, Any]:
+        combined_query = f"{task_query} {question or ''}".strip()
+        base_scores = self.compute_task_relevance(combined_query)
         activations = self.spread_activation(base_scores)
 
-        # Filter by threshold and sort by descending activation weight
-        ranked_nodes = [
-            (tag, weight) for tag, weight in activations.items() 
+        ranked = [
+            (node_id, weight) for node_id, weight in activations.items()
             if weight >= ACTIVATION_THRESHOLD
         ]
-        ranked_nodes.sort(key=lambda x: x[1], reverse=True)
+        ranked.sort(key=lambda x: x[1], reverse=True)
 
-        output_lines = [
-            "# Dmitry Efremov Systems Architecture Hub",
-            "> Tailored Invariant Slice generated by Philosopher Engine (Graph Attenuation lambda=0.70)",
-            f"> Context Focus: \"{task_query}\" | Token Budget: {token_budget}\n",
+        advice_lines = [
+            "# Архитектурная консультация и руководящие инженерные паттерны",
+            f"> Анализ архитектурного контекста: \"{task_query}\"\n",
             COMMON_BASE_KERNEL,
-            "### TAILORED ARCHITECTURAL INVARIANTS (Decaying Graph Slice)"
+            "### РЕКОМЕНДОВАННЫЕ ИНЖЕНЕРНЫЕ ПАТТЕРНЫ И ПРАКТИКИ РЕАЛИЗАЦИИ"
         ]
 
-        # Calculate budget per node
-        activated_nodes_meta = []
-        for tag, weight in ranked_nodes:
-            tag_data = TAG_AXES.get(tag, {})
-            name = tag_data.get("name", "Invariant")
-            summary = tag_data.get("summary", "")
+        structured_patterns = []
+        for node_id, weight in ranked:
+            node_data = PATTERN_ONTOLOGY.get(node_id, {})
+            pattern_title = node_data.get("pattern", "Архитектурный паттерн")
+            advice_text = node_data.get("advice", "")
+            checklist = node_data.get("checklist", "")
 
-            level_desc = "EPICENTER (Primary)" if weight >= 0.99 else ("LEVEL 1 (Connected)" if weight >= 0.65 else "LEVEL 2 (Attenuated)")
-            output_lines.append(f"- **{tag} - {name}** [Weight: {weight:.2f} | {level_desc}]:")
-            output_lines.append(f"  *Core Invariant:* {summary}\n")
+            level = "Критический приоритет" if weight >= 0.9 else ("Высокий приоритет" if weight >= 0.6 else "Рекомендованный паттерн")
+            advice_lines.append(f"\n#### {pattern_title} [{level}]")
+            advice_lines.append(f"**Архитектурный совет:** {advice_text}")
+            advice_lines.append(f"**Критерий приёмки:** {checklist}")
 
-            activated_nodes_meta.append({
-                "tag": tag,
-                "name": name,
-                "weight": round(weight, 2),
-                "level": level_desc
+            structured_patterns.append({
+                "pattern": pattern_title,
+                "priority": level,
+                "architectural_advice": advice_text,
+                "acceptance_checklist": checklist
             })
 
-        output_lines.append("\n### PR VERIFICATION OBLIGATION")
-        output_lines.append("1. PR diff MUST strictly contain only files relevant to the declared epicenter.")
-        output_lines.append("2. PR description MUST cite compliance with the above weighted invariants.")
-        output_lines.append("3. Autonomous unit tests MUST accompany the code, proving resilience against boundary conditions.")
+        return {
+            "status": "ADVISORY_SYNTHESIZED",
+            "task": task_query,
+            "markdown": "\n".join(advice_lines),
+            "patterns": structured_patterns
+        }
 
-        final_markdown = "\n".join(output_lines)
-        estimated_tokens = len(final_markdown) // 4
-
+    # Backward compatibility with existing handshake caller
+    def synthesize_context(self, task_query: str, token_budget: int = 1500) -> Dict[str, Any]:
+        res = self.synthesize_advice(task_query)
         return {
             "task": task_query,
             "token_budget": token_budget,
-            "estimated_tokens": estimated_tokens,
-            "activated_node_count": len(ranked_nodes),
-            "activated_nodes": activated_nodes_meta,
-            "markdown": final_markdown
+            "estimated_tokens": min(token_budget, len(res["markdown"].split()) * 2),
+            "activated_nodes": [{"name": p["pattern"], "weight": 0.8} for p in res["patterns"]],
+            "markdown": res["markdown"]
         }
 
 synthesizer = PhilosopherContextSynthesizer()
 
 if __name__ == "__main__":
-    import sys
-    task = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "master schedule in tbilisi timezone"
-    res = synthesizer.synthesize_context(task)
-    print(res["markdown"])
+    test_task = "Создание сервиса онлайн записи к мастеру для салона красоты"
+    out = synthesizer.synthesize_advice(test_task, "как сделать авторизацию если нет ключей google")
+    print(out["markdown"][:800])
+    print("\nTotal patterns synthesized:", len(out["patterns"]))

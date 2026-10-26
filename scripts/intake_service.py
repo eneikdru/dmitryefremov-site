@@ -1326,6 +1326,29 @@ class IntakeHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(response_payload, ensure_ascii=False).encode("utf-8"))
             return
 
+        # 3.5 Epistemic Pattern Advisory & Continuous Architectural Consulting Session
+        elif self.path in ("/api/v1/bridge/consult", "/api/bridge/consult", "/api/v1/bridge/advice"):
+            task = (body.get("task") or body.get("objective") or body.get("project") or "General Architectural Advisory").strip()
+            question = (body.get("question") or body.get("query") or body.get("prompt") or "").strip()
+            
+            try:
+                from philosopher_synthesizer import synthesizer
+                advice_res = synthesizer.synthesize_advice(task, question)
+            except Exception as e:
+                advice_res = {
+                    "status": "ADVISORY_FALLBACK",
+                    "task": task,
+                    "markdown": f"### Архитектурный совет\nСоблюдайте изоляцию области изменений, обязательную фальсификацию и самодостаточность данных.\nДетали: {str(e)}",
+                    "patterns": []
+                }
+            
+            self.send_response(200)
+            self._send_cors_headers()
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(advice_res, ensure_ascii=False).encode("utf-8"))
+            return
+
         # 4. Agent-to-Agent (A2A) Handshake & Session Contract Registration
         elif self.path in ("/api/v1/bridge/handshake", "/api/bridge/handshake"):
             agent_type = (body.get("agent_type") or body.get("agentType") or body.get("framework") or "Generic AI Agent").strip()
