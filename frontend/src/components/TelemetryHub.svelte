@@ -280,6 +280,26 @@
               <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2 text-xs font-mono font-bold uppercase tracking-wider">
                 <button
                   type="button"
+                  id="hero-connect-agent-btn"
+                  on:click={() => {
+                    activeTab = 'canon';
+                    if (typeof document !== 'undefined') {
+                      setTimeout(() => {
+                        const el = document.getElementById('content-view') || document.getElementById('nav-tabs');
+                        if (el && typeof el.scrollIntoView === 'function') {
+                          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }, 50);
+                    }
+                  }}
+                  class="px-4 py-3 rounded-lg border transition-all cursor-pointer font-bold flex items-center gap-2 {theme === 'dark' ? 'bg-[#12161f] text-white border-white/10 hover:border-amber-400/50 hover:bg-[#181e2b]' : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50'}"
+                >
+                  <span class="material-symbols-outlined text-[18px]">hub</span>
+                  <span>ПОДКЛЮЧИТЬ АГЕНТА</span>
+                </button>
+
+                <button
+                  type="button"
                   id="hero-listen-podcast-btn"
                   on:click={handleListenPodcast}
                   class="px-5 py-3 rounded-lg transition-all cursor-pointer bg-amber-400 text-black hover:bg-amber-300 shadow-md font-bold flex items-center gap-2"

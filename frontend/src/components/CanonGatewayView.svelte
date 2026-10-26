@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import ContextSynthesizer from './ContextSynthesizer.svelte';
   import { telemetry } from '../lib/telemetry';
   import {
     CANON_ROUTES,
@@ -149,6 +150,9 @@
       
     </div>
   </header>
+
+  <!-- DYNAMIC INVARIANT SYNTHESIZER & CLIENT ONBOARDING -->
+  <ContextSynthesizer {theme} />
 
   <!-- CANON PROMPT PATTERNS FOR AGENTS (TIER 1 ARCHITECTURE) -->
   <section id="canon-patterns-section" class="bg-[#0d1118] border border-[#3a494b]/50 rounded-2xl p-6 space-y-6">
