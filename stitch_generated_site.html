@@ -116,6 +116,9 @@
     }
   </script>
 <style>
+    html {
+      scroll-behavior: smooth;
+    }
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       display: inline-block;
@@ -181,11 +184,11 @@
 <a class="text-outline hover:text-on-surface transition-colors" href="#ka">KA</a>
 </div>
 <!-- Search Icon Action Trigger -->
-<button aria-label="Search" class="p-2 text-outline hover:text-primary transition-colors flex items-center justify-center" type="button">
+<button aria-label="Search" onclick="document.getElementById('synthesizer').scrollIntoView({behavior: 'smooth'}); setTimeout(() => document.getElementById('synthesizer-task')?.focus(), 400);" class="p-2 text-outline hover:text-primary transition-colors flex items-center justify-center cursor-pointer" type="button" title="Поиск по инвариантам">
 <span class="material-symbols-outlined text-[20px]">search</span>
 </button>
 <!-- Dark/Optical Mode Toggle -->
-<button aria-label="Toggle optical mode" class="p-2 text-outline hover:text-primary transition-colors flex items-center justify-center" type="button">
+<button id="theme-toggle-btn" aria-label="Toggle optical mode" onclick="toggleOpticalTheme()" class="p-2 text-outline hover:text-primary transition-colors flex items-center justify-center cursor-pointer" type="button" title="Переключить тему">
 <span class="material-symbols-outlined text-[20px]">dark_mode</span>
 </button>
 <!-- Primary Header Action -->
@@ -218,15 +221,19 @@
         </p>
 <!-- Tactile Engineered Action Cluster -->
 <div class="pt-space-xs flex flex-wrap items-center gap-3">
-<a class="inline-flex items-center space-x-2 px-5 py-3 bg-primary-container text-surface-container-lowest font-label-mono-sm text-label-mono-sm font-semibold tracking-wider uppercase rounded hover:bg-secondary-fixed-dim transition-colors chamfer-edge" href="#podcast">
-<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<a class="inline-flex items-center space-x-2 px-5 py-3 bg-primary text-surface-container-lowest font-label-mono-sm text-label-mono-sm font-bold tracking-wider uppercase rounded hover:bg-secondary-fixed-dim transition-colors chamfer-edge shadow-lg cursor-pointer" href="#synthesizer">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+<span>ПОДКЛЮЧИТЬ АГЕНТА</span>
+</a>
+<a class="inline-flex items-center space-x-2 px-4 py-3 bg-surface-container border border-outline-variant/40 text-on-surface hover:border-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider rounded transition-colors cursor-pointer" href="#podcast" onclick="if(window.loadEpisode) loadEpisode(0, true);">
+<span class="material-symbols-outlined text-[18px] text-primary">play_arrow</span>
 <span>Слушать подкаст</span>
 </a>
 <a class="inline-flex items-center space-x-2 px-4 py-3 bg-surface-container border border-outline-variant/40 text-on-surface hover:border-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider rounded transition-colors" href="https://t.me/efremov_mvp" rel="noopener noreferrer" target="_blank">
 <span class="material-symbols-outlined text-[16px] text-outline">terminal</span>
 <span>Telegram @efremov_mvp</span>
 </a>
-<a class="inline-flex items-center space-x-2 px-4 py-3 bg-surface-container border border-outline-variant/40 text-on-surface hover:border-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider rounded transition-colors" href="https://youtube.com" rel="noopener noreferrer" target="_blank">
+<a class="inline-flex items-center space-x-2 px-4 py-3 bg-surface-container border border-outline-variant/40 text-on-surface hover:border-primary font-label-mono-sm text-label-mono-sm uppercase tracking-wider rounded transition-colors" href="https://www.youtube.com/@dmitrii.efremov" rel="noopener noreferrer" target="_blank">
 <span class="material-symbols-outlined text-[16px] text-outline">smart_display</span>
 <span>YouTube</span>
 </a>
@@ -282,26 +289,32 @@
 </div>
 </section>
 <!-- 3. INTERACTIVE NAVIGATION TABS & FILTER BAR -->
-<section class="border-y border-outline-variant/30 py-space-sm bg-surface-container-low/40">
-<div class="flex items-center space-x-6 md:space-x-10 overflow-x-auto no-scrollbar">
-<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-on-surface border-b-2 border-primary pb-1 font-medium transition-colors" type="button">
-          [ВСЕ МАТЕРИАЛЫ]
-        </button>
-<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
-          [ПОДКАСТ]
-        </button>
-<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
-          [СТАТЬИ И ЭССЕ]
-        </button>
-<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
-          [МЫСЛИ]
-        </button>
-<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
-          [КАНОН]
-        </button>
-<button class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" type="button">
-          [СВЯЗЬ]
-        </button>
+<section class="border-y border-outline-variant/30 py-space-sm bg-surface-container-low/40 sticky top-16 z-40 backdrop-blur-md">
+<div class="w-full max-w-[1280px] mx-auto px-margin md:px-margin-desktop flex items-center space-x-6 md:space-x-8 overflow-x-auto no-scrollbar">
+<a class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-on-surface border-b-2 border-primary pb-1 font-medium transition-colors hover:text-primary" href="#top">
+  [ВСЕ МАТЕРИАЛЫ]
+</a>
+<a class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" href="#podcast">
+  [ПОДКАСТ]
+</a>
+<a class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" href="#essays">
+  [СТАТЬИ И ЭССЕ]
+</a>
+<a class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" href="#thoughts">
+  [МЫСЛИ]
+</a>
+<a class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-primary hover:text-on-surface pb-1 transition-colors font-semibold" href="#synthesizer">
+  [СИНТЕЗАТОР & АГЕНТЫ]
+</a>
+<a class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" href="#canon">
+  [КАНОН]
+</a>
+<a class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-outline hover:text-on-surface pb-1 transition-colors" href="#terminal">
+  [СВЯЗЬ]
+</a>
+<a class="whitespace-nowrap font-label-mono-lg text-label-mono-lg text-secondary-fixed hover:text-on-surface pb-1 transition-colors" href="/admin" target="_blank">
+  [АДМИН]
+</a>
 </div>
 </section>
 <!-- 4. PODCAST MEDIA SUITE («Системы и Реальность») -->
@@ -403,40 +416,39 @@
 <div class="wave-bar w-1.5 rounded-xs bg-outline-variant" style="height: 12%"></div>
 </div>
 <!-- Linear Track Scrubber Bar -->
-<div class="mt-3 relative w-full h-1 bg-outline-variant/40 rounded-full cursor-pointer">
-<div class="absolute top-0 left-0 h-full w-[41%] bg-primary rounded-full"></div>
-<!-- Precision Scrubber Head (2px x 12px lens mark) -->
-<div class="absolute -top-1.5 left-[41%] w-1 h-4 bg-on-surface border border-surface-container-lowest"></div>
+<div id="main-scrubber" class="mt-3 relative w-full h-2 bg-outline-variant/40 rounded-full cursor-pointer hover:h-2.5 transition-all">
+  <div id="main-scrubber-progress" class="absolute top-0 left-0 h-full w-[0%] bg-primary rounded-full"></div>
+  <div id="main-scrubber-head" class="absolute -top-1 left-[0%] w-1.5 h-4 bg-white border border-black shadow"></div>
 </div>
 <!-- Time Markers -->
 <div class="flex items-center justify-between pt-2 font-label-mono-sm text-label-mono-sm text-outline">
-<span>00:40:24</span>
-<span class="text-on-surface-variant font-mono text-[10px]">CH.03 // ПРИНЦИП НЕЛОКАЛЬНОЙ ОТВЕТСТВЕННОСТИ</span>
-<span>01:38:40</span>
+  <span id="time-current" class="font-mono text-primary font-bold">00:00</span>
+  <span id="chapter-label" class="text-on-surface-variant font-mono text-[10px] hidden sm:inline">ВЫПУСК #01 // РУТ БАРКАН МАРКУС</span>
+  <span id="time-duration" class="font-mono">01:05:06</span>
 </div>
 </div>
 <!-- Precision Console Controls & Dials -->
 <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
 <!-- Core Transport Controls -->
 <div class="flex items-center space-x-3">
-<!-- Skip -15s -->
-<button aria-label="Назад на 15 секунд" class="p-2 text-outline hover:text-on-surface border border-outline-variant/30 rounded bg-surface-container-lowest transition-colors flex items-center justify-center" type="button">
-<span class="material-symbols-outlined text-[18px]">replay_10</span>
-</button>
-<!-- Main Play / Pause Button in Gold Titanium -->
-<button aria-label="Воспроизвести / Пауза" class="w-12 h-12 bg-primary-container text-surface-container-lowest rounded flex items-center justify-center hover:bg-secondary-fixed-dim transition-colors chamfer-edge" type="button">
-<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">pause</span>
-</button>
-<!-- Skip +30s -->
-<button aria-label="Вперед на 30 секунд" class="p-2 text-outline hover:text-on-surface border border-outline-variant/30 rounded bg-surface-container-lowest transition-colors flex items-center justify-center" type="button">
-<span class="material-symbols-outlined text-[18px]">forward_30</span>
-</button>
+  <!-- Skip -15s -->
+  <button id="main-rewind-btn" onclick="seekRel(-15)" aria-label="Назад на 15 секунд" class="p-2 text-outline hover:text-on-surface border border-outline-variant/30 rounded bg-surface-container-lowest transition-colors flex items-center justify-center cursor-pointer" type="button" title="Назад на 15 сек">
+    <span class="material-symbols-outlined text-[18px]">replay_10</span>
+  </button>
+  <!-- Main Play / Pause Button in Gold Titanium -->
+  <button id="main-play-btn" onclick="togglePlay()" aria-label="Воспроизвести / Пауза" class="w-12 h-12 bg-primary-container text-surface-container-lowest rounded flex items-center justify-center hover:bg-secondary-fixed-dim transition-colors chamfer-edge shadow-lg cursor-pointer" type="button" title="Воспроизведение">
+    <span id="main-play-icon" class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+  </button>
+  <!-- Skip +30s -->
+  <button id="main-forward-btn" onclick="seekRel(30)" aria-label="Вперед на 30 секунд" class="p-2 text-outline hover:text-on-surface border border-outline-variant/30 rounded bg-surface-container-lowest transition-colors flex items-center justify-center cursor-pointer" type="button" title="Вперед на 30 сек">
+    <span class="material-symbols-outlined text-[18px]">forward_30</span>
+  </button>
 </div>
 <!-- Rate Selector -->
 <div class="flex items-center space-x-1 bg-surface-container-lowest border border-outline-variant/30 p-1 rounded font-label-mono-sm text-label-mono-sm">
-<button class="px-2 py-0.5 rounded text-outline hover:text-on-surface" type="button">1.0x</button>
-<button class="px-2 py-0.5 rounded bg-surface-container text-primary font-medium" type="button">1.25x</button>
-<button class="px-2 py-0.5 rounded text-outline hover:text-on-surface" type="button">1.5x</button>
+  <button id="speed-10-btn" onclick="setPlaybackSpeed(1.0)" class="px-2 py-0.5 rounded bg-surface-container text-primary font-medium cursor-pointer" type="button">1.0x</button>
+  <button id="speed-125-btn" onclick="setPlaybackSpeed(1.25)" class="px-2 py-0.5 rounded text-outline hover:text-on-surface cursor-pointer" type="button">1.25x</button>
+  <button id="speed-15-btn" onclick="setPlaybackSpeed(1.5)" class="px-2 py-0.5 rounded text-outline hover:text-on-surface cursor-pointer" type="button">1.5x</button>
 </div>
 <!-- Volume Dial & Audio Signal Telemetry -->
 <div class="flex items-center space-x-3 font-label-mono-sm text-label-mono-sm text-outline">
@@ -453,21 +465,21 @@
             ТАЙМКОДЫ ГЛАВ ВЫПУСКА
           </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-2 font-label-mono-sm text-label-mono-sm">
-<button class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group" type="button">
-<span class="text-on-surface group-hover:text-primary transition-colors">Архитектура субъекта в детерминированном мире</span>
+<button onclick="seekToSeconds(0)" class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group cursor-pointer" type="button">
+<span class="text-on-surface group-hover:text-primary transition-colors">Архитектура субъекта и модальный оператор</span>
 <span class="text-outline group-hover:text-primary transition-colors ml-2 font-mono">00:00:00</span>
 </button>
-<button class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group" type="button">
-<span class="text-on-surface group-hover:text-primary transition-colors">Семантический вакуум больших языковых моделей</span>
+<button onclick="seekToSeconds(18*60+22)" class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group cursor-pointer" type="button">
+<span class="text-on-surface group-hover:text-primary transition-colors">Жесткие десигнаторы против галлюцинаций LLM</span>
 <span class="text-outline group-hover:text-primary transition-colors ml-2 font-mono">00:18:22</span>
 </button>
-<button class="flex items-center justify-between p-2.5 bg-surface-container-low border border-primary text-left transition-colors group" type="button">
-<span class="text-primary font-medium">Принцип нелокальной ответственности в распределенных системах</span>
+<button onclick="seekToSeconds(44*60+10)" class="flex items-center justify-between p-2.5 bg-surface-container-low border border-primary text-left transition-colors group cursor-pointer" type="button">
+<span class="text-primary font-medium">Принцип нелокальной ответственности в коде</span>
 <span class="text-primary font-mono ml-2">00:44:10</span>
 </button>
-<button class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group" type="button">
+<button onclick="seekToSeconds(55*60)" class="flex items-center justify-between p-2.5 bg-surface-container-lowest border border-outline-variant/30 hover:border-primary text-left transition-colors group cursor-pointer" type="button">
 <span class="text-on-surface group-hover:text-primary transition-colors">Прагматика воли: от алгоритма к онтологии</span>
-<span class="text-outline group-hover:text-primary transition-colors ml-2 font-mono">01:12:45</span>
+<span class="text-outline group-hover:text-primary transition-colors ml-2 font-mono">00:55:00</span>
 </button>
 </div>
 </div>
@@ -588,11 +600,20 @@
           </p>
 </div>
 <div class="pt-4 flex items-center justify-between border-t border-outline-variant/30 font-label-mono-sm text-label-mono-sm">
-<a class="text-primary hover:text-secondary-fixed inline-flex items-center space-x-1.5 transition-colors" href="#read-full">
-<span>ЧИТАТЬ ПОЛНУЮ МОНОГРАФИЮ</span>
-<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+<button onclick="toggleEssayDetails('essay-1-full')" class="text-primary hover:text-secondary-fixed inline-flex items-center space-x-1.5 transition-colors cursor-pointer" type="button">
+<span id="essay-1-btn-label">ЧИТАТЬ ПОЛНУЮ МОНОГРАФИЮ</span>
+<span id="essay-1-icon" class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
 <span class="text-outline">PDF VERSION AVAILABLE</span>
+</div>
+<!-- Expanded Monograph Drawer -->
+<div id="essay-1-full" class="hidden mt-4 p-space-md bg-surface-container-lowest border border-outline-variant/40 rounded space-y-4 font-body-md text-on-surface-variant leading-relaxed">
+  <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+    <span class="font-label-mono-sm text-primary uppercase text-xs">ПОЛНАЯ ВЕРСИЯ МОНОГРАФИИ // РАЗДЕЛ II</span>
+    <button onclick="toggleEssayDetails('essay-1-full')" class="text-outline hover:text-white font-mono text-xs cursor-pointer">[СВЕРНУТЬ]</button>
+  </div>
+  <p>Фундаментальная теорема гомеостаза утверждает: любая автономная система $S$, оперирующая в среде с энтропией $H(E)$, обязана поддерживать внутреннее разнообразие состояний $V(S) \ge H(E)$ (закон Эшби). В распределённых программных комплексах это выражается в требовании полноты онтологических инвариантов.</p>
+  <p>Когда агент сталкивается с непредвиденным сценарием (race condition, network split, data corruption), он не имеет права делать вероятностное допущение. Единственный суверенный паттерн — отказ в пользу сохранения инварианта целостности (Invariant Negative Deontic Gate).</p>
 </div>
 </article>
 <!-- Second Essay & Epistemic Thought Stream (Split Grid) -->
@@ -611,11 +632,20 @@
             </p>
 </div>
 <div class="pt-4 border-t border-outline-variant/30 flex items-center justify-between font-label-mono-sm text-label-mono-sm">
-<a class="text-on-surface hover:text-primary inline-flex items-center space-x-1 transition-colors" href="#read-microservices">
-<span>ЧИТАТЬ СТАТЬЮ</span>
-<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+<button onclick="toggleEssayDetails('essay-2-full')" class="text-on-surface hover:text-primary inline-flex items-center space-x-1 transition-colors cursor-pointer" type="button">
+<span id="essay-2-btn-label">ЧИТАТЬ СТАТЬЮ</span>
+<span id="essay-2-icon" class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
 <span class="text-outline">АРХИТЕКТУРА И МЫШЛЕНИЕ</span>
+</div>
+<!-- Expanded Article 2 Drawer -->
+<div id="essay-2-full" class="hidden mt-4 p-space-md bg-surface-container-lowest border border-outline-variant/40 rounded space-y-4 font-body-md text-on-surface-variant leading-relaxed">
+  <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+    <span class="font-label-mono-sm text-primary uppercase text-xs">АРХИТЕКТУРНЫЙ КРИТИЦИЗМ // РАЗДЕЛ I</span>
+    <button onclick="toggleEssayDetails('essay-2-full')" class="text-outline hover:text-white font-mono text-xs cursor-pointer">[СВЕРНУТЬ]</button>
+  </div>
+  <p>Сетевой интерфейс не заменяет чистоту доменной модели. Перенос границ агрегата через границы процессов без абсолютной согласованности типов порождает распределенный монолит худшего вида — систему с задержками сети, но без транзакционной строгости.</p>
+  <p>Решение: монолитное модульное ядро с компиляторным контролем связей (Zero-Drift Boundary Review) превосходит микросервисный зоопарк в 95% промышленных сценариев.</p>
 </div>
 </article>
 <!-- Right: Epistemic Short Thoughts («Мысли») -->
@@ -970,7 +1000,7 @@
 </div>
 <!-- Right: Engineered Minimal Form Fields -->
 <div class="lg:col-span-7">
-<form class="space-y-4" onsubmit="event.preventDefault();">
+<form id="contact-terminal-form" class="space-y-4">
 <!-- Field 1: Name / Org -->
 <div class="space-y-1">
 <label class="block font-label-mono-sm text-label-mono-sm text-outline uppercase tracking-wider" for="contact-name">
@@ -1172,16 +1202,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const topic = document.getElementById('contact-topic')?.value || '';
       const message = document.getElementById('contact-message')?.value || '';
 
-      const btn = form.querySelector('button[type="submit"]');
+            const btn = form.querySelector('button[type="submit"]');
+      if (!message.trim()) {
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span>УКАЖИТЕ СУТЬ ЗАДАЧИ</span>';
+          setTimeout(() => { btn.innerHTML = orig; }, 2500);
+        }
+        return;
+      }
+
       const origText = btn ? btn.innerHTML : '';
-      if (btn) btn.innerHTML = '<span>ОТПРАВКА...</span>';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>ОТПРАВКА В СИСТЕМУ...</span>';
+      }
 
       try {
         const res = await fetch('/api/intake', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            title: `[${topic}] от ${name}`,
+            title: `[${topic || 'Запрос'}] от ${name || 'Клиент'}`,
             narrative: message,
             clientEmail: email,
             name: name
@@ -1189,13 +1231,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await res.json();
         if (btn) {
-          btn.className = btn.className.replace('bg-primary-container', 'bg-green-600');
-          btn.innerHTML = `<span>ДОСТАВЛЕНО (ТИКЕТ: ${data.claimTicket || 'OK'})</span>`;
+          btn.classList.remove('bg-primary-container', 'bg-primary');
+          btn.classList.add('bg-green-600', 'text-white');
+          btn.innerHTML = `<span>ДОСТАВЛЕНО • ТИКЕТ: ${data.claimTicket || 'OK'}</span>`;
           form.reset();
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.classList.remove('bg-green-600', 'text-white');
+            btn.classList.add('bg-primary-container');
+            btn.innerHTML = origText;
+          }, 6000);
         }
       } catch (err) {
         if (btn) {
-          btn.innerHTML = '<span>ОШИБКА ОТПРАВКИ</span>';
+          btn.disabled = false;
+          btn.innerHTML = '<span>СБОЙ СЕТИ, ПОВТОРИТЕ</span>';
           setTimeout(() => { btn.innerHTML = origText; }, 3000);
         }
       }
@@ -1206,7 +1256,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-// REAL AUDIO ENGINE & EPISODE CATALOG
+// ROBUST AUDIO ENGINE & EPISODE CATALOG
 const podcastEpisodes = [
   {
     id: 1,
@@ -1215,8 +1265,7 @@ const podcastEpisodes = [
     guest: "Дмитрий Ефремов (Соло разбор)",
     duration: "1:05:06",
     file: "/audio/01-ruth-barcan-marcus.m4a",
-    date: "12.01.2025",
-    thesis: "Как имена блокируют сущности номинально и почему токеновые вероятности LLM не могут подменять жесткие идентификаторы в архитектуре."
+    date: "12.01.2025"
   },
   {
     id: 2,
@@ -1225,8 +1274,7 @@ const podcastEpisodes = [
     guest: "Дмитрий Ефремов (Соло разбор)",
     duration: "0:58:24",
     file: "/audio/02-paul-thagard.m4a",
-    date: "19.01.2025",
-    thesis: "Внутренняя связность кода не гарантирует истину. Фальсификационные барьеры Карла Поппера против эвристической правдоподобности."
+    date: "19.01.2025"
   },
   {
     id: 3,
@@ -1235,36 +1283,46 @@ const podcastEpisodes = [
     guest: "Дмитрий Ефремов (Соло разбор)",
     duration: "1:12:18",
     file: "/audio/03-susan-hurley.m4a",
-    date: "26.01.2025",
-    thesis: "Когнитивная архитектура автономных агентов требует непрерывного контура наблюдения за рантаймом, а не изолированных генераций."
+    date: "26.01.2025"
   }
 ];
 
 let currentEpisodeIndex = 0;
-const audio = document.getElementById('real-audio-player');
-let isPlaying = false;
+let isAudioPlaying = false;
 
-function formatTime(seconds) {
-  if (isNaN(seconds)) return "00:00";
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
+function getAudio() {
+  return document.getElementById('real-audio-player');
+}
+
+function formatTime(sec) {
+  if (isNaN(sec) || sec < 0) return "00:00";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
   return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function updatePlayBtnIcon(playing) {
+  const icon = document.getElementById('main-play-icon');
+  if (icon) {
+    icon.innerText = playing ? 'pause' : 'play_arrow';
+  }
 }
 
 function loadEpisode(index, autoPlay = true) {
   if (index < 0 || index >= podcastEpisodes.length) return;
   currentEpisodeIndex = index;
   const ep = podcastEpisodes[index];
-  
+  const audio = getAudio();
+
   if (audio) {
     audio.src = ep.file;
     audio.load();
     if (autoPlay) {
       audio.play().then(() => {
-        isPlaying = true;
-        updatePlayBtnIcon();
+        isAudioPlaying = true;
+        updatePlayBtnIcon(true);
       }).catch(err => {
-        console.warn("Autoplay policy prevented audio:", err);
+        console.warn("Autoplay notice:", err);
       });
     }
   }
@@ -1276,128 +1334,142 @@ function loadEpisode(index, autoPlay = true) {
   const badgeEl = document.querySelector('#podcast .text-primary.uppercase');
   if (badgeEl) badgeEl.innerText = `АКТИВНЫЙ ВЫПУСК #${ep.number}`;
 
-  const metaEl = document.querySelector('#podcast .text-secondary-fixed');
-  if (metaEl && metaEl.parentElement) {
-    metaEl.parentElement.innerHTML = `<span>Хронометраж: ${ep.duration}</span> • <span>${ep.guest}</span> • <span class="text-secondary-fixed">Master Audio</span>`;
-  }
+  const durEl = document.getElementById('time-duration');
+  if (durEl) durEl.innerText = ep.duration;
 
-  updatePlayBtnIcon();
+  updatePlayBtnIcon(isAudioPlaying);
 }
 
 function togglePlay() {
+  const audio = getAudio();
   if (!audio) return;
+  
   if (!audio.src || audio.src === window.location.href) {
     loadEpisode(currentEpisodeIndex, true);
     return;
   }
 
   if (audio.paused) {
-    audio.play();
-    isPlaying = true;
+    audio.play().then(() => {
+      isAudioPlaying = true;
+      updatePlayBtnIcon(true);
+    });
   } else {
     audio.pause();
-    isPlaying = false;
-  }
-  updatePlayBtnIcon();
-}
-
-function updatePlayBtnIcon() {
-  const icon = document.querySelector('#podcast button[aria-label="Воспроизвести / Пауза"] span');
-  if (icon) {
-    icon.innerText = (audio && !audio.paused) ? 'pause' : 'play_arrow';
+    isAudioPlaying = false;
+    updatePlayBtnIcon(false);
   }
 }
 
-function seekRel(sec) {
+function seekRel(seconds) {
+  const audio = getAudio();
+  if (audio && audio.duration) {
+    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+  }
+}
+
+function seekToSeconds(seconds) {
+  const audio = getAudio();
   if (audio) {
-    audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + sec));
+    audio.currentTime = seconds;
+    if (audio.paused) {
+      audio.play().then(() => {
+        isAudioPlaying = true;
+        updatePlayBtnIcon(true);
+      });
+    }
   }
 }
 
 function setPlaybackSpeed(speed) {
+  const audio = getAudio();
   if (audio) {
     audio.playbackRate = speed;
-    document.querySelectorAll('#podcast .font-label-mono-sm button').forEach(btn => {
-      if (btn.innerText.includes(`${speed}x`)) {
-        btn.className = "px-2 py-0.5 rounded bg-surface-container text-primary font-medium";
-      } else if (btn.innerText.includes('x')) {
-        btn.className = "px-2 py-0.5 rounded text-outline hover:text-on-surface";
+    ['10', '125', '15'].forEach(s => {
+      const btn = document.getElementById(`speed-${s}-btn`);
+      if (btn) {
+        if ((speed === 1.0 && s === '10') || (speed === 1.25 && s === '125') || (speed === 1.5 && s === '15')) {
+          btn.className = "px-2 py-0.5 rounded bg-surface-container text-primary font-medium cursor-pointer";
+        } else {
+          btn.className = "px-2 py-0.5 rounded text-outline hover:text-on-surface cursor-pointer";
+        }
       }
     });
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Wire up audio transport buttons
-  const playBtn = document.querySelector('#podcast button[aria-label="Воспроизвести / Пауза"]');
-  if (playBtn) playBtn.onclick = togglePlay;
-
-  const backBtn = document.querySelector('#podcast button[aria-label="Назад на 15 секунд"]');
-  if (backBtn) backBtn.onclick = () => seekRel(-15);
-
-  const fwdBtn = document.querySelector('#podcast button[aria-label="Вперед на 30 секунд"]');
-  if (fwdBtn) fwdBtn.onclick = () => seekRel(30);
-
-  // Speed buttons
-  const speedBtns = document.querySelectorAll('#podcast button');
-  speedBtns.forEach(btn => {
-    if (btn.innerText === '1.0x') btn.onclick = () => setPlaybackSpeed(1.0);
-    if (btn.innerText === '1.25x') btn.onclick = () => setPlaybackSpeed(1.25);
-    if (btn.innerText === '1.5x') btn.onclick = () => setPlaybackSpeed(1.5);
-  });
-
-  // Wire up audio time updates to scrubber and timecode
+  const audio = getAudio();
   if (audio) {
     audio.ontimeupdate = () => {
       const cur = audio.currentTime;
       const dur = audio.duration || 1;
       const pct = (cur / dur) * 100;
 
-      const scrubber = document.querySelector('#podcast .h-full.bg-primary');
-      if (scrubber) scrubber.style.width = `${pct}%`;
+      const progress = document.getElementById('main-scrubber-progress');
+      if (progress) progress.style.width = `${pct}%`;
 
-      const head = document.querySelector('#podcast .w-1.h-4.bg-on-surface');
+      const head = document.getElementById('main-scrubber-head');
       if (head) head.style.left = `${pct}%`;
 
-      const timeLabels = document.querySelectorAll('#podcast .flex.items-center.justify-between.pt-2 span');
-      if (timeLabels.length >= 3) {
-        timeLabels[0].innerText = formatTime(cur);
-        timeLabels[2].innerText = formatTime(dur);
-      }
+      const timeCur = document.getElementById('time-current');
+      if (timeCur) timeCur.innerText = formatTime(cur);
+
+      const timeDur = document.getElementById('time-duration');
+      if (timeDur && audio.duration) timeDur.innerText = formatTime(audio.duration);
     };
 
     audio.onended = () => {
       if (currentEpisodeIndex < podcastEpisodes.length - 1) {
         loadEpisode(currentEpisodeIndex + 1, true);
       } else {
-        isPlaying = false;
-        updatePlayBtnIcon();
+        isAudioPlaying = false;
+        updatePlayBtnIcon(false);
       }
     };
   }
 
-  // Scrubber click seek
-  const scrubberBar = document.querySelector('#podcast .mt-3.relative.w-full.h-1');
-  if (scrubberBar && audio) {
-    scrubberBar.onclick = (e) => {
-      const rect = scrubberBar.getBoundingClientRect();
+  // Scrubber click handler
+  const scrubber = document.getElementById('main-scrubber');
+  if (scrubber) {
+    scrubber.onclick = (e) => {
+      const audio = getAudio();
+      if (!audio || !audio.duration) return;
+      const rect = scrubber.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
-      const pct = clickX / rect.width;
-      if (audio.duration) {
-        audio.currentTime = pct * audio.duration;
-      }
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      audio.currentTime = pct * audio.duration;
     };
   }
 
-  // Wire episode cards to load corresponding audio
-  const episodeCards = document.querySelectorAll('#podcast article button');
-  episodeCards.forEach((btn, idx) => {
-    btn.onclick = () => loadEpisode(idx, true);
-  });
-
-  // Initial load without autoplay
+  // Preload initial episode
   loadEpisode(0, false);
 });
+</script>
+
+<script>
+  }
+}
+
+function toggleEssayDetails(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const isHidden = el.classList.contains('hidden');
+  if (isHidden) {
+    el.classList.remove('hidden');
+  } else {
+    el.classList.add('hidden');
+  }
+}
+
+function toggleOpticalTheme() {
+  const htmlEl = document.documentElement;
+  const isDark = htmlEl.classList.toggle('dark');
+  const icon = document.querySelector('#theme-toggle-btn span');
+  if (icon) {
+    icon.innerText = isDark ? 'dark_mode' : 'light_mode';
+  }
+}
 </script>
 
 </body></html>
