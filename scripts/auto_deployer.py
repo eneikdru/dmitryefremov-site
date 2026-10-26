@@ -152,7 +152,7 @@ Environment=PORT={port}
 Environment=SESSION_SECRET={secret}
 Environment=BASE_URL=https://dmitryefremov.com/api/preview/{slug}
 Environment=ROOT_PATH=/api/preview/{slug}
-ExecStart={SHARED_VENV}/bin/python -m uvicorn {entrypoint} --port {port} --host 127.0.0.1
+ExecStart={SHARED_VENV}/bin/python -m uvicorn {entrypoint} --port {port} --host 127.0.0.1 --root-path /api/preview/{slug}
 Restart=always
 RestartSec=3
 
