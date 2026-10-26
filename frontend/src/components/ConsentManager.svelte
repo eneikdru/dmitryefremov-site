@@ -36,7 +36,7 @@
     }
     window.addEventListener('keydown', handleKeydown);
 
-    if (currentStatus === null) {
+    if (isOpen) {
       await tick();
       if (declineBtnRef) {
         declineBtnRef.focus();
@@ -49,13 +49,13 @@
     };
   });
 
-  $: showBannerOrModal = (isOpen || currentStatus === null) && !isDismissed;
+  $: showBannerOrModal = isOpen && !isDismissed;
 
   $: if (isOpen) {
     isDismissed = false;
   }
 
-  $: if (showBannerOrModal && currentStatus === null) {
+  $: if (showBannerOrModal && isOpen) {
     tick().then(() => {
       if (declineBtnRef) {
         declineBtnRef.focus();

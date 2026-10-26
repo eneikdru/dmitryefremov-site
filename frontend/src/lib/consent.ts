@@ -16,7 +16,7 @@ function loadConsentStatus(): ConsentStatus {
   } catch {
     // Fallback if localStorage is inaccessible
   }
-  return null;
+  return 'accepted';
 }
 
 const statusStore = writable<ConsentStatus>(loadConsentStatus());
