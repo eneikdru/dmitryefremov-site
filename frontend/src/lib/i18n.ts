@@ -28,6 +28,7 @@ export interface Translations {
   nav_sparks: string;
   nav_contact: string;
   nav_canon: string;
+  nav_support: string;
   search_btn: string;
   search_cmd_k: string;
   theme_dark: string;
@@ -113,15 +114,16 @@ export const DICTIONARY: Record<Language, Translations> = {
     nav_article: 'Эссе и статьи',
     nav_sparks: 'Sparks',
     nav_contact: 'Контакты',
-    nav_canon: 'Агенты & Канон',
+    nav_canon: 'Агенты',
+    nav_support: 'Поддержка',
     search_btn: 'ПОИСК',
     search_cmd_k: 'Cmd+K',
     theme_dark: 'Тёмная',
     theme_light: 'Светлая',
-    topbar_architecture: 'АРХИТЕКТУРА ENEIK PRODUCTION SYSTEM',
+    topbar_architecture: 'СИСТЕМНЫЙ АРХИТЕКТОР & ФИЛОСОФ',
 
     hero_name: 'Дмитрий Ефремов',
-    hero_role: 'Архитектор Eneik Production System & Мыслитель',
+    hero_role: 'Архитектор систем и философ',
     hero_badge: 'ENEIK PRODUCTION SYSTEM • АВТОНОМНЫЕ СИСТЕМЫ И ДЕЙСТВИЕ',
     hero_tagline: 'Системы, логика мышления и автономные процессы',
     hero_bio_1: 'Архитектор Eneik Production System (Brand-OS), исследователь онтологии решений и автор подкаста «Системы и Реальность».',
@@ -192,15 +194,16 @@ export const DICTIONARY: Record<Language, Translations> = {
     nav_article: 'Essays & Articles',
     nav_sparks: 'Sparks',
     nav_contact: 'Contact',
-    nav_canon: 'AI Agents & Canon',
+    nav_canon: 'Agents',
+    nav_support: 'Support',
     search_btn: 'SEARCH',
     search_cmd_k: 'Cmd+K',
     theme_dark: 'Dark',
     theme_light: 'Light',
-    topbar_architecture: 'ENEIK PRODUCTION SYSTEM ARCHITECTURE',
+    topbar_architecture: 'SYSTEM ARCHITECT & PHILOSOPHER',
 
     hero_name: 'Dmitry Efremov',
-    hero_role: 'Eneik Production System Architect & Thinker',
+    hero_role: 'System Architect & Philosopher',
     hero_badge: 'ENEIK PRODUCTION SYSTEM • AUTONOMOUS SYSTEMS & ACTION',
     hero_tagline: 'Systems, logic of thought, and autonomous processes',
     hero_bio_1: 'Architect of Eneik Production System (Brand-OS), researcher of ontology of decisions and creator of "Systems & Reality" podcast.',
@@ -271,15 +274,16 @@ export const DICTIONARY: Record<Language, Translations> = {
     nav_article: 'ესეები და სტატიები',
     nav_sparks: 'Sparks',
     nav_contact: 'კონტაქტი',
-    nav_canon: 'AI აგენტები და კანონი',
+    nav_canon: 'აგენტები',
+    nav_support: 'მხარდაჭერა',
     search_btn: 'ძიება',
     search_cmd_k: 'Cmd+K',
     theme_dark: 'მუქი',
     theme_light: 'ნათელი',
-    topbar_architecture: 'ENEIK PRODUCTION SYSTEM არქიტექტურა',
+    topbar_architecture: 'სისტემური არქიტექტორი და ფილოსოფოსი',
 
     hero_name: 'დიმიტრი ეფრემოვი',
-    hero_role: 'Eneik Production System-ის არქიტექტორი და მოაზროვნე',
+    hero_role: 'სისტემური არქიტექტორი და ფილოსოფოსი',
     hero_badge: 'ENEIK PRODUCTION SYSTEM • ავტონომიური სისტემები და მოქმედება',
     hero_tagline: 'სისტემები, აზროვნების ლოგიკა და ავტონომიური პროცესები',
     hero_bio_1: 'Eneik Production System-ის (Brand-OS) არქიტექტორი, გადაწყვეტილებათა ონტოლოგიის მკვლევარი და პოდკასტის «სისტემები და რეალობა» ავტორი.',

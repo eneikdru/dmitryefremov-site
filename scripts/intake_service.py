@@ -166,11 +166,13 @@ def get_aggregated_crm_data():
         c["messages"].sort(key=lambda m: m.get("createdAt", ""), reverse=True)
         c["notes"].sort(key=lambda n: n.get("createdAt", ""), reverse=True)
 
+    agent_sessions = read_jsonl(AGENT_SESSIONS_FILE)
     return {
         "total": len(messages),
         "messages": messages[-50:],
         "notes": notes[-100:],
-        "clients": clients_list
+        "clients": clients_list,
+        "agentSessions": agent_sessions[-100:]
     }
 
 class IntakeHandler(BaseHTTPRequestHandler):
@@ -325,7 +327,6 @@ class IntakeHandler(BaseHTTPRequestHandler):
             return
 
         elif path in ("/api/v1/bridge", "/api/v1/bridge/status", "/api/bridge"):
-            sessions = read_jsonl(AGENT_SESSIONS_FILE)
             self.send_response(200)
             self._send_cors_headers()
             self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -333,12 +334,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({
                 "service": "Dmitry Efremov A2A Bridge & Architectural Gateway",
                 "status": "OPERATIONAL",
-                "total_active_sessions": len(sessions),
-                "graph_damping": 0.70,
-                "canon_corpus_tokens": 42500,
-                "avg_synthesized_tokens": 620,
-                "avg_context_savings_pct": 85.4,
-                "supported_agents": ["Google Jules", "Claude Code", "OpenAI Codex", "Cursor Agent", "A2A Bridge"]
+                "avg_context_savings_pct": 85.0
             }, ensure_ascii=False).encode("utf-8"))
             return
 
@@ -738,6 +734,13 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 }
 
             session_id = f"D-EFREMOV-A2A-{now.strftime('%y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
+            # Sanitize internal BARCAN-TAG to human-facing Architectural Rules
+            clean_markdown = synth_res.get("markdown", "")
+            for i in range(15):
+                tag = f"BARCAN-TAG-{i:02d}"
+                clean_markdown = clean_markdown.replace(tag, f"Rule-{i:02d}")
+            clean_markdown = clean_markdown.replace("BARCAN-TAG", "Architectural-Rule")
+
             raw_canon_tokens = 42500
             estimated_tokens = synth_res.get("estimated_tokens", 600)
             reduction_pct = round(max(0.0, (1.0 - (float(estimated_tokens) / float(raw_canon_tokens)))) * 100, 1)
@@ -755,7 +758,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 "estimatedTokens": estimated_tokens,
                 "contextReductionPct": reduction_pct,
                 "activatedNodes": synth_res.get("activated_nodes", []),
-                "contractMarkdown": synth_res.get("markdown", ""),
+                "contractMarkdown": clean_markdown,
                 "webhookVerifyUrl": f"https://dmitryefremov.com/api/v1/bridge/verify?session={session_id}",
                 "clientEmail": client_email,
                 "clientIp": self.client_address[0],
@@ -782,7 +785,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 "estimated_tokens": estimated_tokens,
                 "context_reduction_pct": reduction_pct,
                 "activated_nodes": synth_res.get("activated_nodes", []),
-                "contract_markdown": synth_res.get("markdown", ""),
+                "contract_markdown": clean_markdown,
                 "webhook_verify_url": f"https://dmitryefremov.com/api/v1/bridge/verify?session={session_id}",
                 "created_at": session_record["createdAt"],
                 "message": "Сессионный контракт с интеллектуальным узлом Дмитрия Ефремова успешно заключен."

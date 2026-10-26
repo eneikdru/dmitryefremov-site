@@ -7,6 +7,7 @@
   import PodcastPlayerView from './PodcastPlayerView.svelte';
   import SparksView from './SparksView.svelte';
   import TelemetryContactTerminalView from './TelemetryContactTerminalView.svelte';
+  import SupportView from './SupportView.svelte';
   import ConsentManager from './ConsentManager.svelte';
   import SeoMeta from './SeoMeta.svelte';
   import AdminDashboardView from './AdminDashboardView.svelte';
@@ -15,9 +16,9 @@
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
   import { currentLanguage, setLanguage, t } from '../lib/i18n';
 
-  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = 'podcast';
+  export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'support' = 'podcast';
 
-  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' = initialTab;
+  let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'support' = initialTab;
   let theme: 'dark' | 'light' = 'dark';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
@@ -29,7 +30,7 @@
   let selectedEpisodeId: number | string = 1;
   let activeGraphNode: string = 'concept-deontic-logic';
 
-  function switchTab(tab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud') {
+  function switchTab(tab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'support') {
     activeTab = tab;
     if (typeof document !== 'undefined') {
       setTimeout(() => {
@@ -54,7 +55,7 @@
     } else if (node.type === 'spark') {
       activeTab = 'sparks';
     } else if (node.targetTab) {
-      activeTab = node.targetTab;
+      activeTab = node.targetTab as any;
       if (node.targetTab === 'article' && node.targetId) selectedArticleId = node.targetId as string;
       if (node.targetTab === 'podcast' && node.targetId) selectedEpisodeId = typeof node.targetId === 'number' ? node.targetId : Number(node.targetId) || node.targetId;
       if (node.targetTab === 'canon' && node.targetId) activeGraphNode = node.targetId as string;
@@ -90,6 +91,12 @@
         hash === '#telemetry-hud'
       ) {
         activeTab = 'hud';
+      } else if (
+        currentPath === '/support' ||
+        hash === '#/support' ||
+        hash === '#support'
+      ) {
+        activeTab = 'support';
       }
     }
   }
@@ -163,7 +170,7 @@
     id="telemetry-hub-root"
     class="min-h-screen transition-colors duration-200 selection:bg-[#f2ca50] selection:text-[#0c0e12] {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
   >
-    <!-- 1. SOVEREIGN TOPNAVBAR (Stitch Layout & Svelte Reactivity) -->
+    <!-- 1. SOVEREIGN TOPNAVBAR -->
     <header class="sticky top-0 z-50 border-b transition-colors {theme === 'dark' ? 'bg-[#111318]/95 backdrop-blur-md border-white/10' : 'bg-white/95 backdrop-blur-md border-slate-200'}">
       <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <!-- Wordmark Brand -->
@@ -172,13 +179,13 @@
             ДМИТРИЙ ЕФРЕМОВ
           </span>
           <span class="font-mono text-[10px] tracking-wider uppercase {theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}">
-            СИСТЕМНЫЙ АРХИТЕКТОР & МЫСЛИТЕЛЬ
+            {t($currentLanguage).topbar_architecture}
           </span>
         </a>
 
         <!-- Trailing Controls Cluster -->
         <div class="flex items-center space-x-3 sm:space-x-4">
-          <!-- Language Selector: RU | EN | KA (Fully Reactive!) -->
+          <!-- Language Selector: RU | EN | KA -->
           <div id="language-switcher" class="flex items-center p-0.5 rounded border font-mono text-xs overflow-hidden {theme === 'dark' ? 'bg-[#1e2024] border-white/10' : 'bg-slate-100 border-slate-300'}">
             <button
               type="button"
@@ -211,7 +218,7 @@
             </button>
           </div>
 
-          <!-- Search Trigger (Cmd+K with ПОИСК text for WCAG & Tests) -->
+          <!-- Search Trigger (Cmd+K with ПОИСК text for WCAG) -->
           <button
             id="cmd-k-trigger-btn"
             type="button"
@@ -235,22 +242,22 @@
             <span class="material-symbols-outlined text-[18px]">{theme === 'dark' ? 'dark_mode' : 'light_mode'}</span>
           </button>
 
-          <!-- Direct Header Action: Связаться -->
+          <!-- Direct Header Action: Поддержка или Связаться -->
           <button
             type="button"
-            on:click={() => switchTab('contact')}
+            on:click={() => switchTab('support')}
             class="hidden sm:inline-flex items-center justify-center px-4 py-1.5 bg-[#f2ca50] text-[#0c0e12] font-mono text-xs font-bold uppercase tracking-wider rounded hover:bg-[#e7c364] transition-colors cursor-pointer shadow-sm"
           >
-            СВЯЗАТЬСЯ
+            {t($currentLanguage).nav_support}
           </button>
         </div>
       </div>
     </header>
 
     <main class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10" id="top">
-      <!-- 2. MONUMENTAL HERO SECTION (Stitch Layout + Real Photo + Canonical Text) -->
+      <!-- 2. MONUMENTAL HERO SECTION (Clean Portrait with Zero Visual Noise) -->
       <section id="hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        <!-- Left Column: The Epistemic Core -->
+        <!-- Left Column: The Philosophical Core -->
         <div class="lg:col-span-7 space-y-6">
           <!-- Epistemic Badge -->
           <div class="inline-flex items-center space-x-2 px-3 py-1 rounded border {theme === 'dark' ? 'bg-[#1e2024] border-white/10' : 'bg-amber-50 border-amber-300'}">
@@ -271,16 +278,16 @@
           </div>
 
           <!-- Authoritative Philosophical Axiom -->
-          <blockquote id="hero-manifest" class="p-5 sm:p-6 rounded-lg border-l-2 text-base sm:text-lg leading-relaxed {theme === 'dark' ? 'bg-[#111318] border-[#f2ca50] text-[#e2e2e8]' : 'bg-slate-50 border-slate-800 text-slate-800'}">
+          <blockquote id="hero-manifest" class="p-5 sm:p-6 rounded-lg border-l-2 text-base sm:text-lg leading-relaxed {theme === 'dark' ? 'bg-[#111318] border-[#f2ca50] text-[#e2e8f0]' : 'bg-slate-50 border-slate-800 text-slate-800'}">
             {t($currentLanguage).hero_manifest}
           </blockquote>
 
-          <!-- Bio Narrative -->
+          <!-- Bio Narrative: Systems & Philosophy -->
           <p class="font-mono text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
             {t($currentLanguage).hero_bio_1} {t($currentLanguage).hero_bio_2}
           </p>
 
-          <!-- Tactile Engineered Action Cluster -->
+          <!-- Tactile Action Cluster -->
           <div class="pt-2 flex flex-wrap items-center gap-3 font-mono text-xs font-bold uppercase tracking-wider">
             <!-- Listen Podcast Button -->
             <button
@@ -301,7 +308,17 @@
               class="inline-flex items-center space-x-2 px-4 py-3 rounded border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-white hover:border-[#f2ca50]' : 'bg-white border-slate-300 text-slate-900 hover:bg-slate-50'}"
             >
               <span class="material-symbols-outlined text-[16px] text-[#f2ca50]">hub</span>
-              <span>ПОДКЛЮЧИТЬ АГЕНТА</span>
+              <span>{t($currentLanguage).nav_canon}</span>
+            </button>
+
+            <!-- Support Button -->
+            <button
+              type="button"
+              on:click={() => switchTab('support')}
+              class="inline-flex items-center space-x-2 px-4 py-3 rounded border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] border-[#f2ca50]/40 text-[#f2ca50] hover:bg-[#f2ca50]/10' : 'bg-amber-50 border-amber-300 text-amber-900 hover:bg-amber-100'}"
+            >
+              <span class="material-symbols-outlined text-[16px]">favorite</span>
+              <span>{t($currentLanguage).nav_support}</span>
             </button>
 
             <!-- Telegram Link -->
@@ -341,31 +358,16 @@
           </div>
         </div>
 
-        <!-- Right Column: Leica Optical Bezel Portrait (Dmitry Efremov's REAL Studio Portrait) -->
+        <!-- Right Column: Clean Studio Portrait (Zero Noise, Distraction-Free) -->
         <div class="lg:col-span-5 flex justify-center">
-          <div class="relative w-full max-w-[420px] rounded-xl border p-3 shadow-2xl transition-all {theme === 'dark' ? 'bg-[#1e2024] border-white/10' : 'bg-white border-slate-300'}">
-            <!-- Optical Machined Rim Header -->
-            <div class="flex items-center justify-between font-mono text-[10px] pb-2 border-b {theme === 'dark' ? 'border-white/10 text-slate-400' : 'border-slate-200 text-slate-600'}">
-              <span class="tracking-widest uppercase">35MM F/1.4 • ISO 100 • LEICA OPTICAL</span>
-              <span class="tracking-widest text-[#f2ca50] font-bold">КУТАИСИ UTC+4</span>
-            </div>
-
-            <!-- Portrait Viewport with ResponsivePicture Container -->
-            <div id="hero-avatar-container" class="relative aspect-[3/4] w-full overflow-hidden rounded-lg my-2 border bg-black/60 {theme === 'dark' ? 'border-white/10' : 'border-slate-200'}">
-              <ResponsivePicture
-                id="hero-avatar-img"
-                assetKey="dmitry_efremov_studio"
-                alt="Официальный студийный портрет Дмитрия Ефремова"
-                imgClass="w-full h-full object-cover object-top hover:scale-[1.02] transition-transform duration-500 ease-out"
-                loading="eager"
-              />
-            </div>
-
-            <!-- Optical Chassis Footer -->
-            <div class="flex items-center justify-between font-mono text-[9px] pt-1 {theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}">
-              <span class="tracking-widest">EFREMOV ARCHITECTURAL NODE</span>
-              <span class="text-emerald-400 font-bold uppercase">● СУВЕРЕННЫЙ СТАТУС</span>
-            </div>
+          <div id="hero-avatar-container" class="relative w-full max-w-[400px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/15 bg-black/40 shadow-2xl transition-all">
+            <ResponsivePicture
+              id="hero-avatar-img"
+              assetKey="dmitry_efremov_studio"
+              alt="Официальный студийный портрет Дмитрия Ефремова"
+              imgClass="w-full h-full object-cover object-top hover:scale-[1.01] transition-transform duration-500 ease-out"
+              loading="eager"
+            />
           </div>
         </div>
       </section>
@@ -403,7 +405,7 @@
             <span>[{t($currentLanguage).nav_sparks}]</span>
           </button>
 
-          <!-- AGENTS & CANON TAB BUTTON -->
+          <!-- AGENTS TAB BUTTON -->
           <button
             id="tab-btn-canon"
             type="button"
@@ -411,6 +413,16 @@
             class="px-4 py-2.5 rounded transition-all cursor-pointer whitespace-nowrap {activeTab === 'canon' ? 'bg-[#1e2024] text-[#f2ca50] border-b-2 border-[#f2ca50] font-bold shadow-md' : (theme === 'dark' ? 'text-slate-400 hover:text-white border-b-2 border-transparent hover:bg-white/[0.04]' : 'text-slate-600 hover:text-black border-b-2 border-transparent hover:bg-slate-100')}"
           >
             <span>[{t($currentLanguage).nav_canon}]</span>
+          </button>
+
+          <!-- SUPPORT (STRIPE) TAB BUTTON -->
+          <button
+            id="tab-btn-support"
+            type="button"
+            on:click={() => (activeTab = 'support')}
+            class="px-4 py-2.5 rounded transition-all cursor-pointer whitespace-nowrap {activeTab === 'support' ? 'bg-[#1e2024] text-[#f2ca50] border-b-2 border-[#f2ca50] font-bold shadow-md' : (theme === 'dark' ? 'text-slate-400 hover:text-white border-b-2 border-transparent hover:bg-white/[0.04]' : 'text-slate-600 hover:text-black border-b-2 border-transparent hover:bg-slate-100')}"
+          >
+            <span>[{t($currentLanguage).nav_support}]</span>
           </button>
 
           <!-- CONTACT TERMINAL TAB BUTTON -->
@@ -442,6 +454,10 @@
         {:else if activeTab === 'canon'}
           <div class="space-y-6">
             <CanonGatewayView {theme} bind:activeGraphNode />
+          </div>
+        {:else if activeTab === 'support'}
+          <div class="space-y-6">
+            <SupportView {theme} />
           </div>
         {:else if activeTab === 'contact'}
           <div class="space-y-6">
@@ -479,7 +495,7 @@
       <!-- Imprint Modal -->
       {#if showImprintModal}
         <div id="imprint-modal" role="dialog" aria-labelledby="imprint-title" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div class="max-w-md w-full p-6 rounded-xl border space-y-4 font-mono text-xs {theme === 'dark' ? 'bg-[#111318] border-white/15 text-[#e2e2e8]' : 'bg-white border-slate-300 text-[#0f172a] shadow-2xl'}">
+          <div class="max-w-md w-full p-6 rounded-xl border space-y-4 font-mono text-xs {theme === 'dark' ? 'bg-[#111318] border-white/15 text-[#e2e8f0]' : 'bg-white border-slate-300 text-[#0f172a] shadow-2xl'}">
             <div class="flex justify-between items-center border-b pb-3 {theme === 'dark' ? 'border-white/10' : 'border-slate-200'}">
               <h2 id="imprint-title" class="text-sm font-bold uppercase tracking-wider">{t($currentLanguage).imprint_title}</h2>
               <button
