@@ -161,6 +161,91 @@ def get_github_token():
     return ""
 GITHUB_OWNER = "eneikdru"
 
+
+def generate_starter_application(slug, project_name, task_brief=None):
+    """
+    Generates a production-grade starter FastAPI app and responsive HTML UI
+    tailored to the project so preview is live from second zero.
+    """
+    p_title = project_name or f"Client Project {slug.upper()}"
+    p_desc = task_brief or "Автономный микросервис под управлением Dmitry Efremov Architecture"
+    
+    html = f"""<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{p_title}</title>
+  <base href="/api/preview/{slug}/">
+  <style>
+    :root {{ --primary: #0284c7; --bg: #f8fafc; }}
+    * {{ box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
+    body {{ background: var(--bg); color: #0f172a; line-height: 1.5; padding: 2rem 1rem; }}
+    .container {{ max-width: 800px; margin: 0 auto; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }}
+    .badge {{ display: inline-block; padding: 0.25rem 0.6rem; border-radius: 9999px; background: #e0f2fe; color: #0284c7; font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; }}
+    h1 {{ font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }}
+    p.desc {{ font-size: 1.1rem; color: #64748b; margin-bottom: 1.5rem; }}
+    .card {{ background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem; }}
+    .links {{ display: flex; gap: 1rem; margin-top: 1rem; }}
+    .btn {{ background: #0284c7; color: white; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; display: inline-block; }}
+    .btn-secondary {{ background: #f1f5f9; color: #334155; }}
+    .btn:hover {{ opacity: 0.9; }}
+    .status-dot {{ display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; margin-right: 6px; }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="badge"><span class="status-dot"></span>Автономный рантайм активен</span>
+    <h1>{p_title}</h1>
+    <p class="desc">{p_desc}</p>
+    
+    <div class="card">
+      <h3>Архитектурный статус сервиса</h3>
+      <p style="margin-top: 0.5rem; color: #475569;">Репозиторий проекта инициализирован и подключен к Dmitry Efremov Architectural Bridge. Код непрерывно верифицируется и автоматически синхронизируется при каждом коммите.</p>
+      <div class="links">
+        <a href="docs" class="btn">Swagger UI API</a>
+        <a href="openapi.json" class="btn btn-secondary">OpenAPI Schema</a>
+      </div>
+    </div>
+
+    <div style="font-size: 0.85rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 1rem;">
+      Изолированный порт рантайма: <code>{slug}</code> · Управление: <code>systemd</code>
+    </div>
+  </div>
+</body>
+</html>
+"""
+
+    py_app = f"""import os
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
+
+ROOT_PATH = os.environ.get("ROOT_PATH", "/api/preview/{slug}")
+app = FastAPI(title="{p_title}", root_path=ROOT_PATH)
+
+@app.get("/", response_class=HTMLResponse)
+def index():
+    with open("index.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+@app.get("/api/health")
+def health():
+    return {{"status": "HEALTHY", "service": "{p_title}", "slug": "{slug}", "root_path": ROOT_PATH}}
+
+@app.get("/api/info")
+def info():
+    return {{
+        "title": "{p_title}",
+        "description": "{p_desc}",
+        "slug": "{slug}",
+        "managed_by": "Dmitry Efremov Architecture"
+    }}
+"""
+    return [
+        {"path": "app.py", "content": py_app},
+        {"path": "index.html", "content": html}
+    ]
+
 def create_github_repository(slug, client_email, project_name, task_brief=None):
     """
     Creates a physical repository on GitHub for the client and initializes
@@ -239,6 +324,12 @@ POST https://dmitryefremov.com/api/v1/bridge/commit
         commit_file_to_github(GITHUB_OWNER, repo_name, gh_token, "ARCHITECTURAL_ADVICE.md", advice_markdown, "docs: add tailored architectural advice and engineering patterns")
         commit_file_to_github(GITHUB_OWNER, repo_name, gh_token, ".cursorrules", cursorrules_content, "feat: configure agent directives (.cursorrules)")
         commit_file_to_github(GITHUB_OWNER, repo_name, gh_token, ".windsurfrules", cursorrules_content, "feat: configure agent directives (.windsurfrules)")
+
+        # Commit initial starter application files
+        starter_files = generate_starter_application(slug, project_name, brief_text)
+        for s_item in starter_files:
+            commit_file_to_github(GITHUB_OWNER, repo_name, gh_token, s_item["path"], s_item["content"], f"feat: scaffold initial {s_item['path']}")
+
 
         readme_content = f"""# Client Project {slug.upper()}
 
@@ -1106,6 +1197,14 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 }
                 repos_dict[lookup_key] = repo_data
                 save_client_repos(repos_dict)
+
+                # Instantly deploy live preview runtime from second zero
+                try:
+                    starter_app_files = generate_starter_application(repo_slug, project_name, task_brief)
+                    deploy_res = deploy_client_project(repo_slug, starter_app_files)
+                    print(f"[A2A-AUTO-INIT] Instantly auto-deployed runtime for {repo_slug}: {deploy_res}")
+                except Exception as ex_init:
+                    print(f"[A2A-AUTO-INIT-WARN] Instant auto-deploy failed: {ex_init}", file=sys.stderr)
 
             session_id = f"D-EFREMOV-REPO-{now.strftime('%y%m%d')}-{repo_slug.upper()}"
             session_record = {
