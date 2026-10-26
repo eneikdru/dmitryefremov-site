@@ -184,8 +184,8 @@
             rel="noopener noreferrer"
             class="w-full py-3 px-4 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md {tier.featured ? 'bg-[#f2ca50] text-[#0c0e12] hover:bg-[#e7c364]' : (theme === 'dark' ? 'bg-[#1e2024] text-white border border-white/15 hover:border-[#f2ca50] hover:text-[#f2ca50]' : 'bg-slate-900 text-white hover:bg-slate-800')}"
           >
-            <span>Stripe</span>
-            <span class="material-symbols-outlined text-[14px]">arrow_outward</span>
+            <span>STRIPE</span>
+            
           </a>
         </div>
       </div>
@@ -194,6 +194,6 @@
 
   <!-- Trust & Transparency Note -->
   <div class="p-4 rounded-lg border font-mono text-xs text-center {theme === 'dark' ? 'bg-[#0c0e12] border-white/5 text-slate-400' : 'bg-slate-100 border-slate-200 text-slate-600'}">
-    <span>🔒 {$currentLanguage === 'en' ? 'Payments are securely processed by Stripe. You can cancel subscriptions anytime.' : ($currentLanguage === 'ka' ? 'გადახდები დაცულად მუშავდება Stripe-ით. გამოწერის გაუქმება ნებისმიერ დროსაა შესაძლებელი.' : 'Платежи безопасно обрабатываются через Stripe. Подписку можно отменить в любой момент в 1 клик.')}</span>
+    <span>{$currentLanguage === 'en' ? 'Payments are securely processed by Stripe. You can cancel subscriptions anytime.' : ($currentLanguage === 'ka' ? 'გადახდები დაცულად მუშავდება Stripe-ით. გამოწერის გაუქმება ნებისმიერ დროსაა შესაძლებელი.' : 'Платежи безопасно обрабатываются через Stripe. Подписку можно отменить в любой момент в 1 клик.')}</span>
   </div>
 </div>

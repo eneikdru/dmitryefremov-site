@@ -224,11 +224,10 @@
             type="button"
             on:click={() => (isSearchModalOpen = true)}
             aria-label="Поиск по Канону (Cmd+K)"
-            class="px-3 py-1.5 rounded border transition-colors flex items-center gap-1.5 cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] text-slate-300 border-white/10 hover:text-[#f2ca50] hover:border-[#f2ca50]/50' : 'bg-white text-slate-700 border-slate-300 hover:text-black'}"
+            class="px-3 py-1.5 rounded border transition-colors flex items-center gap-2 cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] text-slate-300 border-white/10 hover:text-[#f2ca50] hover:border-[#f2ca50]/50' : 'bg-white text-slate-700 border-slate-300 hover:text-black'}"
           >
-            <span class="material-symbols-outlined text-[16px]">search</span>
             <span class="font-mono text-xs font-bold uppercase tracking-wider">ПОИСК</span>
-            <span class="sr-only">Cmd+K</span>
+            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Cmd+K</span>
           </button>
 
           <!-- Theme Toggle -->
@@ -237,9 +236,9 @@
             type="button"
             on:click={toggleTheme}
             aria-label="Toggle theme"
-            class="p-2 rounded border transition-colors flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] text-slate-300 border-white/10 hover:text-white' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}"
+            class="px-2.5 py-1.5 rounded border font-mono text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] text-slate-300 border-white/10 hover:text-white' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}"
           >
-            <span class="material-symbols-outlined text-[18px]">{theme === 'dark' ? 'dark_mode' : 'light_mode'}</span>
+            <span>{theme === 'dark' ? 'DARK' : 'LIGHT'}</span>
           </button>
 
           <!-- Direct Header Action: Поддержка или Связаться -->
@@ -296,7 +295,6 @@
               on:click={handleListenPodcast}
               class="inline-flex items-center space-x-2 px-5 py-3 bg-[#f2ca50] text-[#0c0e12] rounded hover:bg-[#e7c364] transition-all cursor-pointer shadow-md font-bold"
             >
-              <span class="material-symbols-outlined text-[18px]">play_arrow</span>
               <span>{t($currentLanguage).hero_btn_podcast}</span>
             </button>
 
@@ -307,7 +305,6 @@
               on:click={() => switchTab('canon')}
               class="inline-flex items-center space-x-2 px-4 py-3 rounded border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-white hover:border-[#f2ca50]' : 'bg-white border-slate-300 text-slate-900 hover:bg-slate-50'}"
             >
-              <span class="material-symbols-outlined text-[16px] text-[#f2ca50]">hub</span>
               <span>{t($currentLanguage).nav_canon}</span>
             </button>
 
@@ -317,7 +314,6 @@
               on:click={() => switchTab('support')}
               class="inline-flex items-center space-x-2 px-4 py-3 rounded border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] border-[#f2ca50]/40 text-[#f2ca50] hover:bg-[#f2ca50]/10' : 'bg-amber-50 border-amber-300 text-amber-900 hover:bg-amber-100'}"
             >
-              <span class="material-symbols-outlined text-[16px]">favorite</span>
               <span>{t($currentLanguage).nav_support}</span>
             </button>
 
@@ -329,7 +325,6 @@
               on:click={() => handleOutboundClick('https://t.me/efremov_mvp', 'Telegram @efremov_mvp', 'Telegram')}
               class="inline-flex items-center space-x-2 px-4 py-3 rounded border transition-all {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-white hover:border-white/30' : 'bg-white border-slate-300 text-slate-900 hover:bg-slate-50'}"
             >
-              <span class="material-symbols-outlined text-[16px] text-slate-400">terminal</span>
               <span>Telegram @efremov_mvp</span>
             </a>
 
@@ -341,7 +336,6 @@
               on:click={() => handleOutboundClick('https://www.youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
               class="inline-flex items-center space-x-2 px-4 py-3 rounded border transition-all {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-white hover:border-red-500/50' : 'bg-white border-slate-300 text-slate-900 hover:bg-slate-50'}"
             >
-              <span class="material-symbols-outlined text-[16px] text-slate-400">smart_display</span>
               <span>YouTube</span>
             </a>
 
@@ -352,7 +346,6 @@
               on:click={() => switchTab('contact')}
               class="inline-flex items-center space-x-2 px-4 py-3 rounded border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-slate-300 hover:text-white hover:border-white/30' : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'}"
             >
-              <span class="material-symbols-outlined text-[16px] text-slate-400">mail</span>
               <span>{t($currentLanguage).nav_contact}</span>
             </button>
           </div>
@@ -502,9 +495,9 @@
                 id="imprint-close-btn"
                 type="button"
                 on:click={toggleImprint}
-                class="px-2 py-1 rounded border {theme === 'dark' ? 'bg-[#1e2024] border-white/10 hover:bg-[#282a2e]' : 'bg-slate-100 border-slate-300 hover:bg-slate-200'}"
+                class="px-2 py-1 rounded border font-mono text-[10px] font-bold uppercase tracking-wider {theme === 'dark' ? 'bg-[#1e2024] border-white/10 hover:bg-[#282a2e]' : 'bg-slate-100 border-slate-300 hover:bg-slate-200'}"
               >
-                ✕
+                CLOSE
               </button>
             </div>
             <div id="imprint-details-content" class="space-y-2 leading-relaxed">

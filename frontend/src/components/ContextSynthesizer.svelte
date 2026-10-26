@@ -19,8 +19,6 @@
   // Form State
   let clientEmail: string = '';
   let projectGoal: string = '';
-  let showCustomRepoInput: boolean = false;
-  let customRepoUrl: string = '';
 
   let isSubmitting: boolean = false;
   let errorMessage: string = '';
@@ -45,7 +43,7 @@
     } catch {}
   });
 
-  $: currentRepo = regResult?.assigned_repo || (customRepoUrl.trim() || 'https://github.com/eneikdru/client-[AUTO-ID]');
+  $: currentRepo = regResult?.assigned_repo || 'https://github.com/eneikdru/client-[AUTO-ID]';
   $: currentTask = (regResult?.task || projectGoal.trim()) || 'Autonomous system implementation & reliability assurance';
 
   $: unifiedAgentDirective = `[EFREMOV ARCHITECTURE GATEWAY]:
@@ -86,8 +84,7 @@ DIRECTIVE FOR AGENT:
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: email,
-          task: projectGoal.trim(),
-          custom_repo: customRepoUrl.trim()
+          task: projectGoal.trim()
         })
       });
 
@@ -123,7 +120,7 @@ DIRECTIVE FOR AGENT:
     } catch (err: any) {
       console.warn('Fallback local registration:', err);
       const slug = Math.random().toString(36).substring(2, 10);
-      const fallbackRepo = customRepoUrl.trim() || `https://github.com/eneikdru/client-${slug}`;
+      const fallbackRepo = `https://github.com/eneikdru/client-${slug}`;
       regResult = {
         success: true,
         client_email: email,
@@ -182,33 +179,50 @@ DIRECTIVE FOR AGENT:
     </p>
   </div>
 
-  <!-- 2. HEADER -->
+  <!-- 2. OPTION FOR CLIENTS WITH EXISTING REPOSITORIES (Clear, Discrete, No Inputs Needed) -->
+  <div class="px-5 py-3 border-b font-mono text-[11px] leading-relaxed {theme === 'dark' ? 'bg-[#141822] border-white/10 text-slate-400' : 'bg-amber-50/50 border-amber-200/60 text-slate-600'}">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div>
+        <strong class="text-white uppercase tracking-wider">
+          {$currentLanguage === 'en' ? 'Already have your own repository?' : 'Уже есть свой репозиторий?'}
+        </strong>
+        <span class="ml-1">
+          {$currentLanguage === 'en'
+            ? 'No registration needed. Simply instruct your agent to query reliability rules before committing:'
+            : 'Вам не нужно ничего регистрировать или давать доступ. Просто укажите вашему агенту запрашивать правила надежности:'}
+        </span>
+      </div>
+      <code class="px-2 py-0.5 rounded bg-black/60 border border-white/10 text-[#f2ca50] text-[11px] whitespace-nowrap self-start sm:self-auto select-all">
+        POST {DEFAULT_HANDSHAKE_ENDPOINT}
+      </code>
+    </div>
+  </div>
+
+  <!-- 3. HEADER FOR MANAGED WORKSPACE -->
   <div class="p-6 md:p-7 border-b {theme === 'dark' ? 'border-white/10 bg-[#12161f]' : 'border-slate-200 bg-slate-50'}">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
         <div class="font-mono text-[11px] uppercase tracking-wider text-[#f2ca50] font-bold mb-1">
-          {$currentLanguage === 'en' ? 'ARCHITECTURE GATEWAY' : ($currentLanguage === 'ka' ? 'არქიტექტურული კარიბჭე' : 'АРХИТЕКТУРНЫЙ ШЛЮЗ')}
+          {$currentLanguage === 'en' ? 'MANAGED WORKSPACE & GATEWAY' : 'ВЫДЕЛЕННЫЙ РЕПОЗИТОРИЙ И ШЛЮЗ'}
         </div>
         <h2 class="text-lg md:text-xl font-bold tracking-tight text-white font-mono uppercase">
-          {$currentLanguage === 'en' ? 'Connect Your Agent & Start Building' : ($currentLanguage === 'ka' ? 'დააკავშირეთ აგენტი და დაიწყეთ მუშაობა' : 'Подключите агента и сразу начните работу')}
+          {$currentLanguage === 'en' ? 'Get a Dedicated Repository & Connect Agent' : 'Получите репозиторий и подключите агента'}
         </h2>
         <p class="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
           {$currentLanguage === 'en'
-            ? 'Enter your email, describe what to build, and receive an instant gateway for your agent (Cursor, Claude Code, Cline) with automated secret scanning and reliability audits.'
-            : ($currentLanguage === 'ka'
-              ? 'მიუთითეთ ელფოსტა, აღწერეთ დავალება და მიიღეთ მზა კარიბჭე თქვენი აგენტისთვის უსაფრთხოების და საიმედოობის ავტომატური აუდიტით.'
-              : 'Укажите почту, напишите, что хотите сделать — и сразу получите готовый защитный шлюз для своего агента (Cursor, Claude Code, Cline) со встроенным аудитом надежности и защитой от утечек.')}
+            ? 'For those who want a ready website without configuring GitHub, CI/CD, or servers. Enter your email and task: we instantly create a physical repository and connect your agent.'
+            : 'Для тех, кому нужен готовый сайт без настройки GitHub, CI/CD и серверов. Укажите почту и задачу: мы мгновенно создадим физический репозиторий и подключим агента.'}
         </p>
       </div>
 
       <div class="font-mono text-[11px] px-3 py-1 rounded border uppercase tracking-wider {theme === 'dark' ? 'bg-[#181c26] border-white/10 text-slate-300' : 'bg-slate-100 border-slate-300 text-slate-700'}">
-        {$currentLanguage === 'en' ? 'Pre-Commit Audit Active' : 'Предкоммитный аудит активен'}
+        {$currentLanguage === 'en' ? 'Zero Setup Required' : 'Нулевая настройка'}
       </div>
     </div>
   </div>
 
   <div class="p-6 md:p-7 space-y-6">
-    <!-- 3. SIMPLE 2-FIELD FORM (Strictly No Icons, No Emojis) -->
+    <!-- 4. SIMPLE 2-FIELD FORM (Strictly No Icons, No Emojis, No Asking for Client's Repo) -->
     <form on:submit|preventDefault={handleConnectAndStart} class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
         <!-- Field 1: Email -->
@@ -229,7 +243,7 @@ DIRECTIVE FOR AGENT:
         <!-- Field 2: What to build -->
         <div class="md:col-span-7 space-y-1.5">
           <label for="project-goal-input" class="block font-mono text-xs uppercase tracking-wider text-slate-300 font-semibold">
-            {$currentLanguage === 'en' ? 'Project Goal / Task' : 'Что нужно сделать?'}
+            {$currentLanguage === 'en' ? 'Project Goal / What to build' : 'Что нужно сделать?'}
           </label>
           <input
             id="project-goal-input"
@@ -242,41 +256,6 @@ DIRECTIVE FOR AGENT:
         </div>
       </div>
 
-      <!-- Optional Custom Repo Toggle -->
-      <div class="pt-1">
-        {#if !showCustomRepoInput}
-          <button
-            type="button"
-            on:click={() => (showCustomRepoInput = true)}
-            class="text-[11px] font-mono text-slate-400 hover:text-[#f2ca50] transition-colors cursor-pointer"
-          >
-            {$currentLanguage === 'en' ? '[+] Use my own existing repository' : '[+] У меня уже есть свой репозиторий (подключить)'}
-          </button>
-        {:else}
-          <div class="p-3 rounded-lg border space-y-2 {theme === 'dark' ? 'bg-[#131720] border-white/10' : 'bg-slate-50 border-slate-200'}">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <label for="custom-repo-input" class="text-slate-300">
-                {$currentLanguage === 'en' ? 'Your Repository URL:' : 'Ссылка на ваш репозиторий:'}
-              </label>
-              <button
-                type="button"
-                on:click={() => { showCustomRepoInput = false; customRepoUrl = ''; }}
-                class="text-slate-400 hover:text-white"
-              >
-                [Отмена]
-              </button>
-            </div>
-            <input
-              id="custom-repo-input"
-              type="text"
-              bind:value={customRepoUrl}
-              placeholder="https://github.com/my-org/my-project"
-              class="w-full px-3 py-2 rounded border font-mono text-xs {theme === 'dark' ? 'bg-black/60 border-white/15 text-white' : 'bg-white border-slate-300 text-slate-900'}"
-            />
-          </div>
-        {/if}
-      </div>
-
       <!-- Action Button (STRICTLY TEXT ONLY, ZERO ICONS / ZERO EMOJIS) -->
       <div>
         <button
@@ -286,8 +265,8 @@ DIRECTIVE FOR AGENT:
           class="w-full py-3 px-5 rounded-lg font-mono text-xs uppercase tracking-wider font-bold transition-all duration-150 cursor-pointer text-center {isSubmitting ? 'bg-slate-700 text-slate-400 cursor-not-allowed' : 'bg-[#f2ca50] hover:bg-[#ffe072] text-[#090a0f]'}"
         >
           {isSubmitting
-            ? ($currentLanguage === 'en' ? 'PROVISIONING...' : 'ПОДКЛЮЧЕНИЕ...')
-            : ($currentLanguage === 'en' ? 'CONNECT AND START' : ($currentLanguage === 'ka' ? 'დაკავშირება და დაწყება' : 'ПОДКЛЮЧИТЬ И НАЧАТЬ РАБОТУ'))}
+            ? ($currentLanguage === 'en' ? 'PROVISIONING...' : 'СОЗДАНИЕ РЕПОЗИТОРИЯ...')
+            : ($currentLanguage === 'en' ? 'ALLOCATE REPOSITORY AND CONNECT AGENT' : 'ПОЛУЧИТЬ РЕПОЗИТОРИЙ И ПОДКЛЮЧИТЬ АГЕНТА')}
         </button>
       </div>
 
@@ -298,7 +277,7 @@ DIRECTIVE FOR AGENT:
       {/if}
     </form>
 
-    <!-- 4. READY AGENT GATEWAY RESULT CARD (Quiet, Dignified, No Visual Noise) -->
+    <!-- 5. READY AGENT GATEWAY RESULT CARD (Quiet, Dignified, No Visual Noise) -->
     {#if regResult}
       <div
         id="ready-agent-gateway-result"
@@ -308,7 +287,7 @@ DIRECTIVE FOR AGENT:
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b {theme === 'dark' ? 'border-white/10' : 'border-slate-200'} pb-3 font-mono text-xs">
           <div>
             <span class="font-bold uppercase tracking-wider text-[#f2ca50]">
-              {$currentLanguage === 'en' ? 'GATEWAY READY:' : 'ШЛЮЗ АКТИВИРОВАН:'}
+              {$currentLanguage === 'en' ? 'REPOSITORY READY:' : 'РЕПОЗИТОРИЙ СОЗДАН:'}
             </span>
             <span class="text-slate-300 ml-1">{regResult.client_email}</span>
           </div>
@@ -320,7 +299,7 @@ DIRECTIVE FOR AGENT:
         <!-- Target Repository -->
         <div class="space-y-1.5 font-mono text-xs">
           <div class="text-slate-400 uppercase tracking-wider text-[11px]">
-            {$currentLanguage === 'en' ? 'Assigned Repository:' : 'Репозиторий проекта:'}
+            {$currentLanguage === 'en' ? 'Assigned GitHub Repository:' : 'Выделенный репозиторий на GitHub:'}
           </div>
           <div class="flex items-center gap-2">
             <a
@@ -375,8 +354,8 @@ DIRECTIVE FOR AGENT:
         <!-- 1-Step Explanation -->
         <div class="p-3 rounded border text-xs text-slate-400 font-mono leading-relaxed {theme === 'dark' ? 'bg-[#0e1219] border-white/5' : 'bg-slate-100 border-slate-200'}">
           {$currentLanguage === 'en'
-            ? 'Paste this directive into Cursor, Claude Code, or Cline. The agent will write code and submit it via Dmitry Efremov’s Commit Gateway for automated secret scanning and invariant verification.'
-            : 'Вставьте скопированный блок в Cursor, Claude Code или Cline. Агент напишет код и отправит его через шлюз коммитов Дмитрия Ефремова: сервер автоматически проверит код на утечки ключей, проведёт аудит надежности и зафиксирует изменения в репозитории.'}
+            ? 'Paste this directive into Cursor, Claude Code, or Cline. The agent will write code directly to your repository under Dmitry Efremov’s architectural reliability standards.'
+            : 'Вставьте скопированный блок в Cursor, Claude Code или Cline. Агент будет писать код напрямую в ваш репозиторий под контролем правил надежности Дмитрия Ефремова.'}
         </div>
       </div>
     {/if}
