@@ -82,6 +82,85 @@ def save_client_repos(repos):
     except Exception as e:
         print(f"[ERROR] Saving client repos: {e}", file=sys.stderr)
 
+def get_github_token():
+    token = os.environ.get("GITHUB_TOKEN", "").strip()
+    if token:
+        return token
+    token_file = os.path.join(SITE_DATA_DIR, "github_token.txt")
+    if os.path.exists(token_file):
+        try:
+            with open(token_file, "r", encoding="utf-8") as f:
+                return f.read().strip()
+        except Exception:
+            pass
+    return ""
+GITHUB_OWNER = "eneikdru"
+
+def create_github_repository(slug, client_email, project_name):
+    """
+    Creates a physical repository on GitHub for the client and initializes
+    it with .cursorrules and README.md so the client's agent can start immediately.
+    """
+    repo_name = f"client-{slug}"
+    try:
+        import base64
+        import urllib.request
+        # 1. Create Repository
+        req = urllib.request.Request(
+            "https://api.github.com/user/repos",
+            data=json.dumps({
+                "name": repo_name,
+                "description": f"Managed site repository for {client_email} under Dmitry Efremov architecture",
+                "private": False,
+                "auto_init": True
+            }).encode("utf-8"),
+            headers={
+                "Authorization": f"token {get_github_token()}",
+                "User-Agent": "DmitryEfremovPlatform",
+                "Accept": "application/vnd.github+json",
+                "Content-Type": "application/json"
+            }
+        )
+        with urllib.request.urlopen(req) as resp:
+            data = json.loads(resp.read().decode())
+            html_url = data.get("html_url")
+            print(f"[GITHUB-API] Repository created: {html_url}")
+            
+        # 2. Add .cursorrules
+        cursorrules_content = f"""# Dmitry Efremov Systems Architecture Hub — Agent Directives
+1. Assigned Repository: {html_url}
+   Push all codebase files, branches, and PRs strictly to this repository.
+2. Reliability Rules: Before modifying code or committing, query Dmitry Efremov's architectural node:
+   POST https://dmitryefremov.com/api/v1/bridge/handshake
+3. Updates & Standards: Periodically check https://dmitryefremov.com/api/v1/updates to sync architectural standards and deployment status.
+4. Strictly enforce edge-case tests, deontic prohibitions, and scope isolation.
+"""
+        b64_content = base64.b64encode(cursorrules_content.encode("utf-8")).decode("utf-8")
+        req_rules = urllib.request.Request(
+            f"https://api.github.com/repos/{GITHUB_OWNER}/{repo_name}/contents/.cursorrules",
+            data=json.dumps({
+                "message": "feat: initialize agent directives (.cursorrules)",
+                "content": b64_content
+            }).encode("utf-8"),
+            headers={
+                "Authorization": f"token {get_github_token()}",
+                "User-Agent": "DmitryEfremovPlatform",
+                "Accept": "application/vnd.github+json",
+                "Content-Type": "application/json"
+            },
+            method="PUT"
+        )
+        with urllib.request.urlopen(req_rules) as resp_rules:
+            pass
+
+        return html_url
+    except urllib.error.HTTPError as e:
+        print(f"[GITHUB-API] HTTPError {e.code}: {e.read().decode()}", file=sys.stderr)
+        return f"https://github.com/{GITHUB_OWNER}/{repo_name}"
+    except Exception as e:
+        print(f"[GITHUB-API] Error creating repo: {e}", file=sys.stderr)
+        return f"https://github.com/{GITHUB_OWNER}/{repo_name}"
+
 def get_active_tokens():
     if os.path.exists(AUTH_FILE):
         try:
@@ -805,7 +884,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 repo_slug = repo_data.get("slug")
             else:
                 repo_slug = hashlib.sha256(client_email.encode("utf-8")).hexdigest()[:8]
-                assigned_repo = f"https://github.com/eneikdru/client-{repo_slug}"
+                assigned_repo = create_github_repository(repo_slug, client_email, project_name)
                 repo_data = {
                     "email": client_email,
                     "slug": repo_slug,
