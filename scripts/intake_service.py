@@ -1,3 +1,4 @@
+from auto_deployer import deploy_client_project, get_preview_port
 #!/usr/bin/env python3
 """
 Direct Contact, Intake Message & Mini-CRM Service for Dmitry Efremov Personal Platform.
@@ -337,6 +338,49 @@ def get_aggregated_crm_data():
         "clientRepositories": list(client_repos.values()) if isinstance(client_repos, dict) else client_repos
     }
 
+
+def proxy_to_service(handler, target_base_url, subpath, method="GET", body_bytes=None):
+    import urllib.request
+    import urllib.error
+    
+    target_url = target_base_url.rstrip("/") + subpath
+    # Copy headers except hop-by-hop
+    skip_headers = {"host", "content-length", "transfer-encoding", "connection", "accept-encoding"}
+    headers = {k: v for k, v in handler.headers.items() if k.lower() not in skip_headers}
+    headers["Host"] = "127.0.0.1:18095"
+    if body_bytes:
+        headers["Content-Length"] = str(len(body_bytes))
+        
+    req = urllib.request.Request(
+        target_url,
+        data=body_bytes if method in ("POST", "PUT", "PATCH") else None,
+        headers=headers,
+        method=method
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            handler.send_response(resp.status)
+            for k, v in resp.getheaders():
+                if k.lower() not in ("transfer-encoding", "content-encoding", "server", "connection"):
+                    handler.send_header(k, v)
+            handler._send_cors_headers()
+            handler.end_headers()
+            handler.wfile.write(resp.read())
+    except urllib.error.HTTPError as e:
+        handler.send_response(e.code)
+        for k, v in e.headers.items():
+            if k.lower() not in ("transfer-encoding", "content-encoding", "server", "connection"):
+                handler.send_header(k, v)
+        handler._send_cors_headers()
+        handler.end_headers()
+        handler.wfile.write(e.read())
+    except Exception as e:
+        handler.send_response(502)
+        handler._send_cors_headers()
+        handler.send_header("Content-Type", "application/json; charset=utf-8")
+        handler.end_headers()
+        handler.wfile.write(json.dumps({"error": f"Bad Gateway: {str(e)}"}).encode("utf-8"))
+
 class IntakeHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -544,227 +588,38 @@ class IntakeHandler(BaseHTTPRequestHandler):
             }, ensure_ascii=False).encode("utf-8"))
             return
 
-        elif path.startswith("/api/preview/") or path.startswith("/api/v1/preview/"):
-            slug = path.split("/")[-1].lower()
-            repos_dict = read_client_repos()
-            matched_repo = None
-            for r in repos_dict.values():
-                if r.get("slug") == slug:
-                    matched_repo = r
-                    break
-            
-            repo_url = matched_repo.get("assigned_repo") if matched_repo else f"https://github.com/{GITHUB_OWNER}/client-{slug}"
-            
-            html_page = """<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Live Preview & Agent Handoff</title>
-  <style>
-    :root {
-      --bg: #090d16;
-      --card-bg: #111827;
-      --card-border: #1f2937;
-      --accent: #2563eb;
-      --accent-hover: #1d4ed8;
-      --success: #10b981;
-      --text: #f3f4f6;
-      --muted: #9ca3af;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      padding: 24px 16px;
-    }
-    .container { max-width: 760px; margin: 0 auto; }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
-    p.lead { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 24px;
-    }
-    .card h2 { font-size: 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-    .form-group { margin-bottom: 16px; }
-    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #e5e7eb; }
-    select, input, button {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #374151;
-      background: #1f2937;
-      color: #fff;
-      font-size: 14px;
-    }
-    button.btn-primary {
-      background: var(--accent);
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    button.btn-primary:hover { background: var(--accent-hover); }
-    .alert-success {
-      display: none;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 8px;
-      padding: 14px;
-      margin-top: 14px;
-      color: #6ee7b7;
-      font-size: 14px;
-    }
-    .handoff-box {
-      background: #0f172a;
-      border: 1px dashed #334155;
-      border-radius: 10px;
-      padding: 16px;
-      margin-top: 12px;
-    }
-    .prompt-text {
-      background: #030712;
-      border: 1px solid #1f2937;
-      border-radius: 6px;
-      padding: 12px;
-      font-family: monospace;
-      font-size: 13px;
-      color: #a5f3fc;
-      white-space: pre-wrap;
-      user-select: all;
-    }
-    .copy-btn {
-      margin-top: 10px;
-      background: #374151;
-      border: none;
-      cursor: pointer;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      width: auto;
-    }
-    a.link { color: #60a5fa; text-decoration: none; word-break: break-all; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="badge">✓ Верифицировано Архитектурным Шлюзом (Zero Double-Booking)</div>
-    <h1>Онлайн-запись в салон (Клиент __SLUG__)</h1>
-    <p class="lead">Рабочий интерактивный прототип. Каждая запись фиксируется с проверкой наложения интервалов в SQLite (BEGIN IMMEDIATE).</p>
-
-    <div class="card">
-      <h2>📅 Живая форма записи (Live Preview)</h2>
-      <div class="form-group">
-        <label>Мастер</label>
-        <select id="master">
-          <option value="m1">Елена — Ведущий стилист</option>
-          <option value="m2">Александр — Колорист</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Услуга</label>
-        <select id="service">
-          <option value="s1">Стрижка и укладка (30 мин + 15 мин буфер) — 70 лари</option>
-          <option value="s2">Сложное окрашивание (90 мин + 30 мин буфер) — 190 лари</option>
-          <option value="s3">Уход и восстановление (20 мин + 10 мин буфер) — 50 лари</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Дата и время визита</label>
-        <select id="slot">
-          <option value="2026-10-27T10:00:00+04:00">Завтра, 10:00</option>
-          <option value="2026-10-27T11:30:00+04:00">Завтра, 11:30</option>
-          <option value="2026-10-27T14:00:00+04:00">Завтра, 14:00</option>
-          <option value="2026-10-27T16:00:00+04:00">Завтра, 16:00</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Ваше имя</label>
-        <input type="text" id="client_name" value="Николай" placeholder="Иван">
-      </div>
-      <div class="form-group">
-        <label>Телефон (грузинский формат)</label>
-        <input type="text" id="client_phone" value="+995591234567" placeholder="+9955XXXXXXXX">
-      </div>
-      <button class="btn-primary" id="book_btn" onclick="submitBooking()">Записаться на приём</button>
-      
-      <div id="booking_success" class="alert-success">
-        <strong>✓ Запись успешно подтверждена!</strong>
-        <div id="booking_details" style="margin-top: 6px; font-size: 13px; color: #d1fae5;"></div>
-      </div>
-    </div>
-
-    <div class="card" style="border-color: #3b82f6;">
-      <h2>🤖 Передача вашему личному ИИ-ассистенту (A2A Handoff)</h2>
-      <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">
-        Если хотите изменить цвета, добавить услуги или правила — передайте проект вашему агенту (Cursor, ChatGPT, Claude или Aider).
-      </p>
-
-      <div class="handoff-box">
-        <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">1. Репозиторий вашего проекта на GitHub:</div>
-        <p><a class="link" href="__REPO_URL__" target="_blank">__REPO_URL__</a></p>
-        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">
-          В репозитории уже есть <strong>AGENT.md</strong>, <strong>ARCHITECTURE.md</strong>, <strong>openapi.json</strong> и 19 тестов.
-        </div>
-
-        <div style="font-size: 13px; font-weight: 600; margin-top: 16px; margin-bottom: 8px;">2. Промпт для вашего агента (скопируйте в один клик):</div>
-        <div class="prompt-text" id="agent_prompt">Я передаю тебе репозиторий моего проекта: __REPO_URL__
-В корне проекта есть AGENT.md, ARCHITECTURE.md и openapi.json со всеми инструкциями и тестами. Ознакомься со структурой и правилами.
-Мне нужно внести следующие изменения:
-[Опишите здесь своими словами, что нужно поменять]</div>
-        <button class="copy-btn" onclick="copyPrompt()">Скопировать промпт для агента</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function submitBooking() {
-      var master = document.getElementById('master').selectedOptions[0].text;
-      var service = document.getElementById('service').selectedOptions[0].text;
-      var slot = document.getElementById('slot').selectedOptions[0].text;
-      var name = document.getElementById('client_name').value;
-      var phone = document.getElementById('client_phone').value;
-
-      var details = document.getElementById('booking_details');
-      details.innerHTML = 'Клиент: <strong>' + name + ' (' + phone + ')</strong><br>Мастер: ' + master + '<br>Услуга: ' + service + '<br>Время: ' + slot + '<br><span style="color:#a7f3d0; font-size:12px;">Транзакция зафиксирована в SQLite (BEGIN IMMEDIATE). Пересечение интервалов исключено.</span>';
-      
-      var box = document.getElementById('booking_success');
-      box.style.display = 'block';
-      box.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function copyPrompt() {
-      var text = document.getElementById('agent_prompt').innerText;
-      navigator.clipboard.writeText(text).then(function() {
-        alert('Промпт скопирован в буфер обмена! Вставьте его в ваш ChatGPT, Claude или Cursor.');
-      });
-    }
-  </script>
-</body>
-</html>""".replace("__SLUG__", slug.upper()).replace("__REPO_URL__", repo_url)
-
-            self.send_response(200)
-            self._send_cors_headers()
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(html_page.encode("utf-8"))
+                # Dynamic reverse proxy for all deployed client preview services
+        m_preview = re.match(r"^/(?:api/)?(?:v1/)?preview/([a-zA-Z0-9_-]+)(.*)$", path)
+        if m_preview:
+            slug = m_preview.group(1).lower()
+            subpath = m_preview.group(2)
+            if not subpath:
+                self.send_response(307)
+                self._send_cors_headers()
+                self.send_header("Location", f"/api/preview/{slug}/")
+                self.end_headers()
+                return
+            port = get_preview_port(slug)
+            if port:
+                if parsed.query:
+                    subpath += "?" + parsed.query
+                proxy_to_service(self, f"http://127.0.0.1:{port}", subpath, method="GET")
+                return
+            else:
+                self.send_response(404)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": f"Preview environment for '{slug}' not found"}).encode("utf-8"))
+                return
+        elif path.startswith("/api/preview/3d21f94c/") or path.startswith("/api/v1/preview/3d21f94c/"):
+            prefix = "/api/preview/3d21f94c" if path.startswith("/api/preview/3d21f94c") else "/api/v1/preview/3d21f94c"
+            subpath = path[len(prefix):]
+            if not subpath:
+                subpath = "/"
+            if parsed.query:
+                subpath += "?" + parsed.query
+            proxy_to_service(self, "http://127.0.0.1:18095", subpath, method="GET")
             return
 
         elif path in ("/api/v1/bridge", "/api/v1/bridge/status", "/api/bridge"):
@@ -828,6 +683,26 @@ class IntakeHandler(BaseHTTPRequestHandler):
             return
 
         now = datetime.datetime.now(datetime.timezone.utc)
+
+                # Dynamic reverse proxy for POST requests to client previews
+        m_post_preview = re.match(r"^/(?:api/)?(?:v1/)?preview/([a-zA-Z0-9_-]+)(.*)$", self.path)
+        if m_post_preview:
+            slug = m_post_preview.group(1).lower()
+            subpath = m_post_preview.group(2) or "/"
+            port = get_preview_port(slug)
+            if port:
+                parsed_post = urllib.parse.urlparse(self.path)
+                if parsed_post.query:
+                    subpath += "?" + parsed_post.query
+                proxy_to_service(self, f"http://127.0.0.1:{port}", subpath, method="POST", body_bytes=post_data.encode("utf-8"))
+                return
+            else:
+                self.send_response(404)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": f"Preview environment for '{slug}' not found"}).encode("utf-8"))
+                return
 
         # 0. CRM Login / Authentication
         if self.path == "/api/crm/login":
@@ -1383,6 +1258,15 @@ class IntakeHandler(BaseHTTPRequestHandler):
                             committed_files.append(p)
                         except Exception as e:
                             commit_errors.append(f"{p}: {str(e)}")
+
+            # Trigger Zero-Touch Autonomous Preview Deployer
+            deploy_result = None
+            if target_repo_info and target_repo_info.get("slug") and files:
+                try:
+                    deploy_result = deploy_client_project(target_repo_info["slug"], files)
+                    print(f"[A2A-BRIDGE] Auto-deployed client preview: {deploy_result}")
+                except Exception as ex:
+                    print(f"[A2A-BRIDGE-ERROR] Auto-deploy failed: {ex}", file=sys.stderr)
 
             audit_record = {
                 "id": int(time.time() * 1000),
