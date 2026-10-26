@@ -1125,6 +1125,25 @@ class IntakeHandler(BaseHTTPRequestHandler):
                         target_repo_info = r
                         break
 
+            repo_param = (body.get("repo") or body.get("repository") or "").strip()
+            if not target_repo_info and repo_param:
+                for r in repos_dict.values():
+                    slug = r.get("slug", "")
+                    assigned = r.get("assigned_repo", "")
+                    if (slug and slug in repo_param) or (assigned and assigned.lower() in repo_param.lower()):
+                        target_repo_info = r
+                        break
+                if not target_repo_info:
+                    slug_match = re.search(r"client-([a-zA-Z0-9]+)", repo_param)
+                    if slug_match:
+                        slug = slug_match.group(1)
+                        target_repo_info = {
+                            "email": client_email or "agent@client.local",
+                            "slug": slug,
+                            "assigned_repo": f"https://github.com/{GITHUB_OWNER}/client-{slug}",
+                            "is_custom": False
+                        }
+
             committed_files = []
             commit_errors = []
             gh_token = get_github_token()
