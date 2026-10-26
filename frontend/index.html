@@ -2,14 +2,42 @@
 <html lang="ru" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>Дмитрий Ефремов — Архитектура систем, логика мышления и автономные процессы</title>
+    <meta name="description" content="Суверенный интеллектуальный узел Дмитрия Ефремова. Выпуски подкаста «Системы и реальность», онтология автономии, архитектура агентских систем и деонтическая логика." />
+    <meta name="author" content="Дмитрий Ефремов" />
+
+    <!-- Open Graph / Telegram / WhatsApp / Social Sharing Previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Дмитрий Ефремов" />
+    <meta property="og:url" content="https://dmitryefremov.com/" />
+    <meta property="og:title" content="Дмитрий Ефремов — Архитектура систем, логика мышления и автономные процессы" />
+    <meta property="og:description" content="Суверенный интеллектуальный узел. Выпуски подкаста «Системы и реальность», онтология решений, A2A-экономика и прикладная инженерия." />
+    <meta property="og:image" content="https://dmitryefremov.com/assets/og-cover.png" />
+    <meta property="og:image:secure_url" content="https://dmitryefremov.com/assets/og-cover.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Дмитрий Ефремов — Архитектура систем, логика мышления и автономные процессы" />
+    <meta property="og:locale" content="ru_RU" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@efremov_mvp" />
+    <meta name="twitter:creator" content="@efremov_mvp" />
+    <meta name="twitter:title" content="Дмитрий Ефремов — Архитектура систем, логика мышления и автономные процессы" />
+    <meta name="twitter:description" content="Суверенный интеллектуальный узел. Выпуски подкаста «Системы и реальность», онтология решений, A2A-экономика и прикладная инженерия." />
+    <meta name="twitter:image" content="https://dmitryefremov.com/assets/og-cover.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/og-cover.png" />
+
     <!-- Material Symbols Outlined -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <!-- Typography: Space Grotesk, Inter & JetBrains Mono for High-Legibility & Zero Ocular Strain -->
+    <!-- Typography: Space Grotesk, Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
     
     <script>
       tailwind = {
@@ -44,14 +72,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-      /* High-Legibility & Ergonomics */
       :root {
         --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         --font-grotesk: 'Space Grotesk', sans-serif;
         --font-mono: 'JetBrains Mono', monospace;
       }
 
-      html {
+      html, body {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+        position: relative;
         font-family: var(--font-sans);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -61,20 +92,17 @@
       }
 
       body {
-        font-family: var(--font-sans);
         letter-spacing: -0.015em;
         line-height: 1.65;
         background-color: #0c0e12;
         color: #e2e2e8;
       }
 
-      /* Eye-friendly non-glaring gold selection */
       ::selection {
         background: #d4af37;
         color: #0c0e12;
       }
 
-      /* Architectural typography hierarchy */
       h1, h2, h3, h4 {
         letter-spacing: -0.025em;
         font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
@@ -84,12 +112,10 @@
         line-height: 1.7;
       }
 
-      /* Precision hairline dividers */
       hr, .border-hairline {
         border-color: rgba(255, 255, 255, 0.08);
       }
 
-      /* Smooth custom scrollbars */
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;

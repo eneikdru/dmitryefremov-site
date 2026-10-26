@@ -218,7 +218,7 @@
   <!-- Main Grid: Available Longreads List (Left) & Full Active Article Reader (Right) -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
     <!-- Available Longreads List -->
-    <div id="longreads-list-section" class="lg:col-span-4 space-y-4">
+    <div id="longreads-list-section" class="lg:col-span-4 space-y-4 order-2 lg:order-1">
       <div class="space-y-3">
         <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
           <span class="sr-only">AVAILABLE_LONGREADS ({filteredArticles.length})</span>

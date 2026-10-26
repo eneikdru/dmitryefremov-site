@@ -4,16 +4,16 @@
   export let theme: 'dark' | 'light' = 'dark';
 
   // Stripe Checkout links (configurable)
-  export let stripeOneTimeTier1: string = 'https://buy.stripe.com/test_onetime_25';
-  export let stripeOneTimeTier2: string = 'https://buy.stripe.com/test_onetime_100';
-  export let stripeMonthlyTier1: string = 'https://buy.stripe.com/test_sub_20';
-  export let stripeMonthlyTier2: string = 'https://buy.stripe.com/test_sub_50';
+  export let stripeOneTimeTier1: string = 'https://buy.stripe.com/cNieVdbJv61a94Y6ErcIE0X';
+  export let stripeOneTimeTier2: string = 'https://buy.stripe.com/9B69AT7tf75ea920g3cIE0W';
+  export let stripeMonthlyTier1: string = 'https://buy.stripe.com/4gMaEXaFr75e4OI3sfcIE0V';
+  export let stripeMonthlyTier2: string = 'https://buy.stripe.com/fZueVdbJvexG94Y8MzcIE0U';
 
   const supportTiers = [
     {
       id: 'onetime-25',
       type: 'onetime',
-      price: '$25',
+      price: '€25',
       periodRu: 'Разовый взнос',
       periodEn: 'One-time contribution',
       periodKa: 'ერთჯერადი შენატანი',
@@ -32,7 +32,7 @@
     {
       id: 'onetime-100',
       type: 'onetime',
-      price: '$100',
+      price: '€100',
       periodRu: 'Разовый взнос',
       periodEn: 'One-time contribution',
       periodKa: 'ერთჯერადი შენატანი',
@@ -51,7 +51,7 @@
     {
       id: 'sub-20',
       type: 'subscription',
-      price: '$20',
+      price: '€20',
       periodRu: '/ месяц',
       periodEn: '/ month',
       periodKa: '/ თვე',
@@ -70,7 +70,7 @@
     {
       id: 'sub-50',
       type: 'subscription',
-      price: '$50',
+      price: '€50',
       periodRu: '/ месяц',
       periodEn: '/ month',
       periodKa: '/ თვე',

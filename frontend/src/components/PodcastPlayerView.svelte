@@ -206,9 +206,9 @@
       <div class="text-xs text-slate-400">На данный момент в системе нет опубликованных выпусков подкаста.</div>
     </div>
   {:else}
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
       <!-- Episode Catalog Rail -->
-      <div id="podcast-episodes-section" class="lg:col-span-5 space-y-3">
+      <div id="podcast-episodes-section" class="lg:col-span-5 space-y-3 order-2 lg:order-1">
         <div class="font-mono text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">
           {t($currentLanguage).catalog_title}
         </div>
@@ -244,8 +244,8 @@
 
       <!-- Active Player Console -->
       {#if currentEpisode}
-        <div id="podcast-player-section" class="lg:col-span-7 flex flex-col space-y-6">
-          <div id="podcast-player-card" class="bg-[#0d1118] text-[#e2e8f0] p-6 sm:p-8 rounded-xl border border-white/[0.08] space-y-6 shadow-2xl">
+        <div id="podcast-player-section" class="lg:col-span-7 flex flex-col space-y-6 order-1 lg:order-2">
+          <div id="podcast-player-card" class="bg-[#0d1118] text-[#e2e8f0] p-4 sm:p-6 lg:p-8 rounded-xl border border-white/[0.08] space-y-6 shadow-2xl">
             <!-- Episode Header -->
             <header id="podcast-header" class="border-b border-white/[0.08] pb-5 space-y-4">
               <div class="space-y-2">
