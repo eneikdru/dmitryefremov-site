@@ -850,6 +850,10 @@
             <span class="material-symbols-outlined text-[14px]">content_copy</span>
             <span id="copy-label">Скопировать промпт</span>
           </button>
+          <button id="copy-curl-btn" onclick="copyCurlCommand()" type="button" class="px-3 py-1 bg-surface-container-lowest border border-outline-variant/40 hover:border-primary text-secondary-fixed font-mono text-[11px] rounded transition-colors inline-flex items-center space-x-1">
+            <span class="material-symbols-outlined text-[14px]">code</span>
+            <span id="copy-curl-label">Скопировать cURL</span>
+          </button>
           <a id="api-link" href="/api/v1/canon/context?task=booking&format=json" target="_blank" class="px-3 py-1 bg-surface-container-lowest border border-outline-variant/40 hover:border-primary text-outline hover:text-on-surface font-mono text-[11px] rounded transition-colors inline-flex items-center space-x-1">
             <span class="material-symbols-outlined text-[14px]">terminal</span>
             <span>JSON API</span>
@@ -1102,6 +1106,12 @@ function copyContextPrompt() {
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('synthesizer-task')) {
     runSynthesizer();
+    let debounceTimer;
+    document.getElementById('synthesizer-task').addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(runSynthesizer, 350);
+    });
+    document.getElementById('synthesizer-budget')?.addEventListener('change', runSynthesizer);
   }
 
   const form = document.querySelector('#terminal form');
