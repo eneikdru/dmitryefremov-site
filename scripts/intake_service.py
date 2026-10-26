@@ -805,7 +805,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 repo_slug = repo_data.get("slug")
             else:
                 repo_slug = hashlib.sha256(client_email.encode("utf-8")).hexdigest()[:8]
-                assigned_repo = f"https://github.com/dmitryefremov-network/client-{repo_slug}"
+                assigned_repo = f"https://github.com/eneikdru/client-{repo_slug}"
                 repo_data = {
                     "email": client_email,
                     "slug": repo_slug,

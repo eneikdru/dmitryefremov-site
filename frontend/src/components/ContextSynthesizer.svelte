@@ -33,6 +33,16 @@
   const DEFAULT_HANDSHAKE_ENDPOINT = 'https://dmitryefremov.com/api/v1/bridge/handshake';
   const DEFAULT_UPDATES_ENDPOINT = 'https://dmitryefremov.com/api/v1/updates';
 
+  onMount(() => {
+    try {
+      const stored = localStorage.getItem('dmitry_efremov_client_repo');
+      if (stored) {
+        regResult = JSON.parse(stored);
+        if (regResult?.client_email) clientEmail = regResult.client_email;
+      }
+    } catch {}
+  });
+
   $: assignedRepoDisplay = regResult?.assigned_repo
     ? regResult.assigned_repo
     : ($currentLanguage === 'en'
@@ -42,7 +52,7 @@
         : '[Введите email выше для выделения персонального репозитория]'));
 
   $: agentSystemPromptDirective = `[PROJECT & ARCHITECTURE DIRECTIVE]:
-1. Target Repository: ${regResult?.assigned_repo || 'https://github.com/dmitryefremov-network/client-[YOUR-ID]'}
+1. Target Repository: ${regResult?.assigned_repo || 'https://github.com/eneikdru/client-[YOUR-ID]'}
    Push all codebase files, branches, and PRs strictly to this assigned repository.
 2. Reliability Rules: Before modifying code or committing, query Dmitry Efremov's architectural node:
    POST ${DEFAULT_HANDSHAKE_ENDPOINT}
@@ -80,16 +90,28 @@
 
       const data = await res.json();
       regResult = data;
+      try {
+        localStorage.setItem('dmitry_efremov_client_repo', JSON.stringify(data));
+      } catch {}
+
       successMessage = $currentLanguage === 'en'
         ? 'Dedicated repository successfully allocated and agent bridge ready.'
         : ($currentLanguage === 'ka'
           ? 'პერსონალური რეპოზიტორია წარმატებით გამოიყო, აგენტის ხიდი მზადაა.'
           : 'Персональный репозиторий успешно выделен, мост для агента активирован.');
+
+      setTimeout(() => {
+        if (typeof document !== 'undefined') {
+          const target = document.getElementById('allocated-repo-result');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      }, 80);
     } catch (err: any) {
       console.warn('Registration failed, creating local session:', err);
-      // Fallback hash allocation
       const slug = Math.random().toString(36).substring(2, 10);
-      const fallbackRepo = `https://github.com/dmitryefremov-network/client-${slug}`;
+      const fallbackRepo = `https://github.com/eneikdru/client-${slug}`;
       regResult = {
         success: true,
         client_email: email,
@@ -100,9 +122,20 @@
         agent_directive: `[PROJECT & ARCHITECTURE DIRECTIVE]:\n1. Target Repository: ${fallbackRepo}\n   Push all codebase files, branches, and PRs strictly to this assigned repository.\n2. Reliability Rules: Before modifying code or committing, query Dmitry Efremov's architectural node:\n   POST ${DEFAULT_HANDSHAKE_ENDPOINT}\n3. Updates & Standards: Periodically check ${DEFAULT_UPDATES_ENDPOINT} to sync architectural standards and deployment status.\n4. Strictly enforce edge-case tests, deontic prohibitions, and scope isolation.`,
         message: 'Local session created'
       };
+      try {
+        localStorage.setItem('dmitry_efremov_client_repo', JSON.stringify(regResult));
+      } catch {}
       successMessage = $currentLanguage === 'en'
         ? 'Repository allocated.'
         : ($currentLanguage === 'ka' ? 'რეპოზიტორია გამოყოფილია.' : 'Репозиторий выделен.');
+      setTimeout(() => {
+        if (typeof document !== 'undefined') {
+          const target = document.getElementById('allocated-repo-result');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      }, 80);
     } finally {
       isSubmitting = false;
     }
@@ -218,14 +251,54 @@
           <span>{errorMessage}</span>
         </div>
       {/if}
-
-      {#if successMessage}
-        <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 font-mono text-xs flex items-center gap-2">
-          <span class="material-symbols-outlined text-[16px]">check_circle</span>
-          <span>{successMessage}</span>
-        </div>
-      {/if}
     </form>
+
+    <!-- PROMINENT ALLOCATION SUCCESS BANNER (Auto-scroll target) -->
+    {#if regResult}
+      <div id="allocated-repo-result" class="p-6 md:p-7 rounded-2xl border-2 border-emerald-500/50 bg-gradient-to-b from-emerald-500/15 via-[#131b18] to-[#101318] space-y-5 shadow-2xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-500/30 pb-4">
+          <div class="flex items-center gap-3">
+            <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <div>
+              <div class="font-mono text-xs font-bold uppercase tracking-wider text-emerald-400">
+                {$currentLanguage === 'en' ? 'PERSONAL REPOSITORY SUCCESSFULLY ALLOCATED' : ($currentLanguage === 'ka' ? 'პერსონალური რეპოზიტორია წარმატებით გამოიყო' : 'ПЕРСОНАЛЬНЫЙ РЕПОЗИТОРИЙ УСПЕШНО ВЫДЕЛЕН')}
+              </div>
+              <div class="font-mono text-[11px] text-slate-300 mt-0.5">
+                {$currentLanguage === 'en' ? 'Attached to:' : ($currentLanguage === 'ka' ? 'მიბმულია:' : 'Закреплен за:')} <strong class="text-white">{regResult.client_email}</strong>
+              </div>
+            </div>
+          </div>
+          <span class="font-mono text-xs px-3 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 self-start sm:self-auto">
+            {regResult.session_id}
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <div class="font-mono text-xs uppercase tracking-wider text-slate-300 font-semibold">
+            {$currentLanguage === 'en' ? 'Assigned Repository URL:' : ($currentLanguage === 'ka' ? 'გამოყოფილი რეპოზიტორია:' : 'Адрес вашего репозитория:')}
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+            <a
+              href={regResult.assigned_repo}
+              target="_blank"
+              rel="noreferrer"
+              class="flex-1 p-3.5 rounded-xl bg-black/80 border border-emerald-500/50 font-mono text-sm sm:text-base text-emerald-300 font-bold hover:underline select-all truncate flex items-center gap-2"
+            >
+              <span>{regResult.assigned_repo}</span>
+              <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+            </a>
+            <button
+              type="button"
+              on:click={() => copyText(regResult?.assigned_repo || '', 'repo')}
+              class="px-5 py-3.5 rounded-xl font-mono text-xs uppercase font-bold flex items-center justify-center gap-2 transition-all cursor-pointer {copyRepoSuccess ? 'bg-emerald-400 text-black shadow-lg shadow-emerald-400/20' : 'bg-[#f2ca50] hover:bg-[#ffe072] text-[#090a0f]'}"
+            >
+              <span class="material-symbols-outlined text-[18px]">{copyRepoSuccess ? 'done' : 'content_copy'}</span>
+              <span>{copyRepoSuccess ? ($currentLanguage === 'en' ? 'Copied!' : ($currentLanguage === 'ka' ? 'დაკოპირდა!' : 'Скопировано!')) : ($currentLanguage === 'en' ? 'Copy Repo URL' : ($currentLanguage === 'ka' ? 'ლინკის კოპირება' : 'Скопировать ссылку'))}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    {/if}
 
     <!-- 2. Connection Details Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
