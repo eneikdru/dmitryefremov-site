@@ -1076,14 +1076,24 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 return
 
             import hashlib
+            task_brief = (body.get("brief") or body.get("task_brief") or body.get("task") or body.get("description") or project_name or "").strip()
             repos_dict = read_client_repos()
-            if client_email in repos_dict:
+            
+            project_slug_clean = re.sub(r'[^a-z0-9]+', '-', project_name.lower()).strip('-') if project_name else ""
+            lookup_key = f"{client_email}:{project_slug_clean}" if project_slug_clean else client_email
+            
+            if lookup_key in repos_dict:
+                repo_data = repos_dict[lookup_key]
+                assigned_repo = repo_data.get("assigned_repo")
+                repo_slug = repo_data.get("slug")
+            elif client_email in repos_dict and not project_slug_clean:
                 repo_data = repos_dict[client_email]
                 assigned_repo = repo_data.get("assigned_repo")
                 repo_slug = repo_data.get("slug")
             else:
-                repo_slug = hashlib.sha256(client_email.encode("utf-8")).hexdigest()[:8]
-                assigned_repo = create_github_repository(repo_slug, client_email, project_name, task_brief=title)
+                seed_key = f"{client_email}:{project_slug_clean}" if project_slug_clean else client_email
+                repo_slug = hashlib.sha256(seed_key.encode("utf-8")).hexdigest()[:8]
+                assigned_repo = create_github_repository(repo_slug, client_email, project_name, task_brief=task_brief)
                 repo_data = {
                     "email": client_email,
                     "slug": repo_slug,
@@ -1094,7 +1104,7 @@ class IntakeHandler(BaseHTTPRequestHandler):
                     "created_at": now.isoformat(),
                     "last_active": now.isoformat()
                 }
-                repos_dict[client_email] = repo_data
+                repos_dict[lookup_key] = repo_data
                 save_client_repos(repos_dict)
 
             session_id = f"D-EFREMOV-REPO-{now.strftime('%y%m%d')}-{repo_slug.upper()}"
