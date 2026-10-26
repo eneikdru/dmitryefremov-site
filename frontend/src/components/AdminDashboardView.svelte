@@ -106,6 +106,30 @@
     createdAt: string;
   }
 
+  interface ClientRepo {
+    email: string;
+    slug?: string;
+    projectName?: string;
+    assigned_repo: string;
+    agent_type?: string;
+    status: string;
+    created_at?: string;
+    last_active?: string;
+  }
+
+  interface AgentSessionLog {
+    id: number;
+    sessionId?: string;
+    status?: string;
+    action?: string;
+    agentType?: string;
+    repo?: string;
+    task?: string;
+    clientEmail?: string;
+    clientIp?: string;
+    createdAt?: string;
+  }
+
   interface CrmClient {
     email: string;
     name: string;
@@ -117,6 +141,11 @@
   }
 
   let clients: CrmClient[] = [];
+  let clientRepositories: ClientRepo[] = [];
+  let agentSessions: AgentSessionLog[] = [];
+  let crmTab: 'clients' | 'agents' = 'clients';
+  let editingRepoEmail: string = '';
+  let editingRepoUrl: string = '';
   let selectedClientEmail: string = '';
   let isLoadingCrm: boolean = true;
   let isAuthenticated: boolean = false;
@@ -168,6 +197,8 @@
         isAuthenticated = true;
         const data = await res.json();
         clients = data.clients || [];
+        clientRepositories = data.clientRepositories || [];
+        agentSessions = (data.agentSessions || []).slice().reverse();
         if (clients.length > 0 && !selectedClientEmail) {
           selectedClientEmail = clients[0].email;
         }
@@ -191,6 +222,27 @@
   function handleLogout() {
     localStorage.removeItem('crm_auth_key');
     isAuthenticated = false;
+  }
+
+  async function saveClientRepo(email: string) {
+    if (!editingRepoUrl.trim()) return;
+    const key = getStoredKey();
+    try {
+      const res = await fetch('/api/crm/update-repo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(key ? { 'X-CRM-Key': key } : {})
+        },
+        body: JSON.stringify({ email, assigned_repo: editingRepoUrl.trim() })
+      });
+      if (res.ok) {
+        editingRepoEmail = '';
+        await loadCrmData();
+      }
+    } catch (e) {
+      console.error('Failed to update repo', e);
+    }
   }
 
   async function updateStatus(clientEmail: string, newStatus: string) {
@@ -581,6 +633,25 @@
         </div>
       </div>
 
+      <!-- Top Workstation Tab Switcher -->
+      <div class="flex items-center gap-2 border-b {theme === 'dark' ? 'border-white/10' : 'border-slate-200'} pb-3 mb-4">
+        <button
+          type="button"
+          on:click={() => (crmTab = 'clients')}
+          class="px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer {crmTab === 'clients' ? (theme === 'dark' ? 'bg-[#181b22] text-amber-300 border border-amber-400/40 shadow-sm' : 'bg-slate-200 text-slate-900 border border-slate-300') : 'text-slate-400 hover:text-white'}"
+        >
+          КЛИЕНТЫ И ДИАЛОГИ ({clients.length})
+        </button>
+        <button
+          type="button"
+          on:click={() => (crmTab = 'agents')}
+          class="px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer {crmTab === 'agents' ? (theme === 'dark' ? 'bg-[#181b22] text-amber-300 border border-amber-400/40 shadow-sm' : 'bg-slate-200 text-slate-900 border border-slate-300') : 'text-slate-400 hover:text-white'}"
+        >
+          ВЗАИМОДЕЙСТВИЕ АГЕНТОВ И РЕПОЗИТОРИИ ({clientRepositories.length})
+        </button>
+      </div>
+
+      {#if crmTab === 'clients'}
       <!-- Mobile Segmented View Switcher -->
       <div class="sm:hidden flex border rounded-lg p-1 {theme === 'dark' ? 'border-white/10 bg-[#12161f]' : 'border-slate-300 bg-slate-100'}">
         <button
@@ -825,6 +896,164 @@
                     {/each}
                   </div>
                 </div>
+              </div>
+            {/if}
+          </div>
+        </div>
+      {/if}
+      {:else}
+        <!-- Agents & Dedicated Repositories View -->
+        <div class="space-y-6">
+          <!-- 1. Client Dedicated Repositories -->
+          <div class="p-6 rounded-xl border space-y-4 {theme === 'dark' ? 'bg-[#101520] border-white/10' : 'bg-white border-slate-200'}">
+            <div class="flex items-center justify-between border-b pb-3 {theme === 'dark' ? 'border-white/10' : 'border-slate-200'}">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-amber-400 text-[18px]">folder_special</span>
+                <h3 class="font-mono text-sm font-bold uppercase tracking-wider text-white">ВЫДЕЛЕННЫЕ КЛИЕНТСКИЕ РЕПОЗИТОРИИ</h3>
+              </div>
+              <span class="font-mono text-xs px-2.5 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20 font-bold">
+                {clientRepositories.length} РЕПОЗИТОРИЕВ
+              </span>
+            </div>
+
+            {#if clientRepositories.length === 0}
+              <div class="py-8 text-center text-slate-400 font-mono text-xs">
+                Пока нет запросов на выделение репозиториев.
+              </div>
+            {:else}
+              <div class="overflow-x-auto">
+                <table class="w-full text-left font-mono text-xs">
+                  <thead>
+                    <tr class="border-b border-white/10 text-slate-400 text-[11px] uppercase tracking-wider">
+                      <th class="py-2.5 px-3">Email клиента</th>
+                      <th class="py-2.5 px-3">Проект / Агент</th>
+                      <th class="py-2.5 px-3">Выделенный репозиторий</th>
+                      <th class="py-2.5 px-3">Статус</th>
+                      <th class="py-2.5 px-3 text-right">Дата</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-white/5">
+                    {#each clientRepositories as repo}
+                      <tr class="hover:bg-white/[0.02] transition-colors">
+                        <td class="py-3 px-3 font-semibold text-white">{repo.email}</td>
+                        <td class="py-3 px-3 text-slate-300">{repo.projectName || repo.agent_type || '—'}</td>
+                        <td class="py-3 px-3">
+                          {#if editingRepoEmail === repo.email}
+                            <div class="flex items-center gap-2">
+                              <input
+                                type="text"
+                                bind:value={editingRepoUrl}
+                                class="px-2 py-1 rounded bg-black/60 border border-amber-400/40 text-white font-mono text-xs w-72"
+                              />
+                              <button
+                                type="button"
+                                on:click={() => saveClientRepo(repo.email)}
+                                class="px-2.5 py-1 rounded bg-amber-400 text-black font-bold text-[11px] uppercase"
+                              >
+                                Сохранить
+                              </button>
+                              <button
+                                type="button"
+                                on:click={() => (editingRepoEmail = '')}
+                                class="px-2 py-1 rounded bg-white/10 text-slate-300 text-[11px]"
+                              >
+                                Отмена
+                              </button>
+                            </div>
+                          {:else}
+                            <div class="flex items-center gap-2">
+                              <a
+                                href={repo.assigned_repo}
+                                target="_blank"
+                                rel="noreferrer"
+                                class="text-amber-400 hover:underline flex items-center gap-1"
+                              >
+                                <span>{repo.assigned_repo}</span>
+                                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+                              </a>
+                              <button
+                                type="button"
+                                on:click={() => {
+                                  editingRepoEmail = repo.email;
+                                  editingRepoUrl = repo.assigned_repo;
+                                }}
+                                class="px-2 py-0.5 rounded border border-white/10 text-slate-400 hover:text-white text-[10px]"
+                                title="Переназначить репозиторий"
+                              >
+                                Изменить
+                              </button>
+                            </div>
+                          {/if}
+                        </td>
+                        <td class="py-3 px-3">
+                          <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            {repo.status || 'ACTIVE'}
+                          </span>
+                        </td>
+                        <td class="py-3 px-3 text-right text-slate-400 text-[11px]">
+                          {repo.created_at ? new Date(repo.created_at).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' }) : '—'}
+                        </td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              </div>
+            {/if}
+          </div>
+
+          <!-- 2. Agent Telemetry & Interaction Feed -->
+          <div class="p-6 rounded-xl border space-y-4 {theme === 'dark' ? 'bg-[#101520] border-white/10' : 'bg-white border-slate-200'}">
+            <div class="flex items-center justify-between border-b pb-3 {theme === 'dark' ? 'border-white/10' : 'border-slate-200'}">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400 text-[18px]">hub</span>
+                <h3 class="font-mono text-sm font-bold uppercase tracking-wider text-white">ТЕЛЕМЕТРИЯ ВЗАИМОДЕЙСТВИЯ АГЕНТОВ</h3>
+              </div>
+              <span class="font-mono text-xs text-slate-400">
+                Всего событий: <strong class="text-white">{agentSessions.length}</strong>
+              </span>
+            </div>
+
+            {#if agentSessions.length === 0}
+              <div class="py-8 text-center text-slate-400 font-mono text-xs">
+                Нет зарегистрированных обращений агентов.
+              </div>
+            {:else}
+              <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
+                <table class="w-full text-left font-mono text-xs">
+                  <thead class="sticky top-0 bg-[#0c0f16]">
+                    <tr class="border-b border-white/10 text-slate-400 text-[11px] uppercase tracking-wider">
+                      <th class="py-2.5 px-3">Время</th>
+                      <th class="py-2.5 px-3">Агент / IP</th>
+                      <th class="py-2.5 px-3">Действие</th>
+                      <th class="py-2.5 px-3">Контекст / Задача / Репо</th>
+                      <th class="py-2.5 px-3">Статус</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-white/5">
+                    {#each agentSessions as session}
+                      <tr class="hover:bg-white/[0.02] transition-colors">
+                        <td class="py-3 px-3 text-slate-400 whitespace-nowrap">
+                          {session.createdAt ? new Date(session.createdAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '—'}
+                        </td>
+                        <td class="py-3 px-3">
+                          <div class="font-bold text-white">{session.agentType || 'Generic AI Agent'}</div>
+                          <div class="text-[10px] text-slate-400">{session.clientIp || '127.0.0.1'}</div>
+                        </td>
+                        <td class="py-3 px-3">
+                          <span class="px-2 py-0.5 rounded text-[10px] font-bold {session.action === 'REPO_ALLOCATED' ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' : (session.action === 'UPDATES_POLLED' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30')}">
+                            {session.action || 'HANDSHAKE'}
+                          </span>
+                        </td>
+                        <td class="py-3 px-3 text-slate-300 max-w-xs truncate" title={session.task || session.repo || ''}>
+                          {session.task || session.repo || '—'}
+                        </td>
+                        <td class="py-3 px-3">
+                          <span class="text-emerald-400 font-semibold">{session.status || 'OK'}</span>
+                        </td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
               </div>
             {/if}
           </div>
