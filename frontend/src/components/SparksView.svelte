@@ -3,9 +3,11 @@
   import { currentLanguage } from '../lib/i18n';
   import {
     fetchSparksFromApi,
+    getLocalizedSpark,
     filterSparks,
     toggleSparkFire,
     toggleSparkBookmark,
+    splitSparkLinks,
     SPARK_CATEGORIES,
     type SparkItem
   } from '../lib/sparks';
@@ -27,7 +29,8 @@
   let isSearchVisible: boolean = false;
   let isAudioPlaying: Record<string, boolean> = {};
 
-  $: filteredSparks = filterSparks(sparks, selectedCategory, searchQuery);
+  $: localizedSparks = sparks.map(spark => getLocalizedSpark(spark, $currentLanguage));
+  $: filteredSparks = filterSparks(localizedSparks, selectedCategory, searchQuery);
 
   function selectCategory(category: string) {
     selectedCategory = category;
@@ -181,7 +184,7 @@
 
             <!-- Card Body / Quantized Thought Text -->
             <div class="space-y-3 font-sans text-sm leading-relaxed {theme === 'dark' ? 'text-[#e2e2e8]' : 'text-[#1e293b]'}">
-              <p class="whitespace-pre-wrap">{spark.body}</p>
+              <p class="whitespace-pre-wrap break-words">{#each splitSparkLinks(spark.body) as seg}{#if seg.type === 'link'}<a href={seg.href} target="_blank" rel="noopener noreferrer" class="underline decoration-1 underline-offset-2 transition-colors {theme === 'dark' ? 'text-[#C9A461] hover:text-[#EAE6DF]' : 'text-[#8C2D19] hover:text-[#151514]'}">{seg.value}</a>{:else}{seg.value}{/if}{/each}</p>
 
               <!-- Theorem Contrast Layout -->
               {#if spark.type === 'theorem' && spark.theoremContrast}

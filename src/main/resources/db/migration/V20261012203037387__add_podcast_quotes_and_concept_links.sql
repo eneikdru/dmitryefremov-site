@@ -13,6 +13,11 @@ CREATE TABLE IF NOT EXISTS podcast_quotes (
 
 CREATE INDEX IF NOT EXISTS idx_podcast_quotes_episode_id ON podcast_quotes(episode_id);
 
+-- PostgreSQL cannot insert a column into an existing view with
+-- CREATE OR REPLACE VIEW: it interprets the shifted columns as renames.
+-- Recreate this compatibility view explicitly after the table change.
+DROP VIEW IF EXISTS episodes;
+
 CREATE OR REPLACE VIEW episodes AS
 SELECT
     id,

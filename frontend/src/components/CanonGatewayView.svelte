@@ -21,6 +21,7 @@
   let expandedSchemas: Record<string, boolean> = { 'route-wellknown-json': true };
   let routeTestData: Record<string, string> = {};
   let routeStatusMap: Record<string, boolean> = {
+    'route-memorilla-slots': true,
     'route-lore-summary': true,
     'route-wellknown-json': true,
     'route-agent-orders': true,
@@ -67,7 +68,16 @@
   }
 
   async function testRoute(route: CanonRoute) {
-    if (route.path === '/llms.txt') {
+    if (route.id === 'route-memorilla-slots' || route.path.startsWith('/api/v1/memorilla')) {
+      try {
+        const res = await fetch('/api/v1/memorilla?q=autonomous+architecture+popper+dennett&k=16');
+        const json = await res.json();
+        routeTestData[route.id] = JSON.stringify(json, null, 2).slice(0, 1200) + '\n...';
+      } catch {
+        routeTestData[route.id] = '{"status": "MEMORILLA_LATENT_SLOTS_READY", "k_slots": 16}';
+      }
+      expandedSchemas[route.id] = true;
+    } else if (route.path === '/llms.txt') {
       const text = await fetchLlmsTxt();
       routeTestData[route.id] = text.slice(0, 300) + '...';
       expandedSchemas[route.id] = true;

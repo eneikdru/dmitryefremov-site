@@ -9,12 +9,61 @@
       "endpoint": "https://dmitryefremov.com/api/intake",
       "method": "POST",
       "format": "application/json",
-      "fields": ["name", "email", "message"]
+      "fields": [
+        "name",
+        "email",
+        "message"
+      ]
     },
     "llms_documentation": {
       "endpoint": "https://dmitryefremov.com/llms.txt",
       "method": "GET",
       "format": "text/markdown"
+    },
+    "a2a_bridge_handshake": {
+      "endpoint": "https://dmitryefremov.com/api/v1/bridge/handshake",
+      "method": "POST",
+      "format": "application/json",
+      "fields": [
+        "agent_type",
+        "repo",
+        "task",
+        "token_budget",
+        "client_email"
+      ],
+      "discovery": "GET https://dmitryefremov.com/api/v1/bridge/handshake?task={task} returns contract preview and binding instructions",
+      "returns": [
+        "session_id",
+        "contract_markdown",
+        "activated_nodes",
+        "webhook_verify_url"
+      ]
+    },
+    "a2a_bridge_verify": {
+      "endpoint": "https://dmitryefremov.com/api/v1/bridge/verify?session={session_id}",
+      "method": "GET, POST",
+      "format": "application/json"
+    },
+    "memorilla_latent_semantic_memory": {
+      "endpoint": "https://dmitryefremov.com/api/v1/memorilla",
+      "method": "GET",
+      "query_params": [
+        "q",
+        "k",
+        "format"
+      ],
+      "default_k_slots": 16,
+      "description": "Stanford Memorilla (arXiv:2610.21375) two-stage latent semantic memory: returns K=16 query-conditioned orthogonal memory slots across 78 philosophical programming patterns, 5 essays, and 5 podcasts with 98% token compression."
+    },
+    "canon_context_slice": {
+      "endpoint": "https://dmitryefremov.com/api/v1/canon/context",
+      "method": "GET",
+      "query_params": [
+        "task",
+        "budget",
+        "format"
+      ],
+      "description": "Synthesizes tailored architectural contract and K=16 Memorilla slots in Markdown or JSON."
     }
   }
 }

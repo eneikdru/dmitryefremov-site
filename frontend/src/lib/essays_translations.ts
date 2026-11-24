@@ -1,10 +1,16 @@
+import { SMART_COMPANIES_ESSAY_EN } from './smart_companies_essay';
+
 export interface LocalizedEssayContent {
   title: string;
   summary: string;
   contentMarkdown: string;
+  imageUrl?: string;
 }
 
-export const ESSAYS_TRANSLATIONS: Record<string, { en: LocalizedEssayContent; ka: LocalizedEssayContent }> = {
+export const ESSAYS_TRANSLATIONS: Record<string, Partial<Record<'en' | 'ka', LocalizedEssayContent>>> = {
+  'smart-companies-foolish-speeches': {
+    en: SMART_COMPANIES_ESSAY_EN
+  },
   '01-ruth-barcan-marcus': {
     en: {
       title: '«Why Neural Networks Confuse Database Entities Even When Table Schemas Are Fully Described»',

@@ -24,8 +24,22 @@ public class SparkService {
         this.telegramSparkMapper = telegramSparkMapper;
     }
 
+    private boolean isPromoAnnouncement(String content) {
+        if (content == null) return false;
+        String lower = content.toLowerCase();
+        if (lower.contains("#spark") || lower.contains("#pattern")) {
+            return false;
+        }
+        return lower.contains("youtube.com/shorts/")
+                || lower.contains("фрагмент выпуска")
+                || lower.contains("полный выпуск:");
+    }
+
     public SparkDto processTelegramWebhook(String rawJsonPayload) {
         Spark mappedSpark = telegramSparkMapper.mapTelegramPayload(rawJsonPayload);
+        if (isPromoAnnouncement(mappedSpark.getContent())) {
+            return null;
+        }
         Spark sparkToSave = mappedSpark;
 
         if (mappedSpark.getTelegramMessageId() != null) {

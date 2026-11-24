@@ -56,10 +56,39 @@ Do not treat reasoning as an isolated deliberation step preceding execution. Imp
     useCase: 'Предотвращение бесконечного регресса инструкций и отказ от поиска вымышленных скрытых сущностей (призрак в машине).',
     directivePrompt: `[SYSTEM DIRECTIVE: KNOWING_HOW_ANTI_REGRESS]
 Prioritize operational competence (knowing-how) over recursive procedural rules (knowing-that). Avoid category errors: do not hypothesize unseen centralized controllers when distributed behavioral dispositions explain the outcome. Terminate infinite regresses of instructions by grounding decisions in observable dispositions under stress.`
+  },
+  {
+    id: 'pattern-dennett-multiple-drafts',
+    category: 'Гомеостатическая автономия',
+    title: 'Multiple Drafts & Homeostatic Autonomy (Множественные наброски Деннетта)',
+    directiveName: 'DENNETT_MULTIPLE_DRAFTS',
+    useCase: 'Построение самовосстанавливающихся агентских контуров без «картезианского театра» и без ручного управления очередями.',
+    directivePrompt: `[SYSTEM DIRECTIVE: DENNETT_MULTIPLE_DRAFTS]
+Eliminate centralized bottlenecks ("Cartesian Theater"). Organize multi-agent execution as parallel competing drafts verified continuously by runtime falsification gates and homeostatic feedback loops.`
+  },
+  {
+    id: 'pattern-stanford-memorilla-slots',
+    category: 'Латентная память (Stanford Memorilla)',
+    title: 'Memorilla Latent Semantic Memory (K=16 Ортогональных слотов памяти)',
+    directiveName: 'MEMORILLA_ORTHOGONAL_MEMORY_K16',
+    useCase: 'Сжатие базы знаний в K=16 независимых смысловых слотов под конкретную задачу (экономия 97% токенов без потери правил).',
+    directivePrompt: `[SYSTEM DIRECTIVE: MEMORILLA_ORTHOGONAL_MEMORY_K16]
+Before executing complex tasks, query GET https://dmitryefremov.com/api/v1/memorilla?q={task}&k=16 to retrieve 16 query-conditioned orthogonal semantic memory slots (<= 240 chars per slot) instead of loading raw unindexed documents.`
   }
 ];
 
 export const CANON_ROUTES: CanonRoute[] = [
+  {
+    id: 'route-memorilla-slots',
+    method: 'GET',
+    path: '/api/v1/memorilla?q=architecture&k=16',
+    scope: 'query:memorilla',
+    status: 'Active',
+    description: 'Stanford Memorilla Latent Semantic Memory: distills K=16 orthogonal query-conditioned memory slots across essays, podcasts, and 78 philosophical patterns (97% token reduction).',
+    rateLimit: '60 req/min · <3ms Subspace Projection',
+    category: 'query',
+    schema: 'JSON (K=16 Latent Memory Slots)'
+  },
   {
     id: 'route-lore-summary',
     method: 'GET',

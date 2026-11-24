@@ -7,16 +7,9 @@
   import { fetchSparksFromApi } from '../lib/sparks';
   import ResponsivePicture from './ResponsivePicture.svelte';
   import SeoMeta from './SeoMeta.svelte';
+  import { SMART_COMPANIES_EN_PATH, SMART_COMPANIES_ESSAY_ID, SMART_COMPANIES_RU_PATH } from '../lib/smart_companies_essay';
 
-  export interface Article {
-    id: string;
-    title: string;
-    topic: 'deontic' | 'toc' | 'autonomous' | 'systems';
-    readTime: string;
-    publishedAt: string;
-    summary: string;
-    contentMarkdown: string;
-  }
+  export type Article = EssayArticleItem;
 
   export interface SparkItem {
     id: string | number;
@@ -33,14 +26,20 @@
   export let sparks: SparkItem[] = [];
   export let selectedArticleId: string | undefined = undefined;
   export let filterTopic: 'all' | 'deontic' | 'toc' | 'autonomous' | 'systems' = 'all';
+  export let theme: 'dark' | 'light' = 'light';
 
   let scrollContainer: HTMLElement;
   let trackedThresholds: Set<number> = new Set();
   let currentPercentage = 0;
   let loggedEvents: TelemetryEvent[] = [];
+  let isCatalogLoading = articles === INITIAL_ESSAYS;
 
   $: localizedArticles = articles.map(a => getLocalizedEssay(a, $currentLanguage));
-  $: selectedArticle = localizedArticles.find(a => a.id === selectedArticleId || a.slug === selectedArticleId) || localizedArticles[0] || null;
+  $: selectedArticle = selectedArticleId ? (localizedArticles.find(a => a.id === selectedArticleId || a.slug === selectedArticleId) || null) : (localizedArticles[0] || null);
+  $: isSmartCompaniesEssay = selectedArticle?.id === SMART_COMPANIES_ESSAY_ID;
+  $: articleUrl = isSmartCompaniesEssay
+    ? `https://dmitryefremov.com${$currentLanguage === 'ru' ? SMART_COMPANIES_RU_PATH : SMART_COMPANIES_EN_PATH}`
+    : `https://dmitryefremov.com/article/${selectedArticle?.id || ''}`;
     function stripLeadingH1(markdown: string): string {
     if (!markdown) return '';
     return markdown.replace(/^\s*#\s+[^\n]+(?:\r?\n|$)/, '');
@@ -52,7 +51,7 @@
     : localizedArticles.filter(a => a.topic === filterTopic);
 
   function getArticle(id: string): Article | null {
-    return localizedArticles.find(a => a.id === id) || localizedArticles[0] || null;
+    return localizedArticles.find(a => a.id === id || a.slug === id) || null;
   }
 
   function handleArticleSelect(id: string) {
@@ -112,12 +111,12 @@
   ];
 
   onMount(async () => {
-    if (articles.length === 0) {
-      const fetchedEssays = await fetchEssaysFromApi();
-      if (fetchedEssays && fetchedEssays.length > 0) {
-        articles = fetchedEssays;
-      } else {
-        articles = DEFAULT_FALLBACK_ARTICLES;
+    if (isCatalogLoading) {
+      try {
+        const fetchedEssays = await fetchEssaysFromApi();
+        if (fetchedEssays && fetchedEssays.length > 0) articles = fetchedEssays;
+      } finally {
+        isCatalogLoading = false;
       }
     }
     if (sparks.length === 0) {
@@ -153,46 +152,78 @@
   });
 </script>
 
+{#if isCatalogLoading}
+  <div role="status" aria-live="polite" class="px-4 py-12 text-center {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+    {$currentLanguage === 'ka' ? 'იტვირთება…' : $currentLanguage === 'en' ? 'Loading…' : 'Загрузка…'}
+  </div>
+{:else if selectedArticleId && !selectedArticle}
+  <div id="article-not-found" class="flex flex-col items-center justify-center min-h-[50vh] px-4 text-center">
+    <div class="px-3 py-1 rounded-sm border text-xs mb-4 {theme === 'dark' ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-[#F1EFE9] border-[#8C2D19]/30 text-[#8C2D19]'}">
+      HTTP 404
+    </div>
+    <h2 class="font-serif text-3xl font-medium mb-2 {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">Материал не найден</h2>
+    <p class="text-sm max-w-md mb-6 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+      Запрошенное эссе «{selectedArticleId}» отсутствует в публичном реестре публикаций.
+    </p>
+    <button
+      on:click={() => { selectedArticleId = undefined; if (typeof window !== 'undefined') window.history.pushState({}, '', '/essays'); }}
+      class="text-sm px-5 py-2.5 rounded-sm font-medium transition-colors cursor-pointer {theme === 'dark' ? 'bg-[#C9A461] text-[#141413] hover:bg-[#d8b573]' : 'bg-[#8C2D19] text-[#FAF8F4] hover:bg-[#702313]'}"
+    >
+      ← Все публикации
+    </button>
+  </div>
+{:else}
 {#if selectedArticle}
   <SeoMeta
     title="{selectedArticle.title} | Дмитрий Ефремов"
     description={selectedArticle.summary}
     type="article"
-    url="https://dmitryefremov.com/article/{selectedArticle.id}"
+    url={articleUrl}
+    imageUrl={selectedArticle.imageUrl}
+    imageAlt={selectedArticle.title}
+    locale={$currentLanguage === 'ru' ? 'ru_RU' : 'en_US'}
+    alternateEnUrl={isSmartCompaniesEssay ? `https://dmitryefremov.com${SMART_COMPANIES_EN_PATH}` : undefined}
+    alternateRuUrl={isSmartCompaniesEssay ? `https://dmitryefremov.com${SMART_COMPANIES_RU_PATH}` : undefined}
     publishedAt={selectedArticle.publishedAt}
     keywords={[selectedArticle.topic, 'Архитектура систем', 'Деонтическая логика', 'Автономные процессы']}
   />
 {/if}
 
-<div id="article-stream-container" class="space-y-6">
-  <!-- Section Header & Filter Options -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
+<div id="article-stream-container" class="space-y-8 font-sans">
+  <!-- Section Header & Editorial Topic Filters -->
+  <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 border-b pb-5 {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}">
     <div>
-      <h2 class="text-xl font-bold tracking-tight text-white">
+      <h2 class="font-serif text-3xl sm:text-4xl font-medium tracking-[-0.02em] leading-[1.15] {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">
         <span class="sr-only">Articles & Thought Stream</span>
         <span>{t($currentLanguage).articles_title}</span>
       </h2>
     </div>
 
     <!-- Topic Filters -->
-    <div class="flex flex-wrap gap-1.5 font-mono text-xs" role="toolbar" aria-label="Article Topic Filters">
+    <div class="flex flex-wrap gap-2 text-xs font-sans" role="toolbar" aria-label="Article Topic Filters">
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'all' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
+        class="px-3 py-1.5 rounded-sm border transition-colors cursor-pointer {filterTopic === 'all'
+          ? (theme === 'dark' ? 'bg-[#C9A461] text-[#141413] border-[#C9A461] font-medium' : 'bg-[#8C2D19] text-[#FAF8F4] border-[#8C2D19] font-medium')
+          : (theme === 'dark' ? 'bg-transparent text-[#a8a398] border-white/10 hover:text-[#EAE6DF]' : 'bg-transparent text-[#57554F] border-[#E2DFD7] hover:text-[#151514] hover:border-[#151514]/30')}"
         on:click={() => (filterTopic = 'all')}
       >
         <span>{t($currentLanguage).articles_all_topics}</span>
       </button>
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'deontic' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
+        class="px-3 py-1.5 rounded-sm border transition-colors cursor-pointer {filterTopic === 'deontic'
+          ? (theme === 'dark' ? 'bg-[#C9A461] text-[#141413] border-[#C9A461] font-medium' : 'bg-[#8C2D19] text-[#FAF8F4] border-[#8C2D19] font-medium')
+          : (theme === 'dark' ? 'bg-transparent text-[#a8a398] border-white/10 hover:text-[#EAE6DF]' : 'bg-transparent text-[#57554F] border-[#E2DFD7] hover:text-[#151514] hover:border-[#151514]/30')}"
         on:click={() => (filterTopic = 'deontic')}
       >
         <span>{t($currentLanguage).articles_deontic}</span>
       </button>
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'toc' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
+        class="px-3 py-1.5 rounded-sm border transition-colors cursor-pointer {filterTopic === 'toc'
+          ? (theme === 'dark' ? 'bg-[#C9A461] text-[#141413] border-[#C9A461] font-medium' : 'bg-[#8C2D19] text-[#FAF8F4] border-[#8C2D19] font-medium')
+          : (theme === 'dark' ? 'bg-transparent text-[#a8a398] border-white/10 hover:text-[#EAE6DF]' : 'bg-transparent text-[#57554F] border-[#E2DFD7] hover:text-[#151514] hover:border-[#151514]/30')}"
         on:click={() => (filterTopic = 'toc')}
       >
         <span class="sr-only">Theory of Constraints</span>
@@ -200,14 +231,18 @@
       </button>
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'autonomous' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
+        class="px-3 py-1.5 rounded-sm border transition-colors cursor-pointer {filterTopic === 'autonomous'
+          ? (theme === 'dark' ? 'bg-[#C9A461] text-[#141413] border-[#C9A461] font-medium' : 'bg-[#8C2D19] text-[#FAF8F4] border-[#8C2D19] font-medium')
+          : (theme === 'dark' ? 'bg-transparent text-[#a8a398] border-white/10 hover:text-[#EAE6DF]' : 'bg-transparent text-[#57554F] border-[#E2DFD7] hover:text-[#151514] hover:border-[#151514]/30')}"
         on:click={() => (filterTopic = 'autonomous')}
       >
         <span>{$currentLanguage === 'ru' ? 'Автономные системы' : ($currentLanguage === 'ka' ? 'ავტონომიური სისტემები' : 'Autonomous Systems')}</span>
       </button>
       <button
         type="button"
-        class="px-2.5 py-1 rounded border transition-colors {filterTopic === 'systems' ? 'bg-amber-400 text-black font-extrabold border-amber-400' : 'bg-[#0d1118] text-[#94a3b8] border-white/[0.08] hover:text-white'}"
+        class="px-3 py-1.5 rounded-sm border transition-colors cursor-pointer {filterTopic === 'systems'
+          ? (theme === 'dark' ? 'bg-[#C9A461] text-[#141413] border-[#C9A461] font-medium' : 'bg-[#8C2D19] text-[#FAF8F4] border-[#8C2D19] font-medium')
+          : (theme === 'dark' ? 'bg-transparent text-[#a8a398] border-white/10 hover:text-[#EAE6DF]' : 'bg-transparent text-[#57554F] border-[#E2DFD7] hover:text-[#151514] hover:border-[#151514]/30')}"
         on:click={() => (filterTopic = 'systems')}
       >
         <span>{$currentLanguage === 'ru' ? 'Архитектура систем' : ($currentLanguage === 'ka' ? 'სისტემების არქიტექტურა' : 'Systems Architecture')}</span>
@@ -215,48 +250,51 @@
     </div>
   </div>
 
-  <!-- Main Grid: Available Longreads List (Left) & Full Active Article Reader (Right) -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+  <!-- Main Grid: Essay Index (Left) & Long-Form Journal Reader (Right) -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
     <!-- Available Longreads List -->
     <div id="longreads-list-section" class="lg:col-span-4 space-y-4 order-2 lg:order-1">
       <div class="space-y-3">
-        <div class="text-xs font-mono text-[#94a3b8] flex justify-between items-center mb-2">
+        <div class="text-xs font-sans flex justify-between items-center mb-3 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
           <span class="sr-only">AVAILABLE_LONGREADS ({filteredArticles.length})</span>
-          <span class="font-medium text-white uppercase tracking-wider">
+          <span class="font-medium">
             {$currentLanguage === 'ru' ? 'Каталог эссе' : ($currentLanguage === 'ka' ? 'ესეების კატალოგი' : 'Essay Catalog')}
           </span>
           <span class="sr-only">SELECT_TO_READ</span>
         </div>
 
         {#if filteredArticles.length === 0}
-          <div id="articles-empty-state" class="p-8 text-center rounded-xl border border-dashed border-white/[0.08] bg-[#080a0e] font-mono text-sm text-[#94a3b8]">
+          <div id="articles-empty-state" class="p-8 text-center rounded-sm border border-dashed text-sm {theme === 'dark' ? 'border-white/15 bg-[#1c1b18] text-[#a8a398]' : 'border-[#E2DFD7] bg-[#F1EFE9] text-[#57554F]'}">
             {$currentLanguage === 'ru' ? 'Эссе и публикации отсутствуют' : ($currentLanguage === 'ka' ? 'ესეები და პუბლიკაციები არ არის' : 'No essays or publications available')}
           </div>
         {:else}
-          <div class="space-y-3" role="list" aria-label="Available Longreads">
+          <div class="border-t divide-y {theme === 'dark' ? 'border-white/10 divide-white/10' : 'border-[#E2DFD7] divide-[#E2DFD7]'}" role="list" aria-label="Available Longreads">
             {#each filteredArticles as article}
+              {@const isSelected = selectedArticleId === article.id}
               <button
                 type="button"
-                class="article-card w-full p-4 rounded-xl border transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-amber-400 {selectedArticleId === article.id ? 'bg-[#0d1118] border-amber-400/60 shadow-xl ring-1 ring-amber-400/20' : 'bg-[#080a0e] border-white/[0.08] hover:border-amber-400/50/50 hover:bg-[#0d1118]/50'}"
+                class="article-card w-full py-5 px-4 border-l-2 transition-colors cursor-pointer text-left focus:outline-none {isSelected
+                  ? (theme === 'dark' ? 'bg-[#1c1b18] border-l-[#C9A461]' : 'bg-[#F1EFE9] border-l-[#8C2D19]')
+                  : (theme === 'dark' ? 'border-l-transparent hover:bg-[#1c1b18]/60' : 'border-l-transparent hover:bg-[#F1EFE9]/60')}"
                 on:click={() => handleArticleSelect(article.id)}
               >
-                <div class="flex justify-between items-center text-xs font-mono mb-2">
-                  <span class="px-2 py-0.5 rounded bg-[#1f2433] text-amber-400 uppercase text-[10px] font-bold tracking-wider">
+                <div class="flex justify-between items-center text-xs mb-1.5">
+                  <span class="font-medium {theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]'}">
                     {article.topic}
                   </span>
-                  <span class="text-[#64748b] text-[11px]">{article.readTime}</span>
+                  <span class="{theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">{article.readTime}</span>
                 </div>
-                <h3 class="font-bold text-white text-sm mb-1.5 hover:text-amber-300 transition-colors leading-snug">
+                <h3 class="font-serif text-lg font-medium mb-1.5 leading-snug {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">
                   {article.title}
                 </h3>
-                <p class="text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
+                <p class="text-xs line-clamp-2 leading-relaxed {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
                   {article.summary}
                 </p>
-                <div class="mt-3 text-[11px] font-mono flex justify-between items-center">
-                  <span class="text-[#64748b]">{article.publishedAt}</span>
-                  <span class="font-medium {selectedArticleId === article.id ? 'text-amber-400' : 'text-[#64748b]'}">
-                    {selectedArticleId === article.id 
-                      ? ($currentLanguage === 'ru' ? '● Читаете сейчас' : ($currentLanguage === 'ka' ? '● კითხულობთ ახლა' : '● Reading now'))
+                <div class="mt-3 text-xs flex justify-between items-center">
+                  <span class="{theme === 'dark' ? 'text-[#a8a398]/80' : 'text-[#57554F]/80'}">{article.publishedAt}</span>
+                  <span class="font-medium {isSelected ? (theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]') : (theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]')}">
+                    {isSelected
+                      ? ($currentLanguage === 'ru' ? 'Читаете сейчас' : ($currentLanguage === 'ka' ? 'კითხულობთ ახლა' : 'Reading now'))
                       : ($currentLanguage === 'ru' ? 'Читать →' : ($currentLanguage === 'ka' ? 'წაკითხვა →' : 'Read →'))}
                   </span>
                 </div>
@@ -286,47 +324,47 @@
       </div>
     </div>
 
-    <!-- Active Article Reader View - FULL HEIGHT & EDITORIAL BEAUTY -->
-    <div id="article-reader-section" class="lg:col-span-8 flex flex-col">
-      <div id="article-reader-root" class="bg-[#0f1118] text-[#e2e8f0] p-6 sm:p-8 rounded-2xl border border-white/[0.08] space-y-6 font-sans shadow-xl">
+    <!-- Active Article Reader View -->
+    <div id="article-reader-section" class="lg:col-span-8 flex flex-col order-1 lg:order-2">
+      <div id="article-reader-root" class="p-6 sm:p-10 rounded-sm border space-y-6 font-sans transition-colors {theme === 'dark' ? 'bg-[#1c1b18] text-[#EAE6DF] border-white/10' : 'bg-[#FAF8F4] text-[#151514] border-[#E2DFD7]'}">
         {#if !selectedArticle}
-          <div id="article-reader-empty" class="p-12 text-center rounded-xl border border-dashed border-white/[0.08] font-mono text-sm text-[#94a3b8] my-auto">
+          <div id="article-reader-empty" class="p-12 text-center rounded-sm border border-dashed text-sm my-auto {theme === 'dark' ? 'border-white/15 text-[#a8a398]' : 'border-[#E2DFD7] text-[#57554F]'}">
             Выберите эссе из списка для чтения
           </div>
         {:else}
           <!-- Header -->
-          <header id="article-header" class="border-b border-white/[0.08] pb-5 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-              <span class="px-2.5 py-1 rounded bg-amber-400/10 text-amber-400 border border-[#38bdf8]/30 uppercase font-bold tracking-wider">{selectedArticle.topic}</span>
-              <div class="flex items-center gap-3 text-[#94a3b8]">
+          <header id="article-header" class="border-b pb-6 space-y-4 {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+              <span class="font-medium {theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]'}">{selectedArticle.topic}</span>
+              <div class="flex items-center gap-2.5 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
                 <span>{selectedArticle.readTime}</span>
-                <span>•</span>
+                <span>·</span>
                 <span>{selectedArticle.publishedAt || ''}</span>
               </div>
             </div>
 
-            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
+            <h1 class="font-serif text-3xl sm:text-4xl font-medium tracking-[-0.02em] leading-[1.15] {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">
               {selectedArticle.title}
             </h1>
 
-            <div class="flex items-center justify-between text-xs text-[#94a3b8] font-mono pt-1">
-              <span>Автор материала: <strong class="text-white font-medium">Дмитрий Ефремов</strong></span>
+            <div class="flex items-center justify-between text-sm pt-1 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+              <span>Автор материала: <strong class="font-medium {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">Дмитрий Ефремов</strong></span>
             </div>
 
-            <!-- Canon Cross-Links for Concept Navigation -->
-            <div id="article-cross-links" class="pt-3 border-t border-white/[0.08] space-y-2">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 block">
-                Связанные узлы Канона (Cross-Links)
+            <!-- Related Concepts Cross-Links -->
+            <div id="article-cross-links" class="pt-4 border-t space-y-2.5 {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}">
+              <span class="text-xs font-medium block {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+                Связанные материалы
               </span>
-              <div class="flex flex-wrap gap-2 text-xs font-mono">
+              <div class="flex flex-wrap gap-2 text-xs">
                 <button
                   id={`crosslink-deontic-${selectedArticle.id}`}
                   type="button"
                   on:click={() => handleCrossLinkClick('concept-deontic-logic', 'concept', 'Деонтическая логика')}
                   aria-label="Перейти к узлу Деонтическая логика"
-                  class="px-2.5 py-1 rounded bg-[#0d1118] text-amber-400 border border-white/[0.08] hover:border-amber-400/50 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors cursor-pointer flex items-center gap-1"
+                  class="px-3 py-1 rounded-sm border transition-colors cursor-pointer flex items-center gap-1.5 {theme === 'dark' ? 'bg-[#141413] text-[#C9A461] border-white/10 hover:border-[#C9A461]/60' : 'bg-[#F1EFE9] text-[#8C2D19] border-[#E2DFD7] hover:border-[#8C2D19]/50'}"
                 >
-                  <span class="font-mono text-xs">→</span>
+                  <span>→</span>
                   <span>Деонтическая логика</span>
                 </button>
                 <button
@@ -334,9 +372,9 @@
                   type="button"
                   on:click={() => handleCrossLinkClick('concept-theory-of-constraints', 'concept', 'Теория ограничений')}
                   aria-label="Перейти к узлу Теория ограничений"
-                  class="px-2.5 py-1 rounded bg-[#0d1118] text-[#34d399] border border-white/[0.08] hover:border-[#34d399] focus:outline-none focus:ring-2 focus:ring-[#34d399] transition-colors cursor-pointer flex items-center gap-1"
+                  class="px-3 py-1 rounded-sm border transition-colors cursor-pointer flex items-center gap-1.5 {theme === 'dark' ? 'bg-[#141413] text-[#EAE6DF] border-white/10 hover:border-[#C9A461]/60' : 'bg-[#F1EFE9] text-[#151514] border-[#E2DFD7] hover:border-[#8C2D19]/50'}"
                 >
-                  <span class="font-mono text-xs">→</span>
+                  <span>→</span>
                   <span>Теория ограничений (TOC)</span>
                 </button>
                 <button
@@ -344,21 +382,29 @@
                   type="button"
                   on:click={() => handleCrossLinkClick('podcast-ep-01', 'podcast', 'Выпуск 01: Системы и реальность')}
                   aria-label="Перейти к подкасту Выпуск 01"
-                  class="px-2.5 py-1 rounded bg-[#0d1118] text-[#a7f3d0] border border-white/[0.08] hover:border-[#a7f3d0] focus:outline-none focus:ring-2 focus:ring-[#a7f3d0] transition-colors cursor-pointer flex items-center gap-1"
+                  class="px-3 py-1 rounded-sm border transition-colors cursor-pointer flex items-center gap-1.5 {theme === 'dark' ? 'bg-[#141413] text-[#EAE6DF] border-white/10 hover:border-[#C9A461]/60' : 'bg-[#F1EFE9] text-[#151514] border-[#E2DFD7] hover:border-[#8C2D19]/50'}"
                 >
-                  <span class="font-mono text-xs">PODCAST</span>
-                  <span>Выпуск 01</span>
+                  <span>Подкаст · Выпуск 01</span>
                 </button>
               </div>
             </div>
           </header>
 
-          <!-- Rendered Markdown Article Content - Full Height without cramped scroll box -->
+          {#if selectedArticle.imageUrl}
+            <img
+              src={selectedArticle.imageUrl.replace('https://dmitryefremov.com', '')}
+              alt={selectedArticle.title}
+              class="w-full aspect-video object-cover rounded-sm border {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}"
+              loading="eager"
+            />
+          {/if}
+
+          <!-- Rendered Markdown Article Content - Editorial 65ch Measure -->
           <div
             id="article-scroll-container"
             bind:this={scrollContainer}
             on:scroll={handleScroll}
-            class="text-sm sm:text-base text-[#cbd5e1] leading-relaxed font-sans space-y-4 pt-2"
+            class="max-w-[65ch] text-base sm:text-[17px] leading-[1.75] font-sans space-y-4 pt-2 {theme === 'dark' ? 'article-prose-dark text-[#EAE6DF]/90' : 'article-prose-light text-[#151514]/90'}"
             role="region"
             aria-label="Article content scroll area"
           >
@@ -369,3 +415,104 @@
     </div>
   </div>
 </div>
+
+{/if}
+
+<style>
+  .article-prose-light :global(p) {
+    color: #151514;
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    margin-top: 1.1rem;
+    margin-bottom: 1.1rem;
+  }
+  .article-prose-light :global(h1),
+  .article-prose-light :global(h2),
+  .article-prose-light :global(h3) {
+    color: #151514;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    border-color: #E2DFD7;
+  }
+  .article-prose-light :global(h2) {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    padding-bottom: 0.4rem;
+  }
+  .article-prose-light :global(h3) {
+    font-size: 1.375rem;
+    line-height: 1.25;
+  }
+  .article-prose-light :global(strong) {
+    color: #151514;
+    font-weight: 600;
+  }
+  .article-prose-light :global(em) {
+    color: #151514;
+  }
+  .article-prose-light :global(ul) {
+    color: #151514;
+  }
+  .article-prose-light :global(blockquote.article-blockquote) {
+    background-color: #F1EFE9;
+    border-left: 2px solid #8C2D19;
+    color: #151514;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    border-radius: 0.125rem;
+    box-shadow: none;
+  }
+  .article-prose-light :global(.formula-block),
+  .article-prose-light :global(.code-block) {
+    background-color: #F1EFE9;
+    border-color: #E2DFD7;
+    color: #151514;
+    box-shadow: none;
+  }
+  .article-prose-light :global(.formula-inline),
+  .article-prose-light :global(code) {
+    background-color: #F1EFE9;
+    border-color: #E2DFD7;
+    color: #8C2D19;
+  }
+
+  .article-prose-dark :global(p) {
+    color: #EAE6DF;
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    margin-top: 1.1rem;
+    margin-bottom: 1.1rem;
+  }
+  .article-prose-dark :global(h1),
+  .article-prose-dark :global(h2),
+  .article-prose-dark :global(h3) {
+    color: #EAE6DF;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .article-prose-dark :global(blockquote.article-blockquote) {
+    background-color: #141413;
+    border-left: 2px solid #C9A461;
+    color: #EAE6DF;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    border-radius: 0.125rem;
+    box-shadow: none;
+  }
+  .article-prose-dark :global(.formula-block),
+  .article-prose-dark :global(.code-block) {
+    background-color: #141413;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #EAE6DF;
+    box-shadow: none;
+  }
+  .article-prose-dark :global(.formula-inline),
+  .article-prose-dark :global(code) {
+    background-color: #141413;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #C9A461;
+  }
+</style>

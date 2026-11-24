@@ -15,11 +15,12 @@
   import TelemetryHudView from './TelemetryHudView.svelte';
   import CanonSearchModal, { type SearchNode } from './CanonSearchModal.svelte';
   import { currentLanguage, setLanguage, t } from '../lib/i18n';
+  import { SMART_COMPANIES_EN_PATH, SMART_COMPANIES_ESSAY_ID, SMART_COMPANIES_RU_PATH } from '../lib/smart_companies_essay';
 
   export let initialTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'support' = 'podcast';
 
   let activeTab: 'podcast' | 'article' | 'sparks' | 'contact' | 'canon' | 'hud' | 'support' = initialTab;
-  let theme: 'dark' | 'light' = 'dark';
+  let theme: 'dark' | 'light' = 'light';
   let showImprintModal: boolean = false;
   let isCmpModalOpen: boolean = false;
   let isSearchModalOpen: boolean = false;
@@ -71,32 +72,95 @@
     }
   }
 
+  function changeLanguage(lang: 'ru' | 'en' | 'ka') {
+    setLanguage(lang);
+    if (typeof window !== 'undefined') {
+      const segments = window.location.pathname.split('/').filter(Boolean);
+      if (segments.length > 0 && (segments[0] === 'ru' || segments[0] === 'en' || segments[0] === 'ka')) {
+        segments.shift();
+      }
+      const newPath = '/' + lang + (segments.length > 0 ? '/' + segments.join('/') : '');
+      window.history.pushState({}, '', newPath);
+    }
+  }
+
   function updateRoute() {
     if (typeof window !== 'undefined') {
       currentPath = window.location.pathname;
       const hash = window.location.hash.toLowerCase();
+
+      // Check locale prefix: /ru, /en, /ka
+      const segments = currentPath.split('/').filter(Boolean);
+      let detectedLang: 'ru' | 'en' | 'ka' | null = null;
+      let pathSegments = [...segments];
+
+      if (pathSegments.length > 0 && (pathSegments[0] === 'ru' || pathSegments[0] === 'en' || pathSegments[0] === 'ka')) {
+        detectedLang = pathSegments[0] as 'ru' | 'en' | 'ka';
+        pathSegments.shift();
+      }
+
+      if (detectedLang) {
+        setLanguage(detectedLang);
+      }
+
+      const cleanPath = '/' + pathSegments.join('/');
+
       if (
-        currentPath === '/canon-gateway' ||
-        currentPath === '/canon' ||
-        currentPath === '/llms.txt' ||
-        currentPath === '/.well-known/llms.txt' ||
+        cleanPath === '/smart-companies-foolish-speeches' ||
+        currentPath === SMART_COMPANIES_EN_PATH ||
+        currentPath === SMART_COMPANIES_RU_PATH
+      ) {
+        activeTab = 'article';
+        selectedArticleId = SMART_COMPANIES_ESSAY_ID;
+        if (!detectedLang) {
+          setLanguage(currentPath === SMART_COMPANIES_RU_PATH ? 'ru' : 'en');
+        }
+      } else if (
+        cleanPath === '/essays' ||
+        cleanPath.startsWith('/essays/') ||
+        cleanPath.startsWith('/article/')
+      ) {
+        activeTab = 'article';
+        const routeId = cleanPath === '/essays'
+          ? ''
+          : pathSegments[pathSegments.length - 1] || '';
+        if (routeId) selectedArticleId = decodeURIComponent(routeId);
+      } else if (
+        cleanPath === '/podcast' ||
+        cleanPath === '/podcasts' ||
+        cleanPath.startsWith('/podcast/') ||
+        cleanPath.startsWith('/podcasts/')
+      ) {
+        activeTab = 'podcast';
+        const routeSlug = (cleanPath === '/podcast' || cleanPath === '/podcasts')
+          ? ''
+          : pathSegments[pathSegments.length - 1] || '';
+        if (routeSlug) selectedEpisodeId = decodeURIComponent(routeSlug);
+      } else if (
+        cleanPath === '/canon-gateway' ||
+        cleanPath === '/canon' ||
+        cleanPath === '/agents' ||
+        cleanPath === '/llms.txt' ||
+        cleanPath === '/.well-known/llms.txt' ||
         hash === '#/canon-gateway' ||
         hash === '#canon-gateway' ||
         hash === '#canon'
       ) {
         activeTab = 'canon';
+      } else if (cleanPath === '/sparks') {
+        activeTab = 'sparks';
+      } else if (cleanPath === '/contact') {
+        activeTab = 'contact';
+      } else if (cleanPath === '/support' || hash === '#/support' || hash === '#support') {
+        activeTab = 'support';
       } else if (
-        currentPath === '/telemetry-hud' ||
+        cleanPath === '/telemetry-hud' ||
         hash === '#/telemetry-hud' ||
         hash === '#telemetry-hud'
       ) {
         activeTab = 'hud';
-      } else if (
-        currentPath === '/support' ||
-        hash === '#/support' ||
-        hash === '#support'
-      ) {
-        activeTab = 'support';
+      } else if (cleanPath === '' || cleanPath === '/') {
+        activeTab = 'podcast';
       }
     }
   }
@@ -108,6 +172,12 @@
     }
   }
 
+  function applyDocumentTheme(nextTheme: 'dark' | 'light') {
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', nextTheme === 'dark');
+    }
+  }
+
   onMount(() => {
     window.addEventListener('keydown', handleGlobalShortcut);
     updateRoute();
@@ -115,11 +185,12 @@
     window.addEventListener('popstate', handlePopState);
 
     const savedTheme = localStorage.getItem('theme-preference') as 'dark' | 'light' | null;
-    if (savedTheme) {
+    if (savedTheme === 'dark' || savedTheme === 'light') {
       theme = savedTheme;
     } else {
-      theme = 'dark';
+      theme = 'light';
     }
+    applyDocumentTheme(theme);
 
     fetchPodcastsFromApi().then(eps => {
       podcastCount = eps.length;
@@ -133,6 +204,7 @@
 
   function toggleTheme() {
     theme = theme === 'dark' ? 'light' : 'dark';
+    applyDocumentTheme(theme);
     try {
       localStorage.setItem('theme-preference', theme);
     } catch {}
@@ -160,59 +232,61 @@
 {:else if currentPath === '/telemetry-hud' || (typeof window !== 'undefined' && (window.location.hash === '#/telemetry-hud' || window.location.hash === '#telemetry-hud')) || activeTab === 'hud'}
   <TelemetryHudView {theme} />
 {:else}
-  <SeoMeta
-    title="Дмитрий Ефремов — Архитектура систем, философия мышления и автономные процессы"
-    description="Суверенный интеллектуальный узел Дмитрия Ефремова. Выпуски подкаста «Системы и реальность», онтология автономии, A2A-экономика и эссе по деонтической логике."
-    canonicalUrl="https://dmitryefremov.com"
-  />
+  {#if activeTab !== 'article'}
+    <SeoMeta
+      title="Дмитрий Ефремов — Архитектура систем, философия мышления и автономные процессы"
+      description="Суверенный интеллектуальный узел Дмитрия Ефремова. Выпуски подкаста «Системы и реальность», онтология автономии, A2A-экономика и эссе по деонтической логике."
+      url="https://dmitryefremov.com"
+    />
+  {/if}
 
   <div
     id="telemetry-hub-root"
-    class="min-h-screen w-full max-w-full overflow-x-hidden transition-colors duration-200 selection:bg-[#f2ca50] selection:text-[#0c0e12] {theme === 'dark' ? 'bg-[#090a0f] text-[#e2e8f0]' : 'bg-[#fafafa] text-[#0f172a]'}"
+    class="min-h-screen w-full max-w-full overflow-x-hidden transition-colors duration-200 {theme === 'dark' ? 'bg-[#141413] text-[#EAE6DF] selection:bg-[#C9A461] selection:text-[#141413]' : 'bg-[#FAF8F4] text-[#151514] selection:bg-[#8C2D19] selection:text-[#FAF8F4]'}"
   >
-    <!-- 1. SOVEREIGN TOPNAVBAR -->
-    <header class="sticky top-0 z-50 border-b transition-colors w-full {theme === 'dark' ? 'bg-[#111318]/95 backdrop-blur-md border-white/10' : 'bg-white/95 backdrop-blur-md border-slate-200'}">
-      <div class="max-w-[1280px] mx-auto px-2.5 sm:px-6 lg:px-8 h-13 sm:h-16 flex items-center justify-between gap-1 w-full">
+    <!-- 1. EDITORIAL MASTHEAD -->
+    <header class="sticky top-0 z-50 border-b transition-colors w-full {theme === 'dark' ? 'bg-[#141413]/95 backdrop-blur-md border-white/10' : 'bg-[#FAF8F4]/95 backdrop-blur-md border-[#E2DFD7]'}">
+      <div class="max-w-[1280px] mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 w-full">
         <!-- Wordmark Brand -->
         <a href="#top" on:click|preventDefault={() => switchTab('podcast')} class="flex flex-col group cursor-pointer shrink-0">
-          <span class="font-grotesk text-xs sm:text-base font-bold tracking-tight group-hover:text-[#f2ca50] transition-colors {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
-            ДМИТРИЙ ЕФРЕМОВ
+          <span class="font-serif text-lg sm:text-2xl font-semibold tracking-[-0.02em] leading-none transition-colors {theme === 'dark' ? 'text-[#EAE6DF] group-hover:text-[#C9A461]' : 'text-[#151514] group-hover:text-[#8C2D19]'}">
+            {t($currentLanguage).hero_name}
           </span>
-          <span class="hidden sm:inline font-mono text-[10px] tracking-wider uppercase {theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}">
+          <span class="hidden sm:inline text-[11px] tracking-normal mt-0.5 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
             {t($currentLanguage).topbar_architecture}
           </span>
         </a>
 
         <!-- Trailing Controls Cluster -->
-        <div class="flex items-center space-x-1 sm:space-x-2 shrink-0">
+        <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
           <!-- Language Selector: RU | EN | KA -->
-          <div id="language-switcher" class="flex items-center p-0.5 rounded border font-mono text-[9px] sm:text-xs {theme === 'dark' ? 'bg-[#1e2024] border-white/10' : 'bg-slate-100 border-slate-300'}">
+          <div id="language-switcher" class="flex items-center p-0.5 rounded-sm border text-[11px] sm:text-xs {theme === 'dark' ? 'bg-[#1c1b18] border-white/10' : 'bg-[#F1EFE9] border-[#E2DFD7]'}">
             <button
               type="button"
               id="lang-btn-ru"
               aria-label="RU"
-              on:click={() => setLanguage('ru')}
-              class="px-1 py-0.5 rounded transition-all cursor-pointer font-bold {$currentLanguage === 'ru' ? 'bg-[#f2ca50] text-[#0c0e12]' : (theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black')}"
+              on:click={() => changeLanguage('ru')}
+              class="px-1.5 py-0.5 rounded-sm transition-colors cursor-pointer font-medium {$currentLanguage === 'ru' ? (theme === 'dark' ? 'text-[#C9A461] underline underline-offset-4' : 'text-[#8C2D19] underline underline-offset-4') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF]' : 'text-[#57554F] hover:text-[#151514]')}"
             >
               RU
             </button>
-            <span class="text-white/20 px-0.5">|</span>
+            <span class="px-0.5 {theme === 'dark' ? 'text-white/15' : 'text-[#D3CFC5]'}">|</span>
             <button
               type="button"
               id="lang-btn-en"
               aria-label="EN"
-              on:click={() => setLanguage('en')}
-              class="px-1 py-0.5 rounded transition-all cursor-pointer font-bold {$currentLanguage === 'en' ? 'bg-[#f2ca50] text-[#0c0e12]' : (theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black')}"
+              on:click={() => changeLanguage('en')}
+              class="px-1.5 py-0.5 rounded-sm transition-colors cursor-pointer font-medium {$currentLanguage === 'en' ? (theme === 'dark' ? 'text-[#C9A461] underline underline-offset-4' : 'text-[#8C2D19] underline underline-offset-4') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF]' : 'text-[#57554F] hover:text-[#151514]')}"
             >
               EN
             </button>
-            <span class="text-white/20 px-0.5">|</span>
+            <span class="px-0.5 {theme === 'dark' ? 'text-white/15' : 'text-[#D3CFC5]'}">|</span>
             <button
               type="button"
               id="lang-btn-ka"
               aria-label="KA"
-              on:click={() => setLanguage('ka')}
-              class="px-1 py-0.5 rounded transition-all cursor-pointer font-bold {$currentLanguage === 'ka' ? 'bg-[#f2ca50] text-[#0c0e12]' : (theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black')}"
+              on:click={() => changeLanguage('ka')}
+              class="px-1.5 py-0.5 rounded-sm transition-colors cursor-pointer font-medium {$currentLanguage === 'ka' ? (theme === 'dark' ? 'text-[#C9A461] underline underline-offset-4' : 'text-[#8C2D19] underline underline-offset-4') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF]' : 'text-[#57554F] hover:text-[#151514]')}"
             >
               KA
             </button>
@@ -224,10 +298,9 @@
             type="button"
             on:click={() => (isSearchModalOpen = true)}
             aria-label="Search"
-            class="w-7 h-7 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1 rounded border transition-colors flex items-center justify-center gap-1 cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] text-slate-300 border-white/10 hover:text-[#f2ca50]' : 'bg-white text-slate-700 border-slate-300 hover:text-black'}"
+            class="w-8 h-8 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1 rounded-sm border transition-colors flex items-center justify-center gap-1 cursor-pointer {theme === 'dark' ? 'bg-[#1c1b18] text-[#a8a398] border-white/10 hover:text-[#C9A461]' : 'bg-[#FAF8F4] text-[#57554F] border-[#E2DFD7] hover:text-[#8C2D19] hover:border-[#8C2D19]/40'}"
           >
             <span class="material-symbols-outlined text-[16px] sm:text-[17px]">search</span>
-            <span class="hidden sm:inline font-mono text-xs font-bold uppercase tracking-wider">Cmd+K</span>
           </button>
 
           <!-- Theme Toggle -->
@@ -236,29 +309,21 @@
             type="button"
             on:click={toggleTheme}
             aria-label="Toggle theme"
-            class="w-7 h-7 sm:w-auto sm:h-auto sm:px-2 sm:py-1 rounded border font-mono text-xs font-bold uppercase transition-colors flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] text-slate-300 border-white/10 hover:text-white' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}"
+            class="w-8 h-8 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1 rounded-sm border transition-colors flex items-center justify-center cursor-pointer {theme === 'dark' ? 'bg-[#1c1b18] text-[#a8a398] border-white/10 hover:text-[#EAE6DF]' : 'bg-[#FAF8F4] text-[#57554F] border-[#E2DFD7] hover:text-[#151514] hover:border-[#151514]/30'}"
           >
-            <span class="material-symbols-outlined text-[15px] sm:text-[16px]">{theme === 'dark' ? 'dark_mode' : 'light_mode'}</span>
+            <span class="material-symbols-outlined text-[16px] sm:text-[17px]">{theme === 'dark' ? 'light_mode' : 'dark_mode'}</span>
           </button>
 
-          <!-- Direct Header Action: Поддержка -->
-          <button
-            type="button"
-            on:click={() => switchTab('support')}
-            class="hidden md:inline-flex items-center justify-center px-3 py-1 bg-[#f2ca50] text-[#0c0e12] font-mono text-xs font-bold uppercase tracking-wider rounded hover:bg-[#e7c364] transition-colors cursor-pointer shadow-sm"
-          >
-            {t($currentLanguage).nav_support}
-          </button>
         </div>
       </div>
     </header>
 
-    <main class="w-full max-w-[1280px] mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-10 space-y-8" id="top">
-      <!-- 2. MONUMENTAL HERO SECTION (Leica Optical Frame & Ergonomic Action Hierarchy) -->
-      <section id="hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
+    <main class="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 sm:space-y-16" id="top">
+      <!-- 2. EDITORIAL HERO SECTION -->
+      <section id="hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
         <!-- Studio Portrait Column (Order 1 on mobile, Order 2 on desktop) -->
         <div class="lg:col-span-5 flex justify-center order-1 lg:order-2">
-          <div id="hero-avatar-container" class="relative w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[380px] aspect-[3/4] rounded-2xl overflow-hidden border border-white/15 bg-black/40 shadow-2xl transition-all">
+          <div id="hero-avatar-container" class="relative w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[380px] aspect-[3/4] rounded-sm overflow-hidden border transition-all {theme === 'dark' ? 'border-white/10 bg-[#1c1b18]' : 'border-[#E2DFD7] bg-[#F1EFE9]'}">
             <picture>
               <source type="image/avif" srcset="/assets/images/dmitry_efremov_studio/dmitry_efremov_studio_768w.avif" />
               <source type="image/webp" srcset="/assets/images/dmitry_efremov_studio/dmitry_efremov_studio_768w.webp" />
@@ -275,45 +340,37 @@
         </div>
 
         <!-- Left Column: The Philosophical Core (Order 2 on mobile, Order 1 on desktop) -->
-        <div class="lg:col-span-7 space-y-4 sm:space-y-6 order-2 lg:order-1">
-          <!-- Epistemic Badge -->
-          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border max-w-full {theme === 'dark' ? 'bg-[#1e2024] border-white/10' : 'bg-amber-50 border-amber-300'}">
-            <span class="w-2 h-2 rounded-full bg-[#f2ca50] animate-pulse shrink-0"></span>
-            <span class="font-mono text-[9px] sm:text-[11px] font-bold uppercase tracking-wider break-words {theme === 'dark' ? 'text-[#f2ca50]' : 'text-amber-900'}">
-              {t($currentLanguage).hero_badge}
-            </span>
-          </div>
-
+        <div class="lg:col-span-7 space-y-5 sm:space-y-6 order-2 lg:order-1">
           <!-- Hero Identity & Subtitle -->
-          <div class="space-y-1 sm:space-y-2">
-            <h1 id="hero-title" class="font-grotesk text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tight leading-[1.0] {theme === 'dark' ? 'text-white' : 'text-slate-900'}">
+          <div class="space-y-1.5 sm:space-y-2">
+            <h1 id="hero-title" class="font-serif text-4xl sm:text-6xl lg:text-[4.5rem] font-medium tracking-[-0.025em] leading-[1.06] {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">
               {t($currentLanguage).hero_name}
             </h1>
-            <p id="hero-subtitle" class="font-mono text-sm sm:text-lg font-semibold tracking-tight {theme === 'dark' ? 'text-[#f2ca50]' : 'text-amber-800'}">
+            <p id="hero-subtitle" class="font-serif italic text-xl sm:text-2xl font-normal leading-snug {theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]'}">
               {t($currentLanguage).hero_tagline}
             </p>
           </div>
 
           <!-- Authoritative Philosophical Axiom -->
-          <blockquote id="hero-manifest" class="p-3.5 sm:p-5 rounded-lg border-l-2 text-xs sm:text-base leading-relaxed break-words {theme === 'dark' ? 'bg-[#111318] border-[#f2ca50] text-[#e2e8f0]' : 'bg-slate-50 border-slate-800 text-slate-800'}">
+          <blockquote id="hero-manifest" class="pl-5 py-1 font-serif text-xl sm:text-2xl leading-snug border-l-2 {theme === 'dark' ? 'border-[#C9A461] text-[#EAE6DF]' : 'border-[#8C2D19] text-[#151514]'}">
             {t($currentLanguage).hero_manifest}
           </blockquote>
 
           <!-- Bio Narrative: Systems & Philosophy -->
-          <p class="font-mono text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
+          <p class="text-base sm:text-[17px] leading-[1.7] max-w-[62ch] {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
             {t($currentLanguage).hero_bio_1} {t($currentLanguage).hero_bio_2}
           </p>
 
           <!-- Tactile Action Cluster -->
-          <div class="pt-1 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 font-mono text-xs font-bold uppercase tracking-wider">
+          <div class="pt-1 flex flex-col gap-4 text-sm font-medium">
             <!-- Primary Actions Row -->
-            <div class="flex items-center gap-2 w-full sm:w-auto">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
               <!-- Listen Podcast Button -->
               <button
                 type="button"
                 id="hero-listen-podcast-btn"
                 on:click={handleListenPodcast}
-                class="flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-5 py-3 bg-[#f2ca50] text-[#0c0e12] rounded hover:bg-[#e7c364] transition-all cursor-pointer shadow-md font-bold"
+                class="flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-sm transition-colors cursor-pointer font-medium {theme === 'dark' ? 'bg-[#C9A461] text-[#141413] hover:bg-[#d8b573]' : 'bg-[#8C2D19] text-[#FAF8F4] hover:bg-[#702313]'}"
               >
                 <span class="material-symbols-outlined text-[18px]">play_arrow</span>
                 <span>{t($currentLanguage).hero_btn_podcast}</span>
@@ -324,23 +381,23 @@
                 type="button"
                 id="hero-contact-btn"
                 on:click={() => switchTab('contact')}
-                class="inline-flex items-center justify-center space-x-2 px-4 py-3 rounded border transition-all cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-slate-300 hover:text-white hover:border-white/30' : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'}"
+                class="inline-flex items-center justify-center px-5 py-3 rounded-sm border transition-colors cursor-pointer {theme === 'dark' ? 'border-white/20 text-[#EAE6DF] hover:border-white/50' : 'border-[#151514]/25 text-[#151514] hover:border-[#8C2D19] hover:text-[#8C2D19]'}"
               >
                 <span>{t($currentLanguage).nav_contact}</span>
               </button>
             </div>
 
-            <!-- Quick Link Chips -->
-            <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full">
+            <!-- Quiet Editorial Links -->
+            <div class="flex flex-wrap items-center gap-5">
               <!-- Telegram Link -->
               <a
                 href="https://t.me/efremov_mvp"
                 target="_blank"
                 rel="noopener noreferrer"
                 on:click={() => handleOutboundClick('https://t.me/efremov_mvp', 'Telegram @efremov_mvp', 'Telegram')}
-                class="inline-flex items-center space-x-1.5 px-3 py-2 rounded border text-[11px] transition-all {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-white hover:border-white/30' : 'bg-white border-slate-300 text-slate-900 hover:bg-slate-50'}"
+                class="inline-flex items-center text-sm underline underline-offset-4 decoration-1 transition-colors {theme === 'dark' ? 'text-[#a8a398] hover:text-[#C9A461]' : 'text-[#57554F] hover:text-[#8C2D19]'}"
               >
-                <span>TG @efremov_mvp ↗</span>
+                <span>Telegram ↗</span>
               </a>
 
               <!-- YouTube Link -->
@@ -349,45 +406,27 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 on:click={() => handleOutboundClick('https://www.youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
-                class="inline-flex items-center space-x-1.5 px-3 py-2 rounded border text-[11px] transition-all {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-white hover:border-red-500/50' : 'bg-white border-slate-300 text-slate-900 hover:bg-slate-50'}"
+                class="inline-flex items-center text-sm underline underline-offset-4 decoration-1 transition-colors {theme === 'dark' ? 'text-[#a8a398] hover:text-[#C9A461]' : 'text-[#57554F] hover:text-[#8C2D19]'}"
               >
                 <span>YouTube ↗</span>
               </a>
 
-              <!-- Connect Agent Button -->
-              <button
-                type="button"
-                id="hero-connect-agent-btn"
-                on:click={() => switchTab('canon')}
-                class="inline-flex items-center space-x-1.5 px-3 py-2 rounded border text-[11px] transition-all cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] border-white/10 text-slate-300 hover:border-[#f2ca50]' : 'bg-white border-slate-300 text-slate-900 hover:bg-slate-50'}"
-              >
-                <span>{t($currentLanguage).nav_canon}</span>
-              </button>
-
-              <!-- Support Button -->
-              <button
-                type="button"
-                on:click={() => switchTab('support')}
-                class="inline-flex items-center space-x-1.5 px-3 py-2 rounded border text-[11px] transition-all cursor-pointer {theme === 'dark' ? 'bg-[#1e2024] border-[#f2ca50]/40 text-[#f2ca50] hover:bg-[#f2ca50]/10' : 'bg-amber-50 border-amber-300 text-amber-900 hover:bg-amber-100'}"
-              >
-                <span>{t($currentLanguage).nav_support}</span>
-              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 3. INTERACTIVE NAVIGATION TABS & FILTER BAR (With Prominent Active Highlight) -->
-      <nav id="nav-tabs" aria-label="Main Navigation" class="border-y py-2 sticky top-14 sm:top-16 z-40 transition-colors backdrop-blur-md {theme === 'dark' ? 'bg-[#111318]/90 border-white/10' : 'bg-white/90 border-slate-200'}">
-        <div class="flex items-center space-x-2 sm:space-x-4 overflow-x-auto no-scrollbar font-mono text-xs sm:text-sm uppercase tracking-wider">
+      <!-- 3. INTERACTIVE NAVIGATION TABS -->
+      <nav id="nav-tabs" aria-label="Main Navigation" class="border-y py-0 sticky top-14 sm:top-16 z-40 transition-colors backdrop-blur-md {theme === 'dark' ? 'bg-[#141413]/95 border-white/10' : 'bg-[#FAF8F4]/95 border-[#E2DFD7]'}">
+        <div class="flex items-center space-x-2 sm:space-x-5 overflow-x-auto no-scrollbar text-sm sm:text-[15px] tracking-normal">
           <!-- PODCAST TAB BUTTON -->
           <button
             id="tab-btn-podcast"
             type="button"
             on:click={() => (activeTab = 'podcast')}
-            class="px-4 py-2.5 rounded transition-all cursor-pointer whitespace-nowrap {activeTab === 'podcast' ? 'bg-[#1e2024] text-[#f2ca50] border-b-2 border-[#f2ca50] font-bold shadow-md' : (theme === 'dark' ? 'text-slate-400 hover:text-white border-b-2 border-transparent hover:bg-white/[0.04]' : 'text-slate-600 hover:text-black border-b-2 border-transparent hover:bg-slate-100')}"
+            class="px-2 sm:px-3 py-3.5 transition-colors cursor-pointer whitespace-nowrap {activeTab === 'podcast' ? ((theme === 'dark' ? 'text-[#C9A461] border-[#C9A461]' : 'text-[#8C2D19] border-[#8C2D19]') + ' border-b-2 font-medium') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF] border-b-2 border-transparent' : 'text-[#57554F] hover:text-[#151514] border-b-2 border-transparent')}"
           >
-            <span>[{t($currentLanguage).nav_podcast}]</span>
+            <span>{t($currentLanguage).nav_podcast}</span>
           </button>
 
           <!-- ESSAYS / ARTICLES TAB BUTTON -->
@@ -395,9 +434,9 @@
             id="tab-btn-article"
             type="button"
             on:click={() => (activeTab = 'article')}
-            class="px-4 py-2.5 rounded transition-all cursor-pointer whitespace-nowrap {activeTab === 'article' ? 'bg-[#1e2024] text-[#f2ca50] border-b-2 border-[#f2ca50] font-bold shadow-md' : (theme === 'dark' ? 'text-slate-400 hover:text-white border-b-2 border-transparent hover:bg-white/[0.04]' : 'text-slate-600 hover:text-black border-b-2 border-transparent hover:bg-slate-100')}"
+            class="px-2 sm:px-3 py-3.5 transition-colors cursor-pointer whitespace-nowrap {activeTab === 'article' ? ((theme === 'dark' ? 'text-[#C9A461] border-[#C9A461]' : 'text-[#8C2D19] border-[#8C2D19]') + ' border-b-2 font-medium') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF] border-b-2 border-transparent' : 'text-[#57554F] hover:text-[#151514] border-b-2 border-transparent')}"
           >
-            <span>[{t($currentLanguage).nav_article}]</span>
+            <span>{t($currentLanguage).nav_article}</span>
           </button>
 
           <!-- SPARKS / THOUGHTS TAB BUTTON -->
@@ -405,9 +444,9 @@
             id="tab-btn-sparks"
             type="button"
             on:click={() => (activeTab = 'sparks')}
-            class="px-4 py-2.5 rounded transition-all cursor-pointer whitespace-nowrap {activeTab === 'sparks' ? 'bg-[#1e2024] text-[#f2ca50] border-b-2 border-[#f2ca50] font-bold shadow-md' : (theme === 'dark' ? 'text-slate-400 hover:text-white border-b-2 border-transparent hover:bg-white/[0.04]' : 'text-slate-600 hover:text-black border-b-2 border-transparent hover:bg-slate-100')}"
+            class="px-2 sm:px-3 py-3.5 transition-colors cursor-pointer whitespace-nowrap {activeTab === 'sparks' ? ((theme === 'dark' ? 'text-[#C9A461] border-[#C9A461]' : 'text-[#8C2D19] border-[#8C2D19]') + ' border-b-2 font-medium') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF] border-b-2 border-transparent' : 'text-[#57554F] hover:text-[#151514] border-b-2 border-transparent')}"
           >
-            <span>[{t($currentLanguage).nav_sparks}]</span>
+            <span>{t($currentLanguage).nav_sparks}</span>
           </button>
 
           <!-- AGENTS TAB BUTTON -->
@@ -415,9 +454,9 @@
             id="tab-btn-canon"
             type="button"
             on:click={() => (activeTab = 'canon')}
-            class="px-4 py-2.5 rounded transition-all cursor-pointer whitespace-nowrap {activeTab === 'canon' ? 'bg-[#1e2024] text-[#f2ca50] border-b-2 border-[#f2ca50] font-bold shadow-md' : (theme === 'dark' ? 'text-slate-400 hover:text-white border-b-2 border-transparent hover:bg-white/[0.04]' : 'text-slate-600 hover:text-black border-b-2 border-transparent hover:bg-slate-100')}"
+            class="px-2 sm:px-3 py-3.5 transition-colors cursor-pointer whitespace-nowrap {activeTab === 'canon' ? ((theme === 'dark' ? 'text-[#C9A461] border-[#C9A461]' : 'text-[#8C2D19] border-[#8C2D19]') + ' border-b-2 font-medium') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF] border-b-2 border-transparent' : 'text-[#57554F] hover:text-[#151514] border-b-2 border-transparent')}"
           >
-            <span>[{t($currentLanguage).nav_canon}]</span>
+            <span>{t($currentLanguage).nav_canon}</span>
           </button>
 
           <!-- SUPPORT (STRIPE) TAB BUTTON -->
@@ -425,9 +464,9 @@
             id="tab-btn-support"
             type="button"
             on:click={() => (activeTab = 'support')}
-            class="px-4 py-2.5 rounded transition-all cursor-pointer whitespace-nowrap {activeTab === 'support' ? 'bg-[#1e2024] text-[#f2ca50] border-b-2 border-[#f2ca50] font-bold shadow-md' : (theme === 'dark' ? 'text-slate-400 hover:text-white border-b-2 border-transparent hover:bg-white/[0.04]' : 'text-slate-600 hover:text-black border-b-2 border-transparent hover:bg-slate-100')}"
+            class="px-2 sm:px-3 py-3.5 transition-colors cursor-pointer whitespace-nowrap {activeTab === 'support' ? ((theme === 'dark' ? 'text-[#C9A461] border-[#C9A461]' : 'text-[#8C2D19] border-[#8C2D19]') + ' border-b-2 font-medium') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF] border-b-2 border-transparent' : 'text-[#57554F] hover:text-[#151514] border-b-2 border-transparent')}"
           >
-            <span>[{t($currentLanguage).nav_support}]</span>
+            <span>{t($currentLanguage).nav_support}</span>
           </button>
 
           <!-- CONTACT TERMINAL TAB BUTTON -->
@@ -435,9 +474,9 @@
             id="tab-btn-contact"
             type="button"
             on:click={() => (activeTab = 'contact')}
-            class="px-4 py-2.5 rounded transition-all cursor-pointer whitespace-nowrap {activeTab === 'contact' ? 'bg-[#1e2024] text-[#f2ca50] border-b-2 border-[#f2ca50] font-bold shadow-md' : (theme === 'dark' ? 'text-slate-400 hover:text-white border-b-2 border-transparent hover:bg-white/[0.04]' : 'text-slate-600 hover:text-black border-b-2 border-transparent hover:bg-slate-100')}"
+            class="px-2 sm:px-3 py-3.5 transition-colors cursor-pointer whitespace-nowrap {activeTab === 'contact' ? ((theme === 'dark' ? 'text-[#C9A461] border-[#C9A461]' : 'text-[#8C2D19] border-[#8C2D19]') + ' border-b-2 font-medium') : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF] border-b-2 border-transparent' : 'text-[#57554F] hover:text-[#151514] border-b-2 border-transparent')}"
           >
-            <span>[{t($currentLanguage).nav_contact}]</span>
+            <span>{t($currentLanguage).nav_contact}</span>
           </button>
         </div>
       </nav>
@@ -446,11 +485,11 @@
       <section id="content-view" class="space-y-8 min-h-[500px]">
         {#if activeTab === 'podcast'}
           <div class="space-y-6">
-            <PodcastPlayerView bind:selectedEpisodeId />
+            <PodcastPlayerView {theme} bind:selectedEpisodeId />
           </div>
         {:else if activeTab === 'article'}
           <div class="space-y-6">
-            <ArticleStreamView bind:selectedArticleId />
+            <ArticleStreamView {theme} bind:selectedArticleId />
           </div>
         {:else if activeTab === 'sparks'}
           <div class="space-y-6">
@@ -471,8 +510,8 @@
         {/if}
       </section>
 
-      <!-- 5. ARCHITECTURAL FOOTER -->
-      <footer id="main-footer" class="border-t pt-8 font-mono text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-white/10 text-slate-400' : 'border-slate-300 text-slate-600'}">
+      <!-- 5. EDITORIAL FOOTER -->
+      <footer id="main-footer" class="border-t pt-8 font-sans text-xs flex flex-col sm:flex-row justify-between items-center gap-4 {theme === 'dark' ? 'border-white/10 text-[#a8a398]' : 'border-[#E2DFD7] text-[#57554F]'}">
         <div>
           <span>© {new Date().getFullYear()} {t($currentLanguage).footer_rights}</span>
         </div>
@@ -481,7 +520,7 @@
             id="cmp-persistent-link"
             type="button"
             on:click={toggleCmpModal}
-            class="underline hover:text-white transition-colors cursor-pointer"
+            class="underline underline-offset-4 transition-colors cursor-pointer {theme === 'dark' ? 'hover:text-[#EAE6DF]' : 'hover:text-[#8C2D19]'}"
           >
             <span class="sr-only">Приватность (CMP)</span>
             <span>{t($currentLanguage).footer_privacy}</span>
@@ -490,7 +529,7 @@
             id="imprint-toggle-btn"
             type="button"
             on:click={toggleImprint}
-            class="underline hover:text-white transition-colors cursor-pointer"
+            class="underline underline-offset-4 transition-colors cursor-pointer {theme === 'dark' ? 'hover:text-[#EAE6DF]' : 'hover:text-[#8C2D19]'}"
           >
             {t($currentLanguage).footer_imprint}
           </button>
@@ -499,25 +538,25 @@
 
       <!-- Imprint Modal -->
       {#if showImprintModal}
-        <div id="imprint-modal" role="dialog" aria-labelledby="imprint-title" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div class="max-w-md w-full p-6 rounded-xl border space-y-4 font-mono text-xs {theme === 'dark' ? 'bg-[#111318] border-white/15 text-[#e2e8f0]' : 'bg-white border-slate-300 text-[#0f172a] shadow-2xl'}">
-            <div class="flex justify-between items-center border-b pb-3 {theme === 'dark' ? 'border-white/10' : 'border-slate-200'}">
-              <h2 id="imprint-title" class="text-sm font-bold uppercase tracking-wider">{t($currentLanguage).imprint_title}</h2>
+        <div id="imprint-modal" role="dialog" aria-labelledby="imprint-title" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div class="max-w-md w-full p-6 rounded-sm border space-y-4 font-sans text-sm {theme === 'dark' ? 'bg-[#1c1b18] border-white/15 text-[#EAE6DF]' : 'bg-[#FAF8F4] border-[#E2DFD7] text-[#151514] shadow-xl'}">
+            <div class="flex justify-between items-center border-b pb-3 {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}">
+              <h2 id="imprint-title" class="font-serif text-xl font-medium">{t($currentLanguage).imprint_title}</h2>
               <button
                 id="imprint-close-btn"
                 type="button"
                 on:click={toggleImprint}
-                class="px-2 py-1 rounded border font-mono text-[10px] font-bold uppercase tracking-wider {theme === 'dark' ? 'bg-[#1e2024] border-white/10 hover:bg-[#282a2e]' : 'bg-slate-100 border-slate-300 hover:bg-slate-200'}"
+                class="px-2.5 py-1 rounded-sm border text-xs font-medium cursor-pointer transition-colors {theme === 'dark' ? 'bg-[#141413] border-white/15 text-[#a8a398] hover:text-[#EAE6DF]' : 'bg-[#F1EFE9] border-[#E2DFD7] text-[#57554F] hover:text-[#151514]'}"
               >
-                CLOSE
+                ✕
               </button>
             </div>
-            <div id="imprint-details-content" class="space-y-2 leading-relaxed">
-              <p><strong>{t($currentLanguage).imprint_owner_label}:</strong> {t($currentLanguage).imprint_owner_val}</p>
-              <p><strong>{t($currentLanguage).imprint_domain_label}:</strong> dmitryefremov.com</p>
-              <p><strong>{t($currentLanguage).imprint_email_label}:</strong> dmitrii.eneik@gmail.com</p>
-              <p><strong>{t($currentLanguage).imprint_privacy_label}:</strong> {t($currentLanguage).imprint_privacy_val}</p>
-              <p><strong>{t($currentLanguage).imprint_copyright_label}:</strong> {t($currentLanguage).imprint_copyright_val}</p>
+            <div id="imprint-details-content" class="space-y-2 text-xs leading-relaxed {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+              <p><strong class="{theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">{t($currentLanguage).imprint_owner_label}:</strong> {t($currentLanguage).imprint_owner_val}</p>
+              <p><strong class="{theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">{t($currentLanguage).imprint_domain_label}:</strong> dmitryefremov.com</p>
+              <p><strong class="{theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">{t($currentLanguage).imprint_email_label}:</strong> dmitrii.eneik@gmail.com</p>
+              <p><strong class="{theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">{t($currentLanguage).imprint_privacy_label}:</strong> {t($currentLanguage).imprint_privacy_val}</p>
+              <p><strong class="{theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">{t($currentLanguage).imprint_copyright_label}:</strong> {t($currentLanguage).imprint_copyright_val}</p>
             </div>
           </div>
         </div>

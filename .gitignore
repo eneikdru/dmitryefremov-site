@@ -11,5 +11,7 @@ dist/
 
 frontend/public/audio/
 frontend/public/images/
+audio/
+backups/
 
 data/

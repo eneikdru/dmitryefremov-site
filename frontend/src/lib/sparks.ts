@@ -1,3 +1,5 @@
+import { getGeneratedTranslation, type GeneratedLocale } from './generated_localizations';
+
 export interface FrameworkStep {
   id: number;
   text: string;
@@ -449,7 +451,7 @@ export const CANONICAL_SPARKS: SparkItem[] = [
 ];
 
 export function getInitialSparks(): SparkItem[] {
-  return [];
+  return CANONICAL_SPARKS;
 }
 
 export async function fetchSparksFromApi(customFetch = fetch): Promise<SparkItem[]> {
@@ -459,7 +461,7 @@ export async function fetchSparksFromApi(customFetch = fetch): Promise<SparkItem
     const data = await res.json();
     const rawList = Array.isArray(data) ? data : (data?.content || []);
     if (rawList.length === 0) return CANONICAL_SPARKS;
-    return rawList.map((spk: any) => {
+    const apiSparks = rawList.map((spk: any) => {
       const author = spk.author || '@efremov_mvp';
       const authorInitial = author.replace(/^@/, '').charAt(0).toUpperCase() || 'E';
       return {
@@ -479,6 +481,7 @@ export async function fetchSparksFromApi(customFetch = fetch): Promise<SparkItem
         isBookmarked: false
       };
     });
+    return [...apiSparks, ...CANONICAL_SPARKS];
   } catch {
     return CANONICAL_SPARKS;
   }
@@ -523,6 +526,21 @@ export function filterSparks(sparks: SparkItem[], selectedCategory: string, sear
   }
 
   return result;
+}
+
+export function getLocalizedSpark(spark: SparkItem, lang: GeneratedLocale): SparkItem {
+  if (lang === 'ru') return spark;
+  const generated = getGeneratedTranslation('sparks', [spark.id, spark.telegramMessageId], lang);
+  if (!generated) {
+    return {
+      ...spark,
+      body: spark.body ? `[RU оригинал] ${spark.body}` : spark.body
+    };
+  }
+  return {
+    ...spark,
+    body: String(generated.content || generated.body || spark.body)
+  };
 }
 
 export function createSpark(text: string, author: string = '@dmitryefremov', tag: string = '#heuristics'): SparkItem {
@@ -581,4 +599,38 @@ export function calculateTelemetry(sparks: SparkItem[]) {
     totalCount,
     totalSparksAccumulated
   };
+}
+
+
+export interface SparkTextSegment {
+  type: 'text' | 'link';
+  value: string;
+  href?: string;
+}
+
+const URL_RE = /((?:https?:\/\/|t\.me\/)[^\s<>"]+)/gi;
+
+export function splitSparkLinks(text: string): SparkTextSegment[] {
+  if (!text) return [];
+  const segments: SparkTextSegment[] = [];
+  let lastIndex = 0;
+  for (const match of text.matchAll(URL_RE)) {
+    const start = match.index ?? 0;
+    const raw = match[0];
+    if (start > lastIndex) {
+      segments.push({ type: 'text', value: text.slice(lastIndex, start) });
+    }
+    const trimmed = raw.replace(/[.,;:!?)\]»]+$/, '');
+    const trailing = raw.slice(trimmed.length);
+    const href = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    segments.push({ type: 'link', value: trimmed, href });
+    if (trailing) {
+      segments.push({ type: 'text', value: trailing });
+    }
+    lastIndex = start + raw.length;
+  }
+  if (lastIndex < text.length) {
+    segments.push({ type: 'text', value: text.slice(lastIndex) });
+  }
+  return segments;
 }

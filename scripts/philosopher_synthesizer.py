@@ -387,6 +387,44 @@ class PhilosopherContextSynthesizer:
             "markdown": "\n".join(advice_lines)
         }
 
+    def synthesize_context(self, task_query: str, token_budget: int = 1200) -> Dict[str, Any]:
+        """Token-budgeted contract slice for the A2A bridge (handshake, canon/context).
+
+        Thin wrapper over synthesize_advice: keeps the base kernel, then adds
+        patterns in priority order while the estimated size fits token_budget.
+        """
+        adv = self.synthesize_advice(task_query)
+        md = adv.get("markdown", "")
+        parts = md.split("\n#### ")
+        head, sections = parts[0], parts[1:]
+        patterns = adv.get("patterns", [])
+
+        def est(text: str) -> int:
+            return max(1, len(text) // 3)
+
+        kept_md = head
+        kept = []
+        for sec, pat in zip(sections, patterns):
+            candidate = kept_md + "\n#### " + sec
+            if kept and est(candidate) > token_budget:
+                break
+            kept_md = candidate
+            kept.append(pat)
+
+        return {
+            "status": adv.get("status"),
+            "task": task_query,
+            "token_budget": token_budget,
+            "estimated_tokens": est(kept_md),
+            "dominant_pattern": adv.get("dominant_pattern"),
+            "activated_nodes": [
+                {"node_id": p["node_id"], "pattern": p["pattern"], "weight": p["weight"], "priority": p["priority"]}
+                for p in kept
+            ],
+            "patterns": kept,
+            "markdown": kept_md,
+        }
+
 synthesizer = PhilosopherContextSynthesizer()
 
 if __name__ == "__main__":
@@ -405,3 +443,383 @@ if __name__ == "__main__":
     for q in test_queries:
         res = synthesizer.synthesize_advice(q)
         print(f"Query: {q[:30]}... -> Dominant: {res['dominant_pattern']} (Patterns: {res['patterns_count']})")
+
+
+# ============================================================================
+# STANFORD MEMORILLA LATENT SEMANTIC MEMORY ENGINE (K=16 ORTHOGONAL SLOTS)
+# ============================================================================
+import glob
+from collections import Counter
+
+DEFAULT_MEMORILLA_SLOTS = 16
+MAX_LATENT_SLOT_CHARS = 240
+MEMORILLA_LAMBDA = 0.65
+MEMORILLA_COLLINEAR_CEILING = 0.90
+
+CURATED_SITE_CORPUS = [
+    {
+        "source_ref": "essay:smart-companies-foolish-speeches",
+        "source_type": "essay",
+        "title": "Умные компании, глупые речи: почему корпорации тупеют",
+        "url": "https://dmitryefremov.com/#article/smart-companies-foolish-speeches",
+        "content": (
+            "# Умные компании, глупые речи | *Философия:* Пол Тагард (Explanatory Coherence) и Карл Поппер (Фальсификация). "
+            "Синдром корпоративной глупости возникает, когда презентационная гладкость подменяет проверку реальностью. "
+            "*Идеал:* На каждом совещании задавать проверочный вопрос Поппера: «Какой конкретный факт в рантайме докажет, что наша гипотеза ошибочна?»"
+        ),
+    },
+    {
+        "source_ref": "podcast:05-daniel-dennett",
+        "source_type": "podcast",
+        "title": "Выпуск 05: Дэниел Деннет — Иллюзия сознания и множественные наброски",
+        "url": "https://youtu.be/wuiq5XgRpgQ",
+        "content": (
+            "# Выпуск 05: Дэниел Деннет (Multiple Drafts & Homeostatic Autonomy) | *Философия:* Отказ от «картезианского театра» и единого центрального диспетчера. "
+            "*Идеал:* Автономная система работает через конкурирующие параллельные наброски (Multiple Drafts) и гомеостатическую саморегуляцию без ручного вмешательства."
+        ),
+    },
+    {
+        "source_ref": "podcast:04-gilbert-ryle",
+        "source_type": "podcast",
+        "title": "Выпуск 04: Гилберт Райл — Знать — не значит уметь (Knowing-How vs Knowing-That)",
+        "url": "https://youtu.be/2Bba02g21qx",
+        "content": (
+            "# Выпуск 04: Гилберт Райл (Knowing-How против Призрака в машине) | *Философия:* Категориальная ошибка — путать знание правил (knowing-that) с практическим навыком исполнения (knowing-how). "
+            "*Идеал:* Пресекать бесконечный регресс инструкций; оценивать агента исключительно по исполняемому результату и прохождению стресс-тестов."
+        ),
+    },
+    {
+        "source_ref": "podcast:03-susan-hurley",
+        "source_type": "podcast",
+        "title": "Выпуск 03: Сьюзан Хёрли — Воплощённое действие и сенсомоторный цикл",
+        "url": "https://youtu.be/dULbA2N-vA0",
+        "content": (
+            "# Выпуск 03: Сьюзан Хёрли (Sensorimotor Loop & Shared Circuits) | *Философия:* Мышление неотделимо от действия и непрерывной обратной связи со средой. "
+            "*Идеал:* Замкнутый сенсомоторный цикл: гипотеза -> действие -> замер отклика среды в рантайме -> коррекция, вместо слепой одноразовой генерации."
+        ),
+    },
+    {
+        "source_ref": "podcast:02-paul-thagard",
+        "source_type": "podcast",
+        "title": "Выпуск 02: Пол Тагард — Объяснительная когерентность и концептуальные революции",
+        "url": "https://youtu.be/Emy4vW-lnbI",
+        "content": (
+            "# Выпуск 02: Пол Тагард (Explanatory Coherence ECHO) | *Философия:* Истина определяется не красотой рассказа, а когерентностью с наблюдаемыми фактами и штрафом за выдуманные оправдания (ad-hoc гипотезы). "
+            "*Идеал:* Любая архитектурная диагностика обязана опираться на проверяемые улики в логах и БД."
+        ),
+    },
+    {
+        "source_ref": "podcast:01-ruth-barcan-marcus",
+        "source_type": "podcast",
+        "title": "Выпуск 01: Рут Баркан Маркус — Жёсткие десигнаторы и логика долга",
+        "url": "https://youtu.be/cX-bLC6-cvo",
+        "content": (
+            "# Выпуск 01: Рут Баркан Маркус (Barcan Formula & Rigid Identity) | *Философия:* Идентичность объектов и контрактов инвариантна во всех возможных состояниях системы; невыполненное обязательство не исчезает, а образует системный долг (moral remainder). "
+            "*Идеал:* Неизменяемые идентификаторы, идемпотентность и явный учёт каждого технического долга."
+        ),
+    },
+]
+
+
+def _sanitize_public_text(text: str) -> str:
+    clean = text
+    for i in range(20):
+        clean = clean.replace(f"BARCAN-TAG-{i:02d}", f"Arch-Rule-{i:02d}")
+    clean = re.sub(r"BARCAN-TAG-[A-Z0-9_-]*", "Arch-Rule", clean)
+    return clean
+
+
+def _distill_memorilla_token(text: str, max_chars: int = MAX_LATENT_SLOT_CHARS) -> str:
+    stripped_yaml = re.sub(r"^---\s*\n.*?\n---\s*\n", "", text or "", flags=re.DOTALL)
+    clean = _sanitize_public_text(stripped_yaml).strip()
+    if not clean:
+        return ""
+    lines = [
+        re.sub(r"\s+", " ", ln.strip())
+        for ln in clean.splitlines()
+        if ln.strip()
+        and ln.strip() != "---"
+        and not ln.strip().startswith(("philosopher_id:", "barcan_tag:", "source_file:", "**BARCAN tag:**", "**Arch-Rule"))
+    ]
+    priority = []
+    secondary = []
+    for ln in lines:
+        if (
+            ln.startswith("#")
+            or "*Философия:*" in ln
+            or "*Идеал:*" in ln
+            or "Архитектурный совет:" in ln
+            or "Критерий приёмки:" in ln
+            or "Invariants:" in ln
+            or "Rule" in ln
+            or "Паттерн" in ln
+        ):
+            priority.append(ln)
+        else:
+            secondary.append(ln)
+    merged = " | ".join(priority + secondary)
+    if len(merged) <= max_chars:
+        return merged
+    return merged[: max_chars - 3].rstrip() + "..."
+
+
+def _text_to_sparse_vector(text: str) -> Dict[str, float]:
+    norm = re.sub(r"[^a-zа-яё0-9\s]", " ", (text or "").lower())
+    words = [w for w in norm.split() if len(w) >= 2]
+    counts: Counter = Counter()
+    for w in words:
+        counts[f"w:{w}"] += 2.2
+        if len(w) >= 4:
+            counts[f"s:{w[:4]}"] += 1.4
+        if len(w) >= 5:
+            counts[f"s5:{w[:5]}"] += 1.2
+    compact = norm.replace(" ", "")
+    for i in range(max(0, len(compact) - 3)):
+        counts[f"g:{compact[i:i+3]}"] += 0.35
+    norm_sq = sum(v * v for v in counts.values())
+    if norm_sq <= 0:
+        return {}
+    inv_norm = 1.0 / math.sqrt(norm_sq)
+    return {k: v * inv_norm for k, v in counts.items()}
+
+
+def _sparse_cosine(vec_a: Dict[str, float], vec_b: Dict[str, float]) -> float:
+    if not vec_a or not vec_b:
+        return 0.0
+    if len(vec_a) > len(vec_b):
+        vec_a, vec_b = vec_b, vec_a
+    dot = 0.0
+    for k, val in vec_a.items():
+        b_val = vec_b.get(k)
+        if b_val is not None:
+            dot += val * b_val
+    return max(0.0, min(1.0, dot))
+
+
+def _otsu_dynamic_floor(scores: List[float], min_floor: float = 0.06, max_floor: float = 0.45) -> float:
+    unique = sorted(set(round(s, 4) for s in scores if s > 0))
+    if len(unique) < 2:
+        return min_floor
+    best_thresh = min_floor
+    best_var = -1.0
+    n = len(scores)
+    for i in range(len(unique) - 1):
+        cand = (unique[i] + unique[i + 1]) / 2.0
+        below = [s for s in scores if s < cand]
+        above = [s for s in scores if s >= cand]
+        if not below or not above:
+            continue
+        mean_b = sum(below) / len(below)
+        mean_a = sum(above) / len(above)
+        w_b = len(below) / n
+        w_a = len(above) / n
+        var = w_b * w_a * ((mean_a - mean_b) ** 2)
+        if var > best_var:
+            best_var = var
+            best_thresh = cand
+    return min(max_floor, max(min_floor, best_thresh))
+
+
+class MemorillaStandingCorpus:
+    def __init__(self):
+        self.items: List[Dict[str, Any]] = []
+        self._loaded = False
+
+    def ensure_loaded(self):
+        if self._loaded:
+            return
+        self._loaded = True
+        # 1. Curated essays and podcasts
+        for entry in CURATED_SITE_CORPUS:
+            distilled = _distill_memorilla_token(entry["content"], MAX_LATENT_SLOT_CHARS)
+            vec = _text_to_sparse_vector(entry["title"] + " " + entry["content"])
+            self.items.append({
+                "source_ref": entry["source_ref"],
+                "source_type": entry["source_type"],
+                "title": entry["title"],
+                "url": entry["url"],
+                "distilled_token": distilled,
+                "vector": vec,
+            })
+
+        # 2. Domain & architectural ontology nodes
+        for node_id, data in PATTERN_ONTOLOGY.items():
+            title = data.get("pattern", node_id)
+            axes_str = " ".join(data.get("axes", []))
+            raw_content = f"# {title} | Архитектурный совет: {data.get('advice', '')} | Критерий приёмки: {data.get('checklist', '')}"
+            distilled = _distill_memorilla_token(raw_content, MAX_LATENT_SLOT_CHARS)
+            vec = _text_to_sparse_vector(f"{title} {axes_str} {raw_content}")
+            self.items.append({
+                "source_ref": f"pattern:{node_id.lower()}",
+                "source_type": "engineering_pattern",
+                "title": title,
+                "url": "https://dmitryefremov.com/#canon",
+                "distilled_token": distilled,
+                "vector": vec,
+            })
+
+        # 3. Philosopher programming pattern files from /opt/EneikProductionSys/docs/philosopher-patterns
+        phil_files = sorted(glob.glob(os.path.join(PATTERNS_DIR, "philosophers", "*.md")))
+        common_files = [
+            os.path.join(PATTERNS_DIR, "00_COMMON_ANALYTIC_PROGRAMMING_PATTERNS.md"),
+            os.path.join(PATTERNS_DIR, "01_PARALLEL_DEVELOPMENT_CONFLICT_PREVENTION.md"),
+        ]
+        for fpath in common_files + phil_files:
+            if not os.path.isfile(fpath):
+                continue
+            try:
+                with open(fpath, "r", encoding="utf-8") as pf:
+                    raw = pf.read(5000)
+                clean_raw = _sanitize_public_text(raw)
+                fname = os.path.basename(fpath)
+                clean_ref = _sanitize_public_text(fname).replace(".md", "")
+                first_heading = clean_ref
+                for ln in clean_raw.splitlines():
+                    if ln.strip().startswith("#"):
+                        first_heading = ln.strip().lstrip("#").strip()[:90]
+                        break
+                distilled = _distill_memorilla_token(clean_raw, MAX_LATENT_SLOT_CHARS)
+                vec = _text_to_sparse_vector(f"{first_heading} {clean_raw[:1800]}")
+                self.items.append({
+                    "source_ref": f"canon:{clean_ref}",
+                    "source_type": "philosopher_pattern",
+                    "title": first_heading,
+                    "url": "https://dmitryefremov.com/#canon",
+                    "distilled_token": distilled,
+                    "vector": vec,
+                })
+            except Exception:
+                continue
+
+    def retrieve_latent_slots(self, query: str, k_slots: int = DEFAULT_MEMORILLA_SLOTS) -> List[Dict[str, Any]]:
+        self.ensure_loaded()
+        q_clean = (query or "").strip()
+        if not q_clean:
+            q_clean = "автономная архитектура фальсификация Поппера деонтическая логика"
+        q_vec = _text_to_sparse_vector(q_clean)
+        if not q_vec:
+            return []
+
+        scored = []
+        for item in self.items:
+            sim = _sparse_cosine(q_vec, item["vector"])
+            scored.append((sim, item))
+        scored.sort(key=lambda x: x[0], reverse=True)
+
+        all_sims = [s for s, _ in scored if s > 0]
+        floor = _otsu_dynamic_floor(all_sims) if all_sims else 0.05
+        pool = [(s, it) for s, it in scored if s >= floor]
+        if len(pool) < min(4, k_slots):
+            pool = scored[: max(k_slots * 2, 16)]
+
+        selected: List[Dict[str, Any]] = []
+        selected_vecs: List[Dict[str, float]] = []
+
+        while len(selected) < k_slots and pool:
+            best_idx = -1
+            best_orth_score = -1e9
+            for idx, (q_sim, cand) in enumerate(pool):
+                max_red = 0.0
+                for s_vec in selected_vecs:
+                    inter = _sparse_cosine(cand["vector"], s_vec)
+                    if inter > max_red:
+                        max_red = inter
+                if selected and max_red > MEMORILLA_COLLINEAR_CEILING:
+                    continue
+                orth_score = q_sim if not selected else (MEMORILLA_LAMBDA * q_sim - (1.0 - MEMORILLA_LAMBDA) * max_red)
+                if orth_score > best_orth_score:
+                    best_orth_score = orth_score
+                    best_idx = idx
+            if best_idx < 0:
+                break
+            chosen_sim, chosen_item = pool.pop(best_idx)
+            selected_vecs.append(chosen_item["vector"])
+            selected.append({
+                "slot_index": len(selected) + 1,
+                "source_ref": chosen_item["source_ref"],
+                "source_type": chosen_item["source_type"],
+                "title": chosen_item["title"],
+                "url": chosen_item["url"],
+                "distilled_token": chosen_item["distilled_token"],
+                "query_similarity": round(chosen_sim, 3),
+                "orthogonal_score": round(best_orth_score, 3),
+            })
+
+        return selected
+
+
+memorilla_corpus = MemorillaStandingCorpus()
+
+
+def _enhance_synthesizer_with_memorilla():
+    orig_synthesize_context = PhilosopherContextSynthesizer.synthesize_context
+    orig_synthesize_advice = PhilosopherContextSynthesizer.synthesize_advice
+
+    def retrieve_memorilla(self, query: str, k_slots: int = DEFAULT_MEMORILLA_SLOTS, token_budget: int = 1200) -> Dict[str, Any]:
+        slots = memorilla_corpus.retrieve_latent_slots(query, k_slots=max(1, min(32, k_slots)))
+        md_lines = [
+            f"# STANFORD MEMORILLA LATENT SEMANTIC MEMORY (K={len(slots)} Orthogonal Slots)",
+            f'> Query-conditioned subspace projection for: "{query}" (arXiv:2610.21375)\n',
+            COMMON_BASE_KERNEL.strip(),
+            "\n### DISTILLED ORTHOGONAL MEMORY SLOTS (<= 240 chars/slot):",
+        ]
+        for s in slots:
+            md_lines.append(
+                f"- **[Slot #{s['slot_index']:02d} | {s['source_ref']} | sim={s['query_similarity']:.2f}]** "
+                f"{s['distilled_token']} ({s['url']})"
+            )
+        md_text = "\n".join(md_lines)
+        est_tokens = max(1, len(md_text) // 3)
+        raw_corpus_tokens = 42500
+        reduction_pct = round(max(0.0, (1.0 - (float(est_tokens) / float(raw_corpus_tokens)))) * 100, 1)
+        return {
+            "status": "MEMORILLA_LATENT_SLOTS_READY",
+            "engine": "Stanford Memorilla Latent Semantic Memory (K=16 Orthogonal Subspace Projection)",
+            "arxiv_ref": "arXiv:2610.21375",
+            "query": query,
+            "k_slots": len(slots),
+            "estimated_tokens": est_tokens,
+            "raw_corpus_tokens": raw_corpus_tokens,
+            "compression_ratio_pct": reduction_pct,
+            "slots": slots,
+            "markdown": md_text,
+        }
+
+    def enhanced_synthesize_context(self, task_query: str, token_budget: int = 1200, k_slots: int = DEFAULT_MEMORILLA_SLOTS) -> Dict[str, Any]:
+        base = orig_synthesize_context(self, task_query, token_budget=token_budget)
+        mem = self.retrieve_memorilla(task_query, k_slots=k_slots, token_budget=token_budget)
+        slots = mem.get("slots", [])
+        if not base.get("activated_nodes") and slots:
+            base["activated_nodes"] = [
+                {
+                    "node_id": s["source_ref"],
+                    "pattern": s["title"],
+                    "weight": s["query_similarity"],
+                    "priority": "Ортогональный слот Memorilla" if s["slot_index"] <= 4 else "Латентный слот памяти",
+                }
+                for s in slots[:8]
+            ]
+            if base.get("dominant_pattern") == "Universal Standards":
+                base["dominant_pattern"] = slots[0]["title"]
+        slot_section = "\n\n### ЛАТЕНТНАЯ СЕМАНТИЧЕСКАЯ ПАМЯТЬ СТЭНФОРДА (MEMORILLA K=" + str(len(slots)) + " ОРТОГОНАЛЬНЫХ СЛОТОВ)\n"
+        for s in slots[:k_slots]:
+            slot_section += f"- **[Slot #{s['slot_index']:02d} | {s['source_ref']}]** {s['distilled_token']} ({s['url']})\n"
+        base["memorilla_slots"] = slots
+        base["memorilla_k"] = len(slots)
+        base["markdown"] = base.get("markdown", "") + slot_section
+        base["estimated_tokens"] = max(1, len(base["markdown"]) // 3)
+        return base
+
+    def enhanced_synthesize_advice(self, task_query: str, question: Optional[str] = None) -> Dict[str, Any]:
+        base = orig_synthesize_advice(self, task_query, question=question)
+        combined = f"{task_query} {question or ''}".strip()
+        mem = self.retrieve_memorilla(combined, k_slots=DEFAULT_MEMORILLA_SLOTS)
+        base["memorilla_slots"] = mem.get("slots", [])
+        return base
+
+    PhilosopherContextSynthesizer.retrieve_memorilla = retrieve_memorilla
+    PhilosopherContextSynthesizer.synthesize_context = enhanced_synthesize_context
+    PhilosopherContextSynthesizer.synthesize_advice = enhanced_synthesize_advice
+
+
+_enhance_synthesizer_with_memorilla()

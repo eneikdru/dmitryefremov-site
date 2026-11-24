@@ -47,6 +47,9 @@ public class SparkController {
         }
 
         SparkDto savedSpark = sparkService.processTelegramWebhook(rawJsonPayload);
+        if (savedSpark == null) {
+            return ResponseEntity.ok(java.util.Map.of("ignored", true, "reason", "filtered_promo"));
+        }
         return ResponseEntity.ok(savedSpark);
     }
 

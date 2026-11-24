@@ -14,7 +14,7 @@ description: >-
 * **Telegram Channel:** `https://t.me/efremov_mvp` (`@efremov_mvp`)
 * **YouTube Channel:** `https://www.youtube.com/@dmitrii.efremov` (`@dmitrii.efremov`)
 * **LinkedIn Profile:** `https://www.linkedin.com/in/dmitrii-efremov-87b816349/`
-* **GitHub Organization / Repo:** `https://github.com/dmitriieneik-rgb/dmitryefremov-site`
+* **GitHub Organization / Repo:** `https://github.com/eneikdru/dmitryefremov-site`
 
 > [!IMPORTANT]
 > Never use placeholder links or arbitrary handles. All outbound links, metadata, and OpenGraph tags must strictly reference the canonical URLs above.
@@ -42,10 +42,14 @@ description: >-
    - Глубокие нейросети — это кремниевая реализация райловского *knowing-how* (распределенное знание в весах и диспозициях), а не декларативные базы фактов (*knowing-that*). Ошибка инженеров — пытаться управлять процедурным навыком через раздувание промптов.
 7. **Наполнение GitHub:**
    - Для каждого нового эссе создать соответствующий эталонный паттерн в `patterns/<номер>-<название>/` с файлами `README.md` и реализацией на TypeScript/Python, а также обновить корневой `README.md`.
-8. **Автотесты и деплой:**
+8. **Автотесты и production-деплой:**
    - Запрещено гонять `npm test` (тестирование — зона ответственности CI/CD, администратор отвечает только за контент).
-   - После добавления эссе и паттерна выполнить `npm run build` и скопировать в превью-контейнер:
-     `docker cp dist/. dmitryefremov-frontend-preview:/usr/share/nginx/html/ && docker exec dmitryefremov-frontend-preview nginx -s reload`.
+   - Публичный домен обслуживает Cloudflare Tunnel из `/etc/cloudflared/config.yml`, направленный на production HTTPS `https://127.0.0.1:443`.
+   - Контейнер `dmitryefremov-frontend-preview` и порт `18085` используются только стендом `test-fiftieth.dmitryefremov.com`; публикация туда не является публикацией на основном сайте.
+   - После изменения фронтенда выполнить `npm run build`, затем пересобрать и заменить только production-фронтенд:
+     `docker compose build frontend && docker compose up -d --no-deps frontend`.
+   - Данные выпуска добавлять через существующий защищённый content API, а аудиофайл сохранять также в `frontend/public/audio/`, чтобы он переживал следующую сборку образа.
+   - Успех подтверждается только публичными проверками `https://dmitryefremov.com/`, `/api/v1/podcasts`, `/podcasts` и точного `/audio/<file>`; ответы локального порта или preview-контейнера недостаточны.
 
 ## 4. Стилистические стандарты
 - **Стиль:** Швейцарский редакционный минимализм / технический брутализм. Никаких эмодзи, никаких фейковых плавающих форм, никаких порядковых номеров выпусков («Выпуск 01»).

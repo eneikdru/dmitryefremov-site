@@ -16,6 +16,9 @@
   export let gptBotAllowed: boolean = true;
   export let perplexityBotAllowed: boolean = true;
   export let claudeBotAllowed: boolean = true;
+  export let alternateEnUrl: string | undefined = undefined;
+  export let alternateRuUrl: string | undefined = undefined;
+  export let alternateKaUrl: string | undefined = undefined;
 
   $: config = {
     title,
@@ -47,6 +50,15 @@
 
 <svelte:head>
   <title>{title}</title>
+  <link rel="canonical" href={url} />
+  {#if alternateRuUrl}<link rel="alternate" hreflang="ru" href={alternateRuUrl} />{/if}
+  {#if alternateEnUrl}<link rel="alternate" hreflang="en" href={alternateEnUrl} />{/if}
+  {#if alternateKaUrl}<link rel="alternate" hreflang="ka" href={alternateKaUrl} />{/if}
+  {#if alternateEnUrl}
+    <link rel="alternate" hreflang="x-default" href={alternateEnUrl} />
+  {:else if alternateRuUrl}
+    <link rel="alternate" hreflang="x-default" href={alternateRuUrl} />
+  {/if}
   <meta name="description" content={description} />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
   <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />

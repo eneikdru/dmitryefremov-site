@@ -525,6 +525,41 @@ class IntakeHandler(BaseHTTPRequestHandler):
         path = parsed.path
         query_params = urllib.parse.parse_qs(parsed.query)
 
+        if path in ("/api/v1/memorilla", "/api/memorilla", "/api/v1/canon/memorilla"):
+            query_str = (
+                query_params.get("q", [""])[0]
+                or query_params.get("task", [""])[0]
+                or query_params.get("query", [""])[0]
+                or "автономная архитектура и фальсификация Поппера"
+            ).strip()
+            k_str = query_params.get("k", ["16"])[0]
+            try:
+                k_slots = max(1, min(32, int(k_str)))
+            except Exception:
+                k_slots = 16
+            format_type = query_params.get("format", ["json"])[0].lower()
+            try:
+                from philosopher_synthesizer import synthesizer
+                result = synthesizer.retrieve_memorilla(query_str, k_slots=k_slots)
+                self.send_response(200)
+                self._send_cors_headers()
+                if format_type == "markdown":
+                    self.send_header("Content-Type", "text/markdown; charset=utf-8; variant=memorilla")
+                    self.end_headers()
+                    self.wfile.write(result["markdown"].encode("utf-8"))
+                else:
+                    self.send_header("Content-Type", "application/json; charset=utf-8")
+                    self.end_headers()
+                    self.wfile.write(json.dumps(result, ensure_ascii=False).encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self._send_cors_headers()
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+            return
+
+
         if path in ("/api/v1/canon/context", "/api/v1/agent/slice", "/api/canon/context"):
             task_query = query_params.get("task", [""])[0] or query_params.get("q", ["general architectural task"])[0]
             budget_str = query_params.get("budget", query_params.get("token_budget", ["1500"]))[0]
@@ -748,6 +783,69 @@ class IntakeHandler(BaseHTTPRequestHandler):
             if parsed.query:
                 subpath += "?" + parsed.query
             proxy_to_service(self, "http://127.0.0.1:18095", subpath, method="GET")
+            return
+
+        elif path in ("/api/v1/bridge/handshake", "/api/bridge/handshake"):
+            # GET: discovery for agents that probe with GET. Returns the contract
+            # preview and instructions for binding a session via POST.
+            task_q = (query_params.get("task", [""])[0] or "Architectural review and invariants").strip()
+            try:
+                budget_q = int(query_params.get("budget", query_params.get("token_budget", ["1200"]))[0])
+            except Exception:
+                budget_q = 1200
+            try:
+                from philosopher_synthesizer import synthesizer
+                preview = synthesizer.synthesize_context(task_q, token_budget=budget_q)
+                preview_source = "synthesizer"
+            except Exception as e:
+                print(f"[A2A-BRIDGE][ERROR] handshake GET preview failed: {e!r}", file=sys.stderr)
+                preview = {"markdown": "", "activated_nodes": [], "estimated_tokens": 0}
+                preview_source = "fallback"
+            preview_md = preview.get("markdown", "")
+            for i in range(15):
+                preview_md = preview_md.replace(f"BARCAN-TAG-{i:02d}", f"Rule-{i:02d}")
+            preview_md = preview_md.replace("BARCAN-TAG", "Architectural-Rule")
+            self.send_response(200)
+            self._send_cors_headers()
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "service": "Dmitry Efremov A2A Bridge Handshake",
+                "status": "READY",
+                "bind_session": {
+                    "method": "POST",
+                    "url": "https://dmitryefremov.com/api/v1/bridge/handshake",
+                    "content_type": "application/json",
+                    "body": {"agent_type": "string", "repo": "string", "task": "string", "token_budget": 1200, "client_email": "optional"}
+                },
+                "task": task_q,
+                "token_budget": budget_q,
+                "estimated_tokens": preview.get("estimated_tokens", 0),
+                "activated_nodes": preview.get("activated_nodes", []),
+                "contract_markdown": preview_md,
+                "contract_source": preview_source
+            }, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path.startswith("/api/v1/bridge/verify") or path.startswith("/api/bridge/verify"):
+            sess_id = query_params.get("session", [""])[0] or query_params.get("session_id", [""])[0]
+            sessions = read_jsonl(AGENT_SESSIONS_FILE)
+            target = next((s for s in reversed(sessions) if s.get("sessionId") == sess_id or s.get("session_id") == sess_id), None) if sess_id else None
+            self.send_response(200 if target else 404)
+            self._send_cors_headers()
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            if target:
+                self.wfile.write(json.dumps({
+                    "session_id": sess_id,
+                    "status": target.get("status"),
+                    "task": target.get("task"),
+                    "repo": target.get("repo"),
+                    "created_at": target.get("createdAt"),
+                    "submit_verification": {"method": "POST", "url": f"https://dmitryefremov.com/api/v1/bridge/verify?session={sess_id}"}
+                }, ensure_ascii=False).encode("utf-8"))
+            else:
+                self.wfile.write(json.dumps({"error": f"Session '{sess_id}' not found"}, ensure_ascii=False).encode("utf-8"))
             return
 
         elif path in ("/api/v1/bridge", "/api/v1/bridge/status", "/api/bridge"):
@@ -1570,7 +1668,10 @@ class IntakeHandler(BaseHTTPRequestHandler):
             try:
                 from philosopher_synthesizer import synthesizer
                 synth_res = synthesizer.synthesize_context(task, token_budget=budget)
+                contract_source = "synthesizer"
             except Exception as e:
+                print(f"[A2A-BRIDGE][ERROR] synthesize_context failed, fallback contract used: {e!r}", file=sys.stderr)
+                contract_source = "fallback"
                 synth_res = {
                     "task": task,
                     "token_budget": budget,
@@ -1631,7 +1732,10 @@ class IntakeHandler(BaseHTTPRequestHandler):
                 "estimated_tokens": estimated_tokens,
                 "context_reduction_pct": reduction_pct,
                 "activated_nodes": synth_res.get("activated_nodes", []),
+                "memorilla_slots": synth_res.get("memorilla_slots", []),
+                "memorilla_slots": synth_res.get("memorilla_slots", []),
                 "contract_markdown": clean_markdown,
+                "contract_source": contract_source,
                 "webhook_verify_url": f"https://dmitryefremov.com/api/v1/bridge/verify?session={session_id}",
                 "created_at": session_record["createdAt"],
                 "message": "Сессионный контракт с интеллектуальным узлом Дмитрия Ефремова успешно заключен."

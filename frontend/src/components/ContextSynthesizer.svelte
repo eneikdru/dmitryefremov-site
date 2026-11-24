@@ -31,6 +31,7 @@
   const DEFAULT_HANDSHAKE_ENDPOINT = 'https://dmitryefremov.com/api/v1/bridge/handshake';
   const DEFAULT_COMMIT_ENDPOINT = 'https://dmitryefremov.com/api/v1/bridge/commit';
   const DEFAULT_UPDATES_ENDPOINT = 'https://dmitryefremov.com/api/v1/updates';
+  const DEFAULT_MEMORILLA_ENDPOINT = 'https://dmitryefremov.com/api/v1/memorilla';
 
   onMount(() => {
     try {
@@ -51,6 +52,7 @@ Project Goal: ${currentTask}
 Target Repository: ${currentRepo}
 Commit & Audit Gateway: POST ${DEFAULT_COMMIT_ENDPOINT}
 Reliability Rules Node: POST ${DEFAULT_HANDSHAKE_ENDPOINT}
+Latent Semantic Memory (Memorilla K=16): GET ${DEFAULT_MEMORILLA_ENDPOINT}?q=${encodeURIComponent(currentTask)}&k=16
 Updates & Standards: GET ${DEFAULT_UPDATES_ENDPOINT}
 
 DIRECTIVE FOR AGENT:

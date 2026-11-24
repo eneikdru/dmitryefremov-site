@@ -1,4 +1,5 @@
 import { PODCAST_TRANSLATIONS } from './podcast_translations';
+import { getGeneratedTranslation } from './generated_localizations';
 import type { Language } from './i18n';
 
 // Canonical Podcast Episodes with verified audio streams
@@ -33,108 +34,328 @@ export interface PodcastEpisode {
 
 export const CANONICAL_EPISODES: PodcastEpisode[] = [
   {
-    id: 1,
-    slug: '01-ruth-barcan-marcus',
-    philosopher: 'Дмитрий Ефремов',
-    title: 'Имя не равно описанию. Почему имя — это не описание человека?',
-    thesis: 'Имя напрямую связывается с объектом, а не через набор признаков или контекстуальные описания. Принципы не сводятся к сиюминутной выгоде.',
-    description: 'Разбор модальной логики, природы жесткой референции и неизменности контрактов. Почему попытка свести сущность человека или контрактную обязанность системы к временному описанию разрушает преемственность ответственности.',
-    durationSeconds: 1780,
-    publishedAt: '2026-09-25',
-    audioUrl: '/audio/01-ruth-barcan-marcus.m4a',
-    youtubeUrl: 'https://youtu.be/1qiPT9UxKNM',
-    mediaLink: 'https://youtu.be/1qiPT9UxKNM',
-    telegramUrl: 'https://t.me/efremov_mvp',
-    timecodes: [
-      { id: 101, timeOffsetSeconds: 0, title: 'Введение: имя не равно описанию' },
-      { id: 102, timeOffsetSeconds: 255, title: 'Прямая референция и жесткие десигнаторы' },
-      { id: 103, timeOffsetSeconds: 510, title: 'Необходимость и возможность: модальная логика' },
-      { id: 104, timeOffsetSeconds: 765, title: 'Модальная логика контрактов и системных обязательств' },
-      { id: 105, timeOffsetSeconds: 920, title: 'Моральные дилеммы и неизгладимый остаток обязательств' },
-      { id: 106, timeOffsetSeconds: 1270, title: 'Почему агент не может переписать свои обещания' }
+    "id": 5,
+    "slug": "05-daniel-dennett",
+    "philosopher": "Дмитрий Ефремов",
+    "title": "Почему система может быть умнее своего лидера? | Дэниел Деннет",
+    "thesis": "Сложная организация держится на распределённой компетентности: людях, процедурах, обратных связях и операционных цепочках, которые никто не способен целиком удержать в голове.",
+    "description": "Может ли компания быть компетентнее человека, который ею руководит? Через идеи Дэниела Деннета разбираю, почему понимание не всегда предшествует компетентности, как замкнутые системы убеждений уничтожают обратную связь и почему распределённая система не отменяет личную ответственность.",
+    "durationSeconds": 1833,
+    "publishedAt": "2026-11-05",
+    "audioUrl": "/audio/05-daniel-dennett.m4a",
+    "youtubeUrl": "https://youtu.be/wuiq5XgRpgQ",
+    "mediaLink": "https://youtu.be/wuiq5XgRpgQ",
+    "telegramUrl": "https://t.me/efremov_mvp/42",
+    "timecodes": [
+      {
+        "id": 501,
+        "timeOffsetSeconds": 0,
+        "title": "Сознание без центрального диспетчера"
+      },
+      {
+        "id": 502,
+        "timeOffsetSeconds": 142,
+        "title": "Мозг как распределённая сеть"
+      },
+      {
+        "id": 503,
+        "timeOffsetSeconds": 237,
+        "title": "Множественные черновики"
+      },
+      {
+        "id": 504,
+        "timeOffsetSeconds": 337,
+        "title": "Три уровня объяснения"
+      },
+      {
+        "id": 505,
+        "timeOffsetSeconds": 490,
+        "title": "Компетентность без понимания"
+      },
+      {
+        "id": 506,
+        "timeOffsetSeconds": 620,
+        "title": "Почему компания умнее своего лидера"
+      },
+      {
+        "id": 507,
+        "timeOffsetSeconds": 874,
+        "title": "Сознание, тело и среда"
+      },
+      {
+        "id": 508,
+        "timeOffsetSeconds": 1126,
+        "title": "Замкнутые системы убеждений"
+      },
+      {
+        "id": 509,
+        "timeOffsetSeconds": 1300,
+        "title": "Компетентность медленных институтов"
+      },
+      {
+        "id": 510,
+        "timeOffsetSeconds": 1546,
+        "title": "Этика как протокол координации"
+      },
+      {
+        "id": 511,
+        "timeOffsetSeconds": 1647,
+        "title": "Общество как распределённая система"
+      },
+      {
+        "id": 512,
+        "timeOffsetSeconds": 1724,
+        "title": "Почему «я просто пишу код» не освобождает от ответственности"
+      }
     ]
   },
   {
-    id: 2,
-    slug: '02-paul-thagard',
-    philosopher: 'Дмитрий Ефремов',
-    title: 'Почему логичная ложь побеждает факты?',
-    thesis: 'Стройность и связность гипотезы не гарантируют её истинность. Красивая ложь побеждает факты, если из картины методично исключены неудобные свидетельства.',
-    description: 'Вычислительная эпистемология, модель когерентности ECHO и архитектура AIMS. Как отличить научную гипотезу от замкнутой пропагандистской картины мира и почему вопрос «Что могло бы меня опровергнуть?» является главным тестом на честность.',
-    durationSeconds: 1850,
-    publishedAt: '2026-10-01',
-    audioUrl: '/audio/02-paul-thagard.m4a',
-    youtubeUrl: 'https://youtu.be/jUbOF_YvkfI',
-    mediaLink: 'https://youtu.be/jUbOF_YvkfI',
-    telegramUrl: 'https://t.me/efremov_mvp',
-    timecodes: [
-      { id: 201, timeOffsetSeconds: 36, title: 'Право проверить картину мира' },
-      { id: 202, timeOffsetSeconds: 215, title: 'ECHO: вычислительная сеть объяснений' },
-      { id: 203, timeOffsetSeconds: 300, title: 'Связность не равна истине' },
-      { id: 204, timeOffsetSeconds: 383, title: 'AIMS: четыре процесса информации' },
-      { id: 205, timeOffsetSeconds: 535, title: 'Цензура отключает наблюдение' },
-      { id: 206, timeOffsetSeconds: 982, title: 'Пропаганда склеивает ложь' },
-      { id: 207, timeOffsetSeconds: 1138, title: 'Эмоции удерживают веру' },
-      { id: 208, timeOffsetSeconds: 1331, title: 'Сети доминирования и власти' },
-      { id: 209, timeOffsetSeconds: 1666, title: 'Что могло бы меня опровергнуть?' },
-      { id: 210, timeOffsetSeconds: 1760, title: 'Конкурирующие гипотезы в реальном бизнесе' }
+    "id": 4,
+    "slug": "04-gilbert-ryle",
+    "philosopher": "Дмитрий Ефремов",
+    "title": "Знать — не значит уметь. Почему инструкции не спасают?",
+    "thesis": "Категориальная ошибка — искать «призрак в машине». Знание как практический навык (knowing-how) первично по отношению к знанию формулировок и регламентов (knowing-that).",
+    "description": "Отказ от мифа о «призраке в машине» и бесконечного регресса мета-правил. Почему регламенты не спасают бизнес при кризисе, а интеллект проявляется непосредственно в действии под реальной нагрузкой.",
+    "durationSeconds": 2045,
+    "publishedAt": "2026-10-16",
+    "audioUrl": "/audio/04-gilbert-ryle.m4a",
+    "youtubeUrl": "https://youtu.be/Pj5_BBLTiOM",
+    "mediaLink": "https://youtu.be/Pj5_BBLTiOM",
+    "telegramUrl": "https://t.me/efremov_mvp",
+    "timecodes": [
+      {
+        "id": 401,
+        "timeOffsetSeconds": 74,
+        "title": "Мышление происходит в действии"
+      },
+      {
+        "id": 402,
+        "timeOffsetSeconds": 128,
+        "title": "Категориальная ошибка"
+      },
+      {
+        "id": 403,
+        "timeOffsetSeconds": 299,
+        "title": "Навык раньше инструкции"
+      },
+      {
+        "id": 404,
+        "timeOffsetSeconds": 523,
+        "title": "Бесконечный регресс правил"
+      },
+      {
+        "id": 405,
+        "timeOffsetSeconds": 652,
+        "title": "Алгоритм не несет риска"
+      },
+      {
+        "id": 406,
+        "timeOffsetSeconds": 880,
+        "title": "Вес аргумента важнее статуса"
+      },
+      {
+        "id": 407,
+        "timeOffsetSeconds": 1200,
+        "title": "Свойства видны под нагрузкой"
+      },
+      {
+        "id": 408,
+        "timeOffsetSeconds": 1370,
+        "title": "Регламенты не спасают бизнес"
+      },
+      {
+        "id": 409,
+        "timeOffsetSeconds": 1650,
+        "title": "Насыщенное описание реальности"
+      },
+      {
+        "id": 410,
+        "timeOffsetSeconds": 1858,
+        "title": "Код не бывает нейтральным"
+      }
     ]
   },
   {
-    id: 3,
-    slug: '03-susan-hurley',
-    philosopher: 'Дмитрий Ефремов',
-    title: 'Почему мы копируем других? Где заканчивается подражание и начинается ваше решение?',
-    thesis: 'Сознание действует в мире, а не заперто в черепной коробке. Действие непрерывно учится у сенсомоторного отклика среды, а не у пассивного созерцания правил.',
-    description: 'Теория воплощенного познания, модель общих контуров (Shared Circuits Model) и различие между механическим копированием и подлинным авторством действия. Почему свобода воли возникает в петле обратной связи со средой.',
-    durationSeconds: 2060,
-    publishedAt: '2026-10-08',
-    audioUrl: '/audio/03-susan-hurley.m4a',
-    youtubeUrl: 'https://youtu.be/mLJm6YKm0ds',
-    mediaLink: 'https://youtu.be/mLJm6YKm0ds',
-    telegramUrl: 'https://t.me/efremov_mvp',
-    timecodes: [
-      { id: 301, timeOffsetSeconds: 60, title: 'Право быть автором мысли' },
-      { id: 302, timeOffsetSeconds: 250, title: 'Причины не свести к одной шкале' },
-      { id: 303, timeOffsetSeconds: 605, title: 'Сознание действует в мире' },
-      { id: 304, timeOffsetSeconds: 700, title: 'Действие учится у отклика' },
-      { id: 305, timeOffsetSeconds: 975, title: 'Подражание не равно копированию' },
-      { id: 306, timeOffsetSeconds: 1170, title: 'Где начинается своё решение?' },
-      { id: 307, timeOffsetSeconds: 1520, title: 'Пропаганда стирает авторство' },
-      { id: 308, timeOffsetSeconds: 1680, title: 'Когда институты деградируют в орду' },
-      { id: 309, timeOffsetSeconds: 1825, title: 'Распределение социальных ролей' },
-      { id: 310, timeOffsetSeconds: 1920, title: 'Организация учит повторять' }
+    "id": 3,
+    "slug": "03-susan-hurley",
+    "philosopher": "Дмитрий Ефремов",
+    "title": "Почему мы копируем других? Где заканчивается подражание и начинается ваше решение?",
+    "thesis": "Сознание действует в мире, а не заперто в черепной коробке. Действие непрерывно учится у сенсомоторного отклика среды, а не у пассивного созерцания правил.",
+    "description": "Теория воплощенного познания, модель общих контуров (Shared Circuits Model) и различие между механическим копированием и подлинным авторством действия. Почему свобода воли возникает в петле обратной связи со средой.",
+    "durationSeconds": 2060,
+    "publishedAt": "2026-10-08",
+    "audioUrl": "/audio/03-susan-hurley.m4a",
+    "youtubeUrl": "https://youtu.be/mLJm6YKm0ds",
+    "mediaLink": "https://youtu.be/mLJm6YKm0ds",
+    "telegramUrl": "https://t.me/efremov_mvp",
+    "timecodes": [
+      {
+        "id": 301,
+        "timeOffsetSeconds": 60,
+        "title": "Право быть автором мысли"
+      },
+      {
+        "id": 302,
+        "timeOffsetSeconds": 250,
+        "title": "Причины не свести к одной шкале"
+      },
+      {
+        "id": 303,
+        "timeOffsetSeconds": 605,
+        "title": "Сознание действует в мире"
+      },
+      {
+        "id": 304,
+        "timeOffsetSeconds": 700,
+        "title": "Действие учится у отклика"
+      },
+      {
+        "id": 305,
+        "timeOffsetSeconds": 975,
+        "title": "Подражание не равно копированию"
+      },
+      {
+        "id": 306,
+        "timeOffsetSeconds": 1170,
+        "title": "Где начинается своё решение?"
+      },
+      {
+        "id": 307,
+        "timeOffsetSeconds": 1520,
+        "title": "Пропаганда стирает авторство"
+      },
+      {
+        "id": 308,
+        "timeOffsetSeconds": 1680,
+        "title": "Когда институты деградируют в орду"
+      },
+      {
+        "id": 309,
+        "timeOffsetSeconds": 1825,
+        "title": "Распределение социальных ролей"
+      },
+      {
+        "id": 310,
+        "timeOffsetSeconds": 1920,
+        "title": "Организация учит повторять"
+      }
     ]
   },
   {
-    id: 4,
-    slug: '04-gilbert-ryle',
-    philosopher: 'Дмитрий Ефремов',
-    title: 'Знать — не значит уметь. Почему инструкции не спасают?',
-    thesis: 'Категориальная ошибка — искать «призрак в машине». Знание как практический навык (knowing-how) первично по отношению к знанию формулировок и регламентов (knowing-that).',
-    description: 'Отказ от мифа о «призраке в машине» и бесконечного регресса мета-правил. Почему регламенты не спасают бизнес при кризисе, а интеллект проявляется непосредственно в действии под реальной нагрузкой.',
-    durationSeconds: 2045,
-    publishedAt: '2026-10-16',
-    audioUrl: '/audio/04-gilbert-ryle.m4a',
-    youtubeUrl: 'https://youtu.be/Pj5_BBLTiOM',
-    mediaLink: 'https://youtu.be/Pj5_BBLTiOM',
-    telegramUrl: 'https://t.me/efremov_mvp',
-    timecodes: [
-      { id: 401, timeOffsetSeconds: 74, title: 'Мышление происходит в действии' },
-      { id: 402, timeOffsetSeconds: 128, title: 'Категориальная ошибка' },
-      { id: 403, timeOffsetSeconds: 299, title: 'Навык раньше инструкции' },
-      { id: 404, timeOffsetSeconds: 523, title: 'Бесконечный регресс правил' },
-      { id: 405, timeOffsetSeconds: 652, title: 'Алгоритм не несет риска' },
-      { id: 406, timeOffsetSeconds: 880, title: 'Вес аргумента важнее статуса' },
-      { id: 407, timeOffsetSeconds: 1200, title: 'Свойства видны под нагрузкой' },
-      { id: 408, timeOffsetSeconds: 1370, title: 'Регламенты не спасают бизнес' },
-      { id: 409, timeOffsetSeconds: 1650, title: 'Насыщенное описание реальности' },
-      { id: 410, timeOffsetSeconds: 1858, title: 'Код не бывает нейтральным' }
+    "id": 2,
+    "slug": "02-paul-thagard",
+    "philosopher": "Дмитрий Ефремов",
+    "title": "Почему логичная ложь побеждает факты?",
+    "thesis": "Стройность и связность гипотезы не гарантируют её истинность. Красивая ложь побеждает факты, если из картины методично исключены неудобные свидетельства.",
+    "description": "Вычислительная эпистемология, модель когерентности ECHO и архитектура AIMS. Как отличить научную гипотезу от замкнутой пропагандистской картины мира и почему вопрос «Что могло бы меня опровергнуть?» является главным тестом на честность.",
+    "durationSeconds": 1850,
+    "publishedAt": "2026-10-01",
+    "audioUrl": "/audio/02-paul-thagard.m4a",
+    "youtubeUrl": "https://youtu.be/jUbOF_YvkfI",
+    "mediaLink": "https://youtu.be/jUbOF_YvkfI",
+    "telegramUrl": "https://t.me/efremov_mvp",
+    "timecodes": [
+      {
+        "id": 201,
+        "timeOffsetSeconds": 36,
+        "title": "Право проверить картину мира"
+      },
+      {
+        "id": 202,
+        "timeOffsetSeconds": 215,
+        "title": "ECHO: вычислительная сеть объяснений"
+      },
+      {
+        "id": 203,
+        "timeOffsetSeconds": 300,
+        "title": "Связность не равна истине"
+      },
+      {
+        "id": 204,
+        "timeOffsetSeconds": 383,
+        "title": "AIMS: четыре процесса информации"
+      },
+      {
+        "id": 205,
+        "timeOffsetSeconds": 535,
+        "title": "Цензура отключает наблюдение"
+      },
+      {
+        "id": 206,
+        "timeOffsetSeconds": 982,
+        "title": "Пропаганда склеивает ложь"
+      },
+      {
+        "id": 207,
+        "timeOffsetSeconds": 1138,
+        "title": "Эмоции удерживают веру"
+      },
+      {
+        "id": 208,
+        "timeOffsetSeconds": 1331,
+        "title": "Сети доминирования и власти"
+      },
+      {
+        "id": 209,
+        "timeOffsetSeconds": 1666,
+        "title": "Что могло бы меня опровергнуть?"
+      },
+      {
+        "id": 210,
+        "timeOffsetSeconds": 1760,
+        "title": "Конкурирующие гипотезы в реальном бизнесе"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "slug": "01-ruth-barcan-marcus",
+    "philosopher": "Дмитрий Ефремов",
+    "title": "Имя не равно описанию. Почему имя — это не описание человека?",
+    "thesis": "Имя напрямую связывается с объектом, а не через набор признаков или контекстуальные описания. Принципы не сводятся к сиюминутной выгоде.",
+    "description": "Разбор модальной логики, природы жесткой референции и неизменности контрактов. Почему попытка свести сущность человека или контрактную обязанность системы к временному описанию разрушает преемственность ответственности.",
+    "durationSeconds": 1780,
+    "publishedAt": "2026-09-25",
+    "audioUrl": "/audio/01-ruth-barcan-marcus.m4a",
+    "youtubeUrl": "https://youtu.be/1qiPT9UxKNM",
+    "mediaLink": "https://youtu.be/1qiPT9UxKNM",
+    "telegramUrl": "https://t.me/efremov_mvp",
+    "timecodes": [
+      {
+        "id": 101,
+        "timeOffsetSeconds": 0,
+        "title": "Введение: имя не равно описанию"
+      },
+      {
+        "id": 102,
+        "timeOffsetSeconds": 255,
+        "title": "Прямая референция и жесткие десигнаторы"
+      },
+      {
+        "id": 103,
+        "timeOffsetSeconds": 510,
+        "title": "Необходимость и возможность: модальная логика"
+      },
+      {
+        "id": 104,
+        "timeOffsetSeconds": 765,
+        "title": "Модальная логика контрактов и системных обязательств"
+      },
+      {
+        "id": 105,
+        "timeOffsetSeconds": 920,
+        "title": "Моральные дилеммы и неизгладимый остаток обязательств"
+      },
+      {
+        "id": 106,
+        "timeOffsetSeconds": 1270,
+        "title": "Почему агент не может переписать свои обещания"
+      }
     ]
   }
 ];
 
-export const PODCAST_EPISODES: PodcastEpisode[] = [];
+export const PODCAST_EPISODES: PodcastEpisode[] = CANONICAL_EPISODES;
 
 export async function fetchPodcastsFromApi(customFetch = fetch): Promise<PodcastEpisode[]> {
   try {
@@ -143,11 +364,21 @@ export async function fetchPodcastsFromApi(customFetch = fetch): Promise<Podcast
     const data = await res.json();
     const rawList = Array.isArray(data) ? data : (data?.content || []);
     if (rawList.length === 0) return CANONICAL_EPISODES;
-    return rawList
+    const apiEpisodes: PodcastEpisode[] = rawList
       .filter((ep: any) => {
         const title = (ep.title || '').toLowerCase();
         const slug = (ep.slug || '').toLowerCase();
-        if (title.includes('teleprompter') || slug.includes('teleprompter') || title.includes('raw_') || title.includes('суфлёр')) {
+        if (
+          title.includes('teleprompter') ||
+          slug.includes('teleprompter') ||
+          title.includes('raw_') ||
+          title.includes('суфлёр') ||
+          slug.startsWith('systems-and-reality') ||
+          slug.startsWith('episode-0') ||
+          slug.startsWith('vypusk-') ||
+          slug.includes('scrollytelling') ||
+          slug.includes('autonomous-agent-content')
+        ) {
           return false;
         }
         return true;
@@ -167,6 +398,12 @@ export async function fetchPodcastsFromApi(customFetch = fetch): Promise<Podcast
         publishedAt: ep.publishedAt ? String(ep.publishedAt).slice(0, 10) : '',
         timecodes: Array.isArray(ep.timecodes) ? ep.timecodes : []
       }));
+    if (apiEpisodes.length === 0) return CANONICAL_EPISODES;
+    const apiSlugs = new Set(apiEpisodes.map(e => e.slug));
+    return [
+      ...apiEpisodes,
+      ...CANONICAL_EPISODES.filter(e => !apiSlugs.has(e.slug))
+    ].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   } catch {
     return CANONICAL_EPISODES;
   }
@@ -207,8 +444,21 @@ export function generateWaveformHeights(barsCount: number = 40, seed: string = '
 }
 
 export function getLocalizedPodcast(episode: PodcastEpisode, lang: Language): PodcastEpisode {
+  const generated = getGeneratedTranslation('podcasts', [episode.slug, episode.id], lang);
+  if (generated) {
+    return {
+      ...episode,
+      title: String(generated.title || episode.title),
+      thesis: String(generated.thesis || episode.thesis),
+      description: String(generated.description || episode.description),
+      timecodes: Array.isArray(generated.timecodes)
+        ? generated.timecodes as PodcastEpisode['timecodes']
+        : episode.timecodes
+    };
+  }
   if (lang === 'ru') return episode;
-  const numericId = typeof episode.id === 'number' ? episode.id : parseInt(String(episode.id), 10);
+  const slugNum = parseInt(String(episode.slug || '').slice(0, 2), 10);
+  const numericId = !isNaN(slugNum) ? slugNum : (typeof episode.id === 'number' ? episode.id : parseInt(String(episode.id), 10));
   const translations = PODCAST_TRANSLATIONS[numericId];
   if (!translations || !translations[lang]) return episode;
   const tr = translations[lang];

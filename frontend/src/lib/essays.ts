@@ -1,5 +1,7 @@
 import { ESSAYS_TRANSLATIONS } from './essays_translations';
+import { getGeneratedTranslation } from './generated_localizations';
 import type { Language } from './i18n';
+import { SMART_COMPANIES_ESSAY } from './smart_companies_essay';
 
 export interface EssayArticleItem {
   id: string;
@@ -10,9 +12,11 @@ export interface EssayArticleItem {
   publishedAt: string;
   summary: string;
   contentMarkdown: string;
+  imageUrl?: string;
 }
 
 export const INITIAL_ESSAYS: EssayArticleItem[] = [
+  SMART_COMPANIES_ESSAY,
   {
     id: '01-ruth-barcan-marcus',
     slug: '01-ruth-barcan-marcus',
@@ -217,7 +221,7 @@ export async function fetchEssaysFromApi(customFetch = fetch): Promise<EssayArti
     const data = await res.json();
     const rawList = Array.isArray(data) ? data : (data?.content || []);
     if (rawList.length === 0) return INITIAL_ESSAYS;
-    return rawList
+    const apiEssays = rawList
       .filter((item: any) => {
         const title = (item.title || '').toLowerCase();
         const slug = (item.slug || '').toLowerCase();
@@ -238,6 +242,11 @@ export async function fetchEssaysFromApi(customFetch = fetch): Promise<EssayArti
           contentMarkdown: item.content || item.summary || ''
         };
       });
+    const apiIds = new Set(apiEssays.flatMap((essay: EssayArticleItem) => [essay.id, essay.slug]));
+    return [
+      ...apiEssays,
+      ...INITIAL_ESSAYS.filter(essay => !apiIds.has(essay.id) && !apiIds.has(essay.slug))
+    ].sort((left, right) => right.publishedAt.localeCompare(left.publishedAt));
   } catch {
     return INITIAL_ESSAYS;
   }
@@ -255,14 +264,25 @@ export async function fetchCanonFromApi(customFetch = fetch): Promise<any[]> {
 }
 
 export function getLocalizedEssay(essay: EssayArticleItem, lang: Language): EssayArticleItem {
+  const generated = getGeneratedTranslation('essays', [essay.slug, essay.id], lang);
+  if (generated) {
+    return {
+      ...essay,
+      title: String(generated.title || essay.title),
+      summary: String(generated.summary || essay.summary),
+      contentMarkdown: String(generated.content || generated.contentMarkdown || essay.contentMarkdown)
+    };
+  }
   if (lang === 'ru') return essay;
   const translations = ESSAYS_TRANSLATIONS[essay.id] || ESSAYS_TRANSLATIONS[essay.slug];
   if (!translations || !translations[lang]) return essay;
   const tr = translations[lang];
+  if (!tr) return essay;
   return {
     ...essay,
     title: tr.title,
     summary: tr.summary,
-    contentMarkdown: tr.contentMarkdown
+    contentMarkdown: tr.contentMarkdown,
+    imageUrl: tr.imageUrl || essay.imageUrl
   };
 }

@@ -140,3 +140,15 @@ describe('SparksView Svelte Component', () => {
     expect(target.textContent).toBeDefined();
   });
 });
+
+import { splitSparkLinks } from './sparks';
+
+describe('splitSparkLinks', () => {
+  it('converts https and t.me URLs to clickable link segments without trailing punctuation', () => {
+    const segs = splitSparkLinks('Смотри https://dmitryefremov.com/podcasts/08-shaun-gallagher, и t.me/efremov_mvp.');
+    const links = segs.filter((s) => s.type === 'link');
+    expect(links).toHaveLength(2);
+    expect(links[0].href).toBe('https://dmitryefremov.com/podcasts/08-shaun-gallagher');
+    expect(links[1].href).toBe('https://t.me/efremov_mvp');
+  });
+});

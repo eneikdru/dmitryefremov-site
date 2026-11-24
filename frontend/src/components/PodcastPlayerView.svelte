@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import SeoMeta from './SeoMeta.svelte';
 
   function getYouTubeEmbedUrl(url?: string): string | null {
     if (!url) return null;
@@ -20,6 +21,7 @@
 
   export let episodes: PodcastEpisode[] = PODCAST_EPISODES;
   export let selectedEpisodeId: number | string | undefined = undefined;
+  export let theme: 'dark' | 'light' = 'light';
 
   let audioElement: HTMLAudioElement | null = null;
   let isPlaying: boolean = false;
@@ -28,15 +30,17 @@
   let isMuted: boolean = false;
   let waveformContainer: HTMLElement;
   let isLoading = false;
+  // A populated bundled fallback is not the current publication catalog.
+  let isCatalogLoading = episodes === PODCAST_EPISODES;
 
   onMount(async () => {
-    if (!episodes || episodes.length === 0) {
-      isLoading = true;
-      const fetched = await fetchPodcastsFromApi();
-      if (fetched && fetched.length > 0) {
-        episodes = fetched;
+    if (isCatalogLoading) {
+      try {
+        const fetched = await fetchPodcastsFromApi();
+        if (fetched && fetched.length > 0) episodes = fetched;
+      } finally {
+        isCatalogLoading = false;
       }
-      isLoading = false;
     }
     if (episodes.length > 0 && selectedEpisodeId === undefined) {
       selectedEpisodeId = episodes[0].id;
@@ -44,7 +48,8 @@
   });
 
   $: localizedEpisodes = episodes.map(ep => getLocalizedPodcast(ep, $currentLanguage));
-  $: currentEpisode = localizedEpisodes.find(ep => ep.id === selectedEpisodeId || String(ep.id) === String(selectedEpisodeId) || ep.slug === selectedEpisodeId) || localizedEpisodes[0] || null;
+  $: legacySlug = PODCAST_EPISODES.find(ep => String(ep.id) === String(selectedEpisodeId))?.slug;
+  $: currentEpisode = selectedEpisodeId ? (localizedEpisodes.find(ep => ep.id === selectedEpisodeId || String(ep.id) === String(selectedEpisodeId) || ep.slug === selectedEpisodeId) || localizedEpisodes.find(ep => ep.slug === legacySlug) || null) : (localizedEpisodes[0] || null);
   $: waveBars = currentEpisode ? generateWaveformHeights(40, currentEpisode.slug) : [];
   $: progressPercent = currentEpisode && currentEpisode.durationSeconds > 0
     ? Math.min(100, Math.max(0, (currentTime / currentEpisode.durationSeconds) * 100))
@@ -187,29 +192,60 @@
   }
 </script>
 
-<div id="podcast-player-container" class="space-y-8 font-sans">
-  <!-- Architectural Header: Title & Subscription Coordinates -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
-    <div class="space-y-1">
+{#if currentEpisode}
+  <SeoMeta
+    title="{currentEpisode.title} | Дмитрий Ефремов"
+    description={currentEpisode.thesis || currentEpisode.description || currentEpisode.title}
+    url={`https://dmitryefremov.com/podcasts/${currentEpisode.slug}`}
+    alternateRuUrl={`https://dmitryefremov.com/ru/podcasts/${currentEpisode.slug}`}
+    alternateEnUrl={`https://dmitryefremov.com/en/podcasts/${currentEpisode.slug}`}
+    alternateKaUrl={`https://dmitryefremov.com/ka/podcasts/${currentEpisode.slug}`}
+  />
+{/if}
 
-      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white uppercase">
-        {$currentLanguage === 'ru' 
-          ? 'Подкаст «Системы и реальность»' 
-          : ($currentLanguage === 'ka' 
-            ? 'პოდკასტი «სისტემები და რეალობა»' 
+{#if isCatalogLoading}
+  <div role="status" aria-live="polite" class="px-4 py-12 text-center {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+    {$currentLanguage === 'ka' ? 'იტვირთება…' : $currentLanguage === 'en' ? 'Loading…' : 'Загрузка…'}
+  </div>
+{:else if selectedEpisodeId && !currentEpisode}
+  <div id="podcast-not-found" class="flex flex-col items-center justify-center min-h-[50vh] px-4 text-center">
+    <div class="px-3 py-1 rounded-sm border text-xs mb-4 {theme === 'dark' ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-[#F1EFE9] border-[#8C2D19]/30 text-[#8C2D19]'}">
+      HTTP 404
+    </div>
+    <h2 class="font-serif text-3xl font-medium mb-2 {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">Выпуск не найден</h2>
+    <p class="text-sm max-w-md mb-6 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+      Запрошенный выпуск «{selectedEpisodeId}» отсутствует в публичном реестре подкаста.
+    </p>
+    <button
+      on:click={() => { selectedEpisodeId = undefined; if (typeof window !== 'undefined') window.history.pushState({}, '', '/podcasts'); }}
+      class="text-sm px-5 py-2.5 rounded-sm font-medium transition-colors cursor-pointer {theme === 'dark' ? 'bg-[#C9A461] text-[#141413] hover:bg-[#d8b573]' : 'bg-[#8C2D19] text-[#FAF8F4] hover:bg-[#702313]'}"
+    >
+      ← Все выпуски
+    </button>
+  </div>
+{:else}
+<div id="podcast-player-container" class="space-y-8 font-sans">
+  <!-- Editorial Section Header -->
+  <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 border-b pb-5 {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}">
+    <div class="space-y-1">
+      <h2 class="font-serif text-3xl sm:text-4xl font-medium tracking-[-0.02em] leading-[1.15] {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">
+        {$currentLanguage === 'ru'
+          ? 'Подкаст «Системы и реальность»'
+          : ($currentLanguage === 'ka'
+            ? 'პოდკასტი «სისტემები და რეალობა»'
             : 'Podcast "Systems and Reality"')}
       </h2>
     </div>
 
-    <!-- External Media Platforms (Tactile, Zero /feed.xml noise) -->
-    <div class="flex flex-wrap items-center gap-2.5 text-xs font-mono font-bold uppercase tracking-wider">
+    <!-- External Media Platforms -->
+    <div class="flex flex-wrap items-center gap-5 text-sm font-sans">
       <a
         href={currentEpisode?.youtubeUrl || 'https://www.youtube.com/@dmitrii.efremov'}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="YouTube Channel"
         on:click={() => handleOutboundClick(currentEpisode?.youtubeUrl || 'https://www.youtube.com/@dmitrii.efremov', 'YouTube Channel', 'YouTube')}
-        class="px-4 py-2 rounded-lg bg-[#0e1219] text-white border border-white/10 hover:border-amber-400/60 hover:bg-[#141a24] transition-all flex items-center gap-2 shadow-sm"
+        class="underline underline-offset-4 decoration-1 transition-colors {theme === 'dark' ? 'text-[#a8a398] hover:text-[#C9A461]' : 'text-[#57554F] hover:text-[#8C2D19]'}"
       >
         <span>YouTube ↗</span>
       </a>
@@ -219,49 +255,54 @@
         rel="noopener noreferrer"
         aria-label="Telegram Channel"
         on:click={() => handleOutboundClick(currentEpisode?.telegramUrl || 'https://t.me/efremov_mvp', 'Telegram Channel', 'Telegram')}
-        class="px-4 py-2 rounded-lg bg-[#0e1219] text-white border border-white/10 hover:border-amber-400/60 hover:bg-[#141a24] transition-all flex items-center gap-2 shadow-sm"
+        class="underline underline-offset-4 decoration-1 transition-colors {theme === 'dark' ? 'text-[#a8a398] hover:text-[#C9A461]' : 'text-[#57554F] hover:text-[#8C2D19]'}"
       >
         <span>Telegram @efremov_mvp ↗</span>
       </a>
     </div>
   </div>
 
-  <!-- Main Grid: Episodes List (Left) & Active Player / Timecodes (Right) -->
+  <!-- Main Grid: Editorial Episode Index (Left) & Active Listening Room (Right) -->
   {#if episodes.length === 0}
-    <div id="podcast-empty-state" class="p-16 text-center rounded-xl border border-white/10 bg-[#0d1118] space-y-3 font-mono">
-      <div class="text-white font-bold text-base uppercase tracking-wider">Выпуски подкаста отсутствуют</div>
-      <div class="text-xs text-slate-400">На данный момент в системе нет опубликованных выпусков подкаста.</div>
+    <div id="podcast-empty-state" class="p-16 text-center rounded-sm border space-y-3 {theme === 'dark' ? 'border-white/10 bg-[#1c1b18]' : 'border-[#E2DFD7] bg-[#F1EFE9]'}">
+      <div class="font-serif text-xl font-medium {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">Выпуски подкаста отсутствуют</div>
+      <div class="text-sm {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">На данный момент в системе нет опубликованных выпусков подкаста.</div>
     </div>
   {:else}
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-      <!-- Episode Catalog Rail -->
-      <div id="podcast-episodes-section" class="lg:col-span-5 space-y-3 order-2 lg:order-1">
-        <div class="font-mono text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <!-- Episode Index Rail -->
+      <div id="podcast-episodes-section" class="lg:col-span-5 order-2 lg:order-1">
+        <div class="font-sans text-xs font-medium mb-4 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
           {t($currentLanguage).catalog_title}
         </div>
 
-        <div class="space-y-3" role="list" aria-label="Podcast Episodes Catalog">
-          {#each localizedEpisodes as ep}
+        <div class="border-t divide-y {theme === 'dark' ? 'border-white/10 divide-white/10' : 'border-[#E2DFD7] divide-[#E2DFD7]'}" role="list" aria-label="Podcast Episodes Catalog">
+          {#each localizedEpisodes as ep, idx}
+            {@const isSelected = selectedEpisodeId === ep.id || (!selectedEpisodeId && idx === 0)}
             <button
               type="button"
               id="episode-card-{ep.id}"
-              class="episode-card w-full p-5 rounded-xl border transition-all cursor-pointer text-left focus:outline-none focus:ring-1 focus:ring-amber-400 {selectedEpisodeId === ep.id ? 'bg-[#141a26] border-amber-400/60 shadow-xl ring-1 ring-amber-400/30' : 'bg-[#0d1118] border-white/[0.08] hover:border-white/20 hover:bg-[#111620]'}"
+              class="episode-card w-full py-5 px-4 border-l-2 transition-colors cursor-pointer text-left focus:outline-none {isSelected
+                ? (theme === 'dark' ? 'bg-[#1c1b18] border-l-[#C9A461]' : 'bg-[#F1EFE9] border-l-[#8C2D19]')
+                : (theme === 'dark' ? 'border-l-transparent hover:bg-[#1c1b18]/60' : 'border-l-transparent hover:bg-[#F1EFE9]/60')}"
               on:click={() => handleSelectEpisode(ep.id)}
             >
-              <div class="flex justify-between items-center text-xs font-mono mb-2">
-                <span class="font-bold text-amber-400 uppercase tracking-widest">{t($currentLanguage).catalog_badge}</span>
-                <span class="text-slate-400">{formatTime(ep.durationSeconds)}</span>
+              <div class="flex justify-between items-center text-xs mb-1.5">
+                <span class="font-medium {isSelected ? (theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]') : (theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]')}">
+                  {t($currentLanguage).catalog_badge} {String(idx + 1).padStart(2, '0')}
+                </span>
+                <span class="font-mono text-[11px] {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">{formatTime(ep.durationSeconds)}</span>
               </div>
-              <h3 class="font-bold text-white text-base mb-2 hover:text-amber-300 transition-colors leading-snug">
+              <h3 class="font-serif text-lg sm:text-xl font-medium mb-1.5 leading-snug transition-colors {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">
                 {ep.title}
               </h3>
-              <p class="text-sm text-slate-300 line-clamp-2 leading-relaxed">
+              <p class="text-sm line-clamp-2 leading-relaxed {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
                 {ep.thesis}
               </p>
-              <div class="mt-4 text-xs font-mono flex justify-between items-center border-t border-white/[0.06] pt-3">
-                <span class="text-slate-500">{ep.publishedAt}</span>
-                <span class="font-bold uppercase tracking-wider {selectedEpisodeId === ep.id ? 'text-amber-400' : 'text-slate-400'}">
-                  {selectedEpisodeId === ep.id ? t($currentLanguage).catalog_active : t($currentLanguage).catalog_listen}
+              <div class="mt-3 text-xs flex justify-between items-center">
+                <span class="{theme === 'dark' ? 'text-[#a8a398]/80' : 'text-[#57554F]/80'}">{ep.publishedAt}</span>
+                <span class="font-medium {isSelected ? (theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]') : (theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]')}">
+                  {isSelected ? t($currentLanguage).catalog_active : t($currentLanguage).catalog_listen}
                 </span>
               </div>
             </button>
@@ -269,26 +310,26 @@
         </div>
       </div>
 
-      <!-- Active Player Console -->
+      <!-- Active Listening Room -->
       {#if currentEpisode}
         <div id="podcast-player-section" class="lg:col-span-7 flex flex-col space-y-6 order-1 lg:order-2">
-          <div id="podcast-player-card" class="bg-[#0d1118] text-[#e2e8f0] p-4 sm:p-6 lg:p-8 rounded-xl border border-white/[0.08] space-y-6 shadow-2xl">
+          <div id="podcast-player-card" class="p-5 sm:p-8 rounded-sm border space-y-6 transition-colors {theme === 'dark' ? 'bg-[#1c1b18] text-[#EAE6DF] border-white/10' : 'bg-[#F1EFE9]/65 text-[#151514] border-[#E2DFD7]'}">
             <!-- Episode Header -->
-            <header id="podcast-header" class="border-b border-white/[0.08] pb-5 space-y-4">
+            <header id="podcast-header" class="border-b pb-5 space-y-4 {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}">
               <div class="space-y-2">
-                <div class="flex items-center justify-between gap-2">
-                  <span class="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">
+                <div class="flex items-center justify-between gap-2 text-xs">
+                  <span class="font-medium {theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]'}">
                     {t($currentLanguage).catalog_badge}
                   </span>
-                  <span class="text-xs font-mono text-slate-400">{currentEpisode.publishedAt}</span>
+                  <span class="{theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">{currentEpisode.publishedAt}</span>
                 </div>
-                <h1 id="podcast-title" class="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white leading-tight">
+                <h2 id="podcast-title" class="text-2xl sm:text-3xl font-serif font-medium tracking-[-0.02em] leading-[1.15] {theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]'}">
                   {currentEpisode.title}
-                </h1>
+                </h2>
               </div>
 
               <!-- Philosophical Thesis Axiom -->
-              <blockquote class="p-4 rounded-lg bg-[#080a0e] border-l-2 border-amber-400 text-sm sm:text-base text-slate-200 leading-relaxed font-sans">
+              <blockquote class="pl-4 py-1 border-l-2 font-serif italic text-base sm:text-lg leading-relaxed {theme === 'dark' ? 'border-[#C9A461] text-[#EAE6DF]/90' : 'border-[#8C2D19] text-[#151514]/90'}">
                 «{currentEpisode.thesis}»
               </blockquote>
             </header>
@@ -297,7 +338,7 @@
             {#if currentEpisode && currentEpisode.youtubeUrl}
               {@const ytEmbedUrl = getYouTubeEmbedUrl(currentEpisode.youtubeUrl)}
               {#if ytEmbedUrl}
-                <div id="youtube-embed-wrapper" class="rounded-lg overflow-hidden border border-white/10 bg-black aspect-video shadow-2xl">
+                <div id="youtube-embed-wrapper" class="rounded-sm overflow-hidden border bg-black aspect-video {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}">
                   <iframe
                     src={ytEmbedUrl}
                     title={currentEpisode.title}
@@ -323,36 +364,37 @@
               preload="auto"
             ></audio>
 
-            <!-- Mechanical Audio Controls & Waveform Console -->
-            <div id="audio-controls-block" class="bg-[#080a0e] p-5 sm:p-6 rounded-lg border border-white/[0.08] space-y-5">
+            <!-- Audio Controls & Waveform Console -->
+            <div id="audio-controls-block" class="p-4 sm:p-5 rounded-sm border space-y-4 {theme === 'dark' ? 'bg-[#141413] border-white/10' : 'bg-[#FAF8F4] border-[#E2DFD7]'}">
               <div class="flex items-center justify-between gap-4 flex-wrap">
-                <!-- Tactile Mechanical Play/Pause Trigger -->
+                <!-- Tactile Play/Pause Trigger -->
                 <button
                   id="play-pause-btn"
                   type="button"
                   on:click={togglePlay}
                   aria-label={isPlaying ? 'Pause Podcast Episode' : 'Play Podcast Episode'}
-                  class="w-14 h-14 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-extrabold flex items-center justify-center transition-all transform active:scale-95 shadow-lg shadow-amber-400/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  class="w-12 h-12 rounded-sm font-medium flex items-center justify-center transition-colors cursor-pointer focus:outline-none {theme === 'dark' ? 'bg-[#C9A461] hover:bg-[#d8b573] text-[#141413]' : 'bg-[#8C2D19] hover:bg-[#702313] text-[#FAF8F4]'}"
                 >
                   {#if isPlaying}
-                    <span class="text-xl">❚❚</span>
+                    <span class="text-base">❚❚</span>
                   {:else}
-                    <span class="text-xl pl-1">▶</span>
+                    <span class="text-base pl-0.5">▶</span>
                   {/if}
                 </button>
 
                 <!-- Precise Time Coordinates -->
-                <div id="time-display" class="font-mono text-sm flex items-center gap-2 text-slate-300">
-                  <span id="current-time-val" class="text-amber-400 font-bold text-base sm:text-lg">{formatTime(currentTime)}</span>
-                  <span class="text-slate-500">/</span>
-                  <span id="duration-val" class="text-slate-400 text-sm">{formatTime(currentEpisode.durationSeconds)}</span>
+                <div id="time-display" class="font-mono text-sm flex items-center gap-2 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+                  <span id="current-time-val" class="font-medium text-base {theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]'}">{formatTime(currentTime)}</span>
+                  <span class="opacity-50">/</span>
+                  <span id="duration-val" class="text-sm">{formatTime(currentEpisode.durationSeconds)}</span>
                 </div>
               </div>
 
-              <!-- Precision Waveform Visualization -->
+              <!-- Waveform Visualization -->
               <div class="space-y-2">
-                <div class="text-[11px] font-mono uppercase tracking-widest text-slate-400 font-bold">
-                  ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ
+                <div class="text-xs font-sans {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">
+                  <span class="sr-only">ВИЗУАЛИЗАЦИЯ ЗВУКОВОЙ ВОЛНЫ</span>
+                  <span aria-hidden="true">{$currentLanguage === 'ru' ? 'Аудиодорожка' : ($currentLanguage === 'ka' ? 'აუდიო ბილიკი' : 'Audio waveform')}</span>
                 </div>
 
                 <div
@@ -367,13 +409,15 @@
                   aria-valuemax={currentEpisode.durationSeconds}
                   aria-valuenow={currentTime}
                   aria-valuetext="{formatTime(currentTime)} of {formatTime(currentEpisode.durationSeconds)}"
-                  class="h-16 bg-[#0d1118] p-2.5 rounded-lg border border-white/10 flex items-end justify-between gap-1 cursor-pointer hover:border-amber-400/50 transition-colors focus:outline-none focus:ring-1 focus:ring-amber-400"
+                  class="h-14 p-2 rounded-sm border flex items-end justify-between gap-1 cursor-pointer transition-colors focus:outline-none {theme === 'dark' ? 'bg-[#1c1b18] border-white/10 hover:border-[#C9A461]/50' : 'bg-[#F1EFE9] border-[#E2DFD7] hover:border-[#8C2D19]/50'}"
                 >
                   {#each waveBars as barHeight, i}
                     {@const barProgress = (i / waveBars.length) * 100}
                     {@const isPlayed = barProgress <= progressPercent}
                     <div
-                      class="flex-1 rounded-t transition-all duration-75 {isPlayed ? 'bg-amber-400' : 'bg-white/10 hover:bg-white/20'}"
+                      class="flex-1 rounded-t-sm transition-all duration-75 {isPlayed
+                        ? (theme === 'dark' ? 'bg-[#C9A461]' : 'bg-[#8C2D19]')
+                        : (theme === 'dark' ? 'bg-white/15 hover:bg-white/30' : 'bg-[#151514]/15 hover:bg-[#151514]/30')}"
                       style="height: {barHeight}%;"
                     ></div>
                   {/each}
@@ -382,18 +426,19 @@
             </div>
 
             <!-- Deep Context Description -->
-            <p id="podcast-description" class="text-sm sm:text-base text-slate-300 leading-relaxed">
+            <p id="podcast-description" class="text-sm sm:text-base leading-[1.7] max-w-[65ch] {theme === 'dark' ? 'text-[#EAE6DF]/85' : 'text-[#151514]/85'}">
               {currentEpisode.description}
             </p>
 
             <!-- Structured Timecodes & Semantic Chapters -->
             {#if currentEpisode.timecodes && currentEpisode.timecodes.length > 0}
-              <div id="timecodes-section" class="border-t border-white/[0.08] pt-5 space-y-3">
-                <div class="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">
-                  {$currentLanguage === 'ru' ? 'ТАЙМКОДЫ И ТЕМЫ' : ($currentLanguage === 'ka' ? 'ტაიმკოდები და თემები' : 'TIMECODES & TOPICS')}
+              <div id="timecodes-section" class="border-t pt-5 space-y-3 {theme === 'dark' ? 'border-white/10' : 'border-[#E2DFD7]'}">
+                <div class="font-sans text-xs font-medium {theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]'}">
+                  <span class="sr-only">ТАЙМКОДЫ И ТЕМЫ</span>
+                  <span aria-hidden="true">{$currentLanguage === 'ru' ? 'Таймкоды и темы' : ($currentLanguage === 'ka' ? 'ტაიმკოდები და თემები' : 'Timecodes and chapters')}</span>
                 </div>
 
-                <ul id="timecodes-list" class="space-y-2" aria-label="Episode Timecodes">
+                <ul id="timecodes-list" class="divide-y border-t {theme === 'dark' ? 'divide-white/10 border-white/10' : 'divide-[#E2DFD7] border-[#E2DFD7]'}" aria-label="Episode Timecodes">
                   {#each currentEpisode.timecodes as tc}
                     {@const isActive = activeTimecodeId === tc.id}
                     <li role="listitem">
@@ -401,22 +446,27 @@
                         type="button"
                         id="timecode-btn-{tc.id}"
                         on:click={(e) => handleTimecodeClick(tc, e)}
-                        class="timecode-item w-full p-3 rounded-lg border transition-all text-left flex items-start gap-3.5 cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-400 {isActive ? 'bg-[#181e2b] border-amber-400/60 text-white shadow-md' : 'bg-[#080a0e] border-white/10 text-slate-300 hover:border-white/20 hover:text-white'}"
+                        class="timecode-item w-full py-3 px-2.5 transition-colors text-left flex items-start gap-3.5 cursor-pointer focus:outline-none {isActive
+                          ? (theme === 'dark' ? 'bg-[#141413] text-[#EAE6DF]' : 'bg-[#FAF8F4] text-[#151514]')
+                          : (theme === 'dark' ? 'text-[#a8a398] hover:text-[#EAE6DF]' : 'text-[#57554F] hover:text-[#151514]')}"
                       >
-                        <span class="font-mono text-xs font-bold px-2 py-0.5 rounded shrink-0 {isActive ? 'bg-amber-400 text-black' : 'bg-white/10 text-amber-300'}">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded-sm shrink-0 {isActive
+                          ? (theme === 'dark' ? 'bg-[#C9A461] text-[#141413] font-medium' : 'bg-[#8C2D19] text-[#FAF8F4] font-medium')
+                          : (theme === 'dark' ? 'bg-white/10 text-[#C9A461]' : 'bg-[#E2DFD7]/70 text-[#8C2D19]')}">
                           {formatTime(tc.timeOffsetSeconds)}
                         </span>
                         <div class="min-w-0 flex-1">
-                          <div class="font-bold text-sm flex items-center justify-between gap-2">
+                          <div class="font-medium text-sm flex items-center justify-between gap-2 {isActive ? (theme === 'dark' ? 'text-[#EAE6DF]' : 'text-[#151514]') : ''}">
                             <span class="truncate">{tc.title}</span>
                             {#if isActive}
-                              <span class="text-[10px] font-mono text-amber-400 shrink-0 font-bold uppercase tracking-wider">
-                                {$currentLanguage === 'ru' ? 'СЕЙЧАС ИГРАЕТ' : ($currentLanguage === 'ka' ? 'ახლა უკრავს' : 'NOW PLAYING')}
+                              <span class="text-xs shrink-0 font-medium {theme === 'dark' ? 'text-[#C9A461]' : 'text-[#8C2D19]'}">
+                                <span class="sr-only">СЕЙЧАС ИГРАЕТ</span>
+                                <span aria-hidden="true">{$currentLanguage === 'ru' ? 'Сейчас играет' : ($currentLanguage === 'ka' ? 'ახლა უკრავს' : 'Now playing')}</span>
                               </span>
                             {/if}
                           </div>
                           {#if tc.description}
-                            <p class="text-xs text-slate-400 mt-1 line-clamp-1">{tc.description}</p>
+                            <p class="text-xs mt-1 line-clamp-1 {theme === 'dark' ? 'text-[#a8a398]' : 'text-[#57554F]'}">{tc.description}</p>
                           {/if}
                         </div>
                       </button>
@@ -431,3 +481,5 @@
     </div>
   {/if}
 </div>
+
+{/if}

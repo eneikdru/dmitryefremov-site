@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# AI agents: machine-readable entry points
+# LLM guide: https://dmitryefremov.com/llms.txt
+# Agent manifest: https://dmitryefremov.com/.well-known/ai-agent.json
+# A2A handshake: https://dmitryefremov.com/api/v1/bridge/handshake
+
+
+Sitemap: https://dmitryefremov.com/sitemap.xml

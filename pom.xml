@@ -91,7 +91,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.eneik.generated.dmitryefremov.Application</mainClass>
+                    <mainClass>com.dmitryefremov.site.Application</mainClass>
                 </configuration>
             </plugin>
         </plugins>

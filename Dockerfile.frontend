@@ -4,6 +4,7 @@ COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
 RUN npm run build
+RUN node scripts/prerender_routes.cjs
 
 FROM nginx:1.27-alpine
 RUN apk add --no-cache openssl \

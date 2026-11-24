@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -34,48 +34,61 @@
 
     <!-- Material Symbols Outlined -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <!-- Typography: Space Grotesk, Inter & JetBrains Mono -->
+    <!-- Typography: Cormorant Garamond (Cyrillic + Latin), Noto Serif Georgian, Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Serif+Georgian:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      tailwind = {
-        config: {
-          darkMode: 'class',
-          theme: {
-            extend: {
-              fontFamily: {
-                sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-                grotesk: ['Space Grotesk', 'sans-serif'],
-                mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+              grotesk: ['Cormorant Garamond', 'Noto Serif Georgian', 'Georgia', 'serif'],
+              serif: ['Cormorant Garamond', 'Noto Serif Georgian', 'Georgia', 'serif'],
+              mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+            },
+            colors: {
+              paper: {
+                DEFAULT: '#FAF8F4',
+                subtle: '#F1EFE9',
+                rule: '#E2DFD7',
               },
-              colors: {
-                surface: {
-                  lowest: '#0c0e12',
-                  dim: '#111318',
-                  container: '#1e2024',
-                  high: '#282a2e',
-                  highest: '#333539'
-                },
-                gold: {
-                  DEFAULT: '#f2ca50',
-                  container: '#d4af37',
-                  dim: '#e7c364'
-                }
+              ink: {
+                DEFAULT: '#151514',
+                muted: '#57554F',
+              },
+              oxblood: {
+                DEFAULT: '#8C2D19',
+                dark: '#702313',
+              },
+              surface: {
+                lowest: '#0c0e12',
+                dim: '#111318',
+                container: '#1e2024',
+                high: '#282a2e',
+                highest: '#333539'
+              },
+              gold: {
+                DEFAULT: '#C9A461',
+                container: '#d4af37',
+                dim: '#e7c364'
               }
             }
           }
         }
       };
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <style>
       :root {
         --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        --font-grotesk: 'Space Grotesk', sans-serif;
-        --font-mono: 'JetBrains Mono', monospace;
+        --font-serif: 'Cormorant Garamond', 'Noto Serif Georgian', Georgia, serif;
+        --font-grotesk: 'Cormorant Garamond', 'Noto Serif Georgian', Georgia, serif;
+        --font-mono: 'JetBrains Mono', ui-monospace, monospace;
       }
 
       html, body {
@@ -92,20 +105,33 @@
       }
 
       body {
-        letter-spacing: -0.015em;
-        line-height: 1.65;
-        background-color: #0c0e12;
-        color: #e2e2e8;
+        letter-spacing: -0.01em;
+        line-height: 1.7;
+        background-color: #FAF8F4;
+        color: #151514;
+      }
+
+      html.dark body {
+        background-color: #141413;
+        color: #EAE6DF;
+      }
+
+      .font-serif {
+        font-family: var(--font-serif);
       }
 
       ::selection {
-        background: #d4af37;
-        color: #0c0e12;
+        background: #8C2D19;
+        color: #FAF8F4;
+      }
+
+      html.dark ::selection {
+        background: #C9A461;
+        color: #141413;
       }
 
       h1, h2, h3, h4 {
-        letter-spacing: -0.025em;
-        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        letter-spacing: -0.02em;
       }
 
       p {
@@ -113,6 +139,10 @@
       }
 
       hr, .border-hairline {
+        border-color: #E2DFD7;
+      }
+
+      html.dark hr, html.dark .border-hairline {
         border-color: rgba(255, 255, 255, 0.08);
       }
 
@@ -124,16 +154,151 @@
         background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(21, 21, 20, 0.16);
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
+        background: rgba(21, 21, 20, 0.3);
+      }
+      html.dark ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.15);
+      }
+      html.dark ::-webkit-scrollbar-thumb:hover {
         background: rgba(255, 255, 255, 0.28);
       }
     </style>
-  </head>
-  <body class="bg-[#0c0e12] text-[#e2e2e8] min-h-screen">
+  
+    <!-- Machine Layer / Generative Engine Optimization (GEO) Knowledge Graph -->
+    <script type="application/ld+json" id="canonical-schema-graph">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://dmitryefremov.com/#person",
+      "name": "Dmitry Efremov",
+      "alternateName": [
+        "Дмитрий Ефремов",
+        "Dmitrii Efremov"
+      ],
+      "url": "https://dmitryefremov.com",
+      "image": "https://dmitryefremov.com/assets/og-cover.png",
+      "jobTitle": [
+        "Systems Architect",
+        "Business Philosopher",
+        "AI Systems Engineer",
+        "Founder of Eneik"
+      ],
+      "description": "Systems architect, business philosopher, and AI systems engineer. Specialist in analytical philosophy, modal logic, and autonomous multi-agent ecosystems (Brand-OS). Founder of Eneik and Eneik Business (eneikbusiness.com) — an infrastructure gateway and technological hub for international partners and foreign businesses entering Georgia (Kutaisi).",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kutaisi",
+        "addressCountry": "GE"
+      },
+      "nationality": {
+        "@type": "Country",
+        "name": "Georgia"
+      },
+      "identifier": "https://orcid.org/0009-0004-7080-4829",
+      "sameAs": [
+        "https://orcid.org/0009-0004-7080-4829",
+        "https://dev.to/dmitrii_efremov_7c5af18c7",
+        "https://github.com/eneikdru",
+        "https://eneikbusiness.com",
+        "https://dmitryefremov.com",
+        "https://t.me/efremov_mvp"
+      ],
+      "knowsAbout": [
+        "Systems Architecture",
+        "Autonomous AI Multi-Agent Systems",
+        "Analytical Philosophy",
+        "Modal Logic",
+        "Ruth Barcan Marcus",
+        "Deontic Logic",
+        "Theory of Constraints",
+        "Lean Six Sigma",
+        "Infrastructure Consulting for Georgia",
+        "Foreign Business Integration in Georgia"
+      ],
+      "founder": [
+        {
+          "@id": "https://eneikbusiness.com/#organization"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://dmitryefremov.com/#organization-eneik",
+          "name": "Eneik",
+          "url": "https://dmitryefremov.com"
+        }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://eneikbusiness.com/#organization",
+      "name": "Eneik Business",
+      "alternateName": "Eneik Business Infrastructure Hub",
+      "url": "https://eneikbusiness.com",
+      "founder": {
+        "@id": "https://dmitryefremov.com/#person"
+      },
+      "description": "Infrastructure platform, technology hub, and strategic consulting bridge designed to attract, settle, and scale international partners, foreign investors, and technology enterprises in Georgia.",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Georgia"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kutaisi",
+        "addressCountry": "GE"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://dmitryefremov.com/#website",
+      "url": "https://dmitryefremov.com/",
+      "name": "Дмитрий Ефремов — Архитектура систем, логика мышления и автономные процессы",
+      "alternateName": "Dmitry Efremov Personal Sovereignty Node",
+      "publisher": {
+        "@id": "https://dmitryefremov.com/#person"
+      },
+      "author": {
+        "@id": "https://dmitryefremov.com/#person"
+      },
+      "inLanguage": [
+        "ru",
+        "en"
+      ]
+    },
+    {
+      "@type": "PodcastSeries",
+      "@id": "https://dmitryefremov.com/#podcast",
+      "name": "Системы и реальность",
+      "alternateName": "Systems & Reality Podcast",
+      "url": "https://dmitryefremov.com/",
+      "description": "Авторский подкаст Дмитрия Ефремова о бизнес-философии, модальной логике, архитектуре систем и автономных агентских процессах.",
+      "creator": {
+        "@id": "https://dmitryefremov.com/#person"
+      },
+      "inLanguage": "ru"
+    }
+  ]
+}
+    </script>
+</head>
+  <body class="bg-[#FAF8F4] text-[#151514] min-h-screen">
     <div id="app"></div>
+    <noscript>
+      <main style="max-width:760px;margin:40px auto;padding:0 20px;font-family:sans-serif;color:#e2e2e8">
+        <h1>Дмитрий Ефремов — архитектура систем, логика мышления и автономные процессы</h1>
+        <p>Сайт работает как одностраничное приложение и требует JavaScript. Для ИИ-агентов и клиентов без JavaScript доступны машиночитаемые точки входа:</p>
+        <ul>
+          <li><a href="/llms.txt">/llms.txt</a> — архитектурные инварианты и список эндпоинтов</li>
+          <li><a href="/.well-known/ai-agent.json">/.well-known/ai-agent.json</a> — манифест агента</li>
+          <li><a href="/api/v1/bridge/handshake">/api/v1/bridge/handshake</a> — A2A handshake (GET: превью контракта, POST: открыть сессию)</li>
+          <li><a href="/api/v1/canon/context?task=architecture">/api/v1/canon/context?task=...</a> — архитектурный контекст под задачу</li>
+        </ul>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
